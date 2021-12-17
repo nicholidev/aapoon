@@ -62,7 +62,7 @@ export default function DashboardHeader({ onOpenSidebar }) {
   const isDesktop = useResponsive('up', 'lg');
 
   return (
-    <RootStyle isCollapse={isCollapse}>
+    <RootStyle isCollapse={isCollapse} position={'static'}>
       <ToolbarStyle>
         {!isDesktop && (
           <IconButtonAnimate onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>

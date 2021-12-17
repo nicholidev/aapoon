@@ -50,6 +50,7 @@ export default function Input(theme) {
     MuiOutlinedInput: {
       styleOverrides: {
         root: {
+          marginTop: 0,
           '& .MuiOutlinedInput-notchedOutline': {
             borderColor: theme.palette.grey[500_32],
           },

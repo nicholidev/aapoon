@@ -32,6 +32,7 @@ export default function VerifyCodeForm({ verifyMobileLinkCode }) {
         await verifyMobileLinkCode(values.code);
         enqueueSnackbar('Verify success', { variant: 'success' });
         setSubmitting(false);
+        window?.location ="/";
       } catch (err) {
         setSubmitting(false);
         resetForm();

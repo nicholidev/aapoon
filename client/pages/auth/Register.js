@@ -77,7 +77,7 @@ export default function Register() {
 
         {mdUp && (
           <SectionStyle>
-            <Image alt="register" src="/images/register/rectangle-422.png" sx={{ width: '100%', height: '100vh' }} />
+            <Image alt="register" src="/images/register/rectangle-422.png" sx={{ width: '100%', height: '100%' }} />
           </SectionStyle>
         )}
 
@@ -95,7 +95,7 @@ export default function Register() {
             </Box>
 
             <RegisterForm />
-            <div id="recaptcha-container"></div>
+            <div id="captcha-container"></div>
             <Typography variant="caption" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
               By clicking on Complete Signup, you agree to our &nbsp;
               <Link underline="always" color="text.primary" href="#">

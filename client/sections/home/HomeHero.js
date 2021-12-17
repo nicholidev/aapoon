@@ -29,7 +29,7 @@ const RootStyle = styled(m.div)(({ theme }) => ({
 
 const ContentStyle = styled((props) => <Stack spacing={5} {...props} />)(({ theme }) => ({
   zIndex: 10,
-  maxWidth: 520,
+  maxWidth: 380,
   margin: 'auto',
   textAlign: 'center',
   position: 'relative',
@@ -37,6 +37,12 @@ const ContentStyle = styled((props) => <Stack spacing={5} {...props} />)(({ them
   paddingBottom: theme.spacing(15),
   [theme.breakpoints.up('md')]: {
     margin: 'unset',
+
+    textAlign: 'left',
+  },
+  [theme.breakpoints.up('lg')]: {
+    margin: 'unset',
+    maxWidth: 520,
     textAlign: 'left',
   },
 }));
@@ -61,22 +67,23 @@ const HeroImgStyle = styled(m.img)(({ theme }) => ({
     right: 0,
     width: 'auto',
     height: '80vh',
+    maxHeight: 680,
   },
   [theme.breakpoints.down('xl')]: {
     right: 0,
     width: 'auto',
-    height: '70vh',
+    height: '55vh',
   },
   [theme.breakpoints.down('lg')]: {
     right: 0,
     width: 'auto',
-    height: '60vh',
+    height: '45vh',
   },
   [theme.breakpoints.down('md')]: {
     right: 0,
     width: 'auto',
     display: 'none',
-    height: '50vh',
+    height: '45vh',
   },
 }));
 
@@ -138,7 +145,7 @@ export default function HomeHero() {
           </ContentStyle>
         </Container>
       </RootStyle>
-      <Box sx={{ height: { md: '75vh', lg: '85vh' } }} />
+      <Box sx={{ height: { md: '80vh', lg: '80vh', xl: '85vh' } }} />
     </MotionContainer>
   );
 }

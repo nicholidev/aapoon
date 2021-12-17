@@ -5,6 +5,7 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import { FIREBASE_API } from '../config';
 import { useRouter } from 'next/router';
+import { phoneExists } from '../services/misc-service';
 // ----------------------------------------------------------------------
 
 const ADMIN_EMAILS = ['demo@minimals.cc'];
@@ -80,11 +81,10 @@ function AuthProvider({ children }) {
         // }
 
         if (user) {
-          if (user.emailVerified === false || !user?.phoneNumber) {
+          if (!user?.phoneNumber) {
             router.push('/auth/VerificationProcess');
             localStorage.setItem('isAuthenticated', false);
           } else {
-            router.replace('/dashboard/one');
             localStorage.setItem('isAuthenticated', true);
           }
           const docRef = firebase.firestore().collection('users').doc(user.uid);
@@ -132,31 +132,76 @@ function AuthProvider({ children }) {
   };
 
   const resendEmailVerification = () => {
-    return state.user.sendEmailVerification();
+    //return state.user.sendEmailVerification();
   };
 
-  const register = (email, password, firstName, lastName, phoneNumber) =>
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then((res) => {
-        if (res.user && res.user.emailVerified === false) {
-          res.user.sendEmailVerification().then(function () {
-            console.log('email verification sent to user');
-          });
-        }
+  const register = (email, password, firstName, lastName, phoneNumber, allValues) => {
+    return new Promise((resolve, reject) => {
+      phoneExists(phoneNumber)
+        .then((res) => {
+          return reject({ code: 'auth/phone-already-in-use' });
+        })
+        .catch((err) => {
+          if (err.response && err.response.data.code) {
+            firebase
+              .auth()
+              .createUserWithEmailAndPassword(email, password)
+              .then(async (res) => {
+                // if (res.user && res.user.emailVerified === false) {
+                //   res.user.sendEmailVerification().then(function () {
+                //     console.log('email verification sent to user');
+                //   });
+                // }
 
-        firebase
-          .firestore()
-          .collection('users')
-          .doc(res.user.uid)
-          .set({
-            uid: res.user.uid,
-            email,
-            displayName: `${firstName} ${lastName}`,
-            phoneNumber: phoneNumber,
-          });
-      });
+                firebase
+                  .firestore()
+                  .collection('users')
+                  .doc(res.user.uid)
+                  .set({
+                    uid: res.user.uid,
+                    email,
+                    displayName: `${firstName} ${lastName}`,
+                    phoneNumber: phoneNumber,
+                    accountType: allValues.accountType,
+                    accountDetails: {
+                      businessType: allValues.businessType ? allValues.businessType : '',
+                      numberOfEmployees: allValues.numberOfEmployees ? allValues.numberOfEmployees : '',
+                      professionType: allValues.professionType ? allValues.professionType : '',
+                    },
+                  })
+                  .then((result) => {
+                    resolve(res);
+                    console.log(result);
+                  })
+                  .catch((err) => {
+                    reject(err);
+                  });
+                // dispatch({
+                //   type: 'INITIALISE',
+                //   payload: {
+                //     isAuthenticated: true,
+                //     user: {
+                //       ...res.user,
+
+                //       uid: res.user.uid,
+                //       email,
+                //       displayName: `${firstName} ${lastName}`,
+                //       phoneNumber: phoneNumber,
+                //       accountType: allValues.accountType,
+                //       accountDetails: {
+                //         businessType: allValues.businessType,
+                //         numberOfEmployees: allValues.numberOfEmployees,
+                //         professionType: allValues.professionType,
+                //       },
+                //     },
+                //   },
+                // });
+              })
+              .catch((err) => {});
+          }
+        });
+    });
+  };
 
   const logout = async () => {
     await firebase.auth().signOut();

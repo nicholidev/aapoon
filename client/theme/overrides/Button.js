@@ -8,9 +8,10 @@ export default function Button(theme) {
           '&:hover': {
             boxShadow: 'none',
           },
+          borderRadius: 5,
         },
         sizeLarge: {
-          height: 48,
+          height: 44,
         },
         // contained
         containedInherit: {

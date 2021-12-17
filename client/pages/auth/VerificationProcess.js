@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'next/link';
 // @mui
 import { styled } from '@mui/material/styles';
@@ -80,7 +80,9 @@ export default function ResetPassword() {
       });
   };
 
-  console.log(user);
+  useEffect(() => {
+    setTimeout(() => sendMobileVerification(), 1000);
+  }, []);
 
   return (
     <Page title="Reset Password" sx={{ height: 1 }}>
@@ -89,9 +91,9 @@ export default function ResetPassword() {
         <div id="captcha-container"></div>
         <Container>
           <Box sx={{ maxWidth: 480, mx: 'auto' }}>
-            {user.isEmailVerified ? (
+            {true ? (
               <>
-                {!sendMobile ? (
+                {false ? (
                   <>
                     <Typography variant="h3" align="center" paragraph>
                       Verify your Phone number
@@ -118,11 +120,11 @@ export default function ResetPassword() {
                 ) : (
                   <>
                     <Typography variant="h3" paragraph>
-                      Please check your email!
+                      Please check your phone!
                     </Typography>
                     <Typography sx={{ color: 'text.secondary' }}>
-                      We have emailed a 6-digit confirmation code to acb@domain, please enter the code in below box to
-                      verify your email.
+                      We have sent a 6-digit confirmation code to your mobile, please enter the code in below box to
+                      verify your mobile.
                     </Typography>
 
                     <Box sx={{ mt: 5, mb: 3 }}>

@@ -15,7 +15,7 @@ export default function PageOne() {
     <Page title="Page One">
       <GlobalStyles
         styles={{
-          body: { backgroundColor: 'lightyellow' },
+          body: { backgroundColor: '#F1F1F1' },
         }}
       />
       <Container maxWidth={themeStretch ? false : 'xl'}>
