@@ -5,8 +5,11 @@
 const jwt = require("jsonwebtoken");
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
-const db = admin.firestore();
 const USER_STATUS = require("../constants/user-status");
+
+admin.initializeApp()
+const db = admin.firestore();
+
 async function isAuthenticated(req, res, next) {
   const { authorization } = req.headers;
 

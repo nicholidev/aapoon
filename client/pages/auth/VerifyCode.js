@@ -27,7 +27,7 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function VerifyCode() {
+const VerifyCode = () => {
   return (
     <Page title="Verify" sx={{ height: 1 }}>
       <RootStyle>
@@ -59,7 +59,7 @@ export default function VerifyCode() {
 
             <Typography variant="body2" align="center">
               Don’t have a code? &nbsp;
-              <Link variant="subtitle2" underline="none" onClick={() => {}}>
+              <Link variant="subtitle2" underline="none" onClick={() => { }}>
                 Resend code
               </Link>
             </Typography>

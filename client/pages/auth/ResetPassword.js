@@ -17,7 +17,9 @@ import Page from '../../components/Page';
 import { ResetPasswordForm } from '../../sections/auth/reset-password';
 // assets
 import { SentIcon } from '../../assets';
-import withoutAut from '../../HOC/withOutAuth';
+import withoutAuth from '../../HOC/withOutAuth';
+import Router from 'next/router'
+
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -30,7 +32,7 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function ResetPassword() {
+const ResetPassword = () => {
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
 
@@ -53,7 +55,7 @@ export default function ResetPassword() {
 
                 <ResetPasswordForm onSent={() => setSent(true)} onGetEmail={(value) => setEmail(value)} />
 
-                <Button fullWidth size="large" component={RouterLink} to={'/'} sx={{ mt: 1 }}>
+                <Button fullWidth size="large" onClick={()=>Router.back()} sx={{ mt: 1 }}>
                   Back
                 </Button>
               </>
@@ -83,4 +85,4 @@ export default function ResetPassword() {
   );
 }
 
-export default withoutAut(ResetPassword)
+export default withoutAuth(ResetPassword)

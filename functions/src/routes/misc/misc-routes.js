@@ -2,6 +2,7 @@
  Copyright ©. All Rights Reserved. Confidential and proprietary.
  XYZ. Contact address: XYZ@xyz.pa .
  */
+// const isAuthenticated = require("../../auth/authenticated");
 const { checkPhoneExistance, getCountry, sendOTP, verifyOTP, sendEmailInvite, acceptEmailInvite } = require("./misc-controller");
 
 const routesConfig = (app) => {
@@ -19,6 +20,7 @@ const routesConfig = (app) => {
     verifyOTP
   )
   app.post(
+   // isAuthenticated,
     "/misc/send-invite",
     sendEmailInvite
   )

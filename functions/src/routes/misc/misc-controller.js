@@ -9,7 +9,6 @@ const axios = require("axios");
 const AWS = require("aws-sdk");
 const { checkIndianMobile, generateRandomToken } = require("../../utils/general");
 const { sendEmail } = require("../../services/Mail");
-const { firestore } = require("firebase-admin");
 
 AWS.config.setPromisesDependency();
 AWS.config.update({
@@ -169,12 +168,10 @@ const sendEmailInvite = async (req, res) => {
 
 const acceptEmailInvite = async () => {
   const { email, token } = req.body
-  let checkInvite = (await firestore().collection("invites").doc("email").get()).data()
+  let checkInvite = (await admin.firestore().collection("invites").doc("email").get()).data()
   if (checkInvite && checkInvite.expiresAt > new Date().getTime()) {
     if (checkInvite.status !== 'pending')
       return res.status(406).json({ message: "Invitation already accepted! You can login to your account now!" })
-
-
   }
   else {
     return res.status(406).json({ message: "Invalid or expired Invite" })

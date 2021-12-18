@@ -36,7 +36,7 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function ResetPassword() {
+const ResetPassword = () => {
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
