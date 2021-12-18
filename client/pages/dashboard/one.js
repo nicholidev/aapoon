@@ -7,8 +7,8 @@ import useSettings from '../../hooks/useSettings';
 import Page from '../../components/Page';
 import GlobalStyles from '@mui/material/GlobalStyles';
 // ----------------------------------------------------------------------
-
-export default function PageOne() {
+import withAuth from '../../HOC/withAuth';
+function PageOne() {
   const { themeStretch } = useSettings();
 
   return (
@@ -42,7 +42,10 @@ export default function PageOne() {
 }
 
 // ----------------------------------------------------------------------
+let NewAuth = withAuth(PageOne);
 
-PageOne.getLayout = function getLayout(page) {
+NewAuth.getLayout = function getLayout(page) {
   return <DashboardLayout>{page}</DashboardLayout>;
 };
+
+export default NewAuth;

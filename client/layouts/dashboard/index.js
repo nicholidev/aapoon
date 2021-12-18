@@ -18,10 +18,7 @@ import DashboardNavbar from './navbar';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
-  [theme.breakpoints.up('lg')]: {
-    display: 'flex',
-    minHeight: '100%',
-  },
+  display: 'flex',
 }));
 
 const MainStyle = styled('main', {
@@ -31,8 +28,6 @@ const MainStyle = styled('main', {
   paddingTop: DASHBOARD_HEADER_MOBILE + 24,
   paddingBottom: DASHBOARD_HEADER_MOBILE + 24,
   [theme.breakpoints.up('lg')]: {
-    paddingLeft: 16,
-    paddingRight: 16,
     paddingTop: DASHBOARD_HEADER_DESKTOP + 24,
     paddingBottom: DASHBOARD_HEADER_DESKTOP + 24,
     width: `calc(100% - ${DASHBOARD_NAVBAR_WIDTH}px)`,

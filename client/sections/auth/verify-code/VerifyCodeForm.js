@@ -6,6 +6,7 @@ import { Form, FormikProvider, useFormik } from 'formik';
 import { OutlinedInput, FormHelperText, Stack } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // routes
+import { useRouter } from 'next/router';
 import OtpInput from 'react-otp-input';
 import ErrorMessages from '../../../utils/errorMessage';
 // eslint-disable-next-line consistent-return
@@ -15,9 +16,9 @@ function maxLength(object) {
   }
 }
 
-export default function VerifyCodeForm({ verifyMobileLinkCode }) {
+export default function VerifyCodeForm({ verifyMobileLinkCode, user }) {
   const { enqueueSnackbar } = useSnackbar();
-
+  const router = useRouter();
   const VerifyCodeSchema = Yup.object().shape({
     code: Yup.string().required('Code is required , min 6 number').length(6),
   });
@@ -32,8 +33,9 @@ export default function VerifyCodeForm({ verifyMobileLinkCode }) {
         await verifyMobileLinkCode(values.code);
         enqueueSnackbar('Verify success', { variant: 'success' });
         setSubmitting(false);
-        window?.location ="/";
+        if (user.accountType == 'Business') router.push('/auth/business-profile');
       } catch (err) {
+        console.log(err);
         setSubmitting(false);
         resetForm();
         setErrors({ code: ErrorMessages[err.code] });

@@ -3,6 +3,7 @@ import { createContext, useEffect, useReducer, useState } from 'react';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
+import 'firebase/compat/storage';
 import { FIREBASE_API } from '../config';
 import { useRouter } from 'next/router';
 import { phoneExists } from '../services/misc-service';
@@ -22,6 +23,7 @@ const initialState = {
 };
 
 const reducer = (state, action) => {
+  console.log(state, action);
   if (action.type === 'INITIALISE') {
     const { isAuthenticated, user } = action.payload;
     return {
@@ -81,18 +83,14 @@ function AuthProvider({ children }) {
         // }
 
         if (user) {
-          if (!user?.phoneNumber) {
-            router.push('/auth/VerificationProcess');
-            localStorage.setItem('isAuthenticated', false);
-          } else {
-            localStorage.setItem('isAuthenticated', true);
-          }
           const docRef = firebase.firestore().collection('users').doc(user.uid);
           docRef
             .get()
             .then((doc) => {
               if (doc.exists) {
                 setProfile(doc.data());
+                if (doc.data().accountType == 'Business' && !doc.data().businessDetails && user.phoneNumber)
+                  router.push('/auth/business-profile');
               }
             })
             .catch((error) => {
@@ -103,12 +101,18 @@ function AuthProvider({ children }) {
             type: 'INITIALISE',
             payload: { isAuthenticated: true, user },
           });
+          if (!user?.phoneNumber) {
+            router.push('/auth/VerificationProcess');
+            localStorage.removeItem('isAuthenticated');
+          } else {
+            localStorage.setItem('isAuthenticated', true);
+          }
         } else {
           dispatch({
             type: 'INITIALISE',
             payload: { isAuthenticated: false, user: null },
           });
-          localStorage.setItem('isAuthenticated', false);
+          localStorage.removeItem('isAuthenticated');
         }
       }),
     [dispatch]
@@ -133,6 +137,32 @@ function AuthProvider({ children }) {
 
   const resendEmailVerification = () => {
     //return state.user.sendEmailVerification();
+  };
+
+  const registerBusiness = (data) => {
+    console.log('business rej');
+    return new Promise((resolve, reject) => {
+      console.log('business rej1');
+      var storageRef = firebase.storage().ref();
+      var busRef = storageRef.child(`account/${state.user.uid}/business/logo/${data.logo.name}`);
+      console.log('business rej2');
+      busRef
+        .put(data.logo)
+        .then(async (snapshot) => {
+          const downloadURL = await snapshot.ref.getDownloadURL();
+          firebase
+            .firestore()
+            .collection('users')
+            .doc(state.user.uid)
+            .update({
+              businessDetails: { ...data, logo: downloadURL },
+            })
+            .then((response) => {
+              resolve('success');
+            });
+        })
+        .catch((err) => reject(err));
+    });
   };
 
   const register = (email, password, firstName, lastName, phoneNumber, allValues) => {
@@ -206,14 +236,15 @@ function AuthProvider({ children }) {
   const logout = async () => {
     await firebase.auth().signOut();
     router.replace('/');
-    localStorage.setItem('isAuthenticated', false);
+    localStorage.removeItem('isAuthenticated');
   };
 
   const resetPassword = async (email) => {
     await firebase.auth().sendPasswordResetEmail(email);
   };
 
-  const sendMobileVerificationCode = async () => {
+  const sendMobileVerificationCode = async (user) => {
+    console.log(user);
     try {
       var appVerifier = state.appVerifier
         ? state.appVerifier
@@ -221,19 +252,28 @@ function AuthProvider({ children }) {
             size: 'invisible',
           });
 
-      let confirmation = await state.user.linkWithPhoneNumber(
-        state.user?.phoneNumber || profile?.phoneNumber,
-        appVerifier
-      );
-      dispatch({
-        type: 'UPDATE',
-        payload: { confirmation: confirmation, appVerifier },
-      });
+      const docRef = firebase.firestore().collection('users').doc(user.id);
+      docRef
+        .get()
+        .then(async (doc) => {
+          if (doc.exists) {
+            setProfile(doc.data());
+            let confirmation = await state.user.linkWithPhoneNumber(doc.data().phoneNumber, appVerifier);
+            dispatch({
+              type: 'UPDATE',
+              payload: { confirmation: confirmation, appVerifier },
+            });
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     } catch (error) {
       console.log(error);
     }
   };
   const verifyMobileLinkCode = (code) => {
+    console.log(state);
     return state.confirmation.confirm(code);
   };
 
@@ -242,7 +282,8 @@ function AuthProvider({ children }) {
   return (
     <AuthContext.Provider
       value={{
-        ...state,
+        confirmation: state.confirmation,
+        appVerifier: state.appVerifier,
         method: 'firebase',
         user: {
           isEmailVerified: state.user?.emailVerified,
@@ -259,6 +300,8 @@ function AuthProvider({ children }) {
           zipCode: profile?.zipCode || '',
           about: profile?.about || '',
           isPublic: profile?.isPublic || false,
+          ...profile,
+          ...state.user,
         },
         login,
         register,
@@ -267,6 +310,7 @@ function AuthProvider({ children }) {
         loginWithTwitter,
         logout,
         resetPassword,
+        registerBusiness,
         resendEmailVerification,
         sendMobileVerificationCode,
         verifyMobileLinkCode,

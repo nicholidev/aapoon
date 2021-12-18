@@ -7,7 +7,7 @@ import { useFormik, Form, FormikProvider } from 'formik';
 import { Link, Stack, Alert, Checkbox, TextField, IconButton, InputAdornment, FormControlLabel } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // routes
-
+import { useRouter } from 'next/router';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
@@ -22,7 +22,7 @@ export default function LoginForm() {
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
-
+  const router = useRouter();
   const LoginSchema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string().required('Password is required'),
@@ -46,6 +46,7 @@ export default function LoginForm() {
             </IconButtonAnimate>
           ),
         });
+        router.push('/dashboard/one');
         if (isMountedRef.current) {
           setSubmitting(false);
         }

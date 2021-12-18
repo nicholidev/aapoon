@@ -14,6 +14,7 @@ import Logo from '../../components/Logo';
 import Image from '../../components/Image';
 // sections
 import { LoginForm } from '../../sections/auth/login';
+import withoutAut from '../../HOC/withOutAuth';
 import AuthFirebaseSocials from '../../sections/auth/AuthFirebaseSocial';
 import Router from 'next/router';
 
@@ -61,8 +62,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 }));
 
 // ----------------------------------------------------------------------
-
-export default function Login() {
+function Login() {
   const { method } = useAuth();
 
   const smUp = useResponsive('up', 'sm');
@@ -116,3 +116,5 @@ export default function Login() {
     </Page>
   );
 }
+
+export default withoutAut(Login);

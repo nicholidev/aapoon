@@ -11,7 +11,7 @@ import Page from '../../components/Page';
 import Iconify from '../../components/Iconify';
 // sections
 import { VerifyCodeForm } from '../../sections/auth/verify-code';
-
+import withoutAut from '../../HOC/withOutAuth';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -65,3 +65,6 @@ export default function VerifyCode() {
     </Page>
   );
 }
+
+
+export default withoutAut(VerifyCode)

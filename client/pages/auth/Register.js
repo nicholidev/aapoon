@@ -16,6 +16,7 @@ import Image from '../../components/Image';
 import { RegisterForm } from '../../sections/auth/register';
 import AuthFirebaseSocials from '../../sections/auth/AuthFirebaseSocial';
 import Divider from '@mui/material/Divider';
+import withoutAut from '../../HOC/withOutAuth';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -62,7 +63,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-export default function Register() {
+function Register() {
   const { method } = useAuth();
 
   const smUp = useResponsive('up', 'sm');
@@ -120,3 +121,5 @@ export default function Register() {
     </Page>
   );
 }
+
+export default withoutAut(Register);

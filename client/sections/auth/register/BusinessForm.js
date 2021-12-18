@@ -23,6 +23,7 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
 import Iconify from '../../../components/Iconify';
 
+import { IconButtonAnimate } from '../../../components/animate';
 import PhoneInput from 'react-phone-number-input/input';
 import CustomPhone from '../../../components/Phonenumber';
 import InputLabel from '@mui/material/InputLabel';
@@ -31,7 +32,7 @@ import { FileUploader } from 'react-drag-drop-files';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../../utils/errorMessage';
 export default function RegisterForm() {
-  const { register } = useAuth();
+  const { registerBusiness } = useAuth();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
@@ -76,9 +77,11 @@ export default function RegisterForm() {
     },
     validationSchema: RegisterSchema,
     onSubmit: async (values, { setErrors, setSubmitting }) => {
+      console.log(values);
+
       try {
-        await register(values.email, values.password, values.firstName, values.lastName, values.phone);
-        enqueueSnackbar('Register success', {
+        await registerBusiness(values);
+        enqueueSnackbar('Business details updates', {
           variant: 'success',
           action: (key) => (
             <IconButtonAnimate size="small" onClick={() => closeSnackbar(key)}>
@@ -90,6 +93,7 @@ export default function RegisterForm() {
           setSubmitting(false);
         }
       } catch (error) {
+        console.log(error);
         if (isMountedRef.current) {
           setErrors({ afterSubmit: ErrorMessages[error.code] });
           setSubmitting(false);
@@ -226,7 +230,7 @@ export default function RegisterForm() {
             </Grid>
           </Grid>
           <Stack justifyContent={'flex-end'} direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 2 }}>
-            <LoadingButton size="large" color="primary" loading={isSubmitting}>
+            <LoadingButton size="large" color="primary">
               Cancel
             </LoadingButton>
             <LoadingButton size="large" type="submit" variant="contained" loading={isSubmitting}>

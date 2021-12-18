@@ -20,6 +20,8 @@ import { IconButtonAnimate } from './../../components/animate';
 // ----------------------------------------------------------------------
 import { LoadingButton } from '@mui/lab';
 import { useSnackbar } from 'notistack';
+import withoutAuth from '../../HOC/withOutAuth';
+
 const RootStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   minHeight: '100%',
@@ -53,9 +55,9 @@ export default function ResetPassword() {
     });
   };
 
-  const sendMobileVerification = () => {
+  const sendMobileVerification = (user) => {
     setIsLoading(true);
-    sendMobileVerificationCode()
+    sendMobileVerificationCode(user)
       .then((response) => {
         setSendMobile(true);
         setIsLoading(false);
@@ -81,7 +83,7 @@ export default function ResetPassword() {
   };
 
   useEffect(() => {
-    setTimeout(() => sendMobileVerification(), 1000);
+    sendMobileVerification(user);
   }, []);
 
   return (
@@ -128,7 +130,7 @@ export default function ResetPassword() {
                     </Typography>
 
                     <Box sx={{ mt: 5, mb: 3 }}>
-                      <VerifyCodeForm verifyMobileLinkCode={verifyMobileLinkCode} />
+                      <VerifyCodeForm verifyMobileLinkCode={verifyMobileLinkCode} user={user} />
                     </Box>
 
                     <Typography variant="body2" align="center">
@@ -174,3 +176,5 @@ export default function ResetPassword() {
     </Page>
   );
 }
+
+export default withoutAuth(ResetPassword)

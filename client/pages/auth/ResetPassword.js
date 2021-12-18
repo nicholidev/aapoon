@@ -13,7 +13,7 @@ import Page from '../../components/Page';
 import { ResetPasswordForm } from '../../sections/auth/reset-password';
 // assets
 import { SentIcon } from '../../assets';
-
+import withoutAut from '../../HOC/withOutAuth';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -78,3 +78,5 @@ export default function ResetPassword() {
     </Page>
   );
 }
+
+export default withoutAut(ResetPassword)
