@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 import MapGL, { Source, Layer } from 'react-map-gl';
 import { useEffect, useState, useMemo } from 'react';
 // components

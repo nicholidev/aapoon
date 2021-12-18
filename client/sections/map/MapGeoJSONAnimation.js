@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 import { useState, useEffect } from 'react';
 import MapGL, { Layer, Source } from 'react-map-gl';
 // @mui

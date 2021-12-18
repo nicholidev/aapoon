@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 import * as React from 'react';
 // next
 import Document, { Html, Head, Main, NextScript } from 'next/document';
@@ -34,7 +38,7 @@ export default class MyDocument extends Document {
 
           <meta name="description" content="appoon meet" />
           <meta name="keywords" content="react,material,kit,application,dashboard,admin,template" />
-          <meta name="author" content="Minimal UI Kit" />
+          <meta name="author" content="Apoon Meet" />
         </Head>
 
         <body>

@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 import { Helmet } from 'react-helmet-async';
 import { GOOGLE_ANALYTICS_API } from '../config';
 

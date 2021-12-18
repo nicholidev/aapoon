@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 import { fromJS } from 'immutable';
 import PropTypes from 'prop-types';
 import { memo, useEffect, useState } from 'react';

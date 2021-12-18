@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 export { default as MapGeojson } from './geojson';
 export { default as MapHeatmap } from './heatmap';
 export { default as MapInteraction } from './interaction';

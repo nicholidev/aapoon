@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 const msg = {
   //login screens
   'auth/wrong-password': 'Invalid or wrong password',

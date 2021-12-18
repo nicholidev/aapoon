@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 export const stations = [
   { name: 'Lafayette (LAFY)', coordinates: [-122.123801, 37.893394] },
   {

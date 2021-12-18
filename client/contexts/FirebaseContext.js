@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 import PropTypes from 'prop-types';
 import { createContext, useEffect, useReducer, useState } from 'react';
 import firebase from 'firebase/compat/app';

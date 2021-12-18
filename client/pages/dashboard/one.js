@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 import { Container, Typography } from '@mui/material';
 // layouts
 import DashboardLayout from '../../layouts/dashboard';

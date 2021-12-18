@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 export { default as AccountBilling } from './AccountBilling';
 export { default as AccountBillingAddressBook } from './AccountBillingAddressBook';
 export { default as AccountBillingInvoiceHistory } from './AccountBillingInvoiceHistory';

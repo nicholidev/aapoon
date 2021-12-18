@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 export { default as ChatRoom } from './ChatRoom';
 export { default as ChatWindow } from './ChatWindow';
 export { default as ChatAccount } from './ChatAccount';

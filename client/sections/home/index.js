@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 export { default as HomeHero } from './HomeHero';
 export { default as HomeMinimal } from './HomeMinimal';
 export { default as HomeDarkMode } from './HomeDarkMode';

@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 import { last } from 'lodash';
 import PropTypes from 'prop-types';
 import { formatDistanceToNowStrict } from 'date-fns';

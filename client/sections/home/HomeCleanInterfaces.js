@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 // @mui
 import { alpha, styled } from '@mui/material/styles';
 import { Box, Container, Typography, useTheme, Grid } from '@mui/material';

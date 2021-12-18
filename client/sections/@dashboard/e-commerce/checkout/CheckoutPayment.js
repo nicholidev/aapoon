@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 import * as Yup from 'yup';
 import { useFormik, Form, FormikProvider } from 'formik';
 // @mui

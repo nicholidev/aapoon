@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 import { useRouter } from 'next/router';
 // @mui
 import { styled, useTheme } from '@mui/material/styles';
@@ -57,7 +61,7 @@ export default function MainHeader() {
   const isHome = pathname === '/';
 
   return (
-    <AppBar sx={{ boxShadow: 0, bgcolor: 'transparent' }}>
+    <AppBar sx={{ boxShadow: 0, bgcolor: 'white' }}>
       <ToolbarStyle
         disableGutters
         sx={{
@@ -78,7 +82,7 @@ export default function MainHeader() {
 
           <Box sx={{ flexGrow: 1 }} />
 
-          {isDesktop && <MenuDesktop isOffset={isOffset} isHome={isHome} navConfig={navConfig} />}
+          {isDesktop && <MenuDesktop isOffset={true} isHome={isHome} navConfig={navConfig} />}
           <Button
             sx={{ display: { xs: 'none', sm: 'block' }, mr: 4 }}
             rel="noopener"
@@ -95,10 +99,9 @@ export default function MainHeader() {
             Sign up, It’s free
           </Button>
 
-          {!isDesktop && <MenuMobile isOffset={isOffset} isHome={isHome} navConfig={navConfig} />}
+          {!isDesktop && <MenuMobile isOffset={true} isHome={isHome} navConfig={navConfig} />}
         </Container>
       </ToolbarStyle>
-
       {isOffset && <ToolbarShadowStyle />}
     </AppBar>
   );

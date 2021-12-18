@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 export { default as AppWidget } from './AppWidget';
 export { default as AppWelcome } from './AppWelcome';
 export { default as AppFeatured } from './AppFeatured';

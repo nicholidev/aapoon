@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 // @mui
 import { Accordion, Typography, AccordionSummary, AccordionDetails } from '@mui/material';
 // _mock_

@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 import { useRef } from 'react';
 // @mui
 import { Box, Card, Button, TextField, IconButton } from '@mui/material';

@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 export { default as EcommerceWelcome } from './EcommerceWelcome';
 export { default as EcommerceNewProducts } from './EcommerceNewProducts';
 export { default as EcommerceYearlySales } from './EcommerceYearlySales';

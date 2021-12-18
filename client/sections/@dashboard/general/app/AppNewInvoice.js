@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 import { useRef, useState } from 'react';
 import { sentenceCase } from 'change-case';
 import { Link as RouterLink } from 'react-router-dom';

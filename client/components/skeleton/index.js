@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 export { default as SkeletonMap } from './SkeletonMap';
 export { default as SkeletonPost } from './SkeletonPost';
 export { default as SkeletonPosts } from './SkeletonPosts';

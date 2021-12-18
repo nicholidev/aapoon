@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 import { merge } from 'lodash';
 import { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';

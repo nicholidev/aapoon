@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 import { FullscreenControl } from 'react-map-gl';
 // @mui
 import { styled } from '@mui/material/styles';

@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 import { useTranslation } from 'react-i18next';
 // '@mui
 import { enUS, deDE, frFR } from '@mui/material/locale';

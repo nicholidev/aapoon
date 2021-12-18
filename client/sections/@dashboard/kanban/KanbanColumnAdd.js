@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 import { useState, useRef, useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 // @mui

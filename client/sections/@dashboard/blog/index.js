@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 export { default as BlogNewPostForm } from './BlogNewPostForm';
 export { default as BlogNewPostPreview } from './BlogNewPostPreview';
 export { default as BlogPostCard } from './BlogPostCard';
