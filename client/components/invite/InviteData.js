@@ -19,7 +19,7 @@ import useAuth from '../../hooks/useAuth';
 import { getInviteList } from '../../api/user';
 const _appInvoices = [];
 
-export default function InviteData() {
+export default function InviteData(props) {
   const [inviteData, setInviteData] = useState([]);
   const { user } = useAuth();
   console.log("user", user)
@@ -33,7 +33,7 @@ export default function InviteData() {
         .catch((err) => {
           console.log(err);
         });
-  }, [user.id]);
+  }, [user.id, props.fetch]);
   return (
     <Scrollbar>
       <TableContainer sx={{ minWidth: 720 }}>

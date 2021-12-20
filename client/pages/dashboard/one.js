@@ -37,7 +37,7 @@ const Sidebar = styled('header')(({ theme }) => ({
   width: '240px',
   height: '100%',
   padding: theme.spacing(1),
-  paddingTop: theme.spacing(4),
+  paddingTop: theme.spacing(2),
   paddingLeft: theme.spacing(4),
   [theme.breakpoints.down('md')]: {
     display: 'none',
@@ -50,9 +50,11 @@ const Content = styled('div')(({ theme }) => ({
   padding: theme.spacing(1),
   paddingTop: theme.spacing(4),
   paddingLeft: theme.spacing(4),
+  marginTop:theme.spacing(6),
   [theme.breakpoints.down('md')]: {
     width: '100vw',
     paddingLeft: 0,
+    marginTop:theme.spacing(2)
   },
 }));
 
@@ -71,6 +73,7 @@ const InfoCard = styled(Card)(({ theme }) => ({
   maxWidth:"100%",
   paddingTop: 16,
   position: 'relative',
+  margin:"auto",
   [theme.breakpoints.down('md')]: {
     marginBottom: theme.spacing(4),
   },
@@ -133,6 +136,7 @@ const infoIconStyle = {
 function PageOne() {
   const { themeStretch } = useSettings();
   const [inviteOpen, setInviteOpen] = useState(false);
+  const [fetch,setFetch]=useState(false)
 
   return (
     <Page title="Dashboard">
@@ -216,11 +220,12 @@ function PageOne() {
                 Invite User
               </Button>
             </DataHead>
-            <InviteData />
+            <InviteData fetch={fetch} />
             <InviteModal
               open={inviteOpen}
               handleClose={() => {
                 setInviteOpen(false);
+                setFetch(!fetch)
               }}
             />
             {/* <AppNewInvoice/> */}

@@ -17,7 +17,7 @@ export default function InviteModal(props) {
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     firstName: Yup.string().required('First Name is required'),
     lastName: Yup.string().required('Last Name is required'),
-  });
+  });  
   const formik = useFormik({
     initialValues: {
       firstName: '',
