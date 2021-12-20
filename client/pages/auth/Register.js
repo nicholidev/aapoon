@@ -20,6 +20,7 @@ import Image from '../../components/Image';
 import { RegisterForm } from '../../sections/auth/register';
 import AuthFirebaseSocials from '../../sections/auth/AuthFirebaseSocial';
 import Divider from '@mui/material/Divider';
+import { useRouter } from 'next/router';
 import withoutAut from '../../HOC/withOutAuth';
 // ----------------------------------------------------------------------
 
@@ -70,6 +71,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
 function Register() {
   const { method } = useAuth();
 
+  let { query } = useRouter();
   const smUp = useResponsive('up', 'sm');
   const mdUp = useResponsive('up', 'md');
 
@@ -99,7 +101,7 @@ function Register() {
               </Box>
             </Box>
 
-            <RegisterForm />
+            <RegisterForm query={query} />
             <div id="captcha-container"></div>
             <Typography variant="caption" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
               By clicking on Complete Signup, you agree to our &nbsp;

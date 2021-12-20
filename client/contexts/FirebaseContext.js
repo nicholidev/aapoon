@@ -13,8 +13,6 @@ import { useRouter } from 'next/router';
 import { phoneExists } from '../services/misc-service';
 // ----------------------------------------------------------------------
 
-const ADMIN_EMAILS = ['demo@minimals.cc'];
-
 if (!firebase.apps.length) {
   firebase.initializeApp(FIREBASE_API);
   firebase.firestore();

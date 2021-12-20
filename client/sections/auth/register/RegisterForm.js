@@ -3,7 +3,7 @@
  XYZ. Contact address: XYZ@xyz.pa .
  */
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import { useFormik, Form, FormikProvider } from 'formik';
 
@@ -32,7 +32,8 @@ import PhoneInput from 'react-phone-number-input/input';
 import CustomPhone from '../../../components/Phonenumber';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../../utils/errorMessage';
-export default function RegisterForm() {
+import { acceptInvitation } from '../../../api/user';
+export default function RegisterForm(query) {
   const [open, setOpen] = useState(true);
 
   const { register } = useAuth();
@@ -56,7 +57,7 @@ export default function RegisterForm() {
     initialValues: {
       firstName: '',
       lastName: '',
-      email: '',
+      email: query?.query?.email,
       password: '',
       phone: '',
       accountType: 'Business',
@@ -73,6 +74,8 @@ export default function RegisterForm() {
             </IconButtonAnimate>
           ),
         });
+        if (localStorage.getItem('inviteToken'))
+          acceptInvitation({ email: values.email, token: localStorage.getItem('inviteToken') });
         if (isMountedRef.current) {
           setSubmitting(false);
         }
@@ -94,6 +97,12 @@ export default function RegisterForm() {
   };
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, values } = formik;
+  useEffect(() => {
+    if (query?.query?.email) {
+      setFieldValue('email', query?.query?.email);
+      localStorage.setItem('inviteToken', query?.query?.token);
+    }
+  }, [query?.query?.email]);
 
   return (
     <FormikProvider value={formik}>
