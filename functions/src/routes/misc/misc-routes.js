@@ -3,7 +3,7 @@
  XYZ. Contact address: XYZ@xyz.pa .
  */
 // const isAuthenticated = require("../../auth/authenticated");
-const { checkPhoneExistance, getCountry, sendOTP, verifyOTP, sendEmailInvite, acceptEmailInvite } = require("./misc-controller");
+const { checkPhoneExistance, getCountry, sendOTP, verifyOTP, sendEmailInvite, acceptEmailInvite, InviteList } = require("./misc-controller");
 
 const routesConfig = (app) => {
   app.get(
@@ -31,6 +31,10 @@ const routesConfig = (app) => {
   app.get(
     "/misc/get-country",
     getCountry
+  )
+  app.get(
+    "/misc/invite-list",
+    InviteList
   )
 };
 

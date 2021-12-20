@@ -123,7 +123,7 @@ const getCountry = async (req, res) => {
 }
 
 const sendEmailInvite = async (req, res) => {
-  const { email, firstName, lastName } = req.body
+  const { email, firstName, lastName, invitedBy } = req.body
   let existsUser = await (await admin.firestore().collection("users").doc(email).get()).data()
   console.log("ExistUser", existsUser);
   if (existsUser) {
@@ -142,6 +142,7 @@ const sendEmailInvite = async (req, res) => {
         email: email,
         firstName: firstName,
         lastName: lastName,
+        invitedBy: invitedBy,
         expiresAt: expiry,
         status: "pending"
       })
@@ -149,18 +150,18 @@ const sendEmailInvite = async (req, res) => {
   if (!invite) {
     return res.json({ message: "Failed to send Invite" })
   }
-  let invitedBy="User"
   let mail = await sendEmail(
     "jj.theinvincible@gmail.com",
     "Welcome to Apoon Meet",
-    `<p>Hello ${firstName} <br>,
+    `<p>Hello ${firstName}, <br>
     You are invited to join aapoon meet by ${invitedBy}. 
-    Please click the link below to accept the invitation: ${req.origin}?email=${email}&token=${token}</p>`
+    Please click the link below to accept the invitation: 
+    <a href="${req.headers.origin}?email=${email}&token=${token}">${req.headers.origin}?email=${email}&token=${token}</a></p>`
   )
   if (mail)
     return res.json({
       message: "Invite is Sent",
-      link: `${req.origin}?email=${email}&token=${token}`
+      link: `${req.headers.origin}?email=${email}&token=${token}`
     })
   else
     return res.status(500).json({ message: "Failed to send invite" })
@@ -178,11 +179,28 @@ const acceptEmailInvite = async () => {
   }
 }
 
+const InviteList = async (req, res) => {
+  const { email } = req.query
+  try {
+    let invites = await admin.firestore().collection("invites").where("invitedBy", "==", email).get()
+    console.log(invites)
+    if(invites.empty){
+      console.log("empty result")
+    }
+    invites.forEach(i=>console.log(i))
+    return res.send(invites)
+  } catch (error) {
+    console.log(error)
+    return res.status(500).json({ message: "Server Error!" })
+  }
+}
+
 module.exports = {
   checkPhoneExistance,
   sendOTP,
   getCountry,
   verifyOTP,
   sendEmailInvite,
-  acceptEmailInvite
+  acceptEmailInvite,
+  InviteList
 };

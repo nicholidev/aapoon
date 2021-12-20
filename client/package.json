@@ -32,6 +32,7 @@
     "@emotion/server": "^11.4.0",
     "@emotion/styled": "^11.6.0",
     "@iconify/react": "^3.1.0",
+    "@mui/icons-material": "^5.2.4",
     "@mui/lab": "^5.0.0-alpha.59",
     "@mui/material": "^5.2.2",
     "axios": "^0.24.0",

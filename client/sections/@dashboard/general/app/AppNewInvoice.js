@@ -4,7 +4,7 @@
  */
 import { useRef, useState } from 'react';
 import { sentenceCase } from 'change-case';
-import { Link as RouterLink } from 'react-router-dom';
+// import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import {
@@ -23,16 +23,16 @@ import {
   CardHeader,
   IconButton,
   TableContainer,
+  Link
 } from '@mui/material';
 // utils
-import { fCurrency } from '../../../../utils/formatNumber';
 // _mock_
-import { _appInvoices } from '../../../../_mock';
+// import { _appInvoices } from '../../../../_mock';
 // components
 import Label from '../../../../components/Label';
 import Iconify from '../../../../components/Iconify';
 import Scrollbar from '../../../../components/Scrollbar';
-
+const _appInvoices = []
 // ----------------------------------------------------------------------
 
 export default function AppNewInvoice() {
@@ -58,7 +58,7 @@ export default function AppNewInvoice() {
                 <TableRow key={row.id}>
                   <TableCell>{`INV-${row.id}`}</TableCell>
                   <TableCell>{row.category}</TableCell>
-                  <TableCell>{fCurrency(row.price)}</TableCell>
+                  <TableCell>{row.price}</TableCell>
                   <TableCell>
                     <Label
                       variant={theme.palette.mode === 'light' ? 'ghost' : 'filled'}
@@ -88,7 +88,7 @@ export default function AppNewInvoice() {
           to="#"
           size="small"
           color="inherit"
-          component={RouterLink}
+          component={Link}
           endIcon={<Iconify icon={'eva:arrow-ios-forward-fill'} />}
         >
           View All
