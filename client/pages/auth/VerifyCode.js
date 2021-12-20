@@ -59,7 +59,7 @@ const VerifyCode = () => {
 
             <Typography variant="body2" align="center">
               Don’t have a code? &nbsp;
-              <Link variant="subtitle2" underline="none" onClick={() => { }}>
+              <Link variant="subtitle2" underline="none" onClick={() => {}}>
                 Resend code
               </Link>
             </Typography>
@@ -68,7 +68,6 @@ const VerifyCode = () => {
       </RootStyle>
     </Page>
   );
-}
+};
 
-
-export default withoutAut(VerifyCode)
+export default withoutAut(VerifyCode);

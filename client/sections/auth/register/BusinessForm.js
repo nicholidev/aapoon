@@ -93,6 +93,7 @@ export default function RegisterForm() {
             </IconButtonAnimate>
           ),
         });
+        window?.location="/dashboard/one";
         if (isMountedRef.current) {
           setSubmitting(false);
         }

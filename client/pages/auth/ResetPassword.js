@@ -85,4 +85,8 @@ const ResetPassword = () => {
   );
 }
 
+<<<<<<< HEAD
 export default withoutAuth(ResetPassword)
+=======
+export default withoutAut(ResetPassword);
+>>>>>>> 4dbec35 (minor edists)

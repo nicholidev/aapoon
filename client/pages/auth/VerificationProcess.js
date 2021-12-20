@@ -179,6 +179,6 @@ const ResetPassword = () => {
       </RootStyle>
     </Page>
   );
-}
+};
 
-export default withoutAuth(ResetPassword)
+export default withoutAuth(ResetPassword);
