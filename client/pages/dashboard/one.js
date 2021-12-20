@@ -68,6 +68,7 @@ const SideSection = styled(Card)(({ theme }) => ({
 const InfoCard = styled(Card)(({ theme }) => ({
   height: 114,
   width: 259,
+  maxWidth:"100%",
   paddingTop: 16,
   position: 'relative',
   [theme.breakpoints.down('md')]: {
@@ -85,7 +86,7 @@ const InfoContainer = styled(Grid)(({ theme }) => ({
   justifyContent: 'space-between',
   [theme.breakpoints.down('md')]: {
     justifyContent: 'center',
-    paddingLeft: 0,
+    paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
   },
 }));
@@ -173,7 +174,7 @@ function PageOne() {
           {/* <SideSection /> */}
         </Sidebar>
         <Content>
-          <InfoContainer container>
+          <InfoContainer container spacing={4}>
             <Grid xs={12} sm={6} md={4}>
               <InfoCard>
                 <InfoHeading>Total meetings this week</InfoHeading>

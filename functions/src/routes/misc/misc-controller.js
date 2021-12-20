@@ -143,7 +143,7 @@ const sendEmailInvite = async (req, res) => {
 
   if (existsUser) {
     return res
-      .status(422)
+      .status(406)
       .json({ message: "User already exists with the provided email!" });
   }
 

@@ -30,11 +30,16 @@ export default function InviteModal(props) {
       setSubmitting(true);
       try {
         await inviteUser({ ...values, invitedBy: user.id });
-        enqueueSnackbar('User Invited');
+        enqueueSnackbar('User Invited', {
+          variant: "success"
+        });
         setSubmitting(false);
+        props.handleClose()
       } catch (error) {
         setSubmitting(false);
-        resetForm();
+        console.log(error.response.data)
+        if (error.response && error.response.data?.message)
+          setErrors({ email: error.response.data?.message })
       }
     },
   });
@@ -66,7 +71,14 @@ export default function InviteModal(props) {
               />
             </Grid>
             <Grid item xs={12}>
-              <TextField name="email" fullWidth label="Email" variant="outlined" onChange={formik.handleChange} />
+              <TextField
+                name="email"
+                fullWidth label="Email"
+                variant="outlined"
+                onChange={formik.handleChange}
+                error={errors.email !== undefined ? true : false}
+                helperText={errors.email}
+              />
             </Grid>
           </Grid>
         </DialogContent>

@@ -22,6 +22,7 @@ const _appInvoices = [];
 export default function InviteData() {
   const [inviteData, setInviteData] = useState([]);
   const { user } = useAuth();
+  console.log("user", user)
   useEffect(() => {
     if (user.id)
       getInviteList(user.id)
