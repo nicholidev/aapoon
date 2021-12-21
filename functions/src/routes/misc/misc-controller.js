@@ -25,11 +25,22 @@ const checkPhoneExistance = async (req, res) => {
     .auth()
     .getUserByPhoneNumber(req.params.phone)
     .then((user) => {
-      if (user) res.status(200).send({ message: "exists" });
+      if (user) res.status(200).send({ message: "auth/phone-already-in-use" });
       else res.status(200).send({ message: "not exists" });
     })
     .catch((e) => {
-      res.status(500).send(e);
+      admin
+        .auth()
+        .getUserByEmail(req.params.email)
+        .then((user) => {
+          if (user)
+            res.status(200).send({ message: "auth/email-already-in-use" });
+          else res.status(200).send({ message: "not exists" });
+        })
+        .catch((err) => {
+          res.status(500).send(err);
+        });
+      res.status(500).send(err);
     });
 };
 

@@ -85,7 +85,7 @@ export default function DashboardHeader({ onOpenSidebar }) {
           {/* <NotificationsPopover /> */}
           {/* <ContactsPopover /> */}
           <AccountPopover>
-            <span style={{ color: "black" }}>Janmejay</span>
+            <span style={{ color: 'black' }}>Janmejay</span>
           </AccountPopover>
         </Stack>
       </ToolbarStyle>

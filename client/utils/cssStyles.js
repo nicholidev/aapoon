@@ -21,7 +21,7 @@ export default function cssStyles(theme) {
       const color = props?.color || theme?.palette.background.default || '#000000';
 
       const blur = props?.blur || 6;
-      const opacity = props?.opacity || 0.8;
+      const opacity = props?.opacity || 1;
 
       return {
         backdropFilter: `blur(${blur}px)`,
@@ -39,8 +39,7 @@ export default function cssStyles(theme) {
       };
     },
     bgImage: (props) => {
-      const url =
-        props?.url || 'https://minimal-assets-api.vercel.app/assets/images/bg_gradient.jpg';
+      const url = props?.url || 'https://minimal-assets-api.vercel.app/assets/images/bg_gradient.jpg';
       const direction = getDirection(props?.direction);
       const startColor = props?.startColor || alpha(theme?.palette.grey[900] || '#000000', 0.88);
       const endColor = props?.endColor || alpha(theme?.palette.grey[900] || '#000000', 0.88);

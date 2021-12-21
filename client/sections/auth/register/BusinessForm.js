@@ -46,15 +46,16 @@ export default function RegisterForm() {
     businessWeb: Yup.string()
       .min(2, 'Too Short!')
       .url('Please enter valid url with http or https')
-      .required('Website name required'),
+    ,
+    teamsize: Yup.string().required('Teamsize is required'),
     addrerss1: Yup.string().min(2, 'Too Short!').required('Adress is required'),
     addrerss2: Yup.string(),
     state: Yup.string().min(2, 'Too Short!').required('State is required'),
     pincode: Yup.number('Please enter valid code').required('pincode is required'),
     logo: Yup.mixed()
-      .required('You need to provide a file')
+      
       .test('fileSize', 'The file is too large', (value) => {
-        return value && value.size <= 2000000;
+        return value && value.size <= 2000000||!value;
       })
       .test('type', 'Only the following formats are accepted: .jpeg, .jpg, .png', (value) => {
         return (
@@ -63,7 +64,7 @@ export default function RegisterForm() {
             value.type === 'image/bmp' ||
             value.type === 'image/png' ||
             value.type === 'application/pdf' ||
-            value.type === 'application/msword')
+            value.type === 'application/msword')||!value
         );
       }),
   });
@@ -93,7 +94,8 @@ export default function RegisterForm() {
             </IconButtonAnimate>
           ),
         });
-        window?.location="/dashboard/one";
+        localStorage.setItem('isAuthenticated',true)
+        window?.location="/";
         if (isMountedRef.current) {
           setSubmitting(false);
         }
@@ -120,8 +122,8 @@ export default function RegisterForm() {
               fullWidth
               placeholder="Business Name"
               {...getFieldProps('businessName')}
-              error={Boolean(touched.firstName && errors.firstName)}
-              helperText={touched.firstName && errors.firstName}
+              error={Boolean(touched.businessName && errors.businessName)}
+              helperText={touched.businessName && errors.businessName}
             />
           </Stack>
 

@@ -28,24 +28,31 @@ import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
 import Iconify from '../../../components/Iconify';
 import { IconButtonAnimate } from '../../../components/animate';
-import PhoneInput from 'react-phone-number-input/input';
+import PhoneInput from 'react-phone-number-input';
 import CustomPhone from '../../../components/Phonenumber';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../../utils/errorMessage';
 import { acceptInvitation } from '../../../api/user';
 export default function RegisterForm(query) {
-  const [open, setOpen] = useState(true);
+  const { register, user } = useAuth();
+  const [open, setOpen] = useState(user.email ? false : true);
 
-  const { register } = useAuth();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
   const rePhoneNumber = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
+  const rePass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('First name required'),
     lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
-    password: Yup.string().required('Password is required'),
+    password: Yup.string()
+      .required('Password is required')
+      .min(6, 'Password should be 6 letter long')
+      .matches(
+        rePass,
+        'Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character'
+      ),
     phone: Yup.string().matches(rePhoneNumber, 'Phone number is not valid').required('Phone is required'),
     accountType: Yup.string().required('Account type is required'),
     businessType: Yup.string(),
@@ -55,12 +62,12 @@ export default function RegisterForm(query) {
 
   const formik = useFormik({
     initialValues: {
-      firstName: '',
-      lastName: '',
-      email: query?.query?.email,
-      password: '',
-      phone: '',
-      accountType: 'Business',
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: query?.query?.email ? query?.query?.email : user.email,
+      password: user.password,
+      phone: user.phoneNumber,
+      accountType: user.accountType || 'Business',
     },
     validationSchema: RegisterSchema,
     onSubmit: async (values, { setErrors, setSubmitting }) => {
@@ -79,7 +86,10 @@ export default function RegisterForm(query) {
         if (isMountedRef.current) {
           setSubmitting(false);
         }
+        localStorage.removeItem('inviteToken');
       } catch (error) {
+        console.log(error);
+        setErrors({ afterSubmit: ErrorMessages[error.code] });
         if (isMountedRef.current) {
           setErrors({ afterSubmit: ErrorMessages[error.code] });
           setSubmitting(false);
@@ -139,6 +149,8 @@ export default function RegisterForm(query) {
           />
           <PhoneInput
             placeholder="Enter phone number"
+            international
+            defaultCountry="IN"
             inputComponent={CustomPhone}
             {...getFieldProps('phone')}
             onChange={(data) => setFieldValue('phone', data)}
@@ -152,7 +164,7 @@ export default function RegisterForm(query) {
             fullWidth
             autoComplete="current-password"
             type={showPassword ? 'text' : 'password'}
-            label="Password"
+            label="Set Password"
             {...getFieldProps('password')}
             InputProps={{
               endAdornment: (
@@ -196,8 +208,12 @@ export default function RegisterForm(query) {
                           <MenuItem value={10} disabled>
                             Select Business
                           </MenuItem>
-                          <MenuItem value={'Business one'}>Business one</MenuItem>
-                          <MenuItem value={'Business two'}>Business two</MenuItem>
+                          <MenuItem value={'Automotive '}>Automotive</MenuItem>
+                          <MenuItem value={'Business Support & Supplies '}>Business Support & Supplies </MenuItem>
+                          <MenuItem value={'Education'}>Education </MenuItem>
+                          <MenuItem value={'Computers & Electronics'}>Computers & Electronics </MenuItem>
+                          <MenuItem value={'Construction & Contractors '}>Construction & Contractors </MenuItem>
+                          <MenuItem value={'Entertainment'}>Entertainment </MenuItem>
                         </Select>
                       </FormControl>
                       <TextField
@@ -216,8 +232,12 @@ export default function RegisterForm(query) {
                           <MenuItem value={10} disabled>
                             Select Profession
                           </MenuItem>
-                          <MenuItem value={'Business one'}>Profession one</MenuItem>
-                          <MenuItem value={'Business two'}>Profession two</MenuItem>
+                          <MenuItem value={'Lawyer'}>Lawyer</MenuItem>
+                          <MenuItem value={'Accountant'}>Accountant</MenuItem>
+                          <MenuItem value={'Technician'}>Technician</MenuItem>
+                          <MenuItem value={'Doctor'}>Doctor</MenuItem>
+                          <MenuItem value={'Teacher'}>Teacher</MenuItem>
+                          <MenuItem value={'Journalist'}>Journalist</MenuItem>
                         </Select>
                       </FormControl>
                     </>

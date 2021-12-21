@@ -10,7 +10,7 @@ import Logo from '../../components/Logo';
 //
 import MainFooter from './MainFooter';
 import MainHeader from './MainHeader';
-
+import HelpOutlineOutlinedIcon from '@mui/icons-material/HelpOutlineOutlined';
 // ----------------------------------------------------------------------
 
 export default function MainLayout({ children }) {
@@ -30,24 +30,44 @@ export default function MainLayout({ children }) {
       ) : (
         <Box
           sx={{
-            py: 5,
+            px: 4,
+            py: 2,
             textAlign: 'center',
             position: 'relative',
-            bgcolor: 'background.default',
+            bgcolor: '#000000',
           }}
         >
-          <Container>
-            <center>
-              {' '}
-              <Logo sx={{ mb: 1 }} />
-            </center>
-
-            <Typography variant="caption" component="p">
-              © All rights reserved
-              <br /> made by &nbsp;
-              <Link href="https://appoon.cc/">appoon</Link>
-            </Typography>
-          </Container>
+          <Box justifyContent="space-between" display="flex" alignItems="center">
+            <Box display="flex" alignItems="center" sx={{ display: { xs: 'none', sm: 'flex' } }}>
+              <img src="images/home/logofooter.png" height="42px" />
+              <Typography sx={{ mr: 2, ml: 6 }} color="common.white">
+                About us
+              </Typography>
+              <Typography sx={{ mr: 2 }} color="common.white">
+                Pricacy
+              </Typography>
+              <Typography sx={{ mr: 2 }} color="common.white">
+                Terms
+              </Typography>
+            </Box>
+            <Box display="flex" alignItems="center" sx={{ display: { xs: 'flex', sm: 'none' } }}>
+              <img src="images/home/logofooter.png" height="42px" />
+            </Box>
+            <Box display="flex" alignItems="center">
+              <HelpOutlineOutlinedIcon color="common.white" sx={{ mr: 1, color: 'white' }} />
+              <Typography color="common.white"> Help</Typography>
+            </Box>
+          </Box>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-around"
+            sx={{ display: { xs: 'flex', sm: 'none' }, mt: 4 }}
+          >
+            <Typography color="common.white">About us</Typography>
+            <Typography color="common.white">Pricacy</Typography>
+            <Typography color="common.white">Terms</Typography>
+          </Box>
         </Box>
       )}
     </Stack>

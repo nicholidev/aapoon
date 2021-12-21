@@ -4,6 +4,6 @@
  */
 import axios from 'axios';
 const endpoint = 'https://us-central1-meetaap-55e58.cloudfunctions.net/app';
-export const phoneExists = (phone) => {
-  return axios.get(`${endpoint}/misc/checkPhone/${phone}`);
+export const phoneExists = (phone, email) => {
+  return axios.get(`${endpoint}/misc/checkPhone/${phone}/${email}`);
 };

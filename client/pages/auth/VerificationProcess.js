@@ -25,7 +25,7 @@ import { IconButtonAnimate } from './../../components/animate';
 import { LoadingButton } from '@mui/lab';
 import { useSnackbar } from 'notistack';
 import withoutAuth from '../../HOC/withOutAuth';
-
+import { useRouter } from 'next/router';
 const RootStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   minHeight: '100%',
@@ -41,6 +41,7 @@ const ResetPassword = () => {
   const [sent, setSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [sendMobile, setSendMobile] = useState(false);
+  const router = useRouter();
   const { user, resendEmailVerification, sendMobileVerificationCode, verifyMobileLinkCode } = useAuth();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const onResend = () => {
@@ -59,12 +60,14 @@ const ResetPassword = () => {
     });
   };
 
-  const sendMobileVerification = (user) => {
+  const sendMobileVerification = () => {
     setIsLoading(true);
-    sendMobileVerificationCode(user)
+
+    sendMobileVerificationCode()
       .then((response) => {
         setSendMobile(true);
         setIsLoading(false);
+
         enqueueSnackbar('Mobile verification code sent successfully', {
           variant: 'success',
           action: (key) => (
@@ -86,17 +89,13 @@ const ResetPassword = () => {
       });
   };
 
-  useEffect(() => {
-    sendMobileVerification(user);
-  }, []);
-
   return (
     <Page title="Reset Password" sx={{ height: 1 }}>
       <RootStyle>
         <LogoOnlyLayout />
-        <div id="captcha-container"></div>
+
         <Container>
-          <Box sx={{ maxWidth: 480, mx: 'auto' }}>
+          <Box sx={{ maxWidth: 520, mx: 'auto' }}>
             {true ? (
               <>
                 {false ? (
@@ -125,7 +124,10 @@ const ResetPassword = () => {
                   </>
                 ) : (
                   <>
-                    <Typography variant="h3" paragraph>
+                    <Typography variant="h3" paragraph sx={{ display: 'flex' }}>
+                      <IconButtonAnimate size="large" onClick={() => router.back()} sx={{ mr: 1 }}>
+                        <Iconify icon={'bx:bx-arrow-back'} />
+                      </IconButtonAnimate>
                       Please check your phone!
                     </Typography>
                     <Typography sx={{ color: 'text.secondary' }}>
@@ -139,7 +141,12 @@ const ResetPassword = () => {
 
                     <Typography variant="body2" align="center">
                       Don’t have a code? &nbsp;
-                      <Link variant="subtitle2" underline="none" onClick={() => sendMobileVerification()}>
+                      <Link
+                        variant="subtitle2"
+                        underline="none"
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => sendMobileVerification()}
+                      >
                         Resend code
                       </Link>
                     </Typography>

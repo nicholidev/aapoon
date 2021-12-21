@@ -37,7 +37,12 @@ export default function VerifyCodeForm({ verifyMobileLinkCode, user }) {
         await verifyMobileLinkCode(values.code);
         enqueueSnackbar('Verify success', { variant: 'success' });
         setSubmitting(false);
+
         if (user.accountType == 'Business') router.push('/auth/business-profile');
+        else {
+          localStorage.setItem('isAuthenticated', true);
+          window.location = '/dashboard/one';
+        }
       } catch (err) {
         console.log(err);
         setSubmitting(false);

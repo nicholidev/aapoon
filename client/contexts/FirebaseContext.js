@@ -93,6 +93,9 @@ function AuthProvider({ children }) {
                 setProfile(doc.data());
                 if (doc.data().accountType == 'Business' && !doc.data().businessDetails && user.phoneNumber)
                   router.push('/auth/business-profile');
+                else {
+                  localStorage.setItem('isAuthenticated', true);
+                }
               }
             })
             .catch((error) => {
@@ -107,7 +110,6 @@ function AuthProvider({ children }) {
             router.push('/auth/VerificationProcess');
             localStorage.removeItem('isAuthenticated');
           } else {
-            localStorage.setItem('isAuthenticated', true);
           }
         } else {
           dispatch({
@@ -169,67 +171,92 @@ function AuthProvider({ children }) {
 
   const register = (email, password, firstName, lastName, phoneNumber, allValues) => {
     return new Promise((resolve, reject) => {
-      phoneExists(phoneNumber)
+      phoneExists(phoneNumber, email)
         .then((res) => {
-          return reject({ code: 'auth/phone-already-in-use' });
+          return reject({ code: res.data.message });
         })
-        .catch((err) => {
+        .catch(async (err) => {
           if (err.response && err.response.data.code) {
+            var appVerifier = state.appVerifier
+              ? state.appVerifier
+              : await new firebase.auth.RecaptchaVerifier('captcha-container', {
+                  size: 'invisible',
+                });
+
             firebase
               .auth()
-              .createUserWithEmailAndPassword(email, password)
-              .then(async (res) => {
-                // if (res.user && res.user.emailVerified === false) {
-                //   res.user.sendEmailVerification().then(function () {
-                //     console.log('email verification sent to user');
-                //   });
-                // }
-
-                firebase
-                  .firestore()
-                  .collection('users')
-                  .doc(res.user.uid)
-                  .set({
-                    uid: res.user.uid,
-                    email,
-                    displayName: `${firstName} ${lastName}`,
-                    phoneNumber: phoneNumber,
-                    accountType: allValues.accountType,
-                    accountDetails: {
-                      businessType: allValues.businessType ? allValues.businessType : '',
-                      numberOfEmployees: allValues.numberOfEmployees ? allValues.numberOfEmployees : '',
-                      professionType: allValues.professionType ? allValues.professionType : '',
-                    },
-                  })
-                  .then((result) => {
-                    resolve(res);
-                    console.log(result);
-                  })
-                  .catch((err) => {
-                    reject(err);
-                  });
-                // dispatch({
-                //   type: 'INITIALISE',
-                //   payload: {
-                //     isAuthenticated: true,
-                //     user: {
-                //       ...res.user,
-
-                //       uid: res.user.uid,
-                //       email,
-                //       displayName: `${firstName} ${lastName}`,
-                //       phoneNumber: phoneNumber,
-                //       accountType: allValues.accountType,
-                //       accountDetails: {
-                //         businessType: allValues.businessType,
-                //         numberOfEmployees: allValues.numberOfEmployees,
-                //         professionType: allValues.professionType,
-                //       },
-                //     },
-                //   },
-                // });
+              .signInWithPhoneNumber(phoneNumber, appVerifier)
+              .then((confirmationResult) => {
+                router.push('/auth/VerificationProcess');
+                resolve('success');
+                dispatch({
+                  type: 'UPDATE',
+                  payload: {
+                    confirmation: confirmationResult,
+                    appVerifier,
+                    user: { ...allValues, phoneNumber: phoneNumber },
+                  },
+                });
               })
-              .catch((err) => {});
+              .catch((err) => {
+                reject(err);
+              });
+
+            // firebase
+            //   .auth()
+            //   .createUserWithEmailAndPassword(email, password)
+            //   .then(async (res) => {
+            //     // if (res.user && res.user.emailVerified === false) {
+            //     //   res.user.sendEmailVerification().then(function () {
+            //     //     console.log('email verification sent to user');
+            //     //   });
+            //     // }
+
+            //     firebase
+            //       .firestore()
+            //       .collection('users')
+            //       .doc(res.user.uid)
+            //       .set({
+            //         uid: res.user.uid,
+            //         email,
+            //         displayName: `${firstName} ${lastName}`,
+            //         phoneNumber: phoneNumber,
+            //         accountType: allValues.accountType,
+            //         accountDetails: {
+            //           businessType: allValues.businessType ? allValues.businessType : '',
+            //           numberOfEmployees: allValues.numberOfEmployees ? allValues.numberOfEmployees : '',
+            //           professionType: allValues.professionType ? allValues.professionType : '',
+            //         },
+            //       })
+            //       .then((result) => {
+            //         resolve(res);
+            //         console.log(result);
+            //       })
+            //       .catch((err) => {
+            //         reject(err);
+            //       });
+            //     // dispatch({
+            //     //   type: 'INITIALISE',
+            //     //   payload: {
+            //     //     isAuthenticated: true,
+            //     //     user: {
+            //     //       ...res.user,
+
+            //     //       uid: res.user.uid,
+            //     //       email,
+            //     //       displayName: `${firstName} ${lastName}`,
+            //     //       phoneNumber: phoneNumber,
+            //     //       accountType: allValues.accountType,
+            //     //       accountDetails: {
+            //     //         businessType: allValues.businessType,
+            //     //         numberOfEmployees: allValues.numberOfEmployees,
+            //     //         professionType: allValues.professionType,
+            //     //       },
+            //     //     },
+            //     //   },
+            //     // });
+            //   })
+            //   .catch((err) => {});
           }
         });
     });
@@ -245,8 +272,7 @@ function AuthProvider({ children }) {
     await firebase.auth().sendPasswordResetEmail(email);
   };
 
-  const sendMobileVerificationCode = async (user) => {
-    console.log(user);
+  const sendMobileVerificationCode = async () => {
     try {
       var appVerifier = state.appVerifier
         ? state.appVerifier
@@ -254,29 +280,81 @@ function AuthProvider({ children }) {
             size: 'invisible',
           });
 
-      const docRef = firebase.firestore().collection('users').doc(user.id);
-      docRef
-        .get()
-        .then(async (doc) => {
-          if (doc.exists) {
-            setProfile(doc.data());
-            let confirmation = await state.user.linkWithPhoneNumber(doc.data().phoneNumber, appVerifier);
-            dispatch({
-              type: 'UPDATE',
-              payload: { confirmation: confirmation, appVerifier },
-            });
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
+      let confirmation = await firebase.auth().signInWithPhoneNumber(state.user.phoneNumber, state.appVerifier);
+      dispatch({
+        type: 'UPDATE',
+        payload: { confirmation: confirmation, appVerifier },
+      });
     } catch (error) {
       console.log(error);
     }
   };
   const verifyMobileLinkCode = (code) => {
-    console.log(state);
-    return state.confirmation.confirm(code);
+    return new Promise((resolve, reject) => {
+      state.confirmation
+        .confirm(code)
+        .then((item) => {
+          var credential = firebase.auth.EmailAuthProvider.credential(state.user.email, state.user.password);
+          item.user
+            .linkWithCredential(credential)
+            .then((usercred) => {
+              var user = usercred.user;
+
+              user.updateProfile({ displayName: state.user.firstName + ' ' + state.user.lastName });
+
+              firebase
+                .firestore()
+                .collection('users')
+                .doc(user.uid)
+                .set({
+                  uid: user.uid,
+                  email: user.email,
+                  displayName: `${state.user.firstName} ${state.user.lastName}`,
+                  phoneNumber: state.user.phoneNumber,
+                  accountType: state.user.accountType,
+                  accountDetails: {
+                    businessType: state.user.businessType ? state.user.businessType : '',
+                    numberOfEmployees: state.user.numberOfEmployees ? state.user.numberOfEmployees : '',
+                    professionType: state.user.professionType ? state.user.professionType : '',
+                  },
+                })
+                .then((result) => {
+                  resolve(user);
+                  console.log(result);
+                })
+                .catch((err) => {
+                  reject(err);
+                });
+              dispatch({
+                type: 'INITIALISE',
+                payload: {
+                  isAuthenticated: false,
+                  user: {
+                    ...user,
+
+                    uid: user.uid,
+                    email: user.email,
+                    displayName: `${state.user.firstName} ${state.user.lastName}`,
+                    phoneNumber: state.user.phoneNumber,
+                    accountType: state.user.accountType,
+                    accountDetails: {
+                      businessType: state.user.businessType ? state.user.businessType : '',
+                      numberOfEmployees: state.user.numberOfEmployees ? state.user.numberOfEmployees : '',
+                      professionType: state.user.professionType ? state.user.professionType : '',
+                    },
+                  },
+                },
+              });
+              resolve(user);
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
   };
 
   const auth = { ...state.user };
