@@ -320,6 +320,7 @@ function AuthProvider({ children }) {
                 })
                 .then((result) => {
                   resolve(user);
+
                   console.log(result);
                 })
                 .catch((err) => {
@@ -345,7 +346,6 @@ function AuthProvider({ children }) {
                   },
                 },
               });
-              resolve(user);
             })
             .catch((error) => {
               reject(error);

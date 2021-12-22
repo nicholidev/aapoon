@@ -35,7 +35,7 @@ import ErrorMessages from '../../../utils/errorMessage';
 import { acceptInvitation } from '../../../api/user';
 export default function RegisterForm(query) {
   const { register, user } = useAuth();
-  const [open, setOpen] = useState(user.email ? false : true);
+  const [open, setOpen] = useState(user.email && user.phoneNumber ? false : true);
 
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();

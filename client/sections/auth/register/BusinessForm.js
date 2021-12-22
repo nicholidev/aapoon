@@ -117,7 +117,7 @@ export default function RegisterForm() {
         <Stack spacing={6}>
           {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
           <Stack spacing={1}>
-            <Typography sx={{ fontWeight: 500 }}>Business Name</Typography>
+            <Typography sx={{ fontWeight: 500 }}>Business Name </Typography>
             <TextField
               fullWidth
               placeholder="Business Name"
@@ -128,7 +128,7 @@ export default function RegisterForm() {
           </Stack>
 
           <Stack spacing={1}>
-            <Typography sx={{ fontWeight: 500 }}>Business Website</Typography>
+            <Typography sx={{ fontWeight: 500,display: 'flex'}}>Business Website   <Typography style={{color: '#E25630'}} sx={{ fontWeight: 500,color:"primary" ,ml:1 }} color="primary"> (optional)</Typography></Typography>
             <TextField
               fullWidth
               placeholder="Business Website"
@@ -198,7 +198,7 @@ export default function RegisterForm() {
           <Grid container>
             <Grid item xs={12} lg={6}>
               <Stack spacing={1}>
-                <Typography sx={{ fontWeight: 500 }}>Upload Company Logo</Typography>
+                <Typography sx={{ fontWeight: 500 ,display: 'flex'}}>Upload Company Logo <Typography style={{color: '#E25630'}} sx={{ fontWeight: 500,color:"primary" ,ml:1 }} color="primary"> (optional)</Typography></Typography>
 
                 <FileUploader
                   handleChange={(file) => setFieldValue('logo', file)}

@@ -8,7 +8,7 @@ import { Link as RouterLink } from 'next/link';
 import { useRouter } from 'next/router';
 // @mui
 import { alpha, styled } from '@mui/material/styles';
-import { Box, List, Link, Drawer, Collapse, ListItemText, ListItemIcon, ListItemButton } from '@mui/material';
+import { Box, List, Link, Drawer, Collapse, ListItemText, ListItemIcon, ListItemButton, Button } from '@mui/material';
 // config
 import { DASHBOARD_NAVBAR_ROOT_ITEM_HEIGHT } from '../../config';
 // components
@@ -36,7 +36,7 @@ MenuMobile.propTypes = {
 };
 
 export default function MenuMobile({ isOffset, isHome, navConfig }) {
-  const { pathname } = useRouter();
+  const { pathname, push } = useRouter();
   const [open, setOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -86,6 +86,14 @@ export default function MenuMobile({ isOffset, isHome, navConfig }) {
               <MenuMobileItem key={link.title} item={link} isOpen={open} onOpen={handleOpen} />
             ))}
           </List>
+          <Box sx={{ m: 4 }}>
+            <Button fullWidth rel="noopener" variant="outlined" sx={{ mb: 2 }} onClick={() => push('/auth/Login')}>
+              Sign in
+            </Button>
+            <Button fullWidth variant="contained" onClick={() => push('/auth/Register')}>
+              Sign up, It’s free
+            </Button>
+          </Box>
         </Scrollbar>
       </Drawer>
     </>
@@ -121,22 +129,13 @@ function MenuMobileItem({ item, isOpen, onOpen }) {
         </ListItemStyle>
 
         <Collapse in={isOpen} timeout="auto" unmountOnExit>
-          <Box sx={{ display: 'flex', flexDirection: 'column-reverse' }}>
-            <NavSection
-              navConfig={children}
-              sx={{
-                '& .MuiList-root:last-of-type .MuiListItemButton-root': {
-                  height: 200,
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  bgcolor: 'background.neutral',
-                  backgroundRepeat: 'no-repeat',
-                  backgroundImage:
-                    'url(https://minimal-assets-api.vercel.app/assets/illustrations/illustration_dashboard.png)',
-                  '& > *:not(.MuiTouchRipple-root)': { display: 'none' },
-                },
-              }}
-            />
+          <Box style={{ background: '#fafafa', paddingLeft: 32 }}>
+            <ListItemStyle href={'/'} component={Link}>
+              <ListItemText disableTypography primary={'scheduled meeting'} />
+            </ListItemStyle>
+            <ListItemStyle href={'/'} component={Link}>
+              <ListItemText disableTypography primary={'instant meeting'} />
+            </ListItemStyle>
           </Box>
         </Collapse>
       </>

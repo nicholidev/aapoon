@@ -16,13 +16,14 @@ import Label from '../Label';
 import Iconify from '../Iconify';
 import Scrollbar from '../Scrollbar';
 import useAuth from '../../hooks/useAuth';
+import moment from 'moment';
 import { getInviteList } from '../../api/user';
 const _appInvoices = [];
 
 export default function InviteData(props) {
   const [inviteData, setInviteData] = useState([]);
   const { user } = useAuth();
-  console.log("user", user)
+  console.log('user', user);
   useEffect(() => {
     if (user.id)
       getInviteList(user.id)
@@ -52,7 +53,7 @@ export default function InviteData(props) {
               <TableRow key={row.token}>
                 <TableCell>{`${row.firstName + row.lastName}`}</TableCell>
                 <TableCell>{row.email}</TableCell>
-                <TableCell>{new Date(row.createdAt._seconds * 1000).toDateString()}</TableCell>
+                <TableCell>{moment(new Date(row.createdAt._seconds * 1000)).format('ll')}</TableCell>
                 <TableCell>
                   <Label>{row.status}</Label>
                 </TableCell>

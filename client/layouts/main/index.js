@@ -41,13 +41,10 @@ export default function MainLayout({ children }) {
             <Box display="flex" alignItems="center" sx={{ display: { xs: 'none', sm: 'flex' } }}>
               <img src="images/home/logofooter.png" height="42px" />
               <Typography sx={{ mr: 2, ml: 6 }} color="common.white">
-                About us
+                Data privacy
               </Typography>
               <Typography sx={{ mr: 2 }} color="common.white">
-                Pricacy
-              </Typography>
-              <Typography sx={{ mr: 2 }} color="common.white">
-                Terms
+                Terms and conditions
               </Typography>
             </Box>
             <Box display="flex" alignItems="center" sx={{ display: { xs: 'flex', sm: 'none' } }}>
@@ -64,9 +61,8 @@ export default function MainLayout({ children }) {
             justifyContent="space-around"
             sx={{ display: { xs: 'flex', sm: 'none' }, mt: 4 }}
           >
-            <Typography color="common.white">About us</Typography>
-            <Typography color="common.white">Pricacy</Typography>
-            <Typography color="common.white">Terms</Typography>
+            <Typography color="common.white">Data privacy</Typography>
+            <Typography color="common.white">Terms and conditions</Typography>
           </Box>
         </Box>
       )}

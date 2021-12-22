@@ -5,7 +5,7 @@
 import { useRouter } from 'next/router';
 // @mui
 import { styled, useTheme } from '@mui/material/styles';
-import { Box, Button, AppBar, Toolbar, Container } from '@mui/material';
+import { Box, Button, AppBar, Toolbar, Container, Typography } from '@mui/material';
 // hooks
 import useOffSetTop from '../../hooks/useOffSetTop';
 import useResponsive from '../../hooks/useResponsive';
@@ -17,10 +17,11 @@ import { MAIN_HEADER_DESKTOP, MAIN_HEADER_MOBILE } from '../../config';
 import Logo from '../../components/Logo';
 import Label from '../../components/Label';
 //
+import AccountPopover from '../dashboard/header/AccountPopover';
 import MenuDesktop from './MenuDesktop';
 import MenuMobile from './MenuMobile';
 import navConfig from './MenuConfig';
-
+import useAuth from '../../hooks/useAuth';
 // ----------------------------------------------------------------------
 
 const ToolbarStyle = styled(Toolbar)(({ theme }) => ({
@@ -53,7 +54,7 @@ export default function MainHeader() {
   const isOffset = useOffSetTop(100);
 
   const theme = useTheme();
-
+  const { user } = useAuth();
   const { pathname, push } = useRouter();
 
   const isDesktop = useResponsive('up', 'md');
@@ -83,21 +84,37 @@ export default function MainHeader() {
           <Box sx={{ flexGrow: 1 }} />
 
           {isDesktop && <MenuDesktop isOffset={true} isHome={isHome} navConfig={navConfig} />}
-          <Button
-            sx={{ display: { xs: 'none', sm: 'block' }, mr: 4 }}
-            rel="noopener"
-            onClick={() => push('/auth/Login')}
-          >
-            Sign in
-          </Button>
+          {user?.id ? (
+            <Typography
+              sx={{ display: { xs: 'none', sm: 'block' }, mr: 4, color: 'text.primary' }}
+              rel="noopener"
+              variant="subtitle2"
+              style={{ cursor: 'pointer' }}
+              onClick={() => push('/dashboard/one')}
+            >
+              Dashboard
+            </Typography>
+          ) : (
+            <Button
+              sx={{ display: { xs: 'none', sm: 'block' }, mr: 4 }}
+              rel="noopener"
+              onClick={() => push('/auth/Login')}
+            >
+              Sign in
+            </Button>
+          )}
 
-          <Button
-            sx={{ display: { xs: 'none', sm: 'block' } }}
-            variant="contained"
-            onClick={() => push('/auth/Register')}
-          >
-            Sign up, It’s free
-          </Button>
+          {user?.id && isDesktop ? (
+            <AccountPopover />
+          ) : (
+            <Button
+              sx={{ display: { xs: 'none', sm: 'block' } }}
+              variant="contained"
+              onClick={() => push('/auth/Register')}
+            >
+              Sign up, It’s free
+            </Button>
+          )}
 
           {!isDesktop && <MenuMobile isOffset={true} isHome={isHome} navConfig={navConfig} />}
         </Container>

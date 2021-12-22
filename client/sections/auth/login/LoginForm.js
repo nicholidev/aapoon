@@ -50,6 +50,7 @@ export default function LoginForm() {
             </IconButtonAnimate>
           ),
         });
+        localStorage.setItem('isAuthenticated', true);
         router.push('/dashboard/one');
         if (isMountedRef.current) {
           setSubmitting(false);

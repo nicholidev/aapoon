@@ -50,11 +50,11 @@ const Content = styled('div')(({ theme }) => ({
   padding: theme.spacing(1),
   paddingTop: theme.spacing(4),
   paddingLeft: theme.spacing(4),
-  marginTop:theme.spacing(6),
+  marginTop: theme.spacing(6),
   [theme.breakpoints.down('md')]: {
     width: '100vw',
     paddingLeft: 0,
-    marginTop:theme.spacing(2)
+    marginTop: theme.spacing(2),
   },
 }));
 
@@ -70,10 +70,10 @@ const SideSection = styled(Card)(({ theme }) => ({
 const InfoCard = styled(Card)(({ theme }) => ({
   height: 114,
   width: 259,
-  maxWidth:"100%",
+  maxWidth: '100%',
   paddingTop: 16,
   position: 'relative',
-  margin:"auto",
+  margin: 'auto',
   [theme.breakpoints.down('md')]: {
     marginBottom: theme.spacing(4),
   },
@@ -136,8 +136,8 @@ const infoIconStyle = {
 function PageOne() {
   const { themeStretch } = useSettings();
   const [inviteOpen, setInviteOpen] = useState(false);
-  const [fetch,setFetch]=useState(false)
-
+  const [fetch, setFetch] = useState(false);
+  const [current, setCurrent] = useState('dashboard');
   return (
     <Page title="Dashboard">
       <GlobalStyles
@@ -149,26 +149,26 @@ function PageOne() {
         <Sidebar>
           <SideSection>
             <List sx={{ width: '100%' }}>
-              <ListItem disablePadding>
+              <ListItem disablePadding selected={current == 'dashboard'} onClick={() => setCurrent('dashboard')}>
                 <ListItemButton>
                   <ListItemIcon>
-                    <Iconify icon={'eva:grid-outline'} width={20} height={20} />
+                    <Iconify icon={'eva:grid-outline'} width={24} height={24} />
                   </ListItemIcon>
                   <ListItemText primary={<h4>Dashboard</h4>} />
                 </ListItemButton>
               </ListItem>
-              <ListItem disablePadding>
+              <ListItem disablePadding selected={current == 'Calendar'} onClick={() => setCurrent('Calendar')}>
                 <ListItemButton>
                   <ListItemIcon>
-                    <Iconify icon={'eva:calendar-outline'} width={20} height={20} />
+                    <Iconify icon={'eva:calendar-outline'} width={24} height={24} />
                   </ListItemIcon>
                   <ListItemText primary={<h4>Calendar</h4>} />
                 </ListItemButton>
               </ListItem>
-              <ListItem disablePadding>
+              <ListItem disablePadding selected={current == 'Recordings'} onClick={() => setCurrent('Recordings')}>
                 <ListItemButton>
-                  <ListItemIcon>
-                    <Iconify icon={'eva:recording-outline'} width={20} height={20} />
+                  <ListItemIcon sx={{ pl: '3px' }}>
+                    <Iconify icon={'bi:camera-reels'} width={20} height={20} />
                   </ListItemIcon>
                   <ListItemText primary={<h4>Recordings</h4>} />
                 </ListItemButton>
@@ -225,7 +225,7 @@ function PageOne() {
               open={inviteOpen}
               handleClose={() => {
                 setInviteOpen(false);
-                setFetch(!fetch)
+                setFetch(!fetch);
               }}
             />
             {/* <AppNewInvoice/> */}

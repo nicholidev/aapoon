@@ -26,25 +26,12 @@ const menuConfig = [
     path: '/',
   },
   {
-    title: 'Mettings',
+    title: 'Meetings',
     path: '/pages',
     icon: <Iconify icon={'eva:file-fill'} {...ICON_SIZE} />,
     children: [
       {
-        subheader: 'Authentication',
-        items: [
-          { title: 'Login', path: '/' },
-          { title: 'Register', path: '/' },
-          { title: 'Reset password', path: '/' },
-          { title: 'Verify code', path: '/' },
-        ],
-      },
-      {
-        subheader: 'Error',
-        items: [
-          { title: 'Page 404', path: '/' },
-          { title: 'Page 500', path: '/' },
-        ],
+        items: [{ title: 'Login', path: '/' }],
       },
     ],
   },
