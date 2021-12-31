@@ -29,11 +29,18 @@ const menuConfig = [
     title: 'Meetings',
     path: '/pages',
     icon: <Iconify icon={'eva:file-fill'} {...ICON_SIZE} />,
+
     children: [
       {
         items: [{ title: 'Login', path: '/' }],
       },
     ],
+  },
+  {
+    title: 'Dashboard',
+    isAuth: true,
+    icon: <Iconify icon={'bx:bxs-dashboard'} {...ICON_SIZE} />,
+    path: '/dashboard/one',
   },
 ];
 

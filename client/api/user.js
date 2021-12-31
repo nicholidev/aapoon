@@ -16,5 +16,16 @@ export const getInviteList = async (id) => {
 };
 
 export const acceptInvitation = async (body) => {
-  return axios.post(`${endpoint}/misc/accept-invite`, body);
+  return new Promise((resolve, reject) => {
+    axios
+      .post(`${endpoint}/misc/accept-invite`, body)
+      .then((res) => resolve())
+      .catch((err) => {
+        resolve();
+      });
+  });
+};
+
+export const getCountry = () => {
+  return axios.get(`https://ipapi.co/json/`);
 };

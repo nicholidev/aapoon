@@ -32,19 +32,20 @@ import PhoneInput from 'react-phone-number-input';
 import CustomPhone from '../../../components/Phonenumber';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../../utils/errorMessage';
-import { acceptInvitation } from '../../../api/user';
+import { acceptInvitation, getCountry } from '../../../api/user';
 export default function RegisterForm(query) {
   const { register, user } = useAuth();
   const [open, setOpen] = useState(user.email && user.phoneNumber ? false : true);
-
+  const [countryCode, setCountryCode] = useState('US');
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
   const rePhoneNumber = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
   const rePass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  const reAlpha = /^[a-zA-Z]+$/;
   const RegisterSchema = Yup.object().shape({
-    firstName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('First name required'),
-    lastName: Yup.string().min(2, 'Too Short!').max(50, 'Too Long!').required('Last name required'),
+    firstName: Yup.string().matches(reAlpha, 'Firstname is not valid').required('First name required'),
+    lastName: Yup.string().matches(reAlpha, 'Lastname is not valid').required('Last name required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string()
       .required('Password is required')
@@ -86,7 +87,10 @@ export default function RegisterForm(query) {
         if (isMountedRef.current) {
           setSubmitting(false);
         }
-        localStorage.removeItem('inviteToken');
+     
+        if(user.accountType=="Business"){
+          window?.location="/dashboard/one";
+        }
       } catch (error) {
         console.log(error);
         setErrors({ afterSubmit: ErrorMessages[error.code] });
@@ -112,6 +116,9 @@ export default function RegisterForm(query) {
       setFieldValue('email', query?.query?.email);
       localStorage.setItem('inviteToken', query?.query?.token);
     }
+    getCountry().then((res) => {
+      setCountryCode(res.data.country_code);
+    });
   }, [query?.query?.email]);
 
   return (
@@ -150,7 +157,7 @@ export default function RegisterForm(query) {
           <PhoneInput
             placeholder="Enter phone number"
             international
-            defaultCountry="IN"
+            defaultCountry={countryCode}
             inputComponent={CustomPhone}
             {...getFieldProps('phone')}
             onChange={(data) => setFieldValue('phone', data)}
@@ -188,15 +195,15 @@ export default function RegisterForm(query) {
             aria-describedby="alert-dialog-description"
           >
             <DialogTitle id="alert-dialog-title" align="center">
-              {'Select your business'}
+              {`Select your ${values.accountType == 'Business' ? 'business' : 'profession'}`}
             </DialogTitle>
             <DialogContent sx={{ mt: 4, padding: 5, pb: 1 }}>
               <DialogContentText id="alert-dialog-description">
                 <Stack direction="column" spacing={3}>
                   <FormControl component="fieldset">
                     <RadioGroup row aria-label="type" name="row-radio-buttons-group" {...getFieldProps('accountType')}>
-                      <FormControlLabel value="Business" control={<Radio />} label="Business" />
-                      <FormControlLabel sx={{ ml: 2 }} value="Professional" control={<Radio />} label="Professional" />
+                      <FormControlLabel value="Business" control={<Radio />} label="Business" sx={{ mr: 4 }} />
+                      <FormControlLabel value="Professional" control={<Radio />} label="Professional" />
                     </RadioGroup>
                   </FormControl>
 

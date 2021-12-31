@@ -10,14 +10,15 @@ import { useRouter } from 'next/router';
 import { alpha, styled } from '@mui/material/styles';
 import { Box, List, Link, Drawer, Collapse, ListItemText, ListItemIcon, ListItemButton, Button } from '@mui/material';
 // config
-import { DASHBOARD_NAVBAR_ROOT_ITEM_HEIGHT } from '../../config';
+import { DASHBOARD_NAVBAR_ROOT_ITEM_HEIGHT } from '../../../config';
 // components
-import Logo from '../../components/Logo';
-import Iconify from '../../components/Iconify';
-import Scrollbar from '../../components/Scrollbar';
-import NavSection from '../../components/nav-section';
-import { IconButtonAnimate } from '../../components/animate';
-import useAuth from '../../hooks/useAuth';
+import Logo from '../../../components/Logo';
+import Iconify from '../../../components/Iconify';
+import Scrollbar from '../../../components/Scrollbar';
+import NavSection from '../../../components/nav-section';
+import { IconButtonAnimate } from '../../../components/animate';
+import useAuth from '../../../hooks/useAuth';
+import navConfig from './MenuConfig';
 // ----------------------------------------------------------------------
 
 const ListItemStyle = styled(ListItemButton)(({ theme }) => ({
@@ -84,31 +85,10 @@ export default function MenuMobile({ isOffset, isHome, navConfig, id }) {
           <List disablePadding>
             {navConfig.map((link) =>
               (id && link.isAuth) || !link.isAuth ? (
-                <MenuMobileItem
-                  key={link.title}
-                  item={link}
-                  isOpen={open}
-                  onOpen={() => (link.children ? handleOpen() : push(link.path))}
-                />
+                <MenuMobileItem key={link.title} item={link} isOpen={open} onOpen={() => router.push(link.path)} />
               ) : null
             )}
           </List>
-          {user.id ? (
-            <Box sx={{ m: 4 }}>
-              <Button fullWidth rel="noopener" variant="outlined" sx={{ mb: 2 }} onClick={() => logout()}>
-                Logout
-              </Button>
-            </Box>
-          ) : (
-            <Box sx={{ m: 4 }}>
-              <Button fullWidth rel="noopener" variant="outlined" sx={{ mb: 2 }} onClick={() => push('/auth/Login')}>
-                Sign in
-              </Button>
-              <Button fullWidth variant="contained" onClick={() => push('/auth/Register')}>
-                Sign up, It’s free
-              </Button>
-            </Box>
-          )}
         </Scrollbar>
       </Drawer>
     </>
@@ -168,7 +148,6 @@ function MenuMobileItem({ item, isOpen, onOpen }) {
 
   return (
     <ListItemStyle
-      onClick={onOpen}
       to={path}
       component={RouterLink}
       end={path === '/'}

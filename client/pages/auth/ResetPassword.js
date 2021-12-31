@@ -18,7 +18,7 @@ import { ResetPasswordForm } from '../../sections/auth/reset-password';
 // assets
 import { SentIcon } from '../../assets';
 import withoutAuth from '../../HOC/withOutAuth';
-import Router from 'next/router';
+import { useRouter } from 'next/router';
 
 // ----------------------------------------------------------------------
 
@@ -35,7 +35,7 @@ const RootStyle = styled('div')(({ theme }) => ({
 const ResetPassword = () => {
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
-
+  const router = useRouter();
   return (
     <Page title="Reset Password" sx={{ height: 1 }}>
       <RootStyle>
@@ -55,7 +55,7 @@ const ResetPassword = () => {
 
                 <ResetPasswordForm onSent={() => setSent(true)} onGetEmail={(value) => setEmail(value)} />
 
-                <Button fullWidth size="large" onClick={() => Router.back()} sx={{ mt: 1 }}>
+                <Button fullWidth size="large" onClick={() => router.back()} sx={{ mt: 1 }}>
                   Back
                 </Button>
               </>
@@ -73,7 +73,7 @@ const ResetPassword = () => {
                   Please check your email.
                 </Typography>
 
-                <Button size="large" variant="contained" component={RouterLink} to={'/'} sx={{ mt: 5 }}>
+                <Button size="large" variant="contained" onClick={() => router.back()} sx={{ mt: 5 }}>
                   Back
                 </Button>
               </Box>

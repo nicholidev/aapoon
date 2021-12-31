@@ -53,7 +53,7 @@ export default function Searchbar() {
       <div>
         {!isOpen && (
           <IconButtonAnimate onClick={handleOpen}>
-            <Iconify icon={'eva:search-fill'} width={20} height={20} />
+            <Iconify icon={'eva:search-fill'} sx={{ color: 'text.primary' }} width={24} height={24} />
           </IconButtonAnimate>
         )}
 

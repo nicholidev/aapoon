@@ -11,6 +11,7 @@ import 'firebase/compat/storage';
 import { FIREBASE_API } from '../config';
 import { useRouter } from 'next/router';
 import { phoneExists } from '../services/misc-service';
+import { acceptInvitation } from './../api/user';
 // ----------------------------------------------------------------------
 
 if (!firebase.apps.length) {
@@ -95,6 +96,7 @@ function AuthProvider({ children }) {
                   router.push('/auth/business-profile');
                 else {
                   localStorage.setItem('isAuthenticated', true);
+                  //router.push('/dashboard/one');
                 }
               }
             })
@@ -264,7 +266,14 @@ function AuthProvider({ children }) {
 
   const logout = async () => {
     await firebase.auth().signOut();
-    router.replace('/');
+    dispatch({
+      type: 'UPDATE',
+      payload: {
+        user: {},
+      },
+    });
+    window.location = '/';
+
     localStorage.removeItem('isAuthenticated');
   };
 
@@ -298,6 +307,8 @@ function AuthProvider({ children }) {
           item.user
             .linkWithCredential(credential)
             .then((usercred) => {
+              if (localStorage.getItem('inviteToken'))
+                acceptInvitation({ email: state.user.email, token: localStorage.getItem('inviteToken') });
               var user = usercred.user;
 
               user.updateProfile({ displayName: state.user.firstName + ' ' + state.user.lastName });

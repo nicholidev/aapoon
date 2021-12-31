@@ -152,7 +152,7 @@ function PageOne() {
               <ListItem disablePadding selected={current == 'dashboard'} onClick={() => setCurrent('dashboard')}>
                 <ListItemButton>
                   <ListItemIcon>
-                    <Iconify icon={'eva:grid-outline'} width={24} height={24} />
+                    <Iconify icon={'lucide:layout-dashboard'} width={24} height={24} />
                   </ListItemIcon>
                   <ListItemText primary={<h4>Dashboard</h4>} />
                 </ListItemButton>
@@ -160,7 +160,7 @@ function PageOne() {
               <ListItem disablePadding selected={current == 'Calendar'} onClick={() => setCurrent('Calendar')}>
                 <ListItemButton>
                   <ListItemIcon>
-                    <Iconify icon={'eva:calendar-outline'} width={24} height={24} />
+                    <Iconify icon={'uil:calender'} width={24} height={24} />
                   </ListItemIcon>
                   <ListItemText primary={<h4>Calendar</h4>} />
                 </ListItemButton>
@@ -168,7 +168,7 @@ function PageOne() {
               <ListItem disablePadding selected={current == 'Recordings'} onClick={() => setCurrent('Recordings')}>
                 <ListItemButton>
                   <ListItemIcon sx={{ pl: '3px' }}>
-                    <Iconify icon={'bi:camera-reels'} width={20} height={20} />
+                    <Iconify icon={'ant-design:video-camera-add-outlined'} width={24} height={24} />
                   </ListItemIcon>
                   <ListItemText primary={<h4>Recordings</h4>} />
                 </ListItemButton>

@@ -36,9 +36,9 @@ export default class MyDocument extends Document {
             rel="stylesheet"
           />
 
-          <meta name="description" content="appoon meet" />
+          <meta name="description" content="aapoon meet" />
           <meta name="keywords" content="react,material,kit,application,dashboard,admin,template" />
-          <meta name="author" content="Apoon Meet" />
+          <meta name="author" content="aapoon Meet" />
         </Head>
 
         <body>

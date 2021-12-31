@@ -58,8 +58,8 @@ MenuDesktop.propTypes = {
   navConfig: PropTypes.array,
 };
 
-export default function MenuDesktop({ isOffset, isHome, navConfig }) {
-  const { pathname } = useRouter();
+export default function MenuDesktop({ isOffset, isHome, navConfig, id }) {
+  const { pathname, push } = useRouter();
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
@@ -79,17 +79,20 @@ export default function MenuDesktop({ isOffset, isHome, navConfig }) {
 
   return (
     <Stack direction="row">
-      {navConfig.map((link) => (
-        <MenuDesktopItem
-          key={link.title}
-          item={link}
-          isOpen={open}
-          onOpen={handleOpen}
-          onClose={handleClose}
-          isOffset={isOffset}
-          isHome={isHome}
-        />
-      ))}
+      {navConfig.map((link) =>
+        (id && link.isAuth) || !link.isAuth ? (
+          <MenuDesktopItem
+            key={link.title}
+            item={link}
+            isOpen={open}
+            push={push}
+            onOpen={handleOpen}
+            onClose={handleClose}
+            isOffset={isOffset}
+            isHome={isHome}
+          />
+        ) : null
+      )}
     </Stack>
   );
 }
@@ -133,7 +136,7 @@ MenuDesktopItem.propTypes = {
   }),
 };
 
-function MenuDesktopItem({ item, isHome, isOpen, isOffset, onOpen, onClose }) {
+function MenuDesktopItem({ item, isHome, isOpen, isOffset, onOpen, onClose, push }) {
   const { title, path, children } = item;
   const anchorRef = useRef(null);
   if (children) {
@@ -169,8 +172,9 @@ function MenuDesktopItem({ item, isHome, isOpen, isOffset, onOpen, onClose }) {
   return (
     <LinkStyle
       to={path}
-      component={RouterLink}
       end={path === '/'}
+      onClick={() => push(item.path)}
+      style={{ cursor: 'pointer' }}
       sx={{
         ...(isHome && { color: 'common.white' }),
         ...(isOffset && { color: 'text.primary' }),

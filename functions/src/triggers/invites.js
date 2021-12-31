@@ -12,12 +12,22 @@ AWS.config.update({
   region: config.awsRegion,
 });
 
-exports.sendWelcomeEmail = functions.firestore
-  .document("users/{userid}")
-  .onCreate(async (snap, context) => {
-    const newValue = snap.data();
+exports.sendInviteEmail = functions.firestore
+  .document("invites/{id}")
+  .onUpdate(async (change) => {
+    const newData = change.after.data();
+    const oldData = change.before.data();
+
+    if (newData.status === oldData.status) {
+      return;
+    }
+
+    let inviteByDetails = (
+      await admin.firestore().collection("users").doc(newData.invitedBy).get()
+    ).data();
+
     let mail = await sendEmail(
-      newValue.email,
+      inviteByDetails.email,
       "Welcome to aapoon Meet",
       `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html
@@ -574,21 +584,24 @@ exports.sendWelcomeEmail = functions.firestore
                                                   ><span style="color: #e2582e"
                                                     >Hello&nbsp;</span
                                                   ><span style="color: #283890"
-                                                    >${newValue.displayName}!</span
+                                                    >${
+                                                      inviteByDetails.displayName
+                                                    }!</span
                                                   ></strong
                                                 ></span
                                               ><br /><br /><br /><span
                                                 style="font-size: 18px"
-                                                >Welcome to Aapoon meet ! <br /><br />
-                                                We are very excited to have you onboard,
-                                                Your account is now set up and ready to
-                                                use. Lets get started with secured
-                                                meetings. </span
+                                                >Your invitee ${
+                                                  newData.firstName +
+                                                  newData.lastName
+                                                } has joined aapoon meet.
+
+                                                </span
                                               ><br /><br /><br />
                                             </p>
                                             <br /><br /><span style="font-size: 18px"
-                                              >See you on the other side.
-                                              <br /><br />Regards,<br /> Aapoon
+                                              >
+                                              <br /><br />Regards,<br />Aapoon
                                               Support</span
                                             >
                                             <p

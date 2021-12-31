@@ -34,35 +34,23 @@ export default function MainLayout({ children }) {
             py: 2,
             textAlign: 'center',
             position: 'relative',
-            bgcolor: '#000000',
+            bgcolor: 'rgba(0, 0, 0, 0.62)',
           }}
         >
           <Box justifyContent="space-between" display="flex" alignItems="center">
-            <Box display="flex" alignItems="center" sx={{ display: { xs: 'none', sm: 'flex' } }}>
-              <img src="images/home/logofooter.png" height="42px" />
-              <Typography sx={{ mr: 2, ml: 6 }} color="common.white">
+            <Box display="flex" alignItems="center" sx={{ display: { xs: 'flex' } }}>
+              <Typography sx={{ mr: { xs: 2, md: 8 } }} color="common.white">
                 Data privacy
               </Typography>
               <Typography sx={{ mr: 2 }} color="common.white">
                 Terms and conditions
               </Typography>
             </Box>
-            <Box display="flex" alignItems="center" sx={{ display: { xs: 'flex', sm: 'none' } }}>
-              <img src="images/home/logofooter.png" height="42px" />
-            </Box>
+
             <Box display="flex" alignItems="center">
               <HelpOutlineOutlinedIcon color="common.white" sx={{ mr: 1, color: 'white' }} />
               <Typography color="common.white"> Help</Typography>
             </Box>
-          </Box>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-around"
-            sx={{ display: { xs: 'flex', sm: 'none' }, mt: 4 }}
-          >
-            <Typography color="common.white">Data privacy</Typography>
-            <Typography color="common.white">Terms and conditions</Typography>
           </Box>
         </Box>
       )}

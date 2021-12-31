@@ -32,11 +32,11 @@ import PhoneInput from 'react-phone-number-input/input';
 import CustomPhone from '../../../components/Phonenumber';
 import InputLabel from '@mui/material/InputLabel';
 import { FileUploader } from 'react-drag-drop-files';
-
+import { acceptInvitation, getCountry } from '../../../api/user';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../../utils/errorMessage';
 export default function RegisterForm() {
-  const { registerBusiness } = useAuth();
+  const { registerBusiness,user } = useAuth();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
@@ -94,8 +94,12 @@ export default function RegisterForm() {
             </IconButtonAnimate>
           ),
         });
+
+        if (localStorage.getItem('inviteToken'))
+          acceptInvitation({ email: user.email, token: localStorage.getItem('inviteToken') });
         localStorage.setItem('isAuthenticated',true)
-        window?.location="/";
+        
+        window?.location="/dashboard/one";
         if (isMountedRef.current) {
           setSubmitting(false);
         }
@@ -117,10 +121,10 @@ export default function RegisterForm() {
         <Stack spacing={6}>
           {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
           <Stack spacing={1}>
-            <Typography sx={{ fontWeight: 500 }}>Business Name </Typography>
+            <Typography sx={{ fontWeight: 500 }}>Business Name * </Typography>
             <TextField
               fullWidth
-              placeholder="Business Name"
+              placeholder="Business Name *"
               {...getFieldProps('businessName')}
               error={Boolean(touched.businessName && errors.businessName)}
               helperText={touched.businessName && errors.businessName}
@@ -138,19 +142,19 @@ export default function RegisterForm() {
             />
           </Stack>
           <Stack spacing={1}>
-            <Typography sx={{ fontWeight: 500 }}> Business Address</Typography>
+            <Typography sx={{ fontWeight: 500 }}> Business Address * </Typography>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
               <TextField
                 fullWidth
                 autoComplete="addrerss"
-                placeholder="Address 1"
+                placeholder="Address 1 *"
                 {...getFieldProps('addrerss1')}
                 error={Boolean(touched.addrerss1 && errors.addrerss1)}
                 helperText={touched.addrerss1 && errors.addrerss1}
               />
               <TextField
                 fullWidth
-                placeholder="Address 2"
+                placeholder="Address 2 *"
                 {...getFieldProps('address2')}
                 error={Boolean(touched.addrerss2 && errors.addrerss2)}
                 helperText={touched.addrerss2 && errors.addrerss2}
@@ -160,7 +164,7 @@ export default function RegisterForm() {
               <TextField
                 fullWidth
                 autoComplete="state"
-                placeholder="State"
+                placeholder="State *"
                 {...getFieldProps('state')}
                 error={Boolean(touched.state && errors.state)}
                 helperText={touched.state && errors.state}
@@ -169,7 +173,7 @@ export default function RegisterForm() {
                 fullWidth
                 type="number"
                 autoComplete="pincode"
-                placeholder="Pin code / Zip code"
+                placeholder="Pin code / Zip code *"
                 {...getFieldProps('pincode')}
                 error={Boolean(touched.pincode && errors.pincode)}
                 helperText={touched.pincode && errors.pincode}
@@ -179,7 +183,7 @@ export default function RegisterForm() {
           <Grid container>
             <Grid item xs={12} lg={6}>
               <Stack spacing={1}>
-                <Typography sx={{ fontWeight: 500 }}>Team Size</Typography>
+                <Typography sx={{ fontWeight: 500 }}>Team Size * </Typography>
                 <Select
                   autoComplete="username"
                   placeholder="Business Website"

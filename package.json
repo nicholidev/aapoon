@@ -1,5 +1,5 @@
 {
-  "name": "appoon",
+  "name": "aapoon",
   "description": "Cloud Functions and Static web for Firebase",
   "scripts": {
     "init": "node environment-config.js",

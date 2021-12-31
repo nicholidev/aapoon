@@ -83,18 +83,8 @@ export default function MainHeader() {
 
           <Box sx={{ flexGrow: 1 }} />
 
-          {isDesktop && <MenuDesktop isOffset={true} isHome={isHome} navConfig={navConfig} />}
-          {user?.id ? (
-            <Typography
-              sx={{ display: { xs: 'none', sm: 'block' }, mr: 4, color: 'text.primary' }}
-              rel="noopener"
-              variant="subtitle2"
-              style={{ cursor: 'pointer' }}
-              onClick={() => push('/dashboard/one')}
-            >
-              Dashboard
-            </Typography>
-          ) : (
+          {isDesktop && <MenuDesktop id={user.id} isOffset={true} isHome={isHome} navConfig={navConfig} />}
+          {user?.id ? null : (
             <Button
               sx={{ display: { xs: 'none', sm: 'block' }, mr: 4 }}
               rel="noopener"
@@ -116,7 +106,7 @@ export default function MainHeader() {
             </Button>
           )}
 
-          {!isDesktop && <MenuMobile isOffset={true} isHome={isHome} navConfig={navConfig} />}
+          {!isDesktop && <MenuMobile isOffset={true} isHome={isHome} id={user?.id} navConfig={navConfig} />}
         </Container>
       </ToolbarStyle>
       {isOffset && <ToolbarShadowStyle />}

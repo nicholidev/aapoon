@@ -124,15 +124,18 @@ const ResetPassword = () => {
                   </>
                 ) : (
                   <>
-                    <Typography variant="h3" paragraph sx={{ display: 'flex' }}>
+                    <Typography
+                      variant="h4"
+                      paragraph
+                      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                    >
                       <IconButtonAnimate size="large" onClick={() => router.back()} sx={{ mr: 1 }}>
                         <Iconify icon={'bx:bx-arrow-back'} />
                       </IconButtonAnimate>
-                      Please check your phone!
+                      Verify Phone number
                     </Typography>
-                    <Typography sx={{ color: 'text.secondary' }}>
-                      We have sent a 6-digit confirmation code to your mobile, please enter the code in below box to
-                      verify your mobile.
+                    <Typography sx={{ color: 'text.secondary', align: 'center' }} align="center">
+                      Verification Code has been sent to {user.phoneNumber}
                     </Typography>
 
                     <Box sx={{ mt: 5, mb: 3 }}>

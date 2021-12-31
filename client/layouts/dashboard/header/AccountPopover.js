@@ -23,10 +23,6 @@ const MENU_OPTIONS = [
     label: 'Profile',
     linkTo: '#',
   },
-  {
-    label: 'Settings',
-    linkTo: '#',
-  },
 ];
 
 // ----------------------------------------------------------------------
@@ -65,9 +61,16 @@ export default function AccountPopover() {
             }),
           }}
         >
-          <Avatar src="https://minimal-assets-api.vercel.app/assets/images/avatars/avatar_5.jpg" alt="Rayan Moran" />
+          <Avatar
+            src="http://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder-300x300.png"
+            alt="Rayan Moran"
+          />
         </IconButtonAnimate>
-        <Typography variant="subtitle2" color="textPrimary" sx={{ mr: 1, textTransform: 'capitalize' }}>
+        <Typography
+          variant="subtitle2"
+          color="textPrimary"
+          sx={{ mr: 1, textTransform: 'capitalize', display: { xs: 'none', sm: 'block' } }}
+        >
           {user.displayName}
         </Typography>
         <KeyboardArrowDownIcon style={{ color: 'grey' }} />
@@ -77,8 +80,8 @@ export default function AccountPopover() {
           <Typography variant="subtitle1" noWrap sx={{ textTransform: 'capitalize' }}>
             {user.displayName}
           </Typography>
-          <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            email
+          <Typography variant="caption" sx={{ color: 'text.secondary' }} noWrap>
+            {user.email}
           </Typography>
         </Box>
 

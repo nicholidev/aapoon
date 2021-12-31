@@ -5,7 +5,7 @@
 import PropTypes from 'prop-types';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Stack, AppBar, Toolbar } from '@mui/material';
+import { Box, Stack, AppBar, Toolbar, Divider } from '@mui/material';
 // hooks
 import useResponsive from '../../../hooks/useResponsive';
 import useCollapseDrawer from '../../../hooks/useCollapseDrawer';
@@ -28,8 +28,9 @@ import LanguagePopover from './LanguagePopover';
 import ContactsPopover from './ContactsPopover';
 import NotificationsPopover from './NotificationsPopover';
 import Logo from '../../../components/Logo';
+import MenuMobile from './MenuMobile';
 // ----------------------------------------------------------------------
-
+import navConfig from './MenuConfig';
 const RootStyle = styled(AppBar, {
   shouldForwardProp: (prop) => prop !== 'isCollapse',
 })(({ isCollapse, theme }) => ({
@@ -68,12 +69,8 @@ export default function DashboardHeader({ onOpenSidebar }) {
   return (
     <RootStyle isCollapse={isCollapse}>
       <ToolbarStyle>
-        {!isDesktop && (
-          <IconButtonAnimate onClick={onOpenSidebar} sx={{ mr: 1, color: 'text.primary' }}>
-            <Iconify icon="eva:menu-2-fill" />
-          </IconButtonAnimate>
-        )}
-        <Box sx={{ display: 'flex', width: 300 }}>
+        {!isDesktop && <MenuMobile isOffset={true} isHome={false} id={null} navConfig={navConfig} />}
+        <Box sx={{ display: 'flex' }}>
           <Logo />
         </Box>
 
@@ -81,11 +78,18 @@ export default function DashboardHeader({ onOpenSidebar }) {
 
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
           <Searchbar />
+          <IconButtonAnimate onClick={onOpenSidebar} sx={{ color: 'text.primary' }}>
+            <Iconify icon="carbon:help" />
+          </IconButtonAnimate>
+
+          <Divider orientation="vertical" variant="middle" flexItem />
           {/* <LanguagePopover /> */}
           {/* <NotificationsPopover /> */}
           {/* <ContactsPopover /> */}
           <AccountPopover>
-            <span style={{ color: 'black' }}>Janmejay</span>
+            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              <span style={{ color: 'black' }}>Janmejay</span>
+            </Box>
           </AccountPopover>
         </Stack>
       </ToolbarStyle>

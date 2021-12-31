@@ -78,9 +78,7 @@ function Register() {
   return (
     <Page title="Register">
       <RootStyle>
-        <HeaderStyle>
-          <Logo />
-        </HeaderStyle>
+        <HeaderStyle></HeaderStyle>
 
         {mdUp && (
           <SectionStyle>
@@ -92,11 +90,12 @@ function Register() {
           <ContentStyle>
             <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
               <Box sx={{ flexGrow: 1 }}>
+                <center>
+                  <Logo sx={{ height: 32 }} />
+                  <br />
+                </center>
                 <Typography variant="h4" align="center" gutterBottom>
-                  Get started absolutely free.
-                </Typography>
-                <Typography sx={{ color: 'text.secondary' }} align="center">
-                  Free forever. No credit card needed.
+                  Signup
                 </Typography>
               </Box>
             </Box>
@@ -106,7 +105,7 @@ function Register() {
             <Typography variant="caption" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
               By clicking on Complete Signup, you agree to our &nbsp;
               <Link underline="always" color="text.primary" href="#">
-                Terms of Service &nbsp;
+                Terms and conditions &nbsp;
               </Link>
               and you acknowledge having read our &nbsp;
               <Link underline="always" color="text.primary" href="#">

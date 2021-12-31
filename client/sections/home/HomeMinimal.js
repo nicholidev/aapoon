@@ -102,7 +102,7 @@ export default function HomeMinimal() {
         >
           <MotionInView variants={varFade().inUp}></MotionInView>
           <MotionInView variants={varFade().inDown}>
-            <Typography variant="h3">What apoon has for you ?</Typography>
+            <Typography variant="h3">What aapoon has for you ?</Typography>
           </MotionInView>
         </Box>
 

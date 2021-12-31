@@ -102,7 +102,8 @@ export default function HomeHero() {
                 <Button
                   size="large"
                   variant="contained"
-                  startIcon={<Iconify icon={'eva:flash-fill'} width={20} height={20} />}
+                  sx={{ width: 200 }}
+                  startIcon={<Iconify icon={'feather:video'} width={20} height={20} />}
                 >
                   Start a meeting
                 </Button>
@@ -110,8 +111,8 @@ export default function HomeHero() {
                 <Button
                   size="large"
                   variant="outlined"
-                  sx={{ ml: 2 }}
-                  startIcon={<Iconify icon={'eva:flash-fill'} width={20} height={20} />}
+                  sx={{ ml: { xs: 0, sm: 2 }, mt: { xs: 2, sm: 0 }, width: 200 }}
+                  startIcon={<Iconify icon={'ph:browser'} width={20} height={20} />}
                 >
                   Join Meeting
                 </Button>

@@ -2,15 +2,12 @@
   "hosting": {
     "predeploy": ["npm run --prefix client build"],
     "public": "client/out",
+    "cleanUrls": true,
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
         "source": "/app/**",
         "function": "app"
-      },
-      {
-        "source": "**",
-        "destination": "/index.html"
       }
     ]
   },
