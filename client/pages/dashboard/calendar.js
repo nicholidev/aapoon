@@ -73,6 +73,32 @@ const SideSection = styled(Card)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
 }));
+
+const DataSection = styled(Card)(({ theme }) => ({
+  marginTop: theme.spacing(4),
+  margin: theme.spacing(6),
+  height: 600,
+  [theme.breakpoints.down('md')]: {
+    marginLeft: 0,
+    marginRight: theme.spacing(4),
+  },
+}));
+
+const DataHead = styled('div')(({ theme }) => ({
+  display: 'flex',
+  width: '100%',
+  padding: theme.spacing(3),
+  justifyContent: 'space-between',
+  [theme.breakpoints.down('md')]: {
+    padding: theme.spacing(1),
+  },
+}));
+
+const InfoHeading = styled('span')(({ theme }) => ({
+  fontSize: 14,
+  padding: theme.spacing(2),
+}));
+
 export default function Calendar() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
@@ -147,14 +173,16 @@ export default function Calendar() {
         <Sidebar>
           <SideSection>
             <List sx={{ width: '100%' }}>
-              <ListItem disablePadding onClick={() => setCurrent('dashboard')}>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <Iconify icon={'lucide:layout-dashboard'} width={24} height={24} />
-                  </ListItemIcon>
-                  <ListItemText primary={<h4>Dashboard</h4>} />
-                </ListItemButton>
-              </ListItem>
+              <Link href="/dashboard/one" passHref={true}>
+                <ListItem disablePadding>
+                  <ListItemButton>
+                    <ListItemIcon>
+                      <Iconify icon={'lucide:layout-dashboard'} width={24} height={24} />
+                    </ListItemIcon>
+                    <ListItemText primary={<h4>Dashboard</h4>} />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
               <Link href="/dashboard/calendar" passHref={true}>
                 <ListItem disablePadding selected={true}>
                   <ListItemButton>
@@ -178,6 +206,28 @@ export default function Calendar() {
           {/* <SideSection /> */}
         </Sidebar>
         <Content>
+          <DataSection>
+            <DataHead>
+              <h4 style={{ display: 'inline' }}>Recent Invites</h4>
+              <Button
+                variant="contained"
+                color="primary"
+                href="/dashboard/schedule-meeting"
+              >
+                {' '}
+                Schedule Meeting
+              </Button>
+            </DataHead>
+            {/* <InviteData fetch={fetch} />
+            <InviteModal
+              open={inviteOpen}
+              handleClose={() => {
+                setInviteOpen(false);
+                setFetch(!fetch);
+              }}
+            /> */}
+            {/* <AppNewInvoice/> */}
+          </DataSection>
           <Card>
             <CalendarStyle>
               <CalendarToolbar

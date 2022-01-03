@@ -8,7 +8,6 @@ import RouterLink from 'next/link';
 import { styled } from '@mui/material/styles';
 import { Box, Card, Link, Container, Typography, Tooltip, Paper } from '@mui/material';
 // hooks
-import useAuth from '../../hooks/useAuth';
 import useResponsive from '../../hooks/useResponsive';
 // routes
 import DashboardHeader from '../../layouts/dashboard/header/index';
@@ -17,12 +16,15 @@ import Page from '../../components/Page';
 import Logo from '../../components/Logo';
 import Image from '../../components/Image';
 // sections
-import RegisterForm from '../../sections/auth/register/BusinessForm';
 import AuthFirebaseSocials from '../../sections/auth/AuthFirebaseSocial';
+import FormUserMeeting from '../../sections/meeting/FormUserMeeting';
 import Divider from '@mui/material/Divider';
 import withAuth from '../../HOC/withAuth';
 // ----------------------------------------------------------------------
 import GlobalStyles from '@mui/material/GlobalStyles';
+import { IconButtonAnimate } from '../../components/animate';
+import Iconify from '../../components/Iconify';
+import { useRouter } from 'next/router';
 const RootStyle = styled('div')(({ theme }) => ({}));
 
 const HeaderStyle = styled('header')(({ theme }) => ({
@@ -63,14 +65,13 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-function Register() {
-  const { method } = useAuth();
-
+function ScheduleMeeting() {
   const smUp = useResponsive('up', 'sm');
   const mdUp = useResponsive('up', 'md');
+  const router = useRouter();
 
   return (
-    <Page title="Register">
+    <Page title="Schedule Meeting">
       <GlobalStyles
         styles={{
           body: { backgroundColor: '#F1F1F1' },
@@ -79,10 +80,14 @@ function Register() {
       <RootStyle>
         <DashboardHeader />
 
-        <Container sx={{ mt: { xs: 4, lg: 8 } }}>
+        <Container sx={{ mt: { xs: 4, lg: 8, xl: 12 } }}>
           <Paper>
             <ContentStyle>
-              <Box sx={{ mb: 5, display: 'flex' }}>
+              <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
+                <IconButtonAnimate onClick={() => router.back()}>
+                  <Iconify icon={'eva:arrow-back-fill'} />
+                </IconButtonAnimate>
+                &nbsp;&nbsp;&nbsp;&nbsp;
                 <Box sx={{ flexGrow: 1 }}>
                   <Typography variant="h4" align="left" gutterBottom>
                     Schedule Meeting
@@ -90,7 +95,7 @@ function Register() {
                 </Box>
               </Box>
 
-              <RegisterForm />
+              <FormUserMeeting />
             </ContentStyle>
           </Paper>
         </Container>
@@ -99,4 +104,4 @@ function Register() {
   );
 }
 
-export default withAuth(Register);
+export default withAuth(ScheduleMeeting);
