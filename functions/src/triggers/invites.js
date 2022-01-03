@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 const admin = require("firebase-admin");
 const config = require("./../config");
 const functions = require("firebase-functions");

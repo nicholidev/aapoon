@@ -21,9 +21,6 @@ import {
   FormControlLabel,
 } from '@mui/material';
 import { LoadingButton, MobileDateTimePicker } from '@mui/lab';
-// redux
-import { useDispatch } from '../../../redux/store';
-import { createEvent, updateEvent, deleteEvent } from '../../../redux/slices/calendar';
 // hooks
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
@@ -69,7 +66,6 @@ CalendarForm.propTypes = {
 
 export default function CalendarForm({ event, range, onCancel }) {
   const { enqueueSnackbar } = useSnackbar();
-  const dispatch = useDispatch();
   const isMountedRef = useIsMountedRef();
 
   const isCreating = isEmpty(event);
@@ -93,10 +89,8 @@ export default function CalendarForm({ event, range, onCancel }) {
           end: values.end,
         };
         if (event.id) {
-          dispatch(updateEvent(event.id, newEvent));
           enqueueSnackbar('Update event success', { variant: 'success' });
         } else {
-          dispatch(createEvent(newEvent));
           enqueueSnackbar('Create event success', { variant: 'success' });
         }
         onCancel();
@@ -119,7 +113,6 @@ export default function CalendarForm({ event, range, onCancel }) {
     if (!event.id) return;
     try {
       onCancel();
-      dispatch(deleteEvent(event.id));
       enqueueSnackbar('Delete event success', { variant: 'success' });
     } catch (error) {
       console.error(error);
