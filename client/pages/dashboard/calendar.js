@@ -5,6 +5,8 @@
 import FullCalendar from '@fullcalendar/react'; // => request placed at the top
 import listPlugin from '@fullcalendar/list';
 import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import timelinePlugin from '@fullcalendar/timeline';
 
 import interactionPlugin from '@fullcalendar/interaction';
 
@@ -69,15 +71,13 @@ const SideSection = styled(Card)(({ theme }) => ({
   paddingTop: 16,
   paddingBottom: 16,
   width: '100%',
+  // maxHeight: "650px",
   marginTop: theme.spacing(4),
   display: 'flex',
   alignItems: 'center',
 }));
 
 const DataSection = styled(Card)(({ theme }) => ({
-  marginTop: theme.spacing(4),
-  margin: theme.spacing(6),
-  height: 600,
   [theme.breakpoints.down('md')]: {
     marginLeft: 0,
     marginRight: theme.spacing(4),
@@ -88,16 +88,12 @@ const DataHead = styled('div')(({ theme }) => ({
   display: 'flex',
   width: '100%',
   padding: theme.spacing(3),
-  justifyContent: 'space-between',
+  justifyContent: 'flex-end',
   [theme.breakpoints.down('md')]: {
     padding: theme.spacing(1),
   },
 }));
 
-const InfoHeading = styled('span')(({ theme }) => ({
-  fontSize: 14,
-  padding: theme.spacing(2),
-}));
 
 export default function Calendar() {
   const { themeStretch } = useSettings();
@@ -203,19 +199,56 @@ export default function Calendar() {
               </ListItem>
             </List>
           </SideSection>
-          {/* <SideSection /> */}
+          <SideSection>
+            <List sx={{ width: '100%' }}>
+              <ListItem disablePadding>
+                <ListItemButton>
+                  <ListItemText primary={<h4>Scheduled Meetings</h4>} />
+                </ListItemButton>
+              </ListItem>
+              <ListItem disablePadding>
+                <CalendarStyle>
+                  <FullCalendar
+                    weekends
+                    editable
+                    droppable
+                    selectable
+                    events={[]}
+                    rerenderDelay={10}
+                    initialDate={date}
+                    initialView={"timeGridDay"}
+                    dayMaxEventRows={3}
+                    eventDisplay="block"
+                    headerToolbar={false}
+                    eventResizableFromStart
+                    select={handleSelectRange}
+                    // eventDrop={handleDropEvent}
+                    // eventClick={handleSelectEvent}
+                    // eventResize={handleResizeEvent}
+                    height={isDesktop ? 720 : 'auto'}
+                    plugins={[dayGridPlugin, timeGridPlugin]}
+                  />
+                </CalendarStyle>
+              </ListItem>
+            </List>
+          </SideSection>
         </Sidebar>
         <Content>
           <DataSection>
             <DataHead>
-              <h4 style={{ display: 'inline' }}>Recent Invites</h4>
               <Button
                 variant="contained"
                 color="primary"
                 href="/dashboard/schedule-meeting"
               >
-                {' '}
                 Schedule Meeting
+              </Button>
+              &nbsp;&nbsp;&nbsp;&nbsp;
+              <Button
+                variant="contained"
+                color="primary"
+              >
+                Instant Meeting
               </Button>
             </DataHead>
             {/* <InviteData fetch={fetch} />
@@ -227,8 +260,6 @@ export default function Calendar() {
               }}
             /> */}
             {/* <AppNewInvoice/> */}
-          </DataSection>
-          <Card>
             <CalendarStyle>
               <CalendarToolbar
                 date={date}
@@ -258,10 +289,10 @@ export default function Calendar() {
                 // eventClick={handleSelectEvent}
                 // eventResize={handleResizeEvent}
                 height={isDesktop ? 720 : 'auto'}
-                plugins={[listPlugin, dayGridPlugin, interactionPlugin]}
+                plugins={[listPlugin, dayGridPlugin, interactionPlugin, timeGridPlugin, timelinePlugin]}
               />
             </CalendarStyle>
-          </Card>
+          </DataSection>
         </Content>
       </Container>
     </Page>

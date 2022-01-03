@@ -23,7 +23,7 @@ import {
 import { LoadingButton } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import MobileDatePicker from '@mui/lab/MobileDatePicker';
+import DateTimePicker from '@mui/lab/DateTimePicker';
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useIsMountedRef from '../../hooks/useIsMountedRef';
@@ -56,7 +56,7 @@ export default function FormUserMeeting() {
     startTimePeriod: Yup.string().required('Time is required'),
     estimatedDuration: Yup.string().required('Duration is required'),
     password: Yup.string(),
-    meetingDate: Yup.string().required(),
+    meetingDateTime: Yup.string().required(),
     state: Yup.string().min(2, 'Too Short!').required('State is required'),
     pincode: Yup.number('Please enter valid code').required('pincode is required'),
     logo: Yup.mixed()
@@ -85,7 +85,7 @@ export default function FormUserMeeting() {
       startTimePeriod: 'am',
       estimatedDuration: "15",
       password: '',
-      meetingDate: new Date(),
+      meetingDateTime: new Date(),
       pincode: '',
       teamsize: '10',
       logo: '',
@@ -207,80 +207,26 @@ export default function FormUserMeeting() {
                 </Stack>
                 <Grid container direction={{ xs: 'column', sm: 'row' }}>
                   <Grid item xs={12} sm={6}>
-                    <Stack spacing={1} sx={{ marginRight: { sm: "20px", xs: 0 } }} >
-                      <Typography sx={{ fontWeight: 500 }}> Start Time * </Typography>
+                    <Stack spacing={1} sx={{ marginRight: { sm: "20px", xs: 0 } }}>
+                      <Typography sx={{ fontWeight: 500 }}> Meeting Time * </Typography>
                       <Stack spacing={1} direction="row">
-                        <TextField
-                          fullWidth
-                          type={"number"}
-                          {...getFieldProps('startTimeHrs')}
-                          error={Boolean(touched.startTimeHrs && errors.startTimeHrs)}
-                          helperText={touched.startTimeHrs && errors.startTimeHrs}
-                          InputProps={{
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                Hr
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                        <TextField
-                          fullWidth
-                          {...getFieldProps('startTimeMins')}
-                          error={Boolean(touched.startTimeMins && errors.startTimeMins)}
-                          helperText={touched.startTimeMins && errors.startTimeMins}
-                          InputProps={{
-                            endAdornment: (
-                              <InputAdornment position="end">
-                                Min
-                              </InputAdornment>
-                            ),
-                          }}
-                        />
-                        <Select
-                          {...getFieldProps('startTimePeriod')}
-                          fullWidth
-                          error={Boolean(touched.startTimePeriod && errors.startTimePeriod)}
-                          helperText={touched.startTimePeriod && errors.startTimePeriod}
-                        >
-                          <MenuItem value={"am"}>AM</MenuItem>
-                          <MenuItem value={"pm"}>PM</MenuItem>
-                        </Select>
-                      </Stack>
-                    </Stack>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Stack spacing={1} sx={{ marginLeft: { sm: "20px", xs: 0 }, marginTop: { xs: "20px", sm: 0 } }}>
-                      <Typography sx={{ fontWeight: 500 }}> Meeting date * </Typography>
-                      <Stack spacing={1} direction="row">
-                        {/* <TextField
-                    fullWidth
-                    autoComplete="state"
-                    placeholder="State *"
-                    {...getFieldProps('state')}
-                    error={Boolean(touched.state && errors.state)}
-                    helperText={touched.state && errors.state}
-                  /> */}
-
                         <LocalizationProvider dateAdapter={AdapterDateFns}>
-                          <MobileDatePicker
-                            {...getFieldProps('meetingDate')}
+                          <DateTimePicker
+                            {...getFieldProps('meetingDateTime')}
                             onChange={(newValue) => {
-                              formik.setFieldValue("meetingDate", newValue);
+                              formik.setFieldValue("meetingDateTime", newValue);
                             }}
                             renderInput={(params) =>
-                              <TextField fullWidth {...params} {...getFieldProps('meetingDate')} error={Boolean(touched.meetingDate && errors.meetingDate)}
-                                helperText={touched.meetingDate && errors.meetingDate}
+                              <TextField fullWidth {...params} {...getFieldProps('meetingDateTime')} error={Boolean(touched.meetingDateTime && errors.meetingDateTime)}
+                                helperText={touched.meetingDateTime && errors.meetingDateTime}
                               />}
                           />
                         </LocalizationProvider>
                       </Stack>
                     </Stack>
                   </Grid>
-                </Grid>
-                <Grid container>
-                  <Grid item xs={12} >
-                    <Stack spacing={1}>
+                  <Grid item xs={12} sm={6} >
+                    <Stack spacing={1} sx={{ marginLeft: { sm: "20px", xs: 0 }, marginTop: { xs: "20px", sm: 0 } }}>
                       <Typography sx={{ fontWeight: 500 }}>Time Zone * </Typography>
                       <Select
                         autoComplete="username"
