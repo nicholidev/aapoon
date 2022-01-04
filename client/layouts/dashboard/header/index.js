@@ -3,6 +3,7 @@
  XYZ. Contact address: XYZ@xyz.pa .
  */
 import PropTypes from 'prop-types';
+import Link from 'next/link';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Stack, AppBar, Toolbar, Divider } from '@mui/material';
@@ -78,9 +79,12 @@ export default function DashboardHeader({ onOpenSidebar }) {
 
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
           <Searchbar />
-          <IconButtonAnimate onClick={onOpenSidebar} sx={{ color: 'text.primary' }}>
-            <Iconify icon="carbon:help" />
-          </IconButtonAnimate>
+
+          <Link href="/help" passHref={true}>
+            <IconButtonAnimate onClick={onOpenSidebar} sx={{ color: 'text.primary' }}>
+              <Iconify icon="carbon:help" />
+            </IconButtonAnimate>
+          </Link>
 
           <Divider orientation="vertical" variant="middle" flexItem />
           {/* <LanguagePopover /> */}

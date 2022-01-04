@@ -2,6 +2,7 @@
  Copyright ©. All Rights Reserved. Confidential and proprietary.
  XYZ. Contact address: XYZ@xyz.pa .
  */
+import Link from 'next/link';
 import {
   Button,
   Card,
@@ -149,7 +150,7 @@ function PageOne() {
         <Sidebar>
           <SideSection>
             <List sx={{ width: '100%' }}>
-              <ListItem disablePadding selected={current == 'dashboard'} onClick={() => setCurrent('dashboard')}>
+              <ListItem disablePadding selected={true} >
                 <ListItemButton>
                   <ListItemIcon>
                     <Iconify icon={'lucide:layout-dashboard'} width={24} height={24} />
@@ -157,22 +158,27 @@ function PageOne() {
                   <ListItemText primary={<h4>Dashboard</h4>} />
                 </ListItemButton>
               </ListItem>
-              <ListItem disablePadding selected={current == 'Calendar'} onClick={() => setCurrent('Calendar')}>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <Iconify icon={'uil:calender'} width={24} height={24} />
-                  </ListItemIcon>
-                  <ListItemText primary={<h4>Calendar</h4>} />
-                </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding selected={current == 'Recordings'} onClick={() => setCurrent('Recordings')}>
-                <ListItemButton>
-                  <ListItemIcon sx={{ pl: '3px' }}>
-                    <Iconify icon={'ant-design:video-camera-add-outlined'} width={24} height={24} />
-                  </ListItemIcon>
-                  <ListItemText primary={<h4>Recordings</h4>} />
-                </ListItemButton>
-              </ListItem>
+              <Link href="/dashboard/calendar" passHref={true}>
+                <ListItem disablePadding  >
+                  <ListItemButton >
+                    <ListItemIcon>
+                      <Iconify icon={'uil:calender'} width={24} height={24} />
+                    </ListItemIcon>
+                    <ListItemText primary={<h4>Calendar</h4>} />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
+
+              <Link href="/dashboard/recordings" passHref={true}>
+                <ListItem disablePadding  >
+                  <ListItemButton>
+                    <ListItemIcon sx={{ pl: '3px' }}>
+                      <Iconify icon={'ant-design:video-camera-add-outlined'} width={24} height={24} />
+                    </ListItemIcon>
+                    <ListItemText primary={<h4>Recordings</h4>} />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
             </List>
           </SideSection>
           {/* <SideSection /> */}
@@ -232,7 +238,7 @@ function PageOne() {
           </DataSection>
         </Content>
       </Container>
-    </Page>
+    </Page >
   );
 }
 
