@@ -12,6 +12,7 @@ import { FIREBASE_API } from '../config';
 import { useRouter } from 'next/router';
 import { phoneExists } from '../services/misc-service';
 import { acceptInvitation } from './../api/user';
+import { addJWTInterceptor } from '../utils/Interceptor';
 // ----------------------------------------------------------------------
 
 if (!firebase.apps.length) {
@@ -86,6 +87,9 @@ function AuthProvider({ children }) {
         // }
 
         if (user) {
+          user.getIdToken().then((token) => {
+            addJWTInterceptor(token);
+          });
           const docRef = firebase.firestore().collection('users').doc(user.uid);
           docRef
             .get()

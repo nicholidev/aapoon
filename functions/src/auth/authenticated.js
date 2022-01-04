@@ -7,9 +7,6 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const USER_STATUS = require("../constants/user-status");
 
-admin.initializeApp()
-const db = admin.firestore();
-
 async function isAuthenticated(req, res, next) {
   const { authorization } = req.headers;
 
@@ -28,15 +25,16 @@ async function isAuthenticated(req, res, next) {
 
   const token = split[1];
   try {
-    const decoded = jwt.verify(token, functions.config().token.key);
+    const decoded = await admin.auth().verifyIdToken(token);
     req.user = decoded;
-    const querySnapshot = await db.collection("user").doc(decoded.id).get();
-    const userDoc = querySnapshot.data();
-    if (userDoc.status == USER_STATUS.active) {
-      return next();
-    } else {
-      return res.status(401).send({ message: "Unauthorized" });
-    }
+    return next();
+    // const querySnapshot = await db.collection("user").doc(decoded.id).get();
+    // const userDoc = querySnapshot.data();
+    // if (userDoc.status == USER_STATUS.active) {
+    //   return next();
+    // } else {
+    //   return res.status(401).send({ message: "Unauthorized" });
+    // }
   } catch (err) {
     return res.status(401).send({ message: "Unauthorized" });
   }
