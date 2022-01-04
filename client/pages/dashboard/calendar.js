@@ -41,7 +41,10 @@ import { DialogAnimate } from '../../components/animate';
 
 import GlobalStyles from '@mui/material/GlobalStyles';
 import { CalendarStyle, CalendarToolbar } from '../../sections/@dashboard/calendar';
+import DashboardLayout from '../../layouts/dashboard';
 // ----------------------------------------------------------------------
+import withAuth from '../../HOC/withAuth';
+import InstantMeetingPopup from '../../sections/meeting/InstantMeetingPopup';
 const Sidebar = styled('header')(({ theme }) => ({
   width: '240px',
   height: '100%',
@@ -95,7 +98,7 @@ const DataHead = styled('div')(({ theme }) => ({
 }));
 
 
-export default function Calendar() {
+function CalendarPage() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
   const isDesktop = useResponsive('up', 'sm');
@@ -179,24 +182,25 @@ export default function Calendar() {
                   </ListItemButton>
                 </ListItem>
               </Link>
-              <Link href="/dashboard/calendar" passHref={true}>
-                <ListItem disablePadding selected={true}>
+              <ListItem disablePadding selected={true}>
+                <ListItemButton>
+                  <ListItemIcon>
+                    <Iconify icon={'uil:calender'} width={24} height={24} />
+                  </ListItemIcon>
+                  <ListItemText primary={<h4>Calendar</h4>} />
+                </ListItemButton>
+              </ListItem>
+
+              <Link href="/dashboard/recordings" passHref={true}>
+                <ListItem disablePadding>
                   <ListItemButton>
-                    <ListItemIcon>
-                      <Iconify icon={'uil:calender'} width={24} height={24} />
+                    <ListItemIcon sx={{ pl: '3px' }}>
+                      <Iconify icon={'ant-design:video-camera-add-outlined'} width={24} height={24} />
                     </ListItemIcon>
-                    <ListItemText primary={<h4>Calendar</h4>} />
+                    <ListItemText primary={<h4>Recordings</h4>} />
                   </ListItemButton>
                 </ListItem>
               </Link>
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <ListItemIcon sx={{ pl: '3px' }}>
-                    <Iconify icon={'ant-design:video-camera-add-outlined'} width={24} height={24} />
-                  </ListItemIcon>
-                  <ListItemText primary={<h4>Recordings</h4>} />
-                </ListItemButton>
-              </ListItem>
             </List>
           </SideSection>
           <SideSection>
@@ -244,12 +248,14 @@ export default function Calendar() {
                 Schedule Meeting
               </Button>
               &nbsp;&nbsp;&nbsp;&nbsp;
-              <Button
-                variant="contained"
-                color="primary"
-              >
-                Instant Meeting
-              </Button>
+              <InstantMeetingPopup>
+                <Button
+                  variant="contained"
+                  color="primary"
+                >
+                  Instant Meeting
+                </Button>
+              </InstantMeetingPopup>
             </DataHead>
             {/* <InviteData fetch={fetch} />
             <InviteModal
@@ -298,3 +304,12 @@ export default function Calendar() {
     </Page>
   );
 }
+
+// ----------------------------------------------------------------------
+let Calendar = withAuth(CalendarPage);
+
+Calendar.getLayout = function getLayout(page) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};
+
+export default Calendar;

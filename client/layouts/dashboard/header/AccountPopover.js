@@ -21,7 +21,7 @@ const MENU_OPTIONS = [
   },
   {
     label: 'Profile',
-    linkTo: '#',
+    linkTo: '/user/profile',
   },
 ];
 

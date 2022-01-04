@@ -150,7 +150,7 @@ function PageOne() {
         <Sidebar>
           <SideSection>
             <List sx={{ width: '100%' }}>
-              <ListItem disablePadding selected={true} onClick={() => setCurrent('dashboard')}>
+              <ListItem disablePadding selected={true} >
                 <ListItemButton>
                   <ListItemIcon>
                     <Iconify icon={'lucide:layout-dashboard'} width={24} height={24} />
@@ -168,14 +168,17 @@ function PageOne() {
                   </ListItemButton>
                 </ListItem>
               </Link>
-              <ListItem disablePadding  >
-                <ListItemButton>
-                  <ListItemIcon sx={{ pl: '3px' }}>
-                    <Iconify icon={'ant-design:video-camera-add-outlined'} width={24} height={24} />
-                  </ListItemIcon>
-                  <ListItemText primary={<h4>Recordings</h4>} />
-                </ListItemButton>
-              </ListItem>
+
+              <Link href="/dashboard/recordings" passHref={true}>
+                <ListItem disablePadding  >
+                  <ListItemButton>
+                    <ListItemIcon sx={{ pl: '3px' }}>
+                      <Iconify icon={'ant-design:video-camera-add-outlined'} width={24} height={24} />
+                    </ListItemIcon>
+                    <ListItemText primary={<h4>Recordings</h4>} />
+                  </ListItemButton>
+                </ListItem>
+              </Link>
             </List>
           </SideSection>
           {/* <SideSection /> */}
@@ -235,7 +238,7 @@ function PageOne() {
           </DataSection>
         </Content>
       </Container>
-    </Page>
+    </Page >
   );
 }
 
