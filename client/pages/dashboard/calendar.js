@@ -9,7 +9,7 @@ import timeGridPlugin from '@fullcalendar/timegrid';
 import timelinePlugin from '@fullcalendar/timeline';
 
 import interactionPlugin from '@fullcalendar/interaction';
-
+import { getMeetingEvents } from '../../api/meeting';
 import { useSnackbar } from 'notistack';
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
@@ -44,6 +44,7 @@ import { CalendarStyle, CalendarToolbar } from '../../sections/@dashboard/calend
 import DashboardLayout from '../../layouts/dashboard';
 // ----------------------------------------------------------------------
 import withAuth from '../../HOC/withAuth';
+import useAuth from '../../hooks/useAuth';
 import InstantMeetingPopup from '../../sections/meeting/InstantMeetingPopup';
 const Sidebar = styled('header')(({ theme }) => ({
   width: '240px',
@@ -105,7 +106,8 @@ function CalendarPage() {
   const calendarRef = useRef(null);
   const [date, setDate] = useState(new Date());
   const [view, setView] = useState(isDesktop ? 'dayGridMonth' : 'listWeek');
-
+  const [events, setEvents] = useState([]);
+  const { user } = useAuth();
   useEffect(() => {
     const calendarEl = calendarRef.current;
     if (calendarEl) {
@@ -114,7 +116,15 @@ function CalendarPage() {
       calendarApi.changeView(newView);
       setView(newView);
     }
-  }, [isDesktop]);
+  }, [isDesktop, user]);
+  useEffect(() => {
+    if (user.id) {
+      console.log('event exexcuted', date);
+      getMeetingEvents(new Date(new Date().getTime() - 10000000000), date, user.id).then((data) => {
+        setEvents(data);
+      });
+    }
+  }, [user, date]);
 
   const handleClickToday = () => {
     const calendarEl = calendarRef.current;
@@ -153,11 +163,15 @@ function CalendarPage() {
   };
 
   const handleSelectRange = (arg) => {
+    console.log(arg.event.start);
     const calendarEl = calendarRef.current;
     if (calendarEl) {
       const calendarApi = calendarEl.getApi();
       calendarApi.unselect();
     }
+  };
+  const handleSelectEvent = (arg) => {
+    console.log(arg.event.start);
   };
 
   return (
@@ -214,7 +228,7 @@ function CalendarPage() {
                   <FullCalendar
                     droppable
                     selectable
-                    events={[]}
+                    events={events}
                     allDaySlot={false}
                     nowIndicator
                     views={{
@@ -280,7 +294,7 @@ function CalendarPage() {
                 editable
                 droppable
                 selectable
-                events={[]}
+                events={events}
                 ref={calendarRef}
                 rerenderDelay={10}
                 initialDate={date}
@@ -292,7 +306,7 @@ function CalendarPage() {
                 eventResizableFromStart
                 select={handleSelectRange}
                 // eventDrop={handleDropEvent}
-                // eventClick={handleSelectEvent}
+                eventClick={handleSelectEvent}
                 // eventResize={handleResizeEvent}
                 height={isDesktop ? 720 : 'auto'}
                 plugins={[listPlugin, dayGridPlugin, interactionPlugin, timeGridPlugin, timelinePlugin]}
