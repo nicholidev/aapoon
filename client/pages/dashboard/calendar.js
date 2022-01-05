@@ -97,7 +97,6 @@ const DataHead = styled('div')(({ theme }) => ({
   },
 }));
 
-
 function CalendarPage() {
   const { themeStretch } = useSettings();
   const { enqueueSnackbar } = useSnackbar();
@@ -213,14 +212,22 @@ function CalendarPage() {
               <ListItem disablePadding>
                 <CalendarStyle>
                   <FullCalendar
-                    weekends
-                    editable
                     droppable
                     selectable
                     events={[]}
+                    allDaySlot={false}
+                    nowIndicator
+                    views={{
+                      timeGridFourDay: {
+                        type: 'timeGrid',
+                        duration: { days: 4 },
+                        buttonText: '4 day',
+                      },
+                    }}
+                    slotMinTime={'10:00:00'}
                     rerenderDelay={10}
                     initialDate={date}
-                    initialView={"timeGridDay"}
+                    initialView={'timeGridDay'}
                     dayMaxEventRows={3}
                     eventDisplay="block"
                     headerToolbar={false}
@@ -229,7 +236,7 @@ function CalendarPage() {
                     // eventDrop={handleDropEvent}
                     // eventClick={handleSelectEvent}
                     // eventResize={handleResizeEvent}
-                    height={isDesktop ? 720 : 'auto'}
+                    height={isDesktop ? 320 : 'auto'}
                     plugins={[dayGridPlugin, timeGridPlugin]}
                   />
                 </CalendarStyle>
@@ -240,19 +247,12 @@ function CalendarPage() {
         <Content>
           <DataSection>
             <DataHead>
-              <Button
-                variant="contained"
-                color="primary"
-                href="/dashboard/schedule-meeting"
-              >
+              <Button variant="contained" color="primary" href="/dashboard/schedule-meeting">
                 Schedule Meeting
               </Button>
               &nbsp;&nbsp;&nbsp;&nbsp;
               <InstantMeetingPopup>
-                <Button
-                  variant="contained"
-                  color="primary"
-                >
+                <Button variant="contained" color="primary">
                   Instant Meeting
                 </Button>
               </InstantMeetingPopup>

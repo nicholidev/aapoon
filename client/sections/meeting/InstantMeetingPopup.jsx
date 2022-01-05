@@ -36,12 +36,13 @@ import PhoneInput from 'react-phone-number-input/input';
 import CustomPhone from '../../components/Phonenumber';
 import InputLabel from '@mui/material/InputLabel';
 import { FileUploader } from 'react-drag-drop-files';
-import { acceptInvitation, getCountry } from '../../api/user';
+import { instantMeeting } from '../../api/meeting';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../utils/errorMessage';
 
 export default function InstantMeetingPopup(props) {
   const { registerBusiness, user } = useAuth();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
   const rePhoneNumber = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 
@@ -54,35 +55,35 @@ export default function InstantMeetingPopup(props) {
       meetingDescription: '',
     },
     validationSchema: RegisterSchema,
-    onSubmit: async (values, { setErrors, setSubmitting }) => {
-      console.log(values);
+    onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
+      setSubmitting(true);
 
-      // try {
-      //   await registerBusiness(values);
-      //   enqueueSnackbar('Business details updates', {
-      //     variant: 'success',
-      //     action: (key) => (
-      //       <IconButtonAnimate size="small" onClick={() => closeSnackbar(key)}>
-      //         <Iconify icon={'eva:close-fill'} />
-      //       </IconButtonAnimate>
-      //     ),
-      //   });
+      try {
+        let meetingData = await instantMeeting({ description: values.meetingDescription });
 
-      //   if (localStorage.getItem('inviteToken'))
-      //     acceptInvitation({ email: user.email, token: localStorage.getItem('inviteToken') });
-      //   localStorage.setItem('isAuthenticated', true)
+        enqueueSnackbar('New meeting created', {
+          variant: 'success',
+          action: (key) => (
+            <IconButtonAnimate size="small" onClick={() => closeSnackbar(key)}>
+              <Iconify icon={'eva:close-fill'} />
+            </IconButtonAnimate>
+          ),
+        });
 
-      //   window?.location = "/dashboard/one";
-      //   if (isMountedRef.current) {
-      //     setSubmitting(false);
-      //   }
-      // } catch (error) {
-      //   console.log(error);
-      //   if (isMountedRef.current) {
-      //     setErrors({ afterSubmit: ErrorMessages[error.code] });
-      //     setSubmitting(false);
-      //   }
-      // }
+        setSubmitting(false);
+        setOpen(false);
+        resetForm();
+        window.open('https://meet.aapoon.com/' + meetingData.data.id);
+      } catch (error) {
+        enqueueSnackbar('Error in creating meeting', {
+          variant: 'error',
+          action: (key) => (
+            <IconButtonAnimate size="small" onClick={() => closeSnackbar(key)}>
+              <Iconify icon={'eva:close-fill'} />
+            </IconButtonAnimate>
+          ),
+        });
+      }
     },
   });
 
@@ -97,7 +98,7 @@ export default function InstantMeetingPopup(props) {
           </Typography>
           <br />
           <FormikProvider value={formik}>
-            <FormikProvider autoComplete="off" noValidate onSubmit={handleSubmit}>
+            <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
               <Stack spacing={6}>
                 {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
 
@@ -125,7 +126,7 @@ export default function InstantMeetingPopup(props) {
                 <br />
                 <br />
               </Stack>
-            </FormikProvider>
+            </Form>
           </FormikProvider>
         </div>
       </Dialog>

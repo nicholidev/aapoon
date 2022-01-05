@@ -93,7 +93,7 @@ export default function MenuMobile({ isOffset, isHome, navConfig, id }) {
               ) : null
             )}
           </List>
-          {user.id ? (
+          {user?.id ? (
             <Box sx={{ m: 4 }}>
               <Button fullWidth rel="noopener" variant="outlined" sx={{ mb: 2 }} onClick={() => logout()}>
                 Logout

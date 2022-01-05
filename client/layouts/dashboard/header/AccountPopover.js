@@ -71,17 +71,17 @@ export default function AccountPopover() {
           color="textPrimary"
           sx={{ mr: 1, textTransform: 'capitalize', display: { xs: 'none', sm: 'block' } }}
         >
-          {user.displayName}
+          {user?.displayName}
         </Typography>
         <KeyboardArrowDownIcon style={{ color: 'grey' }} />
       </Box>
       <MenuPopover open={open} onClose={handleClose} anchorEl={anchorRef.current} sx={{ width: 220 }}>
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle1" noWrap sx={{ textTransform: 'capitalize' }}>
-            {user.displayName}
+            {user?.displayName}
           </Typography>
           <Typography variant="caption" sx={{ color: 'text.secondary' }} noWrap>
-            {user.email}
+            {user?.email}
           </Typography>
         </Box>
 

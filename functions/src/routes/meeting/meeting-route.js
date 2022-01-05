@@ -3,14 +3,11 @@
  XYZ. Contact address: XYZ@xyz.pa .
  */
 // const isAuthenticated = require("../../auth/authenticated");
-const { instantMeeting } = require("./misc-controller");
-
+const { instantMeeting, scheduleMeeting } = require("./meeting-controller");
+const isAuthenticated = require("./../../auth/authenticated");
 const routesConfig = (app) => {
-  app.post(
-    "/meeting/instant",
-
-    instantMeeting
-  );
+  app.post("/meeting/instant", isAuthenticated, instantMeeting);
+  app.post("/meeting/shedule", isAuthenticated, scheduleMeeting);
 };
 
 module.exports = routesConfig;
