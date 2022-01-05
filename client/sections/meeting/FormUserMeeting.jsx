@@ -29,7 +29,7 @@ import useAuth from '../../hooks/useAuth';
 import useIsMountedRef from '../../hooks/useIsMountedRef';
 // components
 import Iconify from '../../components/Iconify';
-
+const { listTimeZones, findTimeZone, getZonedTime, getUnixTime } = require('timezone-support');
 import { IconButtonAnimate } from '../../components/animate';
 import PhoneInput from 'react-phone-number-input/input';
 import CustomPhone from '../../components/Phonenumber';
@@ -40,6 +40,7 @@ import { acceptInvitation, getCountry } from '../../api/user';
 import ErrorMessages from '../../utils/errorMessage';
 export default function FormUserMeeting() {
   const { registerBusiness, user } = useAuth();
+  const timeZones = listTimeZones();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [isSubmitted, setSubmitted] = useState(false);
@@ -266,9 +267,9 @@ export default function FormUserMeeting() {
                       error={Boolean(touched.teamsize && errors.teamsize)}
                       helperText={touched.teamsize && errors.teamsize}
                     >
-                      <MenuItem value={10}>Asia/Kolkata +5:30</MenuItem>
-                      <MenuItem value={50}>10-50 Employees</MenuItem>
-                      <MenuItem value={100}>50-100 Employees</MenuItem>
+                      {timeZones.map((item) => (
+                        <MenuItem value={item}>{item}</MenuItem>
+                      ))}
                     </Select>
                   </Stack>
                 </Grid>

@@ -29,7 +29,7 @@ export default class MyDocument extends Document {
           <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
 
           <meta name="theme-color" content={palette.light.primary.main} />
-
+          <script src="https://meet.jit.si/external_api.js"></script>
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
             href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"

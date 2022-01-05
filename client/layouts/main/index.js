@@ -3,8 +3,9 @@
  XYZ. Contact address: XYZ@xyz.pa .
  */
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 // @mui
-import { Box, Link, Container, Typography, Stack } from '@mui/material';
+import { Box, ListItemButton, Typography, Stack } from '@mui/material';
 // components
 import Logo from '../../components/Logo';
 //
@@ -42,9 +43,13 @@ export default function MainLayout({ children }) {
               <Typography sx={{ mr: { xs: 2, md: 8 } }} color="common.white">
                 Data privacy
               </Typography>
-              <Typography sx={{ mr: 2 }} color="common.white">
-                Terms and conditions
-              </Typography>
+              <Link href="/about/terms-of-service" passHref={true}>
+                <ListItemButton>
+                  <Typography sx={{ mr: 2 }} color="common.white">
+                    Terms and conditions
+                  </Typography>
+                </ListItemButton>
+              </Link>
             </Box>
 
             <Box display="flex" alignItems="center">

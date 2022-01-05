@@ -39,8 +39,10 @@ import { FileUploader } from 'react-drag-drop-files';
 import { instantMeeting } from '../../api/meeting';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../utils/errorMessage';
+import { useRouter } from 'next/router';
 
 export default function InstantMeetingPopup(props) {
+  const router = useRouter();
   const { registerBusiness, user } = useAuth();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
@@ -73,7 +75,8 @@ export default function InstantMeetingPopup(props) {
         setSubmitting(false);
         setOpen(false);
         resetForm();
-        window.open('https://meet.aapoon.com/' + meetingData.data.id);
+        // window.open('https://meet.aapoon.com/' + meetingData.data.id);
+        router.push(`/meeting/${meetingData.data.id}`);
       } catch (error) {
         enqueueSnackbar('Error in creating meeting', {
           variant: 'error',
