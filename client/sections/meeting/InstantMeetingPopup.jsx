@@ -40,8 +40,9 @@ import { instantMeeting } from '../../api/meeting';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../utils/errorMessage';
 import { useRouter } from 'next/router';
+import withMeetingAuth from '../../HOC/withMeetingAuth';
 
-export default function InstantMeetingPopup(props) {
+function InstantMeetingPopup(props) {
   const router = useRouter();
   const { registerBusiness, user } = useAuth();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -137,3 +138,5 @@ export default function InstantMeetingPopup(props) {
     </div>
   );
 }
+
+export default withMeetingAuth(InstantMeetingPopup);

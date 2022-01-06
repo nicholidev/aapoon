@@ -24,6 +24,7 @@ import {
 // components
 import Iconify from '../../components/Iconify';
 import MenuPopover from './../../components/MenuPopover';
+import InstantMeetingPopup from '../../sections/meeting/InstantMeetingPopup';
 // ----------------------------------------------------------------------
 
 const LinkStyle = styled(Link)(({ theme }) => ({
@@ -161,9 +162,13 @@ function MenuDesktopItem({ item, isHome, isOpen, isOffset, onOpen, onClose, push
           />
         </LinkStyle>
 
-        <MenuPopover open={isOpen} anchorEl={anchorRef.current} sx={{ width: 220, pt: 2, pd: 2 }} onClose={onClose}>
-          <MenuItem sx={{ p: 2 }}>Instant meeting</MenuItem>
-          <MenuItem sx={{ p: 2 }}>Scheduled meeting</MenuItem>
+        <MenuPopover open={isOpen} anchorEl={anchorRef.current} sx={{ width: 220, pt: 2, pd: 2 }} onClose={onClose} id={"meetingPopover"} key={"meetingPopover"}>
+          <Stack spacing={{ xs: 2 }} sx={{ p: 2 }}>
+            <InstantMeetingPopup>
+              <MenuItem>Instant meeting</MenuItem>
+            </InstantMeetingPopup>
+            <MenuItem>Scheduled meeting</MenuItem>
+          </Stack>
         </MenuPopover>
       </>
     );
