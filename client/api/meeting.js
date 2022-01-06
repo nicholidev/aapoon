@@ -13,11 +13,16 @@ export const instantMeeting = async (data) => {
   return axios.post(`${endpoint}/meeting/instant`, data);
 };
 
+export const scheduleMeeting = async (data) => {
+  return axios.post(`${endpoint}/meeting/schedule`, data);
+};
+
 export const getMeetingEvents = (start, end, user) => {
   return new Promise((resolve, reject) => {
     const startTme = firebase.firestore.Timestamp.fromDate(start);
     const endDate = firebase.firestore.Timestamp.fromDate(end);
     const userRef = firebase.firestore().collection('users').doc(user);
+    console.log(start, end, user);
     firebase
       .firestore()
       .collection('meeting')
@@ -29,13 +34,15 @@ export const getMeetingEvents = (start, end, user) => {
         let data = snapshot.docs.map((i) => {
           return {
             id: i.id,
-            title: 'szzds',
+            title: i.title,
+            description: i.description,
             start: i.data().scheduledAt.toDate(),
             textColor: '#1890FF',
-            end: new Date(i.data().scheduledAt.toDate().getTime() + 10000000),
+            end: i.data().endAt.toDate(),
             ...i.data(),
           };
         });
+        console.log(data);
         resolve(data);
       })
       .catch((err) => {

@@ -42,6 +42,7 @@ import { DialogAnimate } from '../../components/animate';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import { CalendarStyle, CalendarToolbar } from '../../sections/@dashboard/calendar';
 import DashboardLayout from '../../layouts/dashboard';
+import { startOfMonth, endOfMonth } from 'date-fns';
 // ----------------------------------------------------------------------
 import withAuth from '../../HOC/withAuth';
 import useAuth from '../../hooks/useAuth';
@@ -120,7 +121,7 @@ function CalendarPage() {
   useEffect(() => {
     if (user.id) {
       console.log('event exexcuted', date);
-      getMeetingEvents(new Date(new Date().getTime() - 10000000000), date, user.id).then((data) => {
+      getMeetingEvents(startOfMonth(date), endOfMonth(date), user.id).then((data) => {
         setEvents(data);
       });
     }
@@ -238,7 +239,7 @@ function CalendarPage() {
                         buttonText: '4 day',
                       },
                     }}
-                    slotMinTime={'10:00:00'}
+                    slotDuration={'00:15:00'}
                     rerenderDelay={10}
                     initialDate={date}
                     initialView={'timeGridDay'}

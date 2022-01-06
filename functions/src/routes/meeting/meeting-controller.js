@@ -18,6 +18,7 @@
         description:description,
         createdAt:timestamp,
         scheduledAt:timestamp,
+        type:"instant",
         createdBy:admin.firestore().collection("users").doc(req.user.user_id),
         joinedBy:[]
     }).then(meetting=>{
@@ -30,20 +31,25 @@
  };
  
  const scheduleMeeting = async (req, res) => {
-    const {description=""}=req.body
+    const {meetingDescription="",meetingTopic,estimatedDuration,scheduleAt,timeZone,password=""}=req.body
    const uid = new ShortUniqueId({ length: 10 });
+
     let meetingDb=admin.firestore().collection("meeting")
-    const timestamp = admin.firestore.Timestamp.now();
+ 
+    const timestamp = admin.firestore.Timestamp.fromDate(new Date(scheduleAt));
+    console.log(timestamp,meetingDescription,meetingTopic,estimatedDuration,scheduleAt,timeZone,password,uid(),req.user)
    meetingDb.add({ 
-       uid: uid,
-       description:description,
+       uid: uid(),
+       description:meetingDescription,
        scheduledAt:timestamp,
-       timezone:"", 
+   endAt:admin.firestore.Timestamp.fromDate(new Date(scheduleAt+(Number(estimatedDuration)*60*1000))),
+       timezone:timeZone, 
        duration:"",
-       title:"", isAuthenticated,
-       password:"",
+       type:"scheduled",
+       title:meetingTopic,
+       password:password,
        createdAt:timestamp,
-       createdBy:admin.firestore().collection("user").doc(req.user.id),
+       createdBy:admin.firestore().collection("users").doc(req.user.user_id),
        joinedBy:[]
    }).then(meetting=>{
        res.status(200).send({id:meetting.id});

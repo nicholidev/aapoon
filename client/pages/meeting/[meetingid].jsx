@@ -191,7 +191,7 @@ function Meeting() {
     let options = {
       roomName: meetingState.room,
       width: '100%',
-      height: "100%",
+      height: '100%',
       configOverwrite: { prejoinPageEnabled: false },
       interfaceConfigOverwrite: {
         // overwrite interface properties

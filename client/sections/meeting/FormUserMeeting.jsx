@@ -3,7 +3,7 @@
  XYZ. Contact address: XYZ@xyz.pa .
  */
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import { useFormik, Form, FormikProvider } from 'formik';
 // @mui
@@ -36,10 +36,14 @@ import CustomPhone from '../../components/Phonenumber';
 import InputLabel from '@mui/material/InputLabel';
 import { FileUploader } from 'react-drag-drop-files';
 import { acceptInvitation, getCountry } from '../../api/user';
+import { scheduleMeeting } from '../../api/meeting';
+import { useRouter } from 'next/router';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../utils/errorMessage';
+
 export default function FormUserMeeting() {
   const { registerBusiness, user } = useAuth();
+  const router = useRouter();
   const timeZones = listTimeZones();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -49,54 +53,69 @@ export default function FormUserMeeting() {
   const RegisterSchema = Yup.object().shape({
     meetingTopic: Yup.string().min(2, 'Too Short!').required('Meeting topic required'),
     meetingDescription: Yup.string().min(2, 'Too Short!'),
-    teamsize: Yup.string().required('Teamsize is required'),
-    startTimeHrs: Yup.number().required('Time is required').lessThan(13, 'Invalid value').moreThan(-1, 'Invalid value'),
-    startTimeMins: Yup.number()
-      .required('Time is required')
-      .lessThan(61, 'Invalid value')
-      .moreThan(-1, 'Invalid value'),
-    startTimePeriod: Yup.string().required('Time is required'),
+    timeZone: Yup.string().required('TimeZone is required'),
+
     estimatedDuration: Yup.string().required('Duration is required'),
     password: Yup.string(),
-    meetingDateTime: Yup.string().required(),
-    state: Yup.string().min(2, 'Too Short!').required('State is required'),
-    pincode: Yup.number('Please enter valid code').required('pincode is required'),
-    logo: Yup.mixed()
-
-      .test('fileSize', 'The file is too large', (value) => {
-        return (value && value.size <= 2000000) || !value;
-      })
-      .test('type', 'Only the following formats are accepted: .jpeg, .jpg, .png', (value) => {
-        return (
-          (value &&
-            (value.type === 'image/jpeg' ||
-              value.type === 'image/bmp' ||
-              value.type === 'image/png' ||
-              value.type === 'application/pdf' ||
-              value.type === 'application/msword')) ||
-          !value
-        );
-      }),
+    meetingDateTime: Yup.date().required('Please enter valid date'),
   });
 
   const formik = useFormik({
     initialValues: {
       meetingTopic: '',
       meetingDescription: '',
-      startTimeHrs: '1',
-      startTimeMins: '1',
-      startTimePeriod: 'am',
+
       estimatedDuration: '15',
       password: '',
       meetingDateTime: new Date(),
-      pincode: '',
-      teamsize: '10',
-      logo: '',
+
+      timeZone: '',
     },
     validationSchema: RegisterSchema,
-    onSubmit: async (values, { setErrors, setSubmitting }) => {
-      console.log(values);
+    onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
+      console.log('submitting');
+      const tz = findTimeZone(values.timeZone);
 
+      const nativeDate = values.meetingDateTime;
+      const DateTime = {
+        year: nativeDate.getFullYear(),
+        month: nativeDate.getMonth() + 1,
+        day: nativeDate.getDate(),
+        hours: nativeDate.getHours(),
+        minutes: nativeDate.getMinutes(),
+      };
+
+      let myDate = getUnixTime(DateTime, tz);
+      setSubmitting(true);
+
+      try {
+        let meetingData = await scheduleMeeting({ scheduleAt: myDate, ...values });
+
+        enqueueSnackbar('New meeting scheduled', {
+          variant: 'success',
+          action: (key) => (
+            <IconButtonAnimate size="small" onClick={() => closeSnackbar(key)}>
+              <Iconify icon={'eva:close-fill'} />
+            </IconButtonAnimate>
+          ),
+        });
+
+        setSubmitting(false);
+
+        resetForm();
+        // window.open('https://meet.aapoon.com/' + meetingData.data.id);
+        router.replace(`/dashboard/calendar`);
+      } catch (error) {
+        console.error(error);
+        enqueueSnackbar('Error in scheduling meeting , Please try again', {
+          variant: 'error',
+          action: (key) => (
+            <IconButtonAnimate size="small" onClick={() => closeSnackbar(key)}>
+              <Iconify icon={'eva:close-fill'} />
+            </IconButtonAnimate>
+          ),
+        });
+      }
       // try {
       //   await registerBusiness(values);
       //   enqueueSnackbar('Business details updates', {
@@ -127,6 +146,11 @@ export default function FormUserMeeting() {
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, values } = formik;
+  useEffect(() => {
+    getCountry().then((res) => {
+      setFieldValue('timeZone', res.data.timezone);
+    });
+  }, []);
 
   return (
     <div>
@@ -162,6 +186,7 @@ export default function FormUserMeeting() {
               width="160px"
               sx={{ border: '1px solid #DDDDDD', borderRadius: 1, padding: 2, backgroundColor: '#F9F9F9' }}
               display="flex"
+              teamsize
               flexDirection="column"
               alignItems="center"
               justifyContent="center"
@@ -247,7 +272,6 @@ export default function FormUserMeeting() {
                             <TextField
                               fullWidth
                               {...params}
-                              {...getFieldProps('meetingDateTime')}
                               error={Boolean(touched.meetingDateTime && errors.meetingDateTime)}
                               helperText={touched.meetingDateTime && errors.meetingDateTime}
                             />
@@ -263,9 +287,9 @@ export default function FormUserMeeting() {
                     <Select
                       autoComplete="username"
                       placeholder="Business Website"
-                      {...getFieldProps('teamsize')}
-                      error={Boolean(touched.teamsize && errors.teamsize)}
-                      helperText={touched.teamsize && errors.teamsize}
+                      {...getFieldProps('timeZone')}
+                      error={Boolean(touched.timeZone && errors.timeZone)}
+                      helperText={touched.timeZone && errors.timeZone}
                     >
                       {timeZones.map((item) => (
                         <MenuItem value={item}>{item}</MenuItem>
@@ -286,6 +310,7 @@ export default function FormUserMeeting() {
                     >
                       <MenuItem value={'15'}>15 Minutes</MenuItem>
                       <MenuItem value={'30'}>30 Minutes</MenuItem>
+                      <MenuItem value={'60'}>60 Minutes</MenuItem>
                     </Select>
                   </Stack>
                 </Grid>
