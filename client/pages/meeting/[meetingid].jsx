@@ -47,12 +47,10 @@ const Sidebar = styled('header')(({ theme }) => ({
 }));
 
 const Content = styled('div')(({ theme }) => ({
-  width: '100vw',
-  minHeight: '80vh',
-
-  marginTop: theme.spacing(2),
+  width: '100%',
+  height: '89vh',
   [theme.breakpoints.down('md')]: {
-    width: '100vw',
+    width: '100%',
     paddingLeft: 0,
   },
 }));
@@ -94,7 +92,6 @@ const InfoContainer = styled(Grid)(({ theme }) => ({
 const DataSection = styled(Card)(({ theme }) => ({
   width: '100%',
   height: '100%',
-  marginTop: theme.spacing(4),
 }));
 
 const DataHead = styled('div')(({ theme }) => ({
@@ -194,7 +191,7 @@ function Meeting() {
     let options = {
       roomName: meetingState.room,
       width: '100%',
-      height: 500,
+      height: "100%",
       configOverwrite: { prejoinPageEnabled: false },
       interfaceConfigOverwrite: {
         // overwrite interface properties
@@ -247,7 +244,7 @@ function Meeting() {
           body: { backgroundColor: '#F1F1F1' },
         }}
       />
-      <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex' }}>
+      <div sx={{ display: 'flex' }}>
         <Content>
           <DataSection>
             <div id="jitsi-iframe" style={{ height: '100%' }}></div>
@@ -285,11 +282,16 @@ function Meeting() {
             </div>
           </DataSection>
         </Content>
-      </Container>
+      </div>
     </Page>
   );
 }
 
 // ----------------------------------------------------------------------
+let MeetingPage = withAuth(Meeting);
 
-export default Meeting;
+MeetingPage.getLayout = function getLayout(page) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};
+
+export default MeetingPage;
