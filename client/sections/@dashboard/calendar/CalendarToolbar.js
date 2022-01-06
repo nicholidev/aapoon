@@ -30,7 +30,16 @@ const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
     flexDirection: 'row',
     padding: theme.spacing(1.75, 3),
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
+  },
+}));
+
+const Container = styled('div')(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  marginTop: -100,
+  [theme.breakpoints.down('lg')]: {
+    marginTop: 0,
   },
 }));
 
@@ -67,11 +76,11 @@ export default function CalendarToolbar({ date, view, onNextDate, onPrevDate, on
         </Stack>
       )} */}
 
-      <Typography variant="h5" sx={{ my: { xs: 1, sm: 0 } }}>
-        {fDate(date)}
-      </Typography>
-
-      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+      <Container>
+        <Typography variant="h5" sx={{ my: { xs: 1, sm: 0 } }}>
+          {fDate(date)}
+        </Typography>
+        &nbsp; &nbsp;
         <IconButton onClick={onPrevDate}>
           <Iconify icon="eva:arrow-ios-back-fill" width={18} height={18} />
         </IconButton>
@@ -79,11 +88,10 @@ export default function CalendarToolbar({ date, view, onNextDate, onPrevDate, on
         <Button size="small" color="error" variant="contained" onClick={onToday} sx={{ mx: 0.5 }}>
           Today
         </Button> */}
-
         <IconButton onClick={onNextDate}>
           <Iconify icon="eva:arrow-ios-forward-fill" width={18} height={18} />
         </IconButton>
-      </Box>
+      </Container>
     </RootStyle>
   );
 }
