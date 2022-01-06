@@ -40,13 +40,24 @@ export default function MainLayout({ children }) {
         >
           <Box justifyContent="space-between" display="flex" alignItems="center">
             <Box display="flex" alignItems="center" sx={{ display: { xs: 'flex' } }}>
-              <Typography sx={{ mr: { xs: 2, md: 8 } }} color="common.white">
-                Data privacy
-              </Typography>
+              <Link href="/about/privacy-policy" passHref={true}>
+                <ListItemButton>
+                  <Typography sx={{ mr: { xs: 2, md: 8 } }} color="common.white">
+                    Data privacy
+                  </Typography>
+                </ListItemButton>
+              </Link>
               <Link href="/about/terms-of-service" passHref={true}>
                 <ListItemButton>
                   <Typography sx={{ mr: 2 }} color="common.white">
                     Terms and conditions
+                  </Typography>
+                </ListItemButton>
+              </Link>
+              <Link href="/about/refund-policy" passHref={true}>
+                <ListItemButton>
+                  <Typography sx={{ mr: { xs: 2, md: 8 } }} color="common.white">
+                    Refund Policy
                   </Typography>
                 </ListItemButton>
               </Link>
