@@ -16,6 +16,11 @@ import {
   ListItemText,
   styled,
   Typography,
+  Select,
+  MenuItem,
+  AppBar,
+  Tabs,
+  Tab,
 } from '@mui/material';
 // layouts
 import DashboardLayout from '../../layouts/dashboard';
@@ -35,6 +40,7 @@ import InviteData from '../../components/invite/InviteData';
 import InviteModal from '../../components/invite/InviteModal';
 import { useState } from 'react';
 import { IconButtonAnimate } from '../../components/animate';
+import PlansComparison from '../../components/plan/PlansComparison';
 
 const Sidebar = styled('header')(({ theme }) => ({
   width: '240px',
@@ -64,7 +70,7 @@ const Content = styled('div')(({ theme }) => ({
   paddingLeft: theme.spacing(4),
   marginTop: theme.spacing(4),
   [theme.breakpoints.down('md')]: {
-    width: '100vw',
+    width: '100%',
     padding: theme.spacing(1),
     paddingLeft: 0,
     marginTop: theme.spacing(2),
@@ -117,7 +123,6 @@ const DataSection = styled(Card)(({ theme }) => ({
   marginTop: theme.spacing(4),
   height: 'auto',
   width: '100%',
-  overflowX: 'hidden',
 }));
 
 const DataHead = styled('div')(({ theme }) => ({
@@ -165,7 +170,16 @@ function PlanPricePage() {
   const { themeStretch } = useSettings();
   const [inviteOpen, setInviteOpen] = useState(false);
   const [fetch, setFetch] = useState(false);
-  const [current, setCurrent] = useState('dashboard');
+  const [current, setCurrent] = useState('monthly');
+
+  const handleTabChange = (event, newValue) => {
+    console.log(newValue);
+    if (newValue == 0) {
+      setCurrent('monthly');
+    } else {
+      setCurrent('annual');
+    }
+  };
   return (
     <Page title="Dashboard">
       <GlobalStyles
@@ -178,6 +192,39 @@ function PlanPricePage() {
           <Typography align="center" variant="h3" color="initial">
             appoon meet Pricing Plans
           </Typography>
+          <br />
+
+          <Box display="flex" justifyContent={'flex-end'}>
+            <Select value={'INR'} size="small" sx={{ backgroundColor: 'common.white' }}>
+              <MenuItem value={'INR'}>
+                <Typography variant="subtitle1" color="initial">
+                  ₹ India
+                </Typography>
+              </MenuItem>
+              <MenuItem value={'USD'}>
+                <Typography variant="subtitle1" color="initial">
+                  $ USA
+                </Typography>
+              </MenuItem>
+            </Select>
+          </Box>
+          <Box display="flex" justifyContent={'center'} marginTop={-1}>
+            <Tabs variant="standard" value={current == 'monthly' ? 0 : 1} onChange={handleTabChange} aria-label="">
+              <Tab
+                label="MONTHLY"
+                style={{
+                  minWidth: 100,
+                }}
+              />
+              <Tab
+                label="ANNUAL"
+                style={{
+                  minWidth: 100,
+                }}
+              />
+            </Tabs>
+          </Box>
+          <br />
           <br />
           {/* <InfoContainer container spacing={4}>
             <Grid xs={12} sm={6} md={4}>
@@ -336,7 +383,17 @@ function PlanPricePage() {
                     width: '100%',
                   }}
                 >
-                  <Box sx={{ position: 'absolute', top: -30, right: 0 }}>
+                  <Box
+                    sx={{
+                      position: 'absolute',
+                      top: -20,
+                      right: 0,
+                      display: 'flex',
+                      backgroundColor: '#fff',
+                      padding: '0 20px',
+                      borderRadius: '25px',
+                    }}
+                  >
                     <Typography variant="subtitle2" color="common.black">
                       MOST POPULAR
                     </Typography>
@@ -434,7 +491,7 @@ function PlanPricePage() {
           <br />
           <DataSection>
             <Grid container spacing={1} justifyContent={'space-around'}>
-              <Grid item xs={12} sm={6} md={5} lg={4} xl={3}>
+              <Grid item xs={12} sm={6} md={5} lg={4} xl={4}>
                 <PlanDiv>
                   <Typography variant="h4" color="initial">
                     Corporate Plan
@@ -503,19 +560,25 @@ function PlanPricePage() {
                       Hosts
                     </Typography>
                     &nbsp; &nbsp;
-                    <Typography variant="subtitle1" color="initial">
-                      10
-                    </Typography>
+                    <Select size="small" value={10}>
+                      <MenuItem value={10}>
+                        <Typography variant="subtitle1" color="initial">
+                          10
+                        </Typography>
+                      </MenuItem>
+                    </Select>
                   </Box>
-                  <CustomButton variant="contained" size="large" sx={{ mt: 5 }}>
-                    Choose plan
-                  </CustomButton>
+                  <Box sx={{ margin: { xs: 0, xl: '0 100px 0 0' } }}>
+                    <CustomButton fullWidth variant="contained" size="large" sx={{ mt: 7 }}>
+                      Choose plan
+                    </CustomButton>
+                  </Box>
                 </PlanDiv>
               </Grid>
               <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
                 <Grid item xs={1}></Grid>
               </Box>
-              <Grid item xs={12} sm={6} md={5} lg={4} xl={3}>
+              <Grid item xs={12} sm={6} md={5} lg={4} xl={4}>
                 {' '}
                 <PlanDiv>
                   <Typography variant="h4" color="initial">
@@ -580,19 +643,33 @@ function PlanPricePage() {
                       Hosts
                     </Typography>
                     &nbsp; &nbsp;
-                    <Typography variant="subtitle1" color="initial">
-                      10
-                    </Typography>
+                    <Select size="small" value={10}>
+                      <MenuItem value={10}>
+                        <Typography variant="subtitle1" color="initial">
+                          10
+                        </Typography>
+                      </MenuItem>
+                    </Select>
                   </Box>
-                  <CustomButton variant="contained" size="large" sx={{ mt: 7 }}>
-                    Choose plan
-                  </CustomButton>
+                  <Box sx={{ margin: { xs: 0, xl: '0 100px 0 0' } }}>
+                    <CustomButton fullWidth variant="contained" size="large" sx={{ mt: 7 }}>
+                      Choose plan
+                    </CustomButton>
+                  </Box>
                 </PlanDiv>
               </Grid>
               <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
                 <Grid item xs={1}></Grid>
               </Box>
             </Grid>
+            <br />
+            <Grid container spacing={1} justifyContent={'space-around'}>
+              <Grid item xs={12} sm={10} md={9} lg={7} xl={6}>
+                <PlansComparison />
+              </Grid>
+            </Grid>
+            <br />
+            <br />
           </DataSection>
         </Content>
       </Container>

@@ -6,21 +6,28 @@
 
 export default function Tabs(theme) {
   return {
-    MuiTab: {
+    MuiTabs: {
       styleOverrides: {
         root: {
           padding: 0,
+          borderRadius: 30,
+          backgroundColor: '#fff',
+        },
+        indicator: {
+          borderRadius: '10px 10px 0 0',
+          height: 0,
+        },
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          padding: '0 28px',
           fontWeight: theme.typography.fontWeightMedium,
-          borderTopLeftRadius: theme.shape.borderRadius,
-          borderTopRightRadius: theme.shape.borderRadius,
+          borderRadius: 30,
           '&.Mui-selected': {
-            color: theme.palette.text.primary,
-          },
-          '&:not(:last-of-type)': {
-            marginRight: theme.spacing(5),
-          },
-          '@media (min-width: 600px)': {
-            minWidth: 48,
+            color: theme.palette.common.white,
+            backgroundColor: '#225082',
           },
         },
         labelIcon: {
