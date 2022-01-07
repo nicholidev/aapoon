@@ -65,7 +65,8 @@ const Content = styled('div')(({ theme }) => ({
   marginTop: theme.spacing(4),
   [theme.breakpoints.down('md')]: {
     width: '100vw',
-    paddingLeft: theme.spacing(4),
+    padding: theme.spacing(1),
+    paddingLeft: 0,
     marginTop: theme.spacing(2),
   },
 }));
@@ -115,6 +116,8 @@ const InfoContainer = styled(Grid)(({ theme }) => ({
 const DataSection = styled(Card)(({ theme }) => ({
   marginTop: theme.spacing(4),
   height: 'auto',
+  width: '100%',
+  overflowX: 'hidden',
 }));
 
 const DataHead = styled('div')(({ theme }) => ({
@@ -177,7 +180,7 @@ function PlanPricePage() {
           </Typography>
           <br />
           {/* <InfoContainer container spacing={4}>
-            <Grid xs={11} sm={6} md={4}>
+            <Grid xs={12} sm={6} md={4}>
               <InfoCard>
                 <InfoHeading>appoon meet Pricing Plans </InfoHeading>
                 <InfoNumbers>
@@ -186,7 +189,7 @@ function PlanPricePage() {
                 <PersonIcon style={infoIconStyle} />
               </InfoCard>
             </Grid>
-            <Grid xs={11} sm={6} md={4}>
+            <Grid xs={12} sm={6} md={4}>
                <InfoCard>
                  <InfoHeading>Upcoming Meetings this week</InfoHeading>
                  <InfoNumbers>
@@ -195,7 +198,7 @@ function PlanPricePage() {
                  <CheckCircleIcon style={infoIconStyle} />
                </InfoCard>
              </Grid>
-             <Grid xs={11} sm={6} md={4}>
+             <Grid xs={12} sm={6} md={4}>
                <InfoCard>
                  <InfoHeading>Meetings attended this week</InfoHeading>
                  <InfoNumbers>
@@ -206,20 +209,8 @@ function PlanPricePage() {
              </Grid>
           </InfoContainer> */}
           <DataSection>
-            {/* <DataHead>
-              <h4 style={{ display: 'inline' }}>Recent Invites</h4>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => setInviteOpen(true)}
-                startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
-              >
-                {' '}
-                Invite User
-              </Button>
-            </DataHead> */}
-            <Grid container spacing={2} justifyContent={'space-around'}>
-              <Grid item xs={11} sm={8} md={5} lg={3}>
+            <Grid container spacing={1} justifyContent={'space-around'} style={{ width: '100%' }}>
+              <Grid item xs={12} sm={6} md={5} lg={3}>
                 <PlanDiv>
                   <Typography variant="h4" color="initial">
                     Free
@@ -262,7 +253,7 @@ function PlanPricePage() {
                   </CustomButton>
                 </PlanDiv>
               </Grid>
-              <Grid item xs={11} sm={8} md={5} lg={3}>
+              <Grid item xs={12} sm={6} md={5} lg={3}>
                 {' '}
                 <PlanDiv>
                   <Typography variant="h4" color="initial" sx={{ display: 'flex' }}>
@@ -335,7 +326,7 @@ function PlanPricePage() {
                   </CustomButton>
                 </PlanDiv>
               </Grid>
-              <Grid item xs={11} sm={6} md={5} lg={3}>
+              <Grid item xs={12} sm={6} md={5} lg={3}>
                 <div
                   style={{
                     position: 'relative',
@@ -434,7 +425,173 @@ function PlanPricePage() {
                   </PlatinumCard>
                 </div>
               </Grid>
-              <Grid item xs={0} md={1}></Grid>
+              <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
+                <Grid item xs={1}></Grid>
+              </Box>
+            </Grid>
+          </DataSection>
+          <br />
+          <br />
+          <DataSection>
+            <Grid container spacing={1} justifyContent={'space-around'}>
+              <Grid item xs={12} sm={6} md={5} lg={4} xl={3}>
+                <PlanDiv>
+                  <Typography variant="h4" color="initial">
+                    Corporate Plan
+                  </Typography>
+                  <br />
+                  <Typography variant="h4" color="initial">
+                    Starting at ₹50,000 /year
+                  </Typography>
+                  <Typography variant="h6" color="initial">
+                    (Billed Annually)
+                  </Typography>
+                  <br />
+                  <br />
+                  <br />
+                  <Box display={'flex'} sx={{ mb: 1 }}>
+                    <ListItemIcon>
+                      <IconContainer>
+                        <Iconify icon={'bi:check-lg'} color="secondary.dark" />
+                      </IconContainer>
+                    </ListItemIcon>
+                    <ListItemText>
+                      <Typography variant="subtitle2" color="GrayText">
+                        Host up to 100 participants
+                      </Typography>
+                    </ListItemText>
+                  </Box>
+                  <Box display={'flex'} sx={{ mb: 1 }}>
+                    <ListItemIcon>
+                      <IconContainer>
+                        <Iconify icon={'bi:check-lg'} color="secondary.dark" />
+                      </IconContainer>
+                    </ListItemIcon>
+                    <ListItemText>
+                      <Typography variant="subtitle2" color="GrayText">
+                        Unlimited meetings
+                      </Typography>
+                    </ListItemText>
+                  </Box>
+                  <Box display={'flex'} sx={{ mb: 1 }}>
+                    <ListItemIcon>
+                      <IconContainer>
+                        <Iconify icon={'bi:check-lg'} color="secondary.dark" />
+                      </IconContainer>
+                    </ListItemIcon>
+                    <ListItemText>
+                      <Typography variant="subtitle2" color="GrayText">
+                        2 GB Cloud recording (per license)*
+                      </Typography>
+                    </ListItemText>
+                  </Box>
+                  <Box display={'flex'}>
+                    <ListItemIcon>
+                      <IconContainer>
+                        <Iconify icon={'bi:check-lg'} color="secondary.dark" />
+                      </IconContainer>
+                    </ListItemIcon>
+                    <ListItemText>
+                      <Typography variant="subtitle2" color="GrayText">
+                        Organization branding
+                      </Typography>
+                    </ListItemText>
+                  </Box>
+                  <br />
+                  <Box display={'flex'} alignItems="center">
+                    <Typography variant="h6" color="initial">
+                      Hosts
+                    </Typography>
+                    &nbsp; &nbsp;
+                    <Typography variant="subtitle1" color="initial">
+                      10
+                    </Typography>
+                  </Box>
+                  <CustomButton variant="contained" size="large" sx={{ mt: 5 }}>
+                    Choose plan
+                  </CustomButton>
+                </PlanDiv>
+              </Grid>
+              <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
+                <Grid item xs={1}></Grid>
+              </Box>
+              <Grid item xs={12} sm={6} md={5} lg={4} xl={3}>
+                {' '}
+                <PlanDiv>
+                  <Typography variant="h4" color="initial">
+                    Webinar Plan
+                  </Typography>
+                  <br />
+                  <Typography variant="h4" color="initial">
+                    At ₹5203 /month
+                  </Typography>
+                  <br />
+                  <Box display={'flex'} sx={{ mb: 1 }}>
+                    <ListItemIcon>
+                      <IconContainer>
+                        <Iconify icon={'bi:check-lg'} color="secondary.dark" />
+                      </IconContainer>
+                    </ListItemIcon>
+                    <ListItemText>
+                      <Typography variant="subtitle2" color="GrayText">
+                        Host up to 100 participants
+                      </Typography>
+                    </ListItemText>
+                  </Box>
+                  <Box display={'flex'} sx={{ mb: 1 }}>
+                    <ListItemIcon>
+                      <IconContainer>
+                        <Iconify icon={'bi:check-lg'} color="secondary.dark" />
+                      </IconContainer>
+                    </ListItemIcon>
+                    <ListItemText>
+                      <Typography variant="subtitle2" color="GrayText">
+                        Unlimited meetings
+                      </Typography>
+                    </ListItemText>
+                  </Box>
+                  <Box display={'flex'} sx={{ mb: 1 }}>
+                    <ListItemIcon>
+                      <IconContainer>
+                        <Iconify icon={'bi:check-lg'} color="secondary.dark" />
+                      </IconContainer>
+                    </ListItemIcon>
+                    <ListItemText>
+                      <Typography variant="subtitle2" color="GrayText">
+                        2 GB Cloud recording
+                      </Typography>
+                    </ListItemText>
+                  </Box>
+                  <Box display={'flex'} sx={{ mb: 1 }}>
+                    <ListItemIcon>
+                      <IconContainer>
+                        <Iconify icon={'bi:check-lg'} color="secondary.dark" />
+                      </IconContainer>
+                    </ListItemIcon>
+                    <ListItemText>
+                      <Typography variant="subtitle2" color="GrayText">
+                        Live Streaming
+                      </Typography>
+                    </ListItemText>
+                  </Box>
+                  <br />
+                  <Box display={'flex'} alignItems="center">
+                    <Typography variant="h6" color="initial">
+                      Hosts
+                    </Typography>
+                    &nbsp; &nbsp;
+                    <Typography variant="subtitle1" color="initial">
+                      10
+                    </Typography>
+                  </Box>
+                  <CustomButton variant="contained" size="large" sx={{ mt: 7 }}>
+                    Choose plan
+                  </CustomButton>
+                </PlanDiv>
+              </Grid>
+              <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
+                <Grid item xs={1}></Grid>
+              </Box>
             </Grid>
           </DataSection>
         </Content>
