@@ -57,7 +57,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
   maxWidth: 880,
   margin: 'auto',
   display: 'flex',
-  minHeight: '100vh',
+  minHeight: '80vh',
   flexDirection: 'column',
 
   padding: theme.spacing(8, 2),

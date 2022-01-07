@@ -4,7 +4,7 @@
  */
 
 import axios from 'axios';
-const endpoint = 'http://localhost:5000/meetaap-55e58/us-central1/app';
+const endpoint = 'https://us-central1-meetaap-55e58.cloudfunctions.net/app';
 
 export const inviteUser = async (data) => {
   return axios.post(`${endpoint}/misc/send-invite`, data);

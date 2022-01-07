@@ -18,6 +18,7 @@ import {
   Select,
   MenuItem,
   Box,
+  ButtonBase,
   FormHelperText,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
@@ -38,6 +39,8 @@ import { FileUploader } from 'react-drag-drop-files';
 import { acceptInvitation, getCountry } from '../../api/user';
 import { scheduleMeeting } from '../../api/meeting';
 import { useRouter } from 'next/router';
+import moment from 'moment';
+import { addTocalender } from '../../utils/addToCalender/AddToCalander';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../utils/errorMessage';
 
@@ -48,6 +51,7 @@ export default function FormUserMeeting() {
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [isSubmitted, setSubmitted] = useState(false);
+  const [data, setData] = useState({});
   const [showPassword, setShowPassword] = useState(false);
   const rePhoneNumber = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
   const RegisterSchema = Yup.object().shape({
@@ -101,10 +105,11 @@ export default function FormUserMeeting() {
         });
 
         setSubmitting(false);
-
+        setSubmitted(true);
+        setData(meetingData.data);
         resetForm();
         // window.open('https://meet.aapoon.com/' + meetingData.data.id);
-        router.replace(`/dashboard/calendar`);
+        // router.replace(`/dashboard/calendar`);
       } catch (error) {
         console.error(error);
         enqueueSnackbar('Error in scheduling meeting , Please try again', {
@@ -152,20 +157,81 @@ export default function FormUserMeeting() {
     });
   }, []);
 
+  const copyTocb = (data) => {
+    navigator.clipboard.writeText(data);
+    enqueueSnackbar('Meeting link copied to clipboard', {
+      variant: 'success',
+      action: (key) => (
+        <IconButtonAnimate size="small" onClick={() => closeSnackbar(key)}>
+          <Iconify icon={'eva:close-fill'} />
+        </IconButtonAnimate>
+      ),
+    });
+  };
+
+  const addCalender = (type) => {
+    let event = {
+      title: data.title,
+      description: data.description,
+      location: '',
+      startTime: new Date(data.scheduledAt._seconds * 1000),
+      endTime: new Date(data.endAt._seconds * 1000),
+    };
+    addTocalender(event, type, false);
+  };
+
   return (
     <div>
       {isSubmitted ? (
-        <Stack spacing={1}>
-          <Typography sx={{ fontWeight: 500, display: 'flex' }}>
-            Add To Calander
-            <Typography style={{ color: '#E25630' }} sx={{ fontWeight: 500, color: 'primary', ml: 1 }} color="primary">
-              {' '}
-              (optional)
+        <Stack spacing={1} justifyContent="center" alignItems="center">
+          <Typography variant="h5" sx={{ textTransform: 'capitalize' }}>
+            {data.title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
+            {data.description}
+          </Typography>
+          <Typography variant="body">Meeting Password : {data.password}</Typography>
+          <br />
+          <Typography variant="body2">
+            {moment(new Date(data.scheduledAt._seconds * 1000)).format('LLL') +
+              ' to ' +
+              moment(new Date(data.endAt._seconds * 1000)).format('LLL')}
+          </Typography>
+          <Box
+            component={ButtonBase}
+            onClick={() => copyTocb('https://github.com/sskjdskd/sdshdj')}
+            sx={{
+              border: '1px solid #DDDDDD',
+              borderRadius: 1,
+              padding: 1,
+              pl: 2,
+              pr: 2,
+              backgroundColor: '#F9F9F9',
+              mb: 4,
+            }}
+            display="flex"
+            flexDirection="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Typography
+              variant="subtitle2"
+              align="center"
+              sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center' }}
+            >
+              {window.origin + '/meeting/' + data.id}
             </Typography>
+            <Iconify icon="fluent:copy-20-filled" sx={{ fontSize: 24, ml: 2, color: 'text.secondary' }} />
+          </Box>
+          <br />
+          <Typography sx={{ fontWeight: 500, display: 'flex' }} variant="body" gutterBottom>
+            Add To Calander
           </Typography>
 
-          <Stack spacing={2} direction={{ xs: 'column', sm: 'row' }}>
+          <Stack spacing={2} direction={{ xs: 'column', sm: 'row', mt: 1 }} justifyContent="center" alignItems="center">
             <Box
+              component={ButtonBase}
+              onClick={() => addCalender('apple')}
               width="160px"
               sx={{ border: '1px solid #DDDDDD', borderRadius: 1, padding: 2, backgroundColor: '#F9F9F9' }}
               display="flex"
@@ -183,6 +249,8 @@ export default function FormUserMeeting() {
               </Typography>
             </Box>
             <Box
+              component={ButtonBase}
+              onClick={() => addCalender('outlookcom')}
               width="160px"
               sx={{ border: '1px solid #DDDDDD', borderRadius: 1, padding: 2, backgroundColor: '#F9F9F9' }}
               display="flex"
@@ -202,9 +270,11 @@ export default function FormUserMeeting() {
               </Typography>
             </Box>
             <Box
+              component={ButtonBase}
               width="160px"
               sx={{ border: '1px solid #DDDDDD', borderRadius: 1, padding: 2, backgroundColor: '#F9F9F9' }}
               display="flex"
+              onClick={() => addCalender('google')}
               flexDirection="column"
               alignItems="center"
               justifyContent="center"

@@ -139,4 +139,4 @@ function InstantMeetingPopup(props) {
   );
 }
 
-export default withMeetingAuth(InstantMeetingPopup);
+export default InstantMeetingPopup;

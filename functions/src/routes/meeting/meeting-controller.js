@@ -38,22 +38,23 @@
  
     const timestamp = admin.firestore.Timestamp.fromDate(new Date(scheduleAt));
     console.log(timestamp,meetingDescription,meetingTopic,estimatedDuration,scheduleAt,timeZone,password,uid(),req.user)
-   meetingDb.add({ 
-       uid: uid(),
-       description:meetingDescription,
-       scheduledAt:timestamp,
-   endAt:admin.firestore.Timestamp.fromDate(new Date(scheduleAt+(Number(estimatedDuration)*60*1000))),
-       timezone:timeZone, 
-       duration:"",
-       type:"scheduled",
-       title:meetingTopic,
-       password:password,
-       createdAt:timestamp,
-       createdBy:admin.firestore().collection("users").doc(req.user.user_id),
-       joinedBy:[]
-   }).then(meetting=>{
-       res.status(200).send({id:meetting.id});
+    let data={   uid: uid(),
+        description:meetingDescription,
+        scheduledAt:timestamp,
+    endAt:admin.firestore.Timestamp.fromDate(new Date(scheduleAt+(Number(estimatedDuration)*60*1000))),
+        timezone:timeZone, 
+        duration:"",
+        type:"scheduled",
+        title:meetingTopic,
+        password:password,
+        createdAt:timestamp,
+        createdBy:admin.firestore().collection("users").doc(req.user.user_id),
+        joinedBy:[]}
+   meetingDb.add(data).then(meetting=>{
+  
+       res.status(200).send({id:meetting.id,...data});
    }).catch(err=>{
+       console.log(err);
        res.status(500).send({message:"error in creating meeting"})
    })
 };

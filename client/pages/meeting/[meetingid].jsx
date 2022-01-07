@@ -34,7 +34,7 @@ import InviteData from '../../components/invite/InviteData';
 import InviteModal from '../../components/invite/InviteModal';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-
+import withMeetingAuth from '../../HOC/withMeetingAuth';
 const Sidebar = styled('header')(({ theme }) => ({
   width: '240px',
   height: '100%',
@@ -288,7 +288,7 @@ function Meeting() {
 }
 
 // ----------------------------------------------------------------------
-let MeetingPage = withAuth(Meeting);
+let MeetingPage = withMeetingAuth(Meeting);
 
 MeetingPage.getLayout = function getLayout(page) {
   return <DashboardLayout>{page}</DashboardLayout>;

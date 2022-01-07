@@ -7,7 +7,7 @@ import axios from 'axios';
 import firebase from 'firebase/compat/app';
 
 import 'firebase/compat/firestore';
-const endpoint = 'https://us-central1-meetaap-55e58.cloudfunctions.net/app';
+const endpoint = 'http://localhost:5000/meetaap-55e58/us-central1/app';
 
 export const instantMeeting = async (data) => {
   return axios.post(`${endpoint}/meeting/instant`, data);
@@ -29,6 +29,7 @@ export const getMeetingEvents = (start, end, user) => {
       .where('createdBy', '==', userRef)
       .where('scheduledAt', '>=', startTme)
       .where('scheduledAt', '<=', endDate)
+      .where('type', '==', 'scheduled')
       .get()
       .then((snapshot) => {
         let data = snapshot.docs.map((i) => {
@@ -38,7 +39,7 @@ export const getMeetingEvents = (start, end, user) => {
             description: i.description,
             start: i.data().scheduledAt.toDate(),
             textColor: '#1890FF',
-            end: i.data().endAt.toDate(),
+            end: i.data()?.endAt?.toDate(),
             ...i.data(),
           };
         });
