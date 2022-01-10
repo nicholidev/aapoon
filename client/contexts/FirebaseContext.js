@@ -279,6 +279,7 @@ function AuthProvider({ children }) {
     window.location = '/';
 
     localStorage.removeItem('isAuthenticated');
+    localStorage.clear();
   };
 
   const resetPassword = async (email) => {

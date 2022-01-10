@@ -49,7 +49,14 @@ const checkPhoneExistance = async (req, res) => {
 const sendOTP = async (req, res) => {
   try {
     let response;
-    let otp = Math.floor(1000 + Math.random() * 9000);
+    let otp = Math.floor(100000 + Math.random() * 900000);
+    let meeting = (
+      await admin.firestore().collection("meeting").doc(req.body.meeting).get()
+    ).data();
+    console.log(meeting);
+    if (meeting.password && req.body.password != meeting.password) {
+      return res.status(403).send();
+    }
     if (checkIndianMobile(req.body.mobile)) {
       let smsResult = await axios.get(
         `https://www.fast2sms.com/dev/bulkV2?authorization=${

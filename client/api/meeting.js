@@ -52,6 +52,33 @@ export const getMeetingEvents = (start, end, user) => {
   });
 };
 
-export const joinMeeting = (id) => {};
+export const sendOtp = (mobile, meeting, password = '') => {
+  return axios.post(`${endpoint}/misc/send-otp`, { mobile: mobile, meeting, password: password });
+};
 
-export const getMeetingDetails = (id) => {};
+export const verifyOtp = (otp) => {
+  return axios.post(`${endpoint}/misc/verify-otp`, { otp, meeting, mobile });
+};
+
+export const joinMeeting = (data) => {
+  return axios.post(`${endpoint}/meeting/join`, data);
+};
+
+export const getMeetingDetails = (id) => {
+  return new Promise((resolve, reject) => {
+    firebase
+      .firestore()
+      .collection('meeting')
+      .doc(id)
+      .get()
+      .then((snapshot) => {
+        console.log(snapshot, snapshot.data());
+        let data = snapshot.data();
+        resolve(data);
+      })
+      .catch((err) => {
+        console.log(err);
+        reject(err);
+      });
+  });
+};

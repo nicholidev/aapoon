@@ -48,7 +48,9 @@ const Sidebar = styled('header')(({ theme }) => ({
 
 const Content = styled('div')(({ theme }) => ({
   width: '100%',
-  height: '89vh',
+  height: '100%',
+  display: 'flex',
+  flex: 1,
   [theme.breakpoints.down('md')]: {
     width: '100%',
     paddingLeft: 0,
@@ -127,7 +129,7 @@ function Meeting() {
   const { themeStretch } = useSettings();
   const router = useRouter();
 
-  const domain = 'meet.jit.si';
+  const domain = 'meet.aapoon.com';
   let api = {};
   const [meetingState, setMeetingState] = useState({});
 
@@ -238,17 +240,8 @@ function Meeting() {
   }, [meetingState]);
 
   return (
-    <Page title="Meeting">
-      <GlobalStyles
-        styles={{
-          body: { backgroundColor: '#F1F1F1' },
-        }}
-      />
-      <div sx={{ display: 'flex' }}>
-        <Content>
-          <DataSection>
-            <div id="jitsi-iframe" style={{ height: '100%' }}></div>
-            <div class="item-center">
+    <Content id="jitsi-iframe" style={{ height: '100%' }}>
+      {/* <div class="item-center">
               <span>Custom Controls</span>
             </div>
             <div class="item-center">
@@ -279,19 +272,16 @@ function Meeting() {
                 aria-hidden="true"
                 title="Share your screen"
               ></i>
-            </div>
-          </DataSection>
-        </Content>
-      </div>
-    </Page>
+            </div> */}
+    </Content>
   );
 }
 
 // ----------------------------------------------------------------------
 let MeetingPage = withMeetingAuth(Meeting);
 
-MeetingPage.getLayout = function getLayout(page) {
-  return <DashboardLayout>{page}</DashboardLayout>;
-};
+// MeetingPage.getLayout = function getLayout(page) {
+//   return <DashboardLayout>{page}</DashboardLayout>;
+// };
 
 export default MeetingPage;

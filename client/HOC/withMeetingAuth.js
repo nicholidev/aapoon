@@ -6,12 +6,14 @@ import { useRouter } from 'next/router';
 import { addJWTInterceptor, errorHandlerInterceptor } from '../utils/Interceptor';
 import { styled } from '@mui/material/styles';
 import { Typography, Box, Dialog, Divider } from '@mui/material';
-import { RegisterForm } from '../sections/auth/register';
+import RegisterForm from '../sections/auth/meeting/RegisterForm';
+import VerifyCode from '../sections/auth/meeting/verifyCode';
+import PasswordForm from '../sections/auth/meeting/PasswordForm';
 import Logo from '../components/Logo';
-
+import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-
+import { getMeetingDetails } from '../api/meeting';
 const ContentStyle = styled('div')(({ theme }) => ({
   maxWidth: 480,
   margin: 'auto',
@@ -28,10 +30,46 @@ const withMeetingAuth = (WrappedComponent) => {
     errorHandlerInterceptor();
     // checks whether we are on client / browser or server.
     if (typeof window !== 'undefined') {
+      let { query } = useRouter();
       const router = useRouter();
       const [open, setOpen] = useState(true);
-      let { query } = useRouter();
-      if (!localStorage.getItem('isAuthenticated')) {
+      const [isOtp, setOtp] = useState(false);
+      const [error, setError] = useState('');
+      const [meetData, setMeetData] = useState({});
+      const [loading, setLoading] = useState(true);
+      const [authMeeting, setAuthMeeting] = useState({
+        isAuth: localStorage.getItem('mid') == query.meetingid,
+        id: localStorage.getItem('mid'),
+        jwt: '',
+      });
+
+      useEffect(() => {
+        if (query.meetingid)
+          getMeetingDetails(query.meetingid)
+            .then((data) => {
+              setLoading(false);
+
+              if (!data || !data?.uid) {
+                setError('invalid-meeting');
+              }
+              setMeetData(data);
+            })
+            .catch((err) => {
+              setLoading(false);
+              setError('server-error');
+            });
+
+        setAuthMeeting({
+          isAuth: localStorage.getItem('mid') == query.meetingid,
+          id: localStorage.getItem('mid'),
+          jwt: '',
+        });
+      }, [query?.meetingid]);
+
+      console.log(meetData);
+      console.log(authMeeting);
+      if (authMeeting.isAuth == true) return <WrappedComponent {...props} />;
+      if (error == 'invalid-meeting') {
         // router.replace('/');
 
         return (
@@ -40,27 +78,58 @@ const withMeetingAuth = (WrappedComponent) => {
               open={open}
               maxWidth={'sm'}
               fullWidth
-              onClose={() => setOpen(false)}
+              // onClose={() => setOpen(false)}
+              id={'registerPopover'}
+              key={'registerPopover'}
+            >
+              <ContentStyle>
+                <Box sx={{ mb: 5, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Box sx={{ flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <center>
+                      <ErrorOutlineIcon sx={{ fontSize: 80 }} />
+                    </center>
+                    <Typography variant="h4" align="center" gutterBottom>
+                      Invalid meeting
+                    </Typography>
+                  </Box>
+                </Box>
+              </ContentStyle>
+            </Dialog>
+          </div>
+        );
+      }
+
+      if (!localStorage.getItem('isAuthenticated') && !loading) {
+        // router.replace('/');
+
+        return (
+          <div>
+            <Dialog
+              open={open}
+              maxWidth={'sm'}
+              fullWidth
+              // onClose={() => setOpen(false)}
               id={'registerPopover'}
               key={'registerPopover'}
             >
               <ContentStyle>
                 <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
                   <Box sx={{ flexGrow: 1 }}>
-                    <center>
-                      <Logo sx={{ height: 32 }} />
-                      <br />
-                    </center>
                     <Typography variant="h4" align="center" gutterBottom>
-                      Signup
+                      Join meeting
                     </Typography>
                   </Box>
                 </Box>
 
-                <RegisterForm query={query} />
+                {isOtp ? (
+                  <VerifyCode />
+                ) : (
+                  <RegisterForm query={query} id={query.meetingid} setOtp={setOtp} hasPassword={meetData.password} />
+                )}
+                {/* <VerifyCode /> */}
                 <div id="captcha-container"></div>
                 <Typography variant="caption" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
-                  By clicking on Complete Signup, you agree to our &nbsp;
+                  By clicking on Join meeting, you agree to our &nbsp;
                   <Link underline="always" color="text.primary" href="#">
                     Terms and conditions &nbsp;
                   </Link>
@@ -82,10 +151,35 @@ const withMeetingAuth = (WrappedComponent) => {
           </div>
         );
       }
+      if (localStorage.getItem('isAuthenticated') && meetData.password) {
+        return (
+          <Dialog
+            open={open}
+            maxWidth={'sm'}
+            fullWidth
+            // onClose={() => setOpen(false)}
+            id={'registerPopover'}
+            key={'registerPopover'}
+          >
+            <ContentStyle>
+              <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
+                <Box sx={{ flexGrow: 1 }}>
+                  <Typography variant="h4" align="center" gutterBottom>
+                    Enter Password
+                  </Typography>
+                </Box>
+              </Box>
+
+              <PasswordForm query={query} id={query.meetingid} setAuthMeeting={setAuthMeeting} />
+              {/* <VerifyCode /> */}
+              <div id="captcha-container"></div>
+            </ContentStyle>
+          </Dialog>
+        );
+      }
 
       // If this is an accessToken we just render the component that was passed with all its props
-
-      return <WrappedComponent {...props} />;
+      // if (!loading) return <WrappedComponent {...props} />;
     }
 
     // If we are on server, return null

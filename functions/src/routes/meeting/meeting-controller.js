@@ -58,10 +58,28 @@
        res.status(500).send({message:"error in creating meeting"})
    })
 };
+
+const joinMeeting=async (req, res) => {
+    try{
+
+  
+    let meeting = (
+        await admin.firestore().collection("meeting").doc(req.body.id).get()
+      ).data();
+     
+      if (meeting.password && req.body.password != meeting.password) {
+        return res.status(403).send();
+      }
+      return res.status(200).send();
+    }catch(err){
+        return res.status(500).send();
+    }
+}
  
  module.exports = {
     instantMeeting,
-    scheduleMeeting
+    scheduleMeeting,
+    joinMeeting
   
  };
  

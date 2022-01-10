@@ -185,17 +185,17 @@ export default function FormUserMeeting() {
       {isSubmitted ? (
         <Stack spacing={1} justifyContent="center" alignItems="center">
           <Typography variant="h5" sx={{ textTransform: 'capitalize' }}>
-            {data.title}
+            {data?.title}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            {data.description}
+            {data?.description}
           </Typography>
           <Typography variant="body">Meeting Password : {data.password}</Typography>
           <br />
           <Typography variant="body2">
-            {moment(new Date(data.scheduledAt._seconds * 1000)).format('LLL') +
+            {moment(new Date(data?.scheduledAt?._seconds * 1000)).format('LLL') +
               ' to ' +
-              moment(new Date(data.endAt._seconds * 1000)).format('LLL')}
+              moment(new Date(data?.endAt?._seconds * 1000)).format('LLL')}
           </Typography>
           <Box
             component={ButtonBase}

@@ -29,11 +29,11 @@ const MainStyle = styled('main', {
   shouldForwardProp: (prop) => prop !== 'collapseClick',
 })(({ collapseClick, theme }) => ({
   flexGrow: 1,
-  paddingTop: DASHBOARD_HEADER_MOBILE + 24,
-  paddingBottom: DASHBOARD_HEADER_MOBILE + 24,
+  paddingTop: DASHBOARD_HEADER_MOBILE,
+  paddingBottom: DASHBOARD_HEADER_MOBILE,
   [theme.breakpoints.up('lg')]: {
-    paddingTop: DASHBOARD_HEADER_DESKTOP + 24,
-    paddingBottom: DASHBOARD_HEADER_DESKTOP + 24,
+    paddingTop: DASHBOARD_HEADER_DESKTOP,
+    paddingBottom: DASHBOARD_HEADER_DESKTOP,
     width: `calc(100% - ${DASHBOARD_NAVBAR_WIDTH}px)`,
     transition: theme.transitions.create('margin-left', {
       duration: theme.transitions.duration.shorter,
