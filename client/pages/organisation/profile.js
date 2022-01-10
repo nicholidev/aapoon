@@ -5,11 +5,11 @@
 import Link from 'next/link';
 import {
   Button,
-  Box,
   Card,
   Container,
   Grid,
   Avatar,
+  Box,
   ListItem,
   ListItemText,
   ListItemButton,
@@ -18,6 +18,7 @@ import {
   styled,
   Typography,
   Divider,
+  ButtonBase,
 } from '@mui/material';
 // layouts
 import DashboardLayout from '../../layouts/dashboard';
@@ -36,7 +37,6 @@ import AppNewInvoice from '../../sections/@dashboard/general/app/AppNewInvoice';
 import InviteData from '../../components/invite/InviteData';
 import InviteModal from '../../components/invite/InviteModal';
 import { useState } from 'react';
-import UpdateUserProfile from '../../sections/user/UpdateUserProfile';
 
 const Sidebar = styled('header')(({ theme }) => ({
   width: '240px',
@@ -97,6 +97,20 @@ const AvatarContainer = styled(Card)(({ theme }) => ({
   },
 }));
 
+const AdminAvatar = styled(Card)(({ theme }) => ({
+  width: 50,
+  height: 50,
+  padding: '2px',
+  borderRadius: '50px',
+  boxShadow: '0px 0px 9px rgba(0, 0, 0, 0.25)',
+}));
+
+const AdminCard = styled(Card)(({ theme }) => ({
+  padding: '2px',
+  borderRadius: '8px',
+  boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.25)',
+}));
+
 const DataSection = styled(Card)(({ theme }) => ({
   minHeight: 600,
   [theme.breakpoints.down('lg')]: {
@@ -150,7 +164,7 @@ function ProfilePage() {
             <DataHead>
               <Box display="flex" justifyContent="flex-end" padding="0 10px">
                 <Box>
-                  <UpdateUserProfile>
+                  <Link href="/auth/business-profile" passHref={true}>
                     <ListItemButton>
                       <ListItemIcon>
                         <Iconify icon={'feather:edit'} width="20px" height="20px" />
@@ -161,10 +175,10 @@ function ProfilePage() {
                         </Typography>
                       </ListItemText>
                     </ListItemButton>
-                  </UpdateUserProfile>
+                  </Link>
                 </Box>
               </Box>
-              <Grid container spacing={3} justifyContent={'center'}>
+              <Grid container spacing={3} justifyContent={'space-around'}>
                 <Grid item xs={12} sm={4} lg={2}>
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <AvatarContainer>
@@ -180,9 +194,9 @@ function ProfilePage() {
                     <Typography
                       variant="caption"
                       color="common.white"
-                      sx={{ backgroundColor: 'error.main', borderRadius: '50px', padding: '2px 10px' }}
+                      sx={{ backgroundColor: 'error.main', borderRadius: '4px', padding: '2px 10px' }}
                     >
-                      USER
+                      BUSINESS
                     </Typography>
                   </div>
                 </Grid>
@@ -190,21 +204,15 @@ function ProfilePage() {
                   <Stack spacing={3}>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
-                        Name
+                        Business Name
                       </Typography>
-                      <Typography variant="h6">Henry Cavil</Typography>
+                      <Typography variant="h6">Qwerty Inc.</Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
-                        Email
+                        Business Website
                       </Typography>
-                      <Typography variant="h6">henrqwerty@gmail.com</Typography>
-                    </Stack>
-                    <Stack spacing={0}>
-                      <Typography variant="subtitle2" color="GrayText">
-                        Phone
-                      </Typography>
-                      <Typography variant="h6">113-503-8942</Typography>
+                      <Typography variant="h6">www.qwerty.com</Typography>
                     </Stack>
                   </Stack>
                 </Grid>
@@ -212,106 +220,71 @@ function ProfilePage() {
                   <Stack spacing={3}>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
-                        Subscription Type
+                        Address
                       </Typography>
-                      <Typography variant="h6">Premium</Typography>
+                      <Typography variant="h6">Manhattan, USA</Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
-                        Purchase Date
+                        State
                       </Typography>
-                      <Typography variant="h6">May 26, 2019</Typography>
-                    </Stack>
-                    <Stack spacing={0}>
-                      <Typography variant="subtitle2" color="GrayText">
-                        Expriration Date
-                      </Typography>
-                      <Typography variant="h6">May 26, 2020</Typography>
+                      <Typography variant="h6">New York</Typography>
                     </Stack>
                   </Stack>
                 </Grid>
-                <Grid item xs={6} sm={3} lg={2}>
+                <Grid item xs={6} sm={3} lg={3}>
                   <Stack spacing={3}>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
-                        No. Of Licenses
+                        Pin Code / Zip Code
                       </Typography>
-                      <Typography variant="h6">1</Typography>
+                      <Typography variant="h6">302012</Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
-                        Assigned Licenses
+                        Team Size
                       </Typography>
-                      <Typography variant="h6">NA</Typography>
+                      <Typography variant="h6">25</Typography>
                     </Stack>
-                    <Stack spacing={0}>
-                      <Typography variant="subtitle2" color="GrayText">
-                        Unassigned Licenses
-                      </Typography>
-                      <Typography variant="h6">NA</Typography>
-                    </Stack>
-                  </Stack>
-                </Grid>
-                <Stack direction="row" display={{ xs: 'none', lg: 'flex' }}>
-                  <Divider orientation="vertical" variant="middle" flexItem />
-                </Stack>
-                <Grid item xs={12} sm={4} lg={2}>
-                  <Stack spacing={5}>
-                    <Stack spacing={0}>
-                      <ListItem disablePadding>
-                        <ListItemButton>
-                          <ListItemText
-                            secondary={
-                              <Typography variant="subtitle1" color="GrayText">
-                                Delete
-                              </Typography>
-                            }
-                          />
-                        </ListItemButton>
-                      </ListItem>
-                      <ListItem disablePadding>
-                        <ListItemButton>
-                          <ListItemText
-                            primary={
-                              <Typography variant="subtitle1" color="GrayText">
-                                Change plan
-                              </Typography>
-                            }
-                          />
-                        </ListItemButton>
-                      </ListItem>
-                      <ListItem disablePadding>
-                        <ListItemButton>
-                          <ListItemText
-                            primary={
-                              <Typography variant="subtitle1" color="success.main">
-                                Renew
-                              </Typography>
-                            }
-                          />
-                        </ListItemButton>
-                      </ListItem>
-                    </Stack>
-
-                    {/* <Stack spacing={0}>
-                      <ListItem disablePadding>
-                        <ListItemButton>
-                          <ListItemIcon>
-                            <Iconify icon={'eva:email-outline'} width={24} height={24} color="GrayText" />
-                          </ListItemIcon>
-                          <ListItemText
-                            secondary={
-                              <Typography variant="subtitle1" color="GrayText">
-                                Send an email
-                              </Typography>
-                            }
-                          />
-                        </ListItemButton>
-                      </ListItem>
-                    </Stack> */}
                   </Stack>
                 </Grid>
               </Grid>
+              <Box
+                display="flex"
+                justifyContent="flex-end"
+                sx={{ marginTop: { lg: -2, xs: 0 }, padding: { lg: '0 20px', xs: 0 } }}
+              >
+                <Box>
+                  <Typography variant="subtitle2" color="GrayText">
+                    Admin
+                  </Typography>
+                  <AdminCard>
+                    <ListItem>
+                      <ListItemIcon>
+                        <AdminAvatar>
+                          <Avatar
+                            src="http://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder-300x300.png"
+                            alt="Rayan Moran"
+                            sx={{ width: '100%', height: '100%' }}
+                          />
+                        </AdminAvatar>
+                      </ListItemIcon>
+                      <ListItemText>
+                        <Typography variant="h6" color="initial">
+                          Henry Cavil
+                        </Typography>
+                        <Link href={'/user/profile'} passHref={true}>
+                          <ButtonBase sx={{ marginLeft: '50px' }}>
+                            <Typography variant="subtitle2" color="primary.main">
+                              View Profile
+                            </Typography>
+                          </ButtonBase>
+                        </Link>
+                      </ListItemText>
+                    </ListItem>
+                  </AdminCard>
+                </Box>
+              </Box>
             </DataHead>
             <InviteData fetch={fetch} />
           </DataSection>

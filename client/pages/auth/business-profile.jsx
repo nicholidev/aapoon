@@ -64,10 +64,11 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 function Register() {
-  const { method } = useAuth();
+  const { method, user } = useAuth();
 
   const smUp = useResponsive('up', 'sm');
   const mdUp = useResponsive('up', 'md');
+  console.log(user);
 
   return (
     <Page title="Register">
@@ -90,7 +91,7 @@ function Register() {
                 </Box>
               </Box>
 
-              <RegisterForm />
+              <RegisterForm isUpdate={user.businessDetails?.businessName ? true : false} />
             </ContentStyle>
           </Paper>
         </Container>
@@ -99,4 +100,4 @@ function Register() {
   );
 }
 
-export default withoutAuth(Register);
+export default Register;

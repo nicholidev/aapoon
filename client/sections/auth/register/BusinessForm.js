@@ -3,7 +3,7 @@
  XYZ. Contact address: XYZ@xyz.pa .
  */
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import { useFormik, Form, FormikProvider } from 'formik';
 // @mui
@@ -35,7 +35,7 @@ import { FileUploader } from 'react-drag-drop-files';
 import { acceptInvitation, getCountry } from '../../../api/user';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../../utils/errorMessage';
-export default function RegisterForm() {
+export default function RegisterForm(props) {
   const { registerBusiness,user } = useAuth();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -112,6 +112,23 @@ export default function RegisterForm() {
       }
     },
   });
+
+  useEffect(()=>{
+    if(props.isUpdate){
+      formik.setValues({
+  
+        businessName: user.businessDetails?.businessName,
+        businessWeb: user.businessDetails?.businessWeb,
+        addrerss1:user.businessDetails?.addrerss1,
+        addrerss2: user.businessDetails?.addrerss2,
+        state:user.businessDetails?.state,
+        pincode: user.businessDetails?.pincode,
+        teamsize: user.businessDetails?.teamsize,
+        logo: user.businessDetails?.logo,
+      });
+    }
+
+  },[props.isUpdate]);
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, values } = formik;
 
@@ -245,7 +262,7 @@ export default function RegisterForm() {
               Cancel
             </LoadingButton>
             <LoadingButton size="large" type="submit" variant="contained" loading={isSubmitting}>
-              Register
+              {props.isUpdate? "Update":"Register"}
             </LoadingButton>
           </Stack>
         </Stack>
