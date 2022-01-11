@@ -55,7 +55,7 @@ const Content = styled('div')(({ theme }) => ({
   paddingLeft: theme.spacing(4),
   marginTop: theme.spacing(6),
   [theme.breakpoints.down('md')]: {
-    width: '100vw',
+    width: '100%',
     paddingLeft: 0,
     marginTop: theme.spacing(2),
   },
@@ -77,7 +77,7 @@ const InfoCard = styled(Card)(({ theme }) => ({
   paddingTop: 16,
   position: 'relative',
   margin: 'auto',
-  [theme.breakpoints.down('md')]: {
+  [theme.breakpoints.down('lg')]: {
     marginBottom: theme.spacing(4),
   },
   [theme.breakpoints.down('sm')]: {
@@ -90,7 +90,7 @@ const InfoContainer = styled(Grid)(({ theme }) => ({
   paddingLeft: theme.spacing(8),
   paddingRight: theme.spacing(8),
   justifyContent: 'space-between',
-  [theme.breakpoints.down('md')]: {
+  [theme.breakpoints.down('lg')]: {
     justifyContent: 'center',
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
@@ -103,7 +103,7 @@ const DataSection = styled(Card)(({ theme }) => ({
   height: 600,
   [theme.breakpoints.down('md')]: {
     marginLeft: 0,
-    marginRight: theme.spacing(4),
+    marginRight: 0,
   },
 }));
 
@@ -113,7 +113,7 @@ const DataHead = styled('div')(({ theme }) => ({
   padding: theme.spacing(3),
   justifyContent: 'space-between',
   [theme.breakpoints.down('md')]: {
-    padding: theme.spacing(1),
+    padding: theme.spacing(2),
   },
 }));
 
@@ -186,7 +186,7 @@ function RecordingsPage() {
         </Sidebar>
         <Content>
           <InfoContainer container spacing={3}>
-            <Grid xs={12} sm={6} md={4}>
+            <Grid xs={12} sm={6} lg={4}>
               <InfoCard>
                 <InfoHeading>Total number of Licences</InfoHeading>
                 <InfoNumbers>
@@ -195,7 +195,7 @@ function RecordingsPage() {
                 <PersonIcon style={infoIconStyle} />
               </InfoCard>
             </Grid>
-            <Grid xs={12} sm={6} md={4}>
+            <Grid xs={12} sm={6} lg={4}>
               <InfoCard>
                 <InfoHeading>Assigned Licences</InfoHeading>
                 <InfoNumbers>
@@ -204,7 +204,7 @@ function RecordingsPage() {
                 <CheckCircleIcon style={infoIconStyle} />
               </InfoCard>
             </Grid>
-            <Grid xs={12} sm={6} md={4}>
+            <Grid xs={12} sm={6} lg={4}>
               <InfoCard>
                 <InfoHeading>Remaining Licenses</InfoHeading>
                 <InfoNumbers>

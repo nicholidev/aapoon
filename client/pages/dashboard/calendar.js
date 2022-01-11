@@ -67,7 +67,7 @@ const Content = styled('div')(({ theme }) => ({
   paddingLeft: theme.spacing(4),
 
   [theme.breakpoints.down('md')]: {
-    width: '100vw',
+    width: '100%',
     paddingLeft: 0,
     marginTop: theme.spacing(2),
   },
@@ -86,7 +86,7 @@ const SideSection = styled(Card)(({ theme }) => ({
 const DataSection = styled(Card)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     marginLeft: 0,
-    marginRight: theme.spacing(4),
+    marginRight: 0,
   },
 }));
 
@@ -96,7 +96,7 @@ const DataHead = styled('div')(({ theme }) => ({
   padding: theme.spacing(3),
   justifyContent: 'flex-end',
   [theme.breakpoints.down('md')]: {
-    padding: theme.spacing(1),
+    padding: theme.spacing(2),
   },
 }));
 

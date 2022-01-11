@@ -55,7 +55,7 @@ const Content = styled('div')(({ theme }) => ({
   padding: theme.spacing(1),
   paddingLeft: theme.spacing(4),
   [theme.breakpoints.down('lg')]: {
-    width: '100vw',
+    width: '100%',
     paddingLeft: 0,
     marginTop: theme.spacing(2),
   },
@@ -101,7 +101,7 @@ const DataSection = styled(Card)(({ theme }) => ({
   minHeight: 600,
   [theme.breakpoints.down('lg')]: {
     marginLeft: 0,
-    marginRight: theme.spacing(4),
+    marginRight: 0,
   },
 }));
 
