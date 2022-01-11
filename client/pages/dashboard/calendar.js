@@ -47,6 +47,7 @@ import { startOfMonth, endOfMonth } from 'date-fns';
 import withAuth from '../../HOC/withAuth';
 import useAuth from '../../hooks/useAuth';
 import InstantMeetingPopup from '../../sections/meeting/InstantMeetingPopup';
+import MeetingDetailsPopup from '../../sections/meeting/MeetingDetailsPopup';
 const Sidebar = styled('header')(({ theme }) => ({
   width: '240px',
   height: '100%',
@@ -171,8 +172,14 @@ function CalendarPage() {
       calendarApi.unselect();
     }
   };
+
+  const [meetingOpen, setMeetingOpen] = useState({ isOpen: false });
   const handleSelectEvent = (arg) => {
-    console.log(arg.event.start);
+    console.log(arg.event);
+    setMeetingOpen({
+      isOpen: true,
+      data: arg.event,
+    });
   };
 
   return (
@@ -182,6 +189,11 @@ function CalendarPage() {
           body: { backgroundColor: '#F1F1F1' },
         }}
       />
+      <MeetingDetailsPopup
+        isOpen={meetingOpen.isOpen}
+        data={meetingOpen.data}
+        onClose={() => setMeetingOpen({ isOpen: false })}
+      ></MeetingDetailsPopup>
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex' }}>
         <Sidebar>
           <SideSection>
@@ -249,7 +261,7 @@ function CalendarPage() {
                     eventResizableFromStart
                     select={handleSelectRange}
                     // eventDrop={handleDropEvent}
-                    // eventClick={handleSelectEvent}
+                    eventClick={handleSelectEvent}
                     // eventResize={handleResizeEvent}
                     height={isDesktop ? 320 : 'auto'}
                     plugins={[dayGridPlugin, timeGridPlugin]}

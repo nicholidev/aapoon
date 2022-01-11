@@ -21,13 +21,6 @@ import moment from 'moment';
 import { getInviteList } from '../../api/user';
 const _appInvoices = [];
 
-const CustomHead = styled(TableHead)(({ theme }) => ({
-  root: {
-    backgroundColor: theme.palette.primary.main,
-    borderRadius: '7px',
-  },
-}));
-
 export default function PlansComparison(props) {
   const [planData, setplanData] = useState([
     { optionName: 'Unlimited Meetings', freeUsers: true, premiumUsers: true, platinumUser: true },
@@ -41,8 +34,15 @@ export default function PlansComparison(props) {
   return (
     <Scrollbar sx={{ width: '100%' }}>
       <TableContainer>
-        <Table>
-          <TableHead >
+        <Table
+          sx={{
+            '& .MuiTableCell-head': {
+              bgcolor: 'secondary.darker',
+              color: 'text.secondary',
+            },
+          }}
+        >
+          <TableHead>
             <TableRow key={'tableheader'}>
               <TableCell />
               <TableCell style={{ borderLeft: '1px solid #000' }}>
