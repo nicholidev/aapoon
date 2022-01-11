@@ -23,6 +23,7 @@ import {
 import DashboardLayout from '../../layouts/dashboard';
 // hooks
 import useSettings from '../../hooks/useSettings';
+import useAuth from '../../hooks/useAuth';
 // components
 import Page from '../../components/Page';
 import GlobalStyles from '@mui/material/GlobalStyles';
@@ -137,6 +138,8 @@ function ProfilePage() {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [fetch, setFetch] = useState(false);
   const [current, setCurrent] = useState('dashboard');
+  const { user } = useAuth();
+  console.log(user);
   return (
     <Page title="Dashboard">
       <GlobalStyles
@@ -192,19 +195,21 @@ function ProfilePage() {
                       <Typography variant="subtitle2" color="GrayText">
                         Name
                       </Typography>
-                      <Typography variant="h6">Henry Cavil</Typography>
+                      <Typography sx={{ textTransform: 'capitalize' }} variant="h6">
+                        {user.displayName}
+                      </Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
                         Email
                       </Typography>
-                      <Typography variant="h6">henrqwerty@gmail.com</Typography>
+                      <Typography variant="h6">{user.email}</Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
                         Phone
                       </Typography>
-                      <Typography variant="h6">113-503-8942</Typography>
+                      <Typography variant="h6">{user.phoneNumber}</Typography>
                     </Stack>
                   </Stack>
                 </Grid>
@@ -214,7 +219,7 @@ function ProfilePage() {
                       <Typography variant="subtitle2" color="GrayText">
                         Subscription Type
                       </Typography>
-                      <Typography variant="h6">Premium</Typography>
+                      <Typography variant="h6">Free</Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
