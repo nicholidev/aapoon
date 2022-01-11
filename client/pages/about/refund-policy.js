@@ -87,7 +87,7 @@ function RefundPolicy() {
                     <Iconify icon={'eva:arrow-back-fill'} />
                   </IconButtonAnimate>
                   &nbsp;&nbsp;&nbsp;&nbsp; */}
-                <Typography variant="h2" align="center" gutterBottom>
+                <Typography variant="h2" align="center" gutterBottom sx={{ fontSize: { xs: '22px', md: '40px' } }}>
                   MEETAAP Refund policy
                 </Typography>
 
@@ -97,7 +97,7 @@ function RefundPolicy() {
               </Box>
 
               <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
                   Since the meetaap.in offers non-tangible products/Goods/Services, we do not provide refunds after the
                   subscription is purchased, which you acknowledge prior to purchasing any subscription on the Website.
                   <br />
@@ -111,7 +111,7 @@ function RefundPolicy() {
                   <Iconify icon={'ci:dot-02-s'} />
                 </Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
                   There is no refund if a customer cancels or doesn’t use the product or service during the active
                   subscription period.
                 </Typography>
@@ -121,7 +121,7 @@ function RefundPolicy() {
                   <Iconify icon={'ci:dot-02-s'} />
                 </Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
                   MEETAAP will issue a refund if a duplicate payment for the same service is charged due to a technical
                   error or mistake.
                 </Typography>
@@ -131,7 +131,7 @@ function RefundPolicy() {
                   <Iconify icon={'ci:dot-02-s'} />
                 </Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
                   MEETAAP will issue a refund if a duplicate payment for the same service is charged due to a technical
                   error or mistake.
                 </Typography>
@@ -141,7 +141,7 @@ function RefundPolicy() {
                   <Iconify icon={'ci:dot-02-s'} />
                 </Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
                   A refund request must be made in writing using the registered email Id of the user.
                 </Typography>
               </Box>
@@ -150,7 +150,7 @@ function RefundPolicy() {
                   <Iconify icon={'ci:dot-02-s'} />
                 </Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
                   We reserve all the rights to issue a refund, and the decision will be made solely by us in all
                   circumstances.
                 </Typography>
@@ -160,7 +160,7 @@ function RefundPolicy() {
                   <Iconify icon={'ci:dot-02-s'} />
                 </Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
                   Refunds are subject to verification of information provided, and it may take up to 30 days to process
                   it.
                 </Typography>
@@ -170,7 +170,7 @@ function RefundPolicy() {
                   Contacting us
                 </Typography>
               </Box>
-              <Typography variant="subtitle1">
+              <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
                 You may notify MEETAAP of any issues by sending an Email to &nbsp;
                 <a href="mailto:support@meetapp.in">support@meetapp.in</a>
               </Typography>

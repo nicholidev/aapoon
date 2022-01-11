@@ -34,9 +34,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import StarIcon from '@mui/icons-material/Star';
 import AppNewInvoice from '../../sections/@dashboard/general/app/AppNewInvoice';
-import InviteData from '../../components/invite/InviteData';
-import InviteModal from '../../components/invite/InviteModal';
 import { useState } from 'react';
+import UserData from '../../components/organisation/UserData';
 
 const Sidebar = styled('header')(({ theme }) => ({
   width: '240px',
@@ -55,7 +54,7 @@ const Content = styled('div')(({ theme }) => ({
   padding: theme.spacing(1),
   paddingLeft: theme.spacing(4),
   [theme.breakpoints.down('lg')]: {
-    width: '100vw',
+    width: '100%',
     paddingLeft: 0,
     marginTop: theme.spacing(2),
   },
@@ -115,7 +114,7 @@ const DataSection = styled(Card)(({ theme }) => ({
   minHeight: 600,
   [theme.breakpoints.down('lg')]: {
     marginLeft: 0,
-    marginRight: theme.spacing(4),
+    marginRight: 0,
   },
 }));
 
@@ -286,7 +285,10 @@ function ProfilePage() {
                 </Box>
               </Box>
             </DataHead>
-            <InviteData fetch={fetch} />
+            <Typography variant="h5" sx={{ padding: '10px 20px' }}>
+              Users
+            </Typography>
+            <UserData  />
           </DataSection>
         </Content>
       </Container>

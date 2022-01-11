@@ -5,6 +5,7 @@
 import PropTypes from 'prop-types';
 // @mui
 import { alpha, styled } from '@mui/material/styles';
+import { Typography } from '@mui/material';
 
 // ----------------------------------------------------------------------
 
@@ -13,7 +14,7 @@ const RootStyle = styled('span')(({ theme, ownerState }) => {
   const { color, variant } = ownerState;
 
   const styleFilled = (color) => ({
-    color: theme.palette[color].contrastText,
+    color: theme.palette.common.white,
     backgroundColor: theme.palette[color].main,
   });
 
@@ -29,20 +30,21 @@ const RootStyle = styled('span')(({ theme, ownerState }) => {
   });
 
   return {
-    height: 22,
-    minWidth: 22,
+    height: 24,
+    minWidth: 24,
     lineHeight: 0,
-    borderRadius: 8,
+    borderRadius: 24,
     cursor: 'default',
     alignItems: 'center',
     whiteSpace: 'nowrap',
     display: 'inline-flex',
     justifyContent: 'center',
-    padding: theme.spacing(0, 1),
+    padding: theme.spacing(1, 1.5),
     color: theme.palette.grey[800],
     fontSize: theme.typography.pxToRem(12),
     fontFamily: theme.typography.fontFamily,
     backgroundColor: theme.palette.grey[300],
+    textTransform: 'uppercase',
     fontWeight: theme.typography.fontWeightBold,
 
     ...(color !== 'default'
@@ -76,7 +78,7 @@ Label.propTypes = {
 export default function Label({ color = 'default', variant = 'ghost', children, ...other }) {
   return (
     <RootStyle ownerState={{ color, variant }} {...other}>
-      {children}
+      <Typography variant="caption">{children}</Typography>
     </RootStyle>
   );
 }

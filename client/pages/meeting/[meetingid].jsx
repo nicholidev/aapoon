@@ -102,7 +102,7 @@ const DataHead = styled('div')(({ theme }) => ({
   padding: theme.spacing(3),
   justifyContent: 'space-between',
   [theme.breakpoints.down('md')]: {
-    padding: theme.spacing(1),
+    padding: theme.spacing(2),
   },
 }));
 

@@ -131,13 +131,18 @@ const DataHead = styled('div')(({ theme }) => ({
   padding: theme.spacing(3),
   justifyContent: 'space-between',
   [theme.breakpoints.down('md')]: {
-    padding: theme.spacing(1),
+    padding: theme.spacing(2),
   },
 }));
 
-const InfoHeading = styled('span')(({ theme }) => ({
-  fontSize: 14,
-  padding: theme.spacing(2),
+const TabContainer = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  justifyContent: 'center',
+  marginTop: -1,
+  [theme.breakpoints.down('md')]: {
+    marginTop: 2,
+    paddingTop: '20px',
+  },
 }));
 
 const PlanDiv = styled('div')(({ theme }) => ({
@@ -208,7 +213,7 @@ function PlanPricePage() {
               </MenuItem>
             </Select>
           </Box>
-          <Box display="flex" justifyContent={'center'} marginTop={-1}>
+          <TabContainer>
             <Tabs variant="standard" value={current == 'monthly' ? 0 : 1} onChange={handleTabChange} aria-label="">
               <Tab
                 label="MONTHLY"
@@ -223,7 +228,7 @@ function PlanPricePage() {
                 }}
               />
             </Tabs>
-          </Box>
+          </TabContainer>
           <br />
           <br />
           {/* <InfoContainer container spacing={4}>

@@ -38,8 +38,8 @@ const AvtarContainer = styled(Card)(({ theme }) => ({
   height: 44,
   borderRadius: '44px',
 }));
-export default function InviteData(props) {
-  const [inviteData, setInviteData] = useState([{}, {}, {}]);
+export default function UserData(props) {
+  const [userData, setUserData] = useState([{}, {}, {}]);
   const { user } = useAuth();
   console.log('user', user);
 
@@ -49,15 +49,15 @@ export default function InviteData(props) {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Invitee Name</TableCell>
+              <TableCell>User Name</TableCell>
               <TableCell>Email Id</TableCell>
-              <TableCell>Invited Date</TableCell>
-              <TableCell>Status</TableCell>
+              <TableCell>Assigned Date</TableCell>
+              <TableCell>Removed Date</TableCell>
               <TableCell />
             </TableRow>
           </TableHead>
           <TableBody>
-            {inviteData.map((row) => (
+            {userData.map((row) => (
               <TableRow key={row.token}>
                 <TableCell>
                   {' '}
@@ -90,7 +90,7 @@ export default function InviteData(props) {
                 </TableCell>
                 <TableCell>
                   <Typography variant="subtitle2" color="text.primary">
-                    {"Joined"}
+                    {moment(new Date()).format('ll')}
                   </Typography>
                 </TableCell>
               </TableRow>

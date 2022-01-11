@@ -87,7 +87,7 @@ function PrivacyPolicy() {
                    <Iconify icon={'eva:arrow-back-fill'} />
                  </IconButtonAnimate>
                  &nbsp;&nbsp;&nbsp;&nbsp; */}
-                <Typography variant="h2" align="center" gutterBottom>
+                <Typography variant="h2" align="center" gutterBottom sx={{ fontSize: { xs: '22px', md: '40px' } }}>
                   MEETAAP privacy policy
                 </Typography>
                 <br />
@@ -98,7 +98,7 @@ function PrivacyPolicy() {
               </Box>
 
               <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle1">
+                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
                   This Privacy Policy describes what MEETAAP gathers from and about you as a User of its services and
                   platforms, how MEETAAP uses it, and the controls you have over the disclosure of your information to
                   other users. As a condition of becoming a User, or using MEETAAP’s services or platforms in any way,

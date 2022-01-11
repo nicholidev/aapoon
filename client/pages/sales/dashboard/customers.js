@@ -4,7 +4,7 @@
  */
 import Link from 'next/link';
 import {
-    Box,
+  Box,
   Button,
   Card,
   Container,
@@ -56,7 +56,7 @@ const Content = styled('div')(({ theme }) => ({
   paddingLeft: theme.spacing(4),
   marginTop: theme.spacing(6),
   [theme.breakpoints.down('md')]: {
-    width: '100vw',
+    width: '100%',
     paddingLeft: 0,
     marginTop: theme.spacing(2),
   },
@@ -73,26 +73,23 @@ const SideSection = styled(Card)(({ theme }) => ({
 
 const InfoCard = styled(Card)(({ theme }) => ({
   height: 114,
-  width: 259,
+  width: 'auto',
   maxWidth: '100%',
+  margin: '0 20px',
   paddingTop: 16,
   position: 'relative',
-  margin: 'auto',
-  [theme.breakpoints.down('md')]: {
-    marginBottom: theme.spacing(4),
-  },
+  marginBottom: theme.spacing(4),
   [theme.breakpoints.down('sm')]: {
     width: '100%',
+    marginBottom: theme.spacing(2),
   },
 }));
 
 const InfoContainer = styled(Grid)(({ theme }) => ({
-  display: 'flex',
   paddingLeft: theme.spacing(8),
   paddingRight: theme.spacing(8),
-  justifyContent: 'space-between',
+  justifyContent: 'center',
   [theme.breakpoints.down('md')]: {
-    justifyContent: 'center',
     paddingLeft: theme.spacing(4),
     paddingRight: theme.spacing(4),
   },
@@ -104,7 +101,7 @@ const DataSection = styled(Card)(({ theme }) => ({
   height: 600,
   [theme.breakpoints.down('md')]: {
     marginLeft: 0,
-    marginRight: theme.spacing(4),
+    marginRight: 0,
   },
 }));
 
@@ -114,7 +111,7 @@ const DataHead = styled('div')(({ theme }) => ({
   padding: theme.spacing(3),
   justifyContent: 'space-between',
   [theme.breakpoints.down('md')]: {
-    padding: theme.spacing(1),
+    padding: theme.spacing(2),
   },
 }));
 
@@ -178,7 +175,7 @@ function PageCustomers() {
           </Sidebar>
           <Content>
             <InfoContainer container spacing={4}>
-              <Grid xs={12} sm={6} md={3}>
+              <Grid xs={12} sm={6} xl={3}>
                 <InfoCard>
                   <InfoHeading>Total number of customers</InfoHeading>
                   <InfoNumbers>
@@ -187,7 +184,7 @@ function PageCustomers() {
                   <PersonIcon style={infoIconStyle} />
                 </InfoCard>
               </Grid>
-              <Grid xs={12} sm={6} md={3}>
+              <Grid xs={12} sm={6} xl={3}>
                 <InfoCard>
                   <InfoHeading>Active Subscriptions</InfoHeading>
                   <InfoNumbers>
@@ -197,7 +194,7 @@ function PageCustomers() {
                   {/* <CheckCircleIcon style={infoIconStyle} /> */}
                 </InfoCard>
               </Grid>
-              <Grid xs={12} sm={6} md={3}>
+              <Grid xs={12} sm={6} xl={3}>
                 <InfoCard>
                   <InfoHeading>Recently Renewed</InfoHeading>
                   <InfoNumbers>
@@ -211,7 +208,7 @@ function PageCustomers() {
                   />
                 </InfoCard>
               </Grid>
-              <Grid xs={12} sm={6} md={3}>
+              <Grid xs={12} sm={6} xl={3}>
                 <InfoCard>
                   <InfoHeading>Expired Subscriptions</InfoHeading>
                   <InfoNumbers>
@@ -229,6 +226,7 @@ function PageCustomers() {
             <Button
               variant="contained"
               color="primary"
+              size="large"
               onClick={() => setInviteOpen(true)}
               startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
             >

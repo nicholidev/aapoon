@@ -46,19 +46,19 @@ export default function PlansComparison(props) {
             <TableRow key={'tableheader'}>
               <TableCell />
               <TableCell style={{ borderLeft: '1px solid #000' }}>
-                <Typography variant="subtitle1" color="common.white">
+                <Typography variant="subtitle1" color="common.white" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
                   Free users
                 </Typography>
               </TableCell>
               <TableCell style={{ borderLeft: '1px solid #000' }}>
                 {' '}
-                <Typography variant="subtitle1" color="common.white">
+                <Typography variant="subtitle1" color="common.white" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
                   Premium users
                 </Typography>
               </TableCell>
               <TableCell style={{ borderLeft: '1px solid #000' }}>
                 {' '}
-                <Typography variant="subtitle1" color="common.white">
+                <Typography variant="subtitle1" color="common.white" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
                   Platinum users
                 </Typography>
               </TableCell>
@@ -68,26 +68,47 @@ export default function PlansComparison(props) {
           <TableBody>
             {planData.map((row) => (
               <TableRow key={row.optionName}>
-                <TableCell style={{ border: '1px solid #000' }}>{`${row.optionName}`}</TableCell>
+                <TableCell
+                  style={{ border: '1px solid #000' }}
+                  sx={{ fontSize: { xs: '12px', md: '16px' } }}
+                >{`${row.optionName}`}</TableCell>
                 <TableCell align="center" style={{ border: '1px solid #000' }}>
                   {row.freeUsers ? (
-                    <Iconify icon={'emojione-v1:left-check-mark'} width="30px" height="30px" />
+                    <Iconify
+                      icon={'emojione-v1:left-check-mark'}
+                      sx={{ width: { xs: '15px', md: '30px' }, height: { xs: '15px', md: '30px' } }}
+                    />
                   ) : (
-                    <Iconify icon={'emojione-monotone:cross-mark'} width="25px" height="25px" />
+                    <Iconify
+                      icon={'emojione-monotone:cross-mark'}
+                      sx={{ width: { xs: '12px', md: '25px' }, height: { xs: '12px', md: '25px' } }}
+                    />
                   )}
                 </TableCell>
                 <TableCell align="center" style={{ border: '1px solid #000' }}>
                   {row.premiumUsers ? (
-                    <Iconify icon={'emojione-v1:left-check-mark'} width="30px" height="30px" />
+                    <Iconify
+                      icon={'emojione-v1:left-check-mark'}
+                      sx={{ width: { xs: '15px', md: '30px' }, height: { xs: '15px', md: '30px' } }}
+                    />
                   ) : (
-                    <Iconify icon={'emojione-monotone:cross-mark'} width="25px" height="25px" />
+                    <Iconify
+                      icon={'emojione-monotone:cross-mark'}
+                      sx={{ width: { xs: '12px', md: '25px' }, height: { xs: '12px', md: '25px' } }}
+                    />
                   )}
                 </TableCell>
                 <TableCell align="center" style={{ border: '1px solid #000' }}>
                   {row.platinumUser ? (
-                    <Iconify icon={'emojione-v1:left-check-mark'} width="30px" height="30px" />
+                    <Iconify
+                      icon={'emojione-v1:left-check-mark'}
+                      sx={{ width: { xs: '15px', md: '30px' }, height: { xs: '15px', md: '30px' } }}
+                    />
                   ) : (
-                    <Iconify icon={'emojione-monotone:cross-mark'} width="25px" height="25px" />
+                    <Iconify
+                      icon={'emojione-monotone:cross-mark'}
+                      sx={{ width: { xs: '12px', md: '25px' }, height: { xs: '12px', md: '25px' } }}
+                    />
                   )}
                 </TableCell>
                 <TableCell />
