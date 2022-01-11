@@ -19,9 +19,9 @@ export default function Dialog(theme) {
           '&.MuiDialog-paper .MuiDialogActions-root': {
             padding: theme.spacing(3),
           },
-          '@media (max-width: 600px)': {
-            margin: theme.spacing(2),
-          },
+          // '@media (max-width: 600px)': {
+          //   margin: theme.spacing(2),
+          // },
           '@media (max-width: 663.95px)': {
             '&.MuiDialog-paperWidthSm.MuiDialog-paperScrollBody': {
               maxWidth: '100%',

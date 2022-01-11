@@ -16,7 +16,7 @@ import { useEffect, useState } from 'react';
 import { getMeetingDetails } from '../api/meeting';
 const ContentStyle = styled('div')(({ theme }) => ({
   maxWidth: 480,
-  margin: 'auto',
+  margin: '0px 32px',
   display: 'flex',
   flexDirection: 'column',
   justifyContent: 'center',
@@ -34,6 +34,7 @@ const withMeetingAuth = (WrappedComponent) => {
       const router = useRouter();
       const [open, setOpen] = useState(true);
       const [isOtp, setOtp] = useState(false);
+      const [mobile, setMobile] = useState('');
       const [error, setError] = useState('');
       const [meetData, setMeetData] = useState({});
       const [loading, setLoading] = useState(true);
@@ -59,11 +60,19 @@ const withMeetingAuth = (WrappedComponent) => {
               setError('server-error');
             });
 
-        setAuthMeeting({
-          isAuth: localStorage.getItem('mid') == query.meetingid,
-          id: localStorage.getItem('mid'),
-          jwt: '',
-        });
+        if (localStorage.getItem('isAuthenticated') && !meetData.password) {
+          setAuthMeeting({
+            isAuth: true,
+            id: query.meetingid,
+            jwt: '',
+          });
+        } else {
+          setAuthMeeting({
+            isAuth: localStorage.getItem('mid') == query.meetingid,
+            id: localStorage.getItem('mid'),
+            jwt: '',
+          });
+        }
       }, [query?.meetingid]);
 
       console.log(meetData);
@@ -78,6 +87,7 @@ const withMeetingAuth = (WrappedComponent) => {
               open={open}
               maxWidth={'sm'}
               fullWidth
+              fullScreen
               // onClose={() => setOpen(false)}
               id={'registerPopover'}
               key={'registerPopover'}
@@ -106,8 +116,8 @@ const withMeetingAuth = (WrappedComponent) => {
           <div>
             <Dialog
               open={open}
-              maxWidth={'sm'}
               fullWidth
+              fullScreen
               // onClose={() => setOpen(false)}
               id={'registerPopover'}
               key={'registerPopover'}
@@ -122,9 +132,15 @@ const withMeetingAuth = (WrappedComponent) => {
                 </Box>
 
                 {isOtp ? (
-                  <VerifyCode />
+                  <VerifyCode id={query.meetingid} mobile={mobile} setAuthMeeting={setAuthMeeting} />
                 ) : (
-                  <RegisterForm query={query} id={query.meetingid} setOtp={setOtp} hasPassword={meetData.password} />
+                  <RegisterForm
+                    query={query}
+                    id={query.meetingid}
+                    setOtp={setOtp}
+                    hasPassword={meetData.password}
+                    setMobile={setMobile}
+                  />
                 )}
                 {/* <VerifyCode /> */}
                 <div id="captcha-container"></div>
@@ -157,6 +173,7 @@ const withMeetingAuth = (WrappedComponent) => {
             open={open}
             maxWidth={'sm'}
             fullWidth
+            fullScreen
             // onClose={() => setOpen(false)}
             id={'registerPopover'}
             key={'registerPopover'}

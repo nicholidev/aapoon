@@ -79,6 +79,7 @@ export default function RegisterForm(query) {
           setSubmitting(false);
         }
         query.setOtp(true)
+        query.setMobile(values.phone)
         if(user.accountType=="Business"){
           window?.location="/dashboard/one";
         }

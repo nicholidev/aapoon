@@ -58,7 +58,7 @@ export const sendOtp = (mobile, meeting, password = '') => {
   return axios.post(`${endpoint}/misc/send-otp`, { mobile: mobile, meeting, password: password });
 };
 
-export const verifyOtp = (otp) => {
+export const verifyOtp = (otp, meeting, mobile) => {
   return axios.post(`${endpoint}/misc/verify-otp`, { otp, meeting, mobile });
 };
 

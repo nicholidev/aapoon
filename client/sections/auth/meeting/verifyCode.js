@@ -12,6 +12,7 @@ import { LoadingButton } from '@mui/lab';
 // routes
 import { useRouter } from 'next/router';
 import OtpInput from 'react-otp-input';
+import { verifyOtp } from '../../../api/meeting';
 import ErrorMessages from '../../../utils/errorMessage';
 // eslint-disable-next-line consistent-return
 function maxLength(object) {
@@ -20,7 +21,7 @@ function maxLength(object) {
   }
 }
 
-export default function VerifyCodeForm({ id, mobile }) {
+export default function VerifyCodeForm({ id, mobile, setAuthMeeting }) {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
   const VerifyCodeSchema = Yup.object().shape({
@@ -34,20 +35,17 @@ export default function VerifyCodeForm({ id, mobile }) {
     validationSchema: VerifyCodeSchema,
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
       try {
-        await verifyMobileLinkCode(values.code);
+        await verifyOtp(values.code, id, mobile);
         enqueueSnackbar('Verify success', { variant: 'success' });
         setSubmitting(false);
+        localStorage.setItem('mid', id);
+        localStorage.setItem('mjwt', 'query.jwt');
 
-        if (user.accountType == 'Business') router.push('/auth/business-profile');
-        else {
-          localStorage.setItem('isAuthenticated', true);
-          window.location = '/dashboard/one';
-        }
+        setAuthMeeting({ isAuth: true, id: id, jwt: '' });
       } catch (err) {
-        console.log(err);
         setSubmitting(false);
         resetForm();
-        setErrors({ code: ErrorMessages[err.code] });
+        setErrors({ code: 'invalid or expired code' });
       }
 
       //navigate(PATH_DASHBOARD.root);
