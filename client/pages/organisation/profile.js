@@ -36,7 +36,7 @@ import StarIcon from '@mui/icons-material/Star';
 import AppNewInvoice from '../../sections/@dashboard/general/app/AppNewInvoice';
 import { useState } from 'react';
 import UserData from '../../components/organisation/UserData';
-
+import useAuth from '../../hooks/useAuth';
 const Sidebar = styled('header')(({ theme }) => ({
   width: '240px',
   height: '100%',
@@ -150,20 +150,22 @@ function ProfilePage() {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [fetch, setFetch] = useState(false);
   const [current, setCurrent] = useState('dashboard');
+  const { user } = useAuth();
+  console.log(user);
   return (
-    <Page title="Dashboard">
+    <Page title="Dashboard" sx={{ width: '100vw' }}>
       <GlobalStyles
         styles={{
           body: { backgroundColor: '#F1F1F1' },
         }}
       />
-      <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex' }}>
+      <Container maxWidth={themeStretch ? false : 'lg'} sx={{ display: 'flex' }}>
         <Content>
           <DataSection>
             <DataHead>
               <Box display="flex" justifyContent="flex-end" padding="0 10px">
                 <Box>
-                  <Link href="/auth/business-profile" passHref={true}>
+                  <Link href="/organisation/update" passHref={true}>
                     <ListItemButton>
                       <ListItemIcon>
                         <Iconify icon={'feather:edit'} width="20px" height="20px" />
@@ -182,8 +184,8 @@ function ProfilePage() {
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <AvatarContainer>
                       <Avatar
-                        src="http://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder-300x300.png"
-                        alt="Rayan Moran"
+                        src={user.businessDetails?.logo}
+                        alt={user?.businessDetails?.businessName}
                         sx={{ width: '100%', height: '100%' }}
                       />
                     </AvatarContainer>
@@ -205,13 +207,13 @@ function ProfilePage() {
                       <Typography variant="subtitle2" color="GrayText">
                         Business Name
                       </Typography>
-                      <Typography variant="h6">Qwerty Inc.</Typography>
+                      <Typography variant="h6">{user.businessDetails?.businessName}</Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
                         Business Website
                       </Typography>
-                      <Typography variant="h6">www.qwerty.com</Typography>
+                      <Typography variant="h6">{user.businessDetails?.businessWeb}</Typography>
                     </Stack>
                   </Stack>
                 </Grid>
@@ -221,13 +223,15 @@ function ProfilePage() {
                       <Typography variant="subtitle2" color="GrayText">
                         Address
                       </Typography>
-                      <Typography variant="h6">Manhattan, USA</Typography>
+                      <Typography variant="h6">
+                        {user.businessDetails?.address1 + ' , ' + user.businessDetails?.address2}
+                      </Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
                         State
                       </Typography>
-                      <Typography variant="h6">New York</Typography>
+                      <Typography variant="h6">{user.businessDetails?.state}</Typography>
                     </Stack>
                   </Stack>
                 </Grid>
@@ -237,7 +241,7 @@ function ProfilePage() {
                       <Typography variant="subtitle2" color="GrayText">
                         Pin Code / Zip Code
                       </Typography>
-                      <Typography variant="h6">302012</Typography>
+                      <Typography variant="h6">{user.businessDetails?.pincode}</Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
@@ -262,18 +266,18 @@ function ProfilePage() {
                       <ListItemIcon>
                         <AdminAvatar>
                           <Avatar
-                            src="http://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder-300x300.png"
-                            alt="Rayan Moran"
+                            src={user?.profilePic}
+                            alt={user.displayName}
                             sx={{ width: '100%', height: '100%' }}
                           />
                         </AdminAvatar>
                       </ListItemIcon>
                       <ListItemText>
-                        <Typography variant="h6" color="initial">
-                          Henry Cavil
+                        <Typography variant="h6" color="initial" noWrap sx={{ textTransform: 'capitalize' }}>
+                          {user?.displayName}
                         </Typography>
                         <Link href={'/user/profile'} passHref={true}>
-                          <ButtonBase sx={{ marginLeft: '50px' }}>
+                          <ButtonBase sx={{ marginLeft: 1 }}>
                             <Typography variant="subtitle2" color="primary.main">
                               View Profile
                             </Typography>
@@ -288,7 +292,7 @@ function ProfilePage() {
             <Typography variant="h5" sx={{ padding: '10px 20px' }}>
               Users
             </Typography>
-            <UserData  />
+            <UserData />
           </DataSection>
         </Content>
       </Container>

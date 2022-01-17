@@ -39,13 +39,23 @@ const AvtarContainer = styled(Card)(({ theme }) => ({
   borderRadius: '44px',
 }));
 export default function InviteData(props) {
-  const [inviteData, setInviteData] = useState([{}, {}, {}]);
+  const [inviteData, setInviteData] = useState([]);
   const { user } = useAuth();
   console.log('user', user);
-
+  useEffect(() => {
+    if (user.id)
+      getInviteList(user.id)
+        .then((res) => {
+          console.log(res.data);
+          setInviteData(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  }, [user.id, props.fetch]);
   return (
     <Scrollbar>
-      <TableContainer sx={{ minWidth: 720 }}>
+      <TableContainer sx={{ maxWidth: '88vw' }}>
         <Table>
           <TableHead>
             <TableRow>
@@ -64,33 +74,29 @@ export default function InviteData(props) {
                   <ListItem>
                     <ListItemIcon>
                       <AvtarContainer>
-                        <Avatar
-                          src="http://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder-300x300.png"
-                          alt="Rayan Moran"
-                          sx={{ width: '100%', height: '100%' }}
-                        />
+                        <Avatar src={row.profilePic} alt={row.displayName} sx={{ width: '100%', height: '100%' }} />
                       </AvtarContainer>
                     </ListItemIcon>
                     <ListItemText>
                       <Typography variant="subtitle1" color="text.primary">
-                        Tom Cruise
+                        {`${row.firstName + row.lastName}`}
                       </Typography>
                     </ListItemText>
                   </ListItem>
                 </TableCell>
                 <TableCell>
                   <Typography variant="subtitle2" color="text.primary">
-                    Nikolas_Davis@yahoo.com
+                    {row.email}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography variant="subtitle2" color="text.primary">
-                    {moment(new Date()).format('ll')}
+                    {moment(new Date(row.createdAt._seconds * 1000)).format('ll')}
                   </Typography>
                 </TableCell>
                 <TableCell>
                   <Typography variant="subtitle2" color="text.primary">
-                    {"Joined"}
+                    {row.status}
                   </Typography>
                 </TableCell>
               </TableRow>

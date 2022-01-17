@@ -14,7 +14,7 @@ import Image from '../../components/Image';
 import Iconify from '../../components/Iconify';
 import TextIconLabel from '../../components/TextIconLabel';
 import { MotionContainer, varFade } from '../../components/animate';
-
+import useAuth from '../../hooks/useAuth';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(m.div)(({ theme }) => ({
@@ -79,6 +79,7 @@ const HeroImgStyle = styled(m.img)(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function HomeHero() {
+  const { user } = useAuth();
   return (
     <RootStyle>
       <Grid container>
@@ -123,12 +124,18 @@ export default function HomeHero() {
                   <Divider />
                 </m.div>
                 <m.div variants={varFade().inRight}>
-                  <Typography variant="title" color="textSecondary" sx={{ display: 'flex', justifyContent: 'center' }}>
-                    Don’t have an account yet ?&nbsp;{' '}
-                    <Typography color="primary" sx={{ fontWeight: '500' }}>
-                      Sign up
+                  {!user.id && (
+                    <Typography
+                      variant="title"
+                      color="textSecondary"
+                      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                    >
+                      Don’t have an account yet ?&nbsp;{' '}
+                      <Button component={RouterLink} href="auth/Register">
+                        Sign up
+                      </Button>
                     </Typography>
-                  </Typography>
+                  )}
                 </m.div>
               </Stack>
             </ContentStyle>

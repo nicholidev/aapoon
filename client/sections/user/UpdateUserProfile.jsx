@@ -3,7 +3,7 @@
  XYZ. Contact address: XYZ@xyz.pa .
  */
 import * as Yup from 'yup';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import { useFormik, Form, FormikProvider } from 'formik';
 // @mui
@@ -15,8 +15,12 @@ import {
   Alert,
   Typography,
   Grid,
+  Avatar,
+  Card,
   Select,
+  styled,
   MenuItem,
+  Badge,
   Box,
   Dialog,
   FormHelperText,
@@ -30,43 +34,100 @@ import useAuth from '../../hooks/useAuth';
 import useIsMountedRef from '../../hooks/useIsMountedRef';
 // components
 import Iconify from '../../components/Iconify';
-
+import { FileUploader } from 'react-drag-drop-files';
 import { IconButtonAnimate } from '../../components/animate';
 import PhoneInput from 'react-phone-number-input/input';
 import CustomPhone from '../../components/Phonenumber';
 import InputLabel from '@mui/material/InputLabel';
-import { FileUploader } from 'react-drag-drop-files';
+
 import { instantMeeting } from '../../api/meeting';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../utils/errorMessage';
 import { useRouter } from 'next/router';
 import withMeetingAuth from '../../HOC/withMeetingAuth';
-
+import FileUploadIcon from '@mui/icons-material/FileUpload';
 function UpdateUserProfile(props) {
   const router = useRouter();
-  const { registerBusiness, user } = useAuth();
+  const { user, updateProfile } = useAuth();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
-  const rePhoneNumber = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
-
+  const AvatarContainer = styled(Card)(({ theme }) => ({
+    width: 130,
+    height: 130,
+    padding: '2px',
+    borderRadius: '130px',
+    boxShadow: '0px 0px 9px rgba(0, 0, 0, 0.25)',
+    [theme.breakpoints.down('sm')]: {
+      width: 100,
+      height: 100,
+    },
+  }));
   const RegisterSchema = Yup.object().shape({
-    name: Yup.string().required('Name is required'),
-    email: Yup.string().required('Email is required'),
+    firstName: Yup.string().required('First name is required'),
+    lastName: Yup.string('Enter a valid last name'),
+    profilePic: Yup.mixed()
+
+      .test('fileSize', 'The file is too large', (value) => {
+        return (value && value.size <= 2000000) || !value;
+      })
+      .test('type', 'Only the following formats are accepted: .jpeg, .jpg, .png', (value) => {
+        return (
+          (value &&
+            (value.type === 'image/jpeg' ||
+              value.type === 'image/bmp' ||
+              value.type === 'image/png' ||
+              value.type === 'application/pdf' ||
+              value.type === 'application/msword')) ||
+          !value
+        );
+      }),
   });
 
   const formik = useFormik({
     initialValues: {
-      name: '',
-      email: '',
+      firstName: user?.displayName?.split(' ')[0],
+      lastName: user?.displayName?.split(' ')?.[1],
+      profilePic: '',
     },
     validationSchema: RegisterSchema,
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
       setSubmitting(true);
+      try {
+        await updateProfile(values);
+        enqueueSnackbar('User details updates', {
+          variant: 'success',
+          action: (key) => (
+            <IconButtonAnimate size="small" onClick={() => closeSnackbar(key)}>
+              <Iconify icon={'eva:close-fill'} />
+            </IconButtonAnimate>
+          ),
+        });
+        setOpen(false);
+        setSubmitting(false);
+      } catch (error) {
+        console.log(error);
+        enqueueSnackbar('error in updating profile', {
+          variant: 'error',
+          action: (key) => (
+            <IconButtonAnimate size="small" onClick={() => closeSnackbar(key)}>
+              <Iconify icon={'eva:close-fill'} />
+            </IconButtonAnimate>
+          ),
+        });
+
+        if (isMountedRef.current) {
+          setErrors({ afterSubmit: ErrorMessages[error.code] });
+          setSubmitting(false);
+        }
+      }
     },
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, values } = formik;
-
+  useEffect(() => {
+    setFieldValue('firstName', user?.displayName?.split(' ')[0]);
+    setFieldValue('lastName', user?.displayName?.split(' ')[1]);
+  }, [user]);
   return (
     <div>
       <Dialog open={open} maxWidth={'xs'} fullWidth onClose={() => setOpen(false)}>
@@ -80,33 +141,68 @@ function UpdateUserProfile(props) {
               <Stack spacing={2}>
                 {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
 
+                <Stack spacing={1} sx={{ display: 'flex', justifyContent: 'center', flex: 1 }}>
+                  <center>
+                    <Badge
+                      overlap="circular"
+                      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                      badgeContent={
+                        <FileUploader
+                          handleChange={(file) => setFieldValue('profilePic', file)}
+                          name="file"
+                          types={['JPG', 'PNG', 'JPEG']}
+                        >
+                          <IconButton sx={{ backgroundColor: '#fff' }}>
+                            <FileUploadIcon />
+                          </IconButton>
+                        </FileUploader>
+                      }
+                    >
+                      <AvatarContainer>
+                        <Avatar
+                          src={values.profilePic ? URL.createObjectURL(values['profilePic']) : user.profilePic}
+                          alt="Rayan Moran"
+                          sx={{ width: '100%', height: '100%' }}
+                        />
+                      </AvatarContainer>
+                    </Badge>
+                  </center>
+                </Stack>
                 <Stack spacing={1}>
-                  <Typography sx={{ fontWeight: 500, display: 'flex' }}>Name</Typography>
+                  <Typography sx={{ fontWeight: 500, display: 'flex' }}>First Name</Typography>
                   <TextField
                     fullWidth
                     // placeholder="Type meeting description"
-                    {...getFieldProps('name')}
-                    error={Boolean(touched.name && errors.name)}
-                    helperText={touched.name && errors.name}
+                    {...getFieldProps('firstName')}
+                    error={Boolean(touched.firstName && errors.firstName)}
+                    helperText={touched.firstName && errors.firstName}
                   />
                 </Stack>
                 <Stack spacing={1}>
-                  <Typography sx={{ fontWeight: 500, display: 'flex' }}>Email</Typography>
+                  <Typography sx={{ fontWeight: 500, display: 'flex' }}>Last Name</Typography>
                   <TextField
                     fullWidth
                     // placeholder="Type meeting description"
-                    {...getFieldProps('email')}
-                    error={Boolean(touched.email && errors.email)}
-                    helperText={touched.email && errors.email}
+                    {...getFieldProps('lastName')}
+                    error={Boolean(touched.lastName && errors.lastName)}
+                    helperText={touched.lastName && errors.lastName}
                   />
                 </Stack>
 
                 <Stack
                   justifyContent={'center'}
                   direction={{ xs: 'column', sm: 'row' }}
+                  sx={{ mt: 2 }}
                   spacing={{ xs: 1, sm: 2, md: 2 }}
                 >
-                  <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
+                  <LoadingButton
+                    fullWidth
+                    size="large"
+                    type="submit"
+                    variant="contained"
+                    sx={{ mt: 2 }}
+                    loading={isSubmitting}
+                  >
                     Update
                   </LoadingButton>
                 </Stack>

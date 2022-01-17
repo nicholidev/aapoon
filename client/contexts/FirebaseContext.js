@@ -70,22 +70,6 @@ function AuthProvider({ children }) {
   useEffect(
     () =>
       firebase.auth().onAuthStateChanged((user) => {
-        // if (!user.phoneNumber) {
-        //   // Ask user for phone number.
-        //   var phoneNumber = window.prompt('Provide your phone number');
-        //   // You also need to provide a button element signInButtonElement
-        //   // which the user would click to complete sign-in.
-        //   // Get recaptcha token. Let's use invisible recaptcha and hook to the button.
-        //   var appVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container');
-        //   // This will wait for the button to be clicked the reCAPTCHA resolved.
-        //   return user.linkWithPhoneNumber(phoneNumber, appVerifier).then(function (confirmationResult) {
-        //     // Ask user to provide the SMS code.
-        //     var code = window.prompt('Provide your SMS code');
-        //     // Complete sign-in.
-        //     return confirmationResult.confirm(code);
-        //   });
-        // }
-
         if (user) {
           user.getIdToken().then((token) => {
             addJWTInterceptor(token);
@@ -100,7 +84,17 @@ function AuthProvider({ children }) {
                   router.push('/auth/business-profile');
                 else {
                   localStorage.setItem('isAuthenticated', true);
-                  //router.push('/dashboard/one');
+                  firebase
+                    .firestore()
+                    .collection('users')
+                    .doc(user.uid)
+                    .get()
+                    .then((response) => {
+                      dispatch({
+                        type: 'UPDATE',
+                        payload: { isAuthenticated: true, user: { ...state.user, ...response.data() } },
+                      });
+                    });
                 }
               }
             })
@@ -150,28 +144,108 @@ function AuthProvider({ children }) {
   };
 
   const registerBusiness = (data) => {
-    console.log('business rej');
     return new Promise((resolve, reject) => {
-      console.log('business rej1');
-      var storageRef = firebase.storage().ref();
-      var busRef = storageRef.child(`account/${state.user.uid}/business/logo/${data.logo.name}`);
-      console.log('business rej2');
-      busRef
-        .put(data.logo)
-        .then(async (snapshot) => {
-          const downloadURL = await snapshot.ref.getDownloadURL();
-          firebase
-            .firestore()
-            .collection('users')
-            .doc(state.user.uid)
-            .update({
-              businessDetails: { ...data, logo: downloadURL },
-            })
-            .then((response) => {
-              resolve('success');
+      console.log(data);
+      if (data.logo) {
+        var storageRef = firebase.storage().ref();
+        var busRef = storageRef.child(`account/${state.user.uid}/business/logo/${data.logo.name}`);
+        console.log('business rej2');
+        busRef
+          .put(data.logo)
+          .then(async (snapshot) => {
+            const downloadURL = await snapshot.ref.getDownloadURL();
+            firebase
+              .firestore()
+              .collection('users')
+              .doc(state.user.uid)
+              .update({
+                businessDetails: { ...data, logo: downloadURL },
+              })
+              .then((response) => {
+                dispatch({
+                  type: 'UPDATE',
+                  payload: { user: { ...state.user, businessDetails: { ...data, logo: downloadURL } } },
+                });
+                resolve('success');
+              });
+          })
+          .catch((err) => reject(err));
+      } else {
+        delete data.logo;
+        firebase
+          .firestore()
+          .collection('users')
+          .doc(state.user.uid)
+          .update({
+            businessDetails: { ...data },
+          })
+          .then((response) => {
+            resolve('success');
+
+            dispatch({
+              type: 'UPDATE',
+              payload: { user: { ...state.user, businessDetails: { ...data } } },
             });
-        })
-        .catch((err) => reject(err));
+          })
+          .catch((err) => reject(err));
+      }
+    });
+  };
+
+  const updateProfile = (data) => {
+    return new Promise((resolve, reject) => {
+      if (data.profilePic) {
+        var storageRef = firebase.storage().ref();
+        var busRef = storageRef.child(`account/${state.user.uid}/user/profilePic/${data.profilePic.name}`);
+        busRef
+          .put(data.profilePic)
+          .then(async (snapshot) => {
+            const downloadURL = await snapshot.ref.getDownloadURL();
+            firebase
+              .firestore()
+              .collection('users')
+              .doc(state.user.uid)
+              .update({
+                profilePic: downloadURL,
+                displayName: data.firstName + ' ' + data.lastName,
+              })
+              .then((response) => {
+                resolve('success');
+              });
+
+            firebase.auth().currentUser.updateProfile({
+              displayName: data.firstName + ' ' + data.lastName,
+              photoURL: downloadURL,
+            });
+            dispatch({
+              type: 'UPDATE',
+              payload: {
+                user: { ...state.user, displayName: data.firstName + ' ' + data.lastName, profilePic: downloadURL },
+              },
+            });
+          })
+          .catch((err) => reject(err));
+      } else {
+        firebase
+          .firestore()
+          .collection('users')
+          .doc(state.user.uid)
+          .update({
+            displayName: data.firstName + ' ' + data.lastName,
+          })
+          .then((response) => {
+            resolve('success');
+            firebase.auth().currentUser.updateProfile({
+              displayName: data.firstName + ' ' + data.lastName,
+            });
+            dispatch({
+              type: 'UPDATE',
+              payload: { user: { ...state.user, displayName: data.firstName + ' ' + data.lastName } },
+            });
+          })
+
+          .catch((err) => reject(err));
+      }
     });
   };
 
@@ -207,62 +281,6 @@ function AuthProvider({ children }) {
               .catch((err) => {
                 reject(err);
               });
-
-            // firebase
-            //   .auth()
-            //   .createUserWithEmailAndPassword(email, password)
-            //   .then(async (res) => {
-            //     // if (res.user && res.user.emailVerified === false) {
-            //     //   res.user.sendEmailVerification().then(function () {
-            //     //     console.log('email verification sent to user');
-            //     //   });
-            //     // }
-
-            //     firebase
-            //       .firestore()
-            //       .collection('users')
-            //       .doc(res.user.uid)
-            //       .set({
-            //         uid: res.user.uid,
-            //         email,
-            //         displayName: `${firstName} ${lastName}`,
-            //         phoneNumber: phoneNumber,
-            //         accountType: allValues.accountType,
-            //         accountDetails: {
-            //           businessType: allValues.businessType ? allValues.businessType : '',
-            //           numberOfEmployees: allValues.numberOfEmployees ? allValues.numberOfEmployees : '',
-            //           professionType: allValues.professionType ? allValues.professionType : '',
-            //         },
-            //       })
-            //       .then((result) => {
-            //         resolve(res);
-            //         console.log(result);
-            //       })
-            //       .catch((err) => {
-            //         reject(err);
-            //       });
-            //     // dispatch({
-            //     //   type: 'INITIALISE',
-            //     //   payload: {
-            //     //     isAuthenticated: true,
-            //     //     user: {
-            //     //       ...res.user,
-
-            //     //       uid: res.user.uid,
-            //     //       email,
-            //     //       displayName: `${firstName} ${lastName}`,
-            //     //       phoneNumber: phoneNumber,
-            //     //       accountType: allValues.accountType,
-            //     //       accountDetails: {
-            //     //         businessType: allValues.businessType,
-            //     //         numberOfEmployees: allValues.numberOfEmployees,
-            //     //         professionType: allValues.professionType,
-            //     //       },
-            //     //     },
-            //     //   },
-            //     // });
-            //   })
-            //   .catch((err) => {});
           }
         });
     });
@@ -406,6 +424,7 @@ function AuthProvider({ children }) {
         loginWithTwitter,
         logout,
         resetPassword,
+        updateProfile,
         registerBusiness,
         resendEmailVerification,
         sendMobileVerificationCode,

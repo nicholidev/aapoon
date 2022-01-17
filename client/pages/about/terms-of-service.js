@@ -17,7 +17,7 @@ import Logo from '../../components/Logo';
 import Image from '../../components/Image';
 // sections
 import AuthFirebaseSocials from '../../sections/auth/AuthFirebaseSocial';
-import DashboardLayout from '../../layouts/dashboard';
+import DashboardLayout from '../../layouts/main';
 import Divider from '@mui/material/Divider';
 // ----------------------------------------------------------------------
 import GlobalStyles from '@mui/material/GlobalStyles';
@@ -58,7 +58,12 @@ const ContentStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   minHeight: '100vh',
   flexDirection: 'column',
-
+  marginTop: '92px',
+  marginBottom: '40px',
+  [theme.breakpoints.down('sm')]: {
+    marginTop: '72px',
+    marginBottom: '20px',
+  },
   padding: theme.spacing(8, 2),
 }));
 
@@ -70,7 +75,7 @@ function TermsOfService() {
   const router = useRouter();
 
   return (
-    <Page title="Schedule Meeting">
+    <Page title="aapoon meet terms of service">
       <GlobalStyles
         styles={{
           body: { backgroundColor: '#F1F1F1' },
@@ -79,7 +84,7 @@ function TermsOfService() {
       <RootStyle>
         <DashboardHeader />
 
-        <Container sx={{ mt: { xs: 2 } }}>
+        <Container>
           <Paper>
             <ContentStyle>
               <Box sx={{ mb: 5 }}>
@@ -87,24 +92,24 @@ function TermsOfService() {
                   <Iconify icon={'eva:arrow-back-fill'} />
                 </IconButtonAnimate>
                 &nbsp;&nbsp;&nbsp;&nbsp; */}
-                <Typography variant="h2" align="center" gutterBottom sx={{ fontSize: { xs: '22px', md: '40px' } }}>
+                <Typography variant="h2" align="center" gutterBottom sx={{ fontSize: { xs: '18px', md: '24px' } }}>
                   Terms Of Service
                 </Typography>
                 <br />
                 <br />
-                <Typography variant="h6" sx={{ fontSize: { xs: '14px', md: '18px' } }} gutterBottom>
-                  EFFECTIVE: August 09, 2021
+                <Typography variant="subtitle1" sx={{ fontSize: { xs: '14px', md: '18px' } }} gutterBottom>
+                  EFFECTIVE: jan 01, 2022
                 </Typography>
               </Box>
 
               <Box sx={{ mb: 2 }}>
-                <Typography variant="h6" sx={{ fontSize: { xs: '14px', md: '18px' } }}>
+                <Typography sx={{ fontSize: { xs: '12px', md: '16px' }, fontWeight: 'bold' }}>
                   IMPORTANT, READ CAREFULLY: YOUR USE OF AND ACCESS TO THE WEBSITE AND PRODUCTS AND SERVICES AND
                   ASSOCIATED SOFTWARE (COLLECTIVELY, THE "SERVICES") OF AAPOON, INC. AND ITS AFFILIATES ("MEETAAP") IS
                   CONDITIONED UPON YOUR COMPLIANCE WITH AND ACCEPTANCE OF THESE TERMS, WHICH INCLUDE YOUR AGREEMENT TO
                   ARBITRATE CLAIMS. PLEASE REVIEW THOROUGHLY BEFORE ACCEPTING.
                 </Typography>
-                <Typography variant="h6" sx={{ fontSize: { xs: '14px', md: '18px' } }} style={{ marginTop: 10 }}>
+                <Typography sx={{ fontSize: { xs: '12px', md: '16px' } }} style={{ marginTop: 10, fontWeight: 'bold' }}>
                   BY CLICKING/CHECKING THE "I AGREE" BUTTON/BOX, ACCESSING THE MEETAAP WEBSITE OR BY UTILIZING THE MEET
                   AAP SERVICES YOU AGREE TO BE BOUND BY THESE TERMS OF SERVICE AND ALL EXHIBITS, ORDER FORMS, AND
                   INCORPORATED POLICIES (THE “AGREEMENT” OR “TOS”). THE MEET AAP SERVICES ARE NOT AVAILABLE TO PERSONS

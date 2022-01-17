@@ -14,17 +14,6 @@ import { IconButtonAnimate } from '../../../components/animate';
 import useAuth from '../../../hooks/useAuth';
 // ----------------------------------------------------------------------
 
-const MENU_OPTIONS = [
-  {
-    label: 'Home',
-    linkTo: '/',
-  },
-  {
-    label: 'Profile',
-    linkTo: '/user/profile',
-  },
-];
-
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
@@ -38,6 +27,17 @@ export default function AccountPopover() {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const MENU_OPTIONS = [
+    {
+      label: 'Home',
+      linkTo: '/',
+    },
+    {
+      label: 'Profile',
+      linkTo: user?.businessDetails ? '/organisation/profile' : '/user/profile',
+    },
+  ];
 
   return (
     <>
@@ -61,10 +61,7 @@ export default function AccountPopover() {
             }),
           }}
         >
-          <Avatar
-            src="http://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder-300x300.png"
-            alt="Rayan Moran"
-          />
+          <Avatar src={user.profilePic} alt={user.displayName} />
         </IconButtonAnimate>
         <Typography
           variant="subtitle2"
@@ -96,6 +93,21 @@ export default function AccountPopover() {
           ))}
         </Stack>
         <Divider />
+        {/* {user?.businessDetails && (
+          <>
+            <Stack spacing={0.5} sx={{ p: 1 }}>
+              <MenuItem sx={{ typography: 'caption', py: 0, px: 1, borderRadius: 1 }} variant="caption" disabled>
+                My organization
+              </MenuItem>
+              <NextLink key={'org'} href={'/organisation/profile'}>
+                <MenuItem sx={{ typography: 'body2', py: 1, px: 2, borderRadius: 1, m: 1 }}>
+                  {user?.businessDetails?.businessName}
+                </MenuItem>
+              </NextLink>
+            </Stack>
+            <Divider />
+          </>
+        )} */}
 
         <MenuItem sx={{ typography: 'body2', py: 1, px: 2, borderRadius: 1, m: 1 }} onClick={() => logout()}>
           Logout

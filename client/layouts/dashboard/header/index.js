@@ -70,7 +70,7 @@ export default function DashboardHeader({ onOpenSidebar }) {
   return (
     <RootStyle isCollapse={isCollapse}>
       <ToolbarStyle>
-        {!isDesktop && <MenuMobile isOffset={true} isHome={false} id={null} navConfig={navConfig} />}
+        {/* {!isDesktop && <MenuMobile isOffset={true} isHome={false} id={null} navConfig={navConfig} />} */}
         <Box sx={{ display: 'flex' }}>
           <Logo />
         </Box>

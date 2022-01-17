@@ -23,7 +23,7 @@ const menuConfig = [
   {
     title: 'Plan & Pricing',
     icon: <Iconify icon={'ic:round-grain'} {...ICON_SIZE} />,
-    path: '/',
+    path: '/plan/plans-price',
   },
   {
     title: 'Meetings',

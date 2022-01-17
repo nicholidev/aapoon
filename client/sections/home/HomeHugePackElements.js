@@ -109,7 +109,7 @@ export default function HomeHugePackElements() {
                     color: isLight ? 'text.secondary' : 'common.white',
                   }}
                 >
-                  Aapoon Meet provides authenticated and encrypted data privacy to the users. Meet video conferences are
+                  aapoon Meet provides authenticated and encrypted data privacy to the users. Meet video conferences are
                   encrypted in transit and safety measures are continuously updated for data security and privacy.
                 </Typography>
               </MotionInView>
@@ -226,9 +226,9 @@ export default function HomeHugePackElements() {
                     color: isLight ? 'text.secondary' : 'common.white',
                   }}
                 >
-                  Aapoon is a unique product, specially designed to meet the users need of meeting experience. Host can
+                  aapoon is a unique product, specially designed to meet the users need of meeting experience. Host can
                   choose any number of licences. As an admin, he can give access to anyone of his choice and use its
-                  privileges. Aapoon has free, premium and platinum options for the users to choose their choice of
+                  privileges. aapoon has free, premium and platinum options for the users to choose their choice of
                   group meetings.
                 </Typography>
               </MotionInView>

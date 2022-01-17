@@ -336,7 +336,7 @@ function CalendarPage() {
 let Calendar = withAuth(CalendarPage);
 
 Calendar.getLayout = function getLayout(page) {
-  return <DashboardLayout>{page}</DashboardLayout>;
+  return <DashboardLayout withBottomNav>{page}</DashboardLayout>;
 };
 
 export default Calendar;

@@ -137,8 +137,8 @@ export default function FormHelpDesk() {
                   Select Topic
                 </MenuItem>
                 <MenuItem value={'15'}>Support issue</MenuItem>
-                <MenuItem value={'30'}>Bug Report</MenuItem>
-                <MenuItem value={'30'}>Lorium Ipsum</MenuItem>
+                <MenuItem value={'20'}>Bug Report</MenuItem>
+
                 <MenuItem value={'30'}>Other</MenuItem>
               </Select>
               {Boolean(touched.topic && errors.topic) && (

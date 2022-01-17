@@ -26,7 +26,7 @@ export default function MainLayout({ children }) {
 
       <Box sx={{ flexGrow: 1 }} />
 
-      {!isHome ? (
+      {false ? (
         <MainFooter />
       ) : (
         <Box
@@ -38,12 +38,20 @@ export default function MainLayout({ children }) {
             bgcolor: 'rgba(0, 0, 0, 0.62)',
           }}
         >
-          <Box justifyContent="space-between" display="flex" alignItems="center">
-            <Box display="flex" alignItems="center" sx={{ display: { xs: 'flex' } }}>
+          <Box justifyContent="space-between" display="flex" sx={{ flexDirection: { xs: 'column', md: 'row' } }}>
+            <Box display="flex" alignItems="center" sx={{ display: { xs: 'flex' }, flexWrap: 'wrap' }}>
               <Link href="/about/privacy-policy" passHref={true}>
                 <ListItemButton>
                   <Typography sx={{ mr: { xs: 2, md: 8 } }} color="common.white">
                     Data privacy
+                  </Typography>
+                </ListItemButton>
+              </Link>
+
+              <Link href="/about/refund-policy" passHref={true}>
+                <ListItemButton>
+                  <Typography sx={{ mr: { xs: 2, md: 8 } }} color="common.white">
+                    Refund Policy
                   </Typography>
                 </ListItemButton>
               </Link>
@@ -54,18 +62,22 @@ export default function MainLayout({ children }) {
                   </Typography>
                 </ListItemButton>
               </Link>
-              <Link href="/about/refund-policy" passHref={true}>
+            </Box>
+            <Box display="flex">
+              <Link href="/about/faq" passHref={true}>
                 <ListItemButton>
                   <Typography sx={{ mr: { xs: 2, md: 8 } }} color="common.white">
-                    Refund Policy
+                    FAQ
                   </Typography>
                 </ListItemButton>
               </Link>
-            </Box>
 
-            <Box display="flex" alignItems="center">
-              <HelpOutlineOutlinedIcon color="common.white" sx={{ mr: 1, color: 'white' }} />
-              <Typography color="common.white"> Help</Typography>
+              <Link href="/help" passHref={true}>
+                <Box display="flex" alignItems="center">
+                  <HelpOutlineOutlinedIcon color="common.white" sx={{ mr: 1, color: 'white' }} />
+                  <Typography color="common.white"> Help</Typography>
+                </Box>
+              </Link>
             </Box>
           </Box>
         </Box>

@@ -8,25 +8,21 @@ import RouterLink from 'next/link';
 import { styled } from '@mui/material/styles';
 import { Box, Card, Link, Container, Typography, Tooltip, Paper } from '@mui/material';
 // hooks
-import useResponsive from '../hooks/useResponsive';
+import useAuth from '../../hooks/useAuth';
+import useResponsive from '../../hooks/useResponsive';
 // routes
-import DashboardHeader from '../layouts/dashboard/header/index';
-import DashboardLayout from '../layouts/dashboard';
+import DashboardHeader from '../../layouts/dashboard/header/index';
 // components
-import Page from '../components/Page';
-import Logo from '../components/Logo';
-import Image from '../components/Image';
+import Page from '../../components/Page';
+import Logo from '../../components/Logo';
+import Image from '../../components/Image';
 // sections
-import AuthFirebaseSocials from '../sections/auth/AuthFirebaseSocial';
-import FormUserMeeting from '../sections/meeting/FormUserMeeting';
+import RegisterForm from '../../sections/auth/register/BusinessForm';
+import AuthFirebaseSocials from '../../sections/auth/AuthFirebaseSocial';
 import Divider from '@mui/material/Divider';
-import withAuth from '../HOC/withAuth';
+import withoutAuth from '../../HOC/withOutAuth';
 // ----------------------------------------------------------------------
 import GlobalStyles from '@mui/material/GlobalStyles';
-import { IconButtonAnimate } from '../components/animate';
-import Iconify from '../components/Iconify';
-import { useRouter } from 'next/router';
-import FormHelpDesk from '../sections/helpDesk/FormHelpDesk';
 const RootStyle = styled('div')(({ theme }) => ({}));
 
 const HeaderStyle = styled('header')(({ theme }) => ({
@@ -67,13 +63,15 @@ const ContentStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-function HelpDesk() {
+function Register() {
+  const { method, user } = useAuth();
+
   const smUp = useResponsive('up', 'sm');
   const mdUp = useResponsive('up', 'md');
-  const router = useRouter();
+  console.log(user);
 
   return (
-    <Page title="Schedule Meeting">
+    <Page title="Register">
       <GlobalStyles
         styles={{
           body: { backgroundColor: '#F1F1F1' },
@@ -82,22 +80,18 @@ function HelpDesk() {
       <RootStyle>
         <DashboardHeader />
 
-        <Container sx={{ mt: { xs: 4, lg: 4, xl: 4 } }}>
+        <Container sx={{ mt: { xs: 4, lg: 8 } }}>
           <Paper>
             <ContentStyle>
-              <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
-                <IconButtonAnimate onClick={() => router.back()}>
-                  <Iconify icon={'eva:arrow-back-fill'} />
-                </IconButtonAnimate>
-                &nbsp;&nbsp;&nbsp;&nbsp;
+              <Box sx={{ mb: 5, display: 'flex' }}>
                 <Box sx={{ flexGrow: 1 }}>
                   <Typography variant="h4" align="left" gutterBottom>
-                    Help Desk
+                    Business Profile
                   </Typography>
                 </Box>
               </Box>
 
-              <FormHelpDesk />
+              <RegisterForm isUpdate={user.businessDetails?.businessName ? true : false} updateMode={true} />
             </ContentStyle>
           </Paper>
         </Container>
@@ -106,8 +100,4 @@ function HelpDesk() {
   );
 }
 
-HelpDesk.getLayout = function getLayout(page) {
-  return <DashboardLayout>{page}</DashboardLayout>;
-};
-
-export default HelpDesk;
+export default Register;

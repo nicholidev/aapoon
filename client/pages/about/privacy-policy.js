@@ -17,14 +17,16 @@ import Logo from '../../components/Logo';
 import Image from '../../components/Image';
 // sections
 import AuthFirebaseSocials from '../../sections/auth/AuthFirebaseSocial';
-import DashboardLayout from '../../layouts/dashboard';
+import DashboardLayout from '../../layouts/main';
 import Divider from '@mui/material/Divider';
 // ----------------------------------------------------------------------
 import GlobalStyles from '@mui/material/GlobalStyles';
 import { IconButtonAnimate } from '../../components/animate';
 import Iconify from '../../components/Iconify';
 import { useRouter } from 'next/router';
-const RootStyle = styled('div')(({ theme }) => ({}));
+const RootStyle = styled('div')(({ theme }) => ({
+  paddingTop: '20px',
+}));
 
 const HeaderStyle = styled('header')(({ theme }) => ({
   top: 0,
@@ -55,10 +57,17 @@ const SectionStyle = styled(Card)(({ theme }) => ({
 const ContentStyle = styled('div')(({ theme }) => ({
   maxWidth: 880,
   margin: 'auto',
+  marginTop: '80px',
+  marginBottom: '40px',
   display: 'flex',
   minHeight: '100vh',
   flexDirection: 'column',
-
+  marginTop: '80px',
+  marginBottom: '40px',
+  [theme.breakpoints.down('sm')]: {
+    marginTop: '60px',
+    marginBottom: '20px',
+  },
   padding: theme.spacing(8, 2),
 }));
 
@@ -70,14 +79,15 @@ function PrivacyPolicy() {
   const router = useRouter();
 
   return (
-    <Page title="Schedule Meeting">
+    <Page title="aapoon meet privacy policy">
       <GlobalStyles
         styles={{
           body: { backgroundColor: '#F1F1F1' },
         }}
       />
+
       <RootStyle>
-        <DashboardHeader />
+        {/* <DashboardHeader /> */}
 
         <Container sx={{ mt: { xs: 2 } }}>
           <Paper>
@@ -87,18 +97,18 @@ function PrivacyPolicy() {
                    <Iconify icon={'eva:arrow-back-fill'} />
                  </IconButtonAnimate>
                  &nbsp;&nbsp;&nbsp;&nbsp; */}
-                <Typography variant="h2" align="center" gutterBottom sx={{ fontSize: { xs: '22px', md: '40px' } }}>
-                  MEETAAP privacy policy
+                <Typography variant="h2" align="center" gutterBottom sx={{ fontSize: { xs: '18px', md: '24px' } }}>
+                  aapoon meet privacy policy
                 </Typography>
                 <br />
                 <br />
-                <Typography variant="h6" gutterBottom style={{ fontStyle: 'italic' }}>
-                  EFFECTIVE: August 09, 2021
+                <Typography variant="subtitle1" gutterBottom style={{ fontStyle: 'italic' }}>
+                  EFFECTIVE: Jan 01, 2022
                 </Typography>
               </Box>
 
               <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
+                <Typography align="left" sx={{ fontSize: { xs: '12px', md: '14px' } }}>
                   This Privacy Policy describes what MEETAAP gathers from and about you as a User of its services and
                   platforms, how MEETAAP uses it, and the controls you have over the disclosure of your information to
                   other users. As a condition of becoming a User, or using MEETAAP’s services or platforms in any way,

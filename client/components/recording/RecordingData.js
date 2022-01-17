@@ -21,47 +21,47 @@ import { getInviteList } from '../../api/user';
 const _appInvoices = [];
 
 export default function RecordingData(props) {
-    const [inviteData, setInviteData] = useState([]);
-    const { user } = useAuth();
-    console.log('user', user);
-    useEffect(() => {
-        if (user.id)
-            getInviteList(user.id)
-                .then((res) => {
-                    console.log(res.data);
-                    setInviteData(res.data);
-                })
-                .catch((err) => {
-                    console.log(err);
-                });
-    }, [user.id, props.fetch]);
-    return (
-        <Scrollbar>
-            <TableContainer sx={{ minWidth: 720 }}>
-                <Table>
-                    <TableHead>
-                        <TableRow>
-                            <TableCell>Meeting Name</TableCell>
-                            <TableCell>Date</TableCell>
-                            <TableCell>Duration</TableCell>
-                            <TableCell>Action</TableCell>
-                            <TableCell />
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {inviteData.map((row) => (
-                            <TableRow key={row.token}>
-                                <TableCell>{`${row.firstName + row.lastName}`}</TableCell>
-                                <TableCell>{row.email}</TableCell>
-                                <TableCell>{moment(new Date(row.createdAt._seconds * 1000)).format('ll')}</TableCell>
-                                <TableCell>
-                                    <Label>{row.status}</Label>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </Scrollbar>
-    );
+  const [inviteData, setInviteData] = useState([]);
+  const { user } = useAuth();
+  console.log('user', user);
+  useEffect(() => {
+    if (user.id)
+      getInviteList(user.id)
+        .then((res) => {
+          console.log(res.data);
+          setInviteData(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+  }, [user.id, props.fetch]);
+  return (
+    <Scrollbar>
+      <TableContainer sx={{ maxWidth: '88vw' }}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>Meeting Name</TableCell>
+              <TableCell>Date</TableCell>
+              <TableCell>Duration</TableCell>
+              <TableCell>Action</TableCell>
+              <TableCell />
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {inviteData.map((row) => (
+              <TableRow key={row.token}>
+                <TableCell>{`${row.firstName + row.lastName}`}</TableCell>
+                <TableCell>{row.email}</TableCell>
+                <TableCell>{moment(new Date(row.createdAt._seconds * 1000)).format('ll')}</TableCell>
+                <TableCell>
+                  <Label>{row.status}</Label>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Scrollbar>
+  );
 }

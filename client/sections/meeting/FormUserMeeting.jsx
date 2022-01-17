@@ -24,7 +24,8 @@ import {
 import { LoadingButton } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DateTimePicker from '@mui/lab/DateTimePicker';
+import DatePicker from '@mui/lab/DatePicker';
+import TimePicker from '@mui/lab/TimePicker';
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useIsMountedRef from '../../hooks/useIsMountedRef';
@@ -331,10 +332,10 @@ export default function FormUserMeeting() {
               <Grid container direction={{ xs: 'column', sm: 'row' }}>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1} sx={{ marginRight: { sm: '20px', xs: 0 } }}>
-                    <Typography sx={{ fontWeight: 500 }}> Meeting Time * </Typography>
+                    <Typography sx={{ fontWeight: 500 }}> Start Time * </Typography>
                     <Stack spacing={1} direction="row">
                       <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <DateTimePicker
+                        <TimePicker
                           {...getFieldProps('meetingDateTime')}
                           onChange={(newValue) => {
                             formik.setFieldValue('meetingDateTime', newValue);
@@ -355,23 +356,45 @@ export default function FormUserMeeting() {
                   </Stack>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Stack spacing={1} sx={{ marginLeft: { sm: '20px', xs: 0 }, marginTop: { xs: '20px', sm: 0 } }}>
-                    <Typography sx={{ fontWeight: 500 }}>Time Zone * </Typography>
-                    <Select
-                      autoComplete="username"
-                      placeholder="Business Website"
-                      {...getFieldProps('timeZone')}
-                      error={Boolean(touched.timeZone && errors.timeZone)}
-                      helperText={touched.timeZone && errors.timeZone}
-                    >
-                      {timeZones.map((item) => (
-                        <MenuItem value={item}>{item}</MenuItem>
-                      ))}
-                    </Select>
+                  <Stack spacing={1} sx={{ marginRight: { sm: '20px', xs: 0 } }}>
+                    <Typography sx={{ fontWeight: 500 }}> Meeting Date * </Typography>
+                    <Stack spacing={1} direction="row">
+                      <LocalizationProvider dateAdapter={AdapterDateFns}>
+                        <DatePicker
+                          {...getFieldProps('meetingDateTime')}
+                          onChange={(newValue) => {
+                            formik.setFieldValue('meetingDateTime', newValue);
+                          }}
+                          minDateTime={new Date()}
+                          variant="dialog"
+                          renderInput={(params) => (
+                            <TextField
+                              fullWidth
+                              {...params}
+                              error={Boolean(touched.meetingDateTime && errors.meetingDateTime)}
+                              helperText={touched.meetingDateTime && errors.meetingDateTime}
+                            />
+                          )}
+                        />
+                      </LocalizationProvider>
+                    </Stack>
                   </Stack>
                 </Grid>
               </Grid>
-
+              <Stack spacing={1}>
+                <Typography sx={{ fontWeight: 500 }}>Time Zone * </Typography>
+                <Select
+                  autoComplete="username"
+                  placeholder="Business Website"
+                  {...getFieldProps('timeZone')}
+                  error={Boolean(touched.timeZone && errors.timeZone)}
+                  helperText={touched.timeZone && errors.timeZone}
+                >
+                  {timeZones.map((item) => (
+                    <MenuItem value={item}>{item}</MenuItem>
+                  ))}
+                </Select>
+              </Stack>
               <Grid container direction={{ xs: 'column', sm: 'row' }}>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1} sx={{ marginRight: { sm: '20px', xs: 0 } }}>
@@ -409,7 +432,7 @@ export default function FormUserMeeting() {
                 direction={{ xs: 'column', sm: 'row' }}
                 spacing={{ xs: 1, sm: 2, md: 2 }}
               >
-                <LoadingButton size="large" color="primary">
+                <LoadingButton size="large" color="primary" onClick={() => router.replace('/dashboard/calendar')}>
                   Cancel
                 </LoadingButton>
                 <LoadingButton size="large" type="submit" variant="contained" loading={isSubmitting}>

@@ -139,15 +139,15 @@ function ProfilePage() {
   const [fetch, setFetch] = useState(false);
   const [current, setCurrent] = useState('dashboard');
   const { user } = useAuth();
-  console.log(user);
+
   return (
-    <Page title="Dashboard">
+    <Page title="Dashboard" sx={{ width: '100vw' }}>
       <GlobalStyles
         styles={{
           body: { backgroundColor: '#F1F1F1' },
         }}
       />
-      <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex' }}>
+      <Container maxWidth={themeStretch ? false : 'lg'} sx={{ justifyContent: 'center' }}>
         <Content>
           <DataSection>
             <DataHead>
@@ -172,8 +172,12 @@ function ProfilePage() {
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
                     <AvatarContainer>
                       <Avatar
-                        src="http://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder-300x300.png"
-                        alt="Rayan Moran"
+                        src={
+                          user.profilePic
+                            ? user.profilePic
+                            : 'http://www.caribbeangamezone.com/wp-content/uploads/2018/03/avatar-placeholder-300x300.png'
+                        }
+                        alt={user?.displayName}
                         sx={{ width: '100%', height: '100%' }}
                       />
                     </AvatarContainer>
@@ -185,7 +189,7 @@ function ProfilePage() {
                       color="common.white"
                       sx={{ backgroundColor: 'error.main', borderRadius: '50px', padding: '2px 10px' }}
                     >
-                      USER
+                      {user.accountType}
                     </Typography>
                   </div>
                 </Grid>
@@ -196,7 +200,7 @@ function ProfilePage() {
                         Name
                       </Typography>
                       <Typography sx={{ textTransform: 'capitalize' }} variant="h6">
-                        {user.displayName}
+                        {user?.displayName}
                       </Typography>
                     </Stack>
                     <Stack spacing={0}>
@@ -229,7 +233,7 @@ function ProfilePage() {
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
-                        Expriration Date
+                        Expiration Date
                       </Typography>
                       <Typography variant="h6">May 26, 2020</Typography>
                     </Stack>

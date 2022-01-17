@@ -50,7 +50,7 @@ function InstantMeetingPopup(props) {
   const rePhoneNumber = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 
   const RegisterSchema = Yup.object().shape({
-    meetingDescription: Yup.string().min(5, 'Too Short!').required('Meeting Discription required'),
+    meetingDescription: Yup.string().min(5, 'description is too Short!'),
   });
 
   const formik = useFormik({

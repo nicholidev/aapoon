@@ -18,10 +18,13 @@ import {
 //
 import DashboardHeader from './header';
 import DashboardNavbar from './navbar';
-
+import Bottom from '../../components/BottomNavigation';
+import Box from '@mui/material/Box';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
+  height: '100%',
+
   display: 'flex',
 }));
 
@@ -50,7 +53,7 @@ DashboardLayout.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default function DashboardLayout({ children }) {
+export default function DashboardLayout({ children, withBottomNav }) {
   const { collapseClick } = useCollapseDrawer();
 
   const [open, setOpen] = useState(false);
@@ -62,6 +65,11 @@ export default function DashboardLayout({ children }) {
       {/* <DashboardNavbar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} /> */}
 
       <MainStyle collapseClick={collapseClick}>{children}</MainStyle>
+      {withBottomNav && (
+        <Box style={{ position: 'fixed', bottom: 0 }} sx={{ display: { xs: 'block', sm: 'block', md: 'none' } }}>
+          <Bottom />
+        </Box>
+      )}
     </RootStyle>
   );
 }

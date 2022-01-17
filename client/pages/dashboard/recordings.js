@@ -230,7 +230,7 @@ function RecordingsPage() {
 let Recordings = withAuth(RecordingsPage);
 
 Recordings.getLayout = function getLayout(page) {
-  return <DashboardLayout>{page}</DashboardLayout>;
+  return <DashboardLayout withBottomNav>{page}</DashboardLayout>;
 };
 
 export default Recordings;

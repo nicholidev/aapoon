@@ -17,7 +17,7 @@ import Logo from '../../components/Logo';
 import Image from '../../components/Image';
 // sections
 import AuthFirebaseSocials from '../../sections/auth/AuthFirebaseSocial';
-import DashboardLayout from '../../layouts/dashboard';
+import DashboardLayout from '../../layouts/main';
 import Divider from '@mui/material/Divider';
 // ----------------------------------------------------------------------
 import GlobalStyles from '@mui/material/GlobalStyles';
@@ -58,7 +58,12 @@ const ContentStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   minHeight: '100vh',
   flexDirection: 'column',
-
+  marginTop: '80px',
+  marginBottom: '40px',
+  [theme.breakpoints.down('sm')]: {
+    marginTop: '60px',
+    marginBottom: '20px',
+  },
   padding: theme.spacing(8, 2),
 }));
 
@@ -70,7 +75,7 @@ function RefundPolicy() {
   const router = useRouter();
 
   return (
-    <Page title="Schedule Meeting">
+    <Page title="aapoon meet refund policy">
       <GlobalStyles
         styles={{
           body: { backgroundColor: '#F1F1F1' },
@@ -87,8 +92,8 @@ function RefundPolicy() {
                     <Iconify icon={'eva:arrow-back-fill'} />
                   </IconButtonAnimate>
                   &nbsp;&nbsp;&nbsp;&nbsp; */}
-                <Typography variant="h2" align="center" gutterBottom sx={{ fontSize: { xs: '22px', md: '40px' } }}>
-                  MEETAAP Refund policy
+                <Typography variant="h2" align="center" gutterBottom sx={{ fontSize: { xs: '18px', md: '24px' } }}>
+                  aapoon meet Refund policy
                 </Typography>
 
                 {/* <Typography variant="h6" gutterBottom style={{ fontStyle: 'italic' }}>
@@ -97,7 +102,7 @@ function RefundPolicy() {
               </Box>
 
               <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
+                <Typography sx={{ fontSize: { xs: '12px', md: '14px' } }}>
                   Since the meetaap.in offers non-tangible products/Goods/Services, we do not provide refunds after the
                   subscription is purchased, which you acknowledge prior to purchasing any subscription on the Website.
                   <br />
@@ -106,7 +111,7 @@ function RefundPolicy() {
                   subscription.
                 </Typography>
               </Box>
-              <Box sx={{ pl: 5, display: 'flex' }}>
+              <Box sx={{ pl: 2, display: 'flex' }}>
                 <Typography variant="h4">
                   <Iconify icon={'ci:dot-02-s'} />
                 </Typography>
@@ -116,7 +121,7 @@ function RefundPolicy() {
                   subscription period.
                 </Typography>
               </Box>
-              <Box sx={{ pl: 5, display: 'flex' }}>
+              <Box sx={{ pl: 2, display: 'flex' }}>
                 <Typography variant="h4">
                   <Iconify icon={'ci:dot-02-s'} />
                 </Typography>
@@ -126,7 +131,7 @@ function RefundPolicy() {
                   error or mistake.
                 </Typography>
               </Box>
-              <Box sx={{ pl: 5, display: 'flex' }}>
+              <Box sx={{ pl: 2, display: 'flex' }}>
                 <Typography variant="h4">
                   <Iconify icon={'ci:dot-02-s'} />
                 </Typography>
@@ -136,7 +141,7 @@ function RefundPolicy() {
                   error or mistake.
                 </Typography>
               </Box>
-              <Box sx={{ pl: 5, display: 'flex' }}>
+              <Box sx={{ pl: 2, display: 'flex' }}>
                 <Typography variant="h4">
                   <Iconify icon={'ci:dot-02-s'} />
                 </Typography>
@@ -145,7 +150,7 @@ function RefundPolicy() {
                   A refund request must be made in writing using the registered email Id of the user.
                 </Typography>
               </Box>
-              <Box sx={{ pl: 5, display: 'flex' }}>
+              <Box sx={{ pl: 2, display: 'flex' }}>
                 <Typography variant="h4">
                   <Iconify icon={'ci:dot-02-s'} />
                 </Typography>
@@ -155,7 +160,7 @@ function RefundPolicy() {
                   circumstances.
                 </Typography>
               </Box>
-              <Box sx={{ mb: 5, pl: 5, display: 'flex' }}>
+              <Box sx={{ mb: 5, pl: 2, display: 'flex' }}>
                 <Typography variant="h4">
                   <Iconify icon={'ci:dot-02-s'} />
                 </Typography>
@@ -166,11 +171,11 @@ function RefundPolicy() {
                 </Typography>
               </Box>
               <Box sx={{ mb: 2 }}>
-                <Typography variant="h6" gutterBottom>
+                <Typography variant="subtitle1" gutterBottom>
                   Contacting us
                 </Typography>
               </Box>
-              <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
+              <Typography sx={{ fontSize: { xs: '12px', md: '14px' } }}>
                 You may notify MEETAAP of any issues by sending an Email to &nbsp;
                 <a href="mailto:support@meetapp.in">support@meetapp.in</a>
               </Typography>

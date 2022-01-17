@@ -75,7 +75,7 @@ export default function MainFooter() {
           </Grid>
 
           <Grid item xs={12} md={7}>
-            <Stack spacing={5} direction={{ xs: 'column', md: 'row' }} justifyContent="space-between">
+            {/* <Stack spacing={5} direction={{ xs: 'column', md: 'row' }} justifyContent="space-between">
               {LINKS.map((list) => (
                 <Stack key={list.headline} spacing={2}>
                   <Typography component="p" variant="overline">
@@ -95,7 +95,7 @@ export default function MainFooter() {
                   ))}
                 </Stack>
               ))}
-            </Stack>
+            </Stack> */}
           </Grid>
         </Grid>
 

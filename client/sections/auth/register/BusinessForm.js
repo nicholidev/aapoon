@@ -33,6 +33,7 @@ import CustomPhone from '../../../components/Phonenumber';
 import InputLabel from '@mui/material/InputLabel';
 import { FileUploader } from 'react-drag-drop-files';
 import { acceptInvitation, getCountry } from '../../../api/user';
+import { useRouter } from 'next/router'
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../../utils/errorMessage';
 export default function RegisterForm(props) {
@@ -48,8 +49,8 @@ export default function RegisterForm(props) {
       .url('Please enter valid url with http or https')
     ,
     teamsize: Yup.string().required('Teamsize is required'),
-    addrerss1: Yup.string().min(2, 'Too Short!').required('Adress is required'),
-    addrerss2: Yup.string(),
+    address1: Yup.string().min(2, 'Too Short!').required('Adress is required'),
+    address2: Yup.string(),
     state: Yup.string().min(2, 'Too Short!').required('State is required'),
     pincode: Yup.number('Please enter valid code').required('pincode is required'),
     logo: Yup.mixed()
@@ -73,8 +74,8 @@ export default function RegisterForm(props) {
     initialValues: {
       businessName: '',
       businessWeb: '',
-      addrerss1: '',
-      addrerss2: '',
+      address1: '',
+      address2: '',
       state: '',
       pincode: '',
       teamsize: '10',
@@ -94,6 +95,10 @@ export default function RegisterForm(props) {
             </IconButtonAnimate>
           ),
         });
+
+        if(props.updateMode){
+          return router.replace("/organisation/profile")
+        }
 
         if (localStorage.getItem('inviteToken'))
           acceptInvitation({ email: user.email, token: localStorage.getItem('inviteToken') });
@@ -119,8 +124,8 @@ export default function RegisterForm(props) {
   
         businessName: user.businessDetails?.businessName,
         businessWeb: user.businessDetails?.businessWeb,
-        addrerss1:user.businessDetails?.addrerss1,
-        addrerss2: user.businessDetails?.addrerss2,
+        address1:user.businessDetails?.address1,
+        address2: user.businessDetails?.address2,
         state:user.businessDetails?.state,
         pincode: user.businessDetails?.pincode,
         teamsize: user.businessDetails?.teamsize,
@@ -129,7 +134,8 @@ export default function RegisterForm(props) {
     }
 
   },[props.isUpdate]);
-
+  
+  const router = useRouter()
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, values } = formik;
 
   return (
@@ -165,7 +171,7 @@ export default function RegisterForm(props) {
                 fullWidth
                 autoComplete="addrerss"
                 placeholder="Address 1 *"
-                {...getFieldProps('addrerss1')}
+                {...getFieldProps('address1')}
                 error={Boolean(touched.addrerss1 && errors.addrerss1)}
                 helperText={touched.addrerss1 && errors.addrerss1}
               />
@@ -208,9 +214,9 @@ export default function RegisterForm(props) {
                   error={Boolean(touched.teamsize && errors.teamsize)}
                   helperText={touched.teamsize && errors.teamsize}
                 >
-                  <MenuItem value={10}>0-10 Employees</MenuItem>
-                  <MenuItem value={50}>10-50 Employees</MenuItem>
-                  <MenuItem value={100}>50-100 Employees</MenuItem>
+                  <MenuItem value={"0-10"}>0-10 Employees</MenuItem>
+                  <MenuItem value={"10-50"}>10-50 Employees</MenuItem>
+                  <MenuItem value={"50-100"}>50-100 Employees</MenuItem>
                 </Select>
               </Stack>
             </Grid>

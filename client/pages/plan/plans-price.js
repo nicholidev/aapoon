@@ -23,23 +23,18 @@ import {
   Tab,
 } from '@mui/material';
 // layouts
-import DashboardLayout from '../../layouts/dashboard';
+import DashboardLayout from '../../layouts/main';
 // hooks
 import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import GlobalStyles from '@mui/material/GlobalStyles';
 // ----------------------------------------------------------------------
-import withAuth from '../../HOC/withAuth';
+
 import Iconify from '../../components/Iconify';
-import PersonIcon from '@mui/icons-material/Person';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import StarIcon from '@mui/icons-material/Star';
-import AppNewInvoice from '../../sections/@dashboard/general/app/AppNewInvoice';
-import InviteData from '../../components/invite/InviteData';
-import InviteModal from '../../components/invite/InviteModal';
+
 import { useState } from 'react';
-import { IconButtonAnimate } from '../../components/animate';
+
 import PlansComparison from '../../components/plan/PlansComparison';
 
 const Sidebar = styled('header')(({ theme }) => ({
@@ -186,16 +181,16 @@ function PlanPricePage() {
     }
   };
   return (
-    <Page title="Dashboard">
+    <Page title="Plan and pricing">
       <GlobalStyles
         styles={{
           body: { backgroundColor: '#F5F5FA' },
         }}
       />
-      <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex' }}>
+      <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex', mt: 8, md: 4 }}>
         <Content>
           <Typography align="center" variant="h3" color="initial">
-            appoon meet Pricing Plans
+            aapoon meet Pricing Plans
           </Typography>
           <br />
 
@@ -683,7 +678,7 @@ function PlanPricePage() {
 }
 
 // ----------------------------------------------------------------------
-let PlansPrice = withAuth(PlanPricePage);
+let PlansPrice = PlanPricePage;
 
 PlansPrice.getLayout = function getLayout(page) {
   return <DashboardLayout>{page}</DashboardLayout>;

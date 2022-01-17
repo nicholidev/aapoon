@@ -25,6 +25,7 @@ import {
 import Iconify from '../../components/Iconify';
 import MenuPopover from './../../components/MenuPopover';
 import InstantMeetingPopup from '../../sections/meeting/InstantMeetingPopup';
+import useAuth from '../../hooks/useAuth';
 // ----------------------------------------------------------------------
 
 const LinkStyle = styled(Link)(({ theme }) => ({
@@ -62,7 +63,7 @@ MenuDesktop.propTypes = {
 export default function MenuDesktop({ isOffset, isHome, navConfig, id }) {
   const { pathname, push } = useRouter();
   const [open, setOpen] = useState(false);
-
+  const { user } = useAuth();
   useEffect(() => {
     if (open) {
       handleClose();
@@ -86,6 +87,7 @@ export default function MenuDesktop({ isOffset, isHome, navConfig, id }) {
             key={link.title}
             item={link}
             isOpen={open}
+            user={user}
             push={push}
             onOpen={handleOpen}
             onClose={handleClose}
@@ -137,7 +139,7 @@ MenuDesktopItem.propTypes = {
   }),
 };
 
-function MenuDesktopItem({ item, isHome, isOpen, isOffset, onOpen, onClose, push }) {
+function MenuDesktopItem({ item, isHome, isOpen, isOffset, onOpen, onClose, push, user }) {
   const { title, path, children } = item;
   const anchorRef = useRef(null);
   if (children) {
@@ -162,13 +164,29 @@ function MenuDesktopItem({ item, isHome, isOpen, isOffset, onOpen, onClose, push
           />
         </LinkStyle>
 
-        <MenuPopover open={isOpen} anchorEl={anchorRef.current} sx={{ width: 220, pt: 2, pd: 2 }} onClose={onClose} id={"meetingPopover"} key={"meetingPopover"}>
-          <Stack spacing={{ xs: 2 }} sx={{ p: 2 }}>
-            <InstantMeetingPopup>
-              <MenuItem>Instant meeting</MenuItem>
-            </InstantMeetingPopup>
-            <MenuItem>Scheduled meeting</MenuItem>
-          </Stack>
+        <MenuPopover
+          open={isOpen}
+          anchorEl={anchorRef.current}
+          sx={{ width: 220, pt: 2, pd: 2 }}
+          onClose={onClose}
+          id={'meetingPopover'}
+          key={'meetingPopover'}
+        >
+          {user.id ? (
+            <Stack spacing={{ xs: 2 }} sx={{ p: 2 }}>
+              <InstantMeetingPopup>
+                <MenuItem>Instant meeting</MenuItem>
+              </InstantMeetingPopup>
+              <MenuItem onClick={() => push('/dashboard/schedule-meeting')}>Scheduled meeting</MenuItem>
+            </Stack>
+          ) : (
+            <Stack spacing={{ xs: 2 }} sx={{ p: 2 }}>
+              <InstantMeetingPopup>
+                <MenuItem onClick={() => push('/auth/Login')}>Instant meeting</MenuItem>
+              </InstantMeetingPopup>
+              <MenuItem onClick={() => push('/auth/Login')}>Scheduled meeting</MenuItem>
+            </Stack>
+          )}
         </MenuPopover>
       </>
     );
