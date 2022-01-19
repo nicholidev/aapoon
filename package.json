@@ -1,0 +1,32 @@
+{
+  "name": "aapoon",
+  "description": "Cloud Functions and Static web for Firebase",
+  "scripts": {
+    "init": "node environment-config.js",
+    "prepare": "husky install",
+    "copyright-header": "copyright-header -f copyright-temp.js -i \"*/**/*\" -s",
+    "sort-json": "node ./utils/sortIndex.js && prettier  \"firestore.indexes.json\" --write",
+    "migrate": "fireway migrate --path=./migrations",
+    "backup-data": "cd ./functions && npm run backup-data",
+    "git-details": "node git-details.js"
+  },
+  "engines": {
+    "node": "14"
+  },
+  "devDependencies": {
+    "@quintype/copyright-header": "^1.3.3",
+    "eslint": "^7.32.0",
+    "fireway": "^1.0.2",
+    "husky": "^7.0.2",
+    "jsonabc": "^2.3.1",
+    "lint-staged": "^11.1.2",
+    "prettier": "2.4.1"
+  },
+  "lint-staged": {
+    "*.{js,jsx}": "eslint --cache --fix",
+    "*.{js,css,md,jsx,json}": "prettier --write"
+  },
+  "dependencies": {
+    "@google-cloud/firestore": "^4.15.1"
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "hosting": {
+    "predeploy": ["npm run --prefix client build"],
+    "public": "client/out",
+    "cleanUrls": true,
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+    "rewrites": [
+      {
+        "source": "/app/**",
+        "function": "app"
+      }
+    ]
+  },
+  "functions": {
+    "source": "functions"
+  },
+
+  "emulators": {
+    "functions": {
+      "port": 5000
+    },
+    "firestore": {
+      "port": 4000
+    },
+    "ui": {
+      "enabled": true
+    }
+  }
+}
