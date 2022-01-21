@@ -18,6 +18,7 @@ import '@fullcalendar/timegrid/main.css';
 import PropTypes from 'prop-types';
 // next
 import Head from 'next/head';
+
 // @mui
 import { NoSsr } from '@mui/material';
 // contexts
@@ -35,6 +36,8 @@ import MotionLazyContainer from '../components/animate/MotionLazyContainer';
 import { SnackbarProvider } from 'notistack';
 // ----------------------------------------------------------------------
 import { AuthProvider } from '../contexts/FirebaseContext';
+import { addJWTInterceptor } from '../utils/Interceptor';
+import { useEffect } from 'react';
 import 'react-phone-number-input/style.css';
 MyApp.propTypes = {
   Component: PropTypes.func,
@@ -45,7 +48,9 @@ export default function MyApp(props) {
   const { Component, pageProps } = props;
 
   const getLayout = Component.getLayout ?? ((page) => page);
-
+  useEffect(() => {
+    addJWTInterceptor(localStorage.getItem('authToken'));
+  }, []);
   return (
     <>
       <Head>
@@ -55,7 +60,7 @@ export default function MyApp(props) {
       <SettingsProvider>
         <CollapseDrawerProvider>
           <ThemeProvider>
-            <SnackbarProvider>
+            <SnackbarProvider autoHideDuration={3000}>
               <MotionLazyContainer>
                 <GlobalStyles />
                 <ProgressBar />

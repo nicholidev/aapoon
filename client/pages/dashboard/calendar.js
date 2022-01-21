@@ -38,7 +38,7 @@ import Page from '../../components/Page';
 import Iconify from '../../components/Iconify';
 import { DialogAnimate } from '../../components/animate';
 // sections
-
+import { useRouter } from 'next/router';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import { CalendarStyle, CalendarToolbar } from '../../sections/@dashboard/calendar';
 import DashboardLayout from '../../layouts/dashboard';
@@ -110,6 +110,7 @@ function CalendarPage() {
   const [view, setView] = useState(isDesktop ? 'dayGridMonth' : 'listWeek');
   const [events, setEvents] = useState([]);
   const { user } = useAuth();
+  const { push } = useRouter();
   useEffect(() => {
     const calendarEl = calendarRef.current;
     if (calendarEl) {
@@ -233,7 +234,7 @@ function CalendarPage() {
             <List sx={{ width: '100%' }}>
               <ListItem disablePadding>
                 <ListItemButton>
-                  <ListItemText primary={<h4>Scheduled Meetings</h4>} />
+                  <ListItemText primary={<h4>Schedule Meetings</h4>} />
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
@@ -274,7 +275,7 @@ function CalendarPage() {
         <Content>
           <DataSection>
             <DataHead>
-              <Button variant="contained" color="primary" href="/dashboard/schedule-meeting">
+              <Button variant="contained" color="primary" onClick={() => push('/dashboard/schedule-meeting')}>
                 Schedule Meeting
               </Button>
               &nbsp;&nbsp;&nbsp;&nbsp;

@@ -2,7 +2,6 @@
  Copyright ©. All Rights Reserved. Confidential and proprietary.
  XYZ. Contact address: XYZ@xyz.pa .
  */
-
 import axios from 'axios';
 import firebase from 'firebase/compat/app';
 
@@ -58,8 +57,8 @@ export const sendOtp = (mobile, meeting, password = '') => {
   return axios.post(`${endpoint}/misc/send-otp`, { mobile: mobile, meeting, password: password });
 };
 
-export const verifyOtp = (otp, meeting, mobile) => {
-  return axios.post(`${endpoint}/misc/verify-otp`, { otp, meeting, mobile });
+export const verifyOtp = (otp, id, mobile, name) => {
+  return axios.post(`${endpoint}/meeting/joinwithotp`, { otp, id, mobile, name });
 };
 
 export const joinMeeting = (data) => {
@@ -67,20 +66,24 @@ export const joinMeeting = (data) => {
 };
 
 export const getMeetingDetails = (id) => {
-  return new Promise((resolve, reject) => {
-    firebase
-      .firestore()
-      .collection('meeting')
-      .doc(id)
-      .get()
-      .then((snapshot) => {
-        console.log(snapshot, snapshot.data());
-        let data = snapshot.data();
-        resolve(data);
-      })
-      .catch((err) => {
-        console.log(err);
-        reject(err);
-      });
-  });
+  return axios.get(`${endpoint}/meeting/details/${id}`);
 };
+
+// export const getMeetingDetails = (id) => {
+//   return new Promise((resolve, reject) => {
+//     firebase
+//       .firestore()
+//       .collection('meeting')
+//       .doc(id)
+//       .get()
+//       .then((snapshot) => {
+//         console.log(snapshot, snapshot.data());
+//         let data = snapshot.data();
+//         resolve(data);
+//       })
+//       .catch((err) => {
+//         console.log(err);
+//         reject(err);
+//       });
+//   });
+// };

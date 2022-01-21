@@ -1,6 +1,6 @@
 /*
  Copyright ©. All Rights Reserved. Confidential and proprietary.
- Taras Mazepa. Contact address: taras@maze.pa .
+ XYZ. Contact address: XYZ@xyz.pa .
  */
 const sanitize = (payload, fields = []) => {
   return fields.reduce((acc, curr) => {

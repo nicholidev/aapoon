@@ -8,8 +8,7 @@
     "build": "next build && next export",
     "start": "next start",
     "lint": "eslint --ext .js,.jsx ./src",
-    "lint:fix": "eslint --fix --ext .js,.jsx ./src",
-    "export": "npm run build && next export -o _static"
+    "lint:fix": "eslint --fix --ext .js,.jsx ./src"
   },
   "browserslist": {
     "production": [
@@ -28,6 +27,7 @@
   },
   "dependencies": {
     "@babel/preset-react": "^7.16.7",
+    "@date-io/date-fns": "1.3.13",
     "@emotion/cache": "^11.6.0",
     "@emotion/react": "^11.7.0",
     "@emotion/server": "^11.4.0",
@@ -39,6 +39,7 @@
     "@fullcalendar/timegrid": "^5.10.1",
     "@fullcalendar/timeline": "^5.10.1",
     "@iconify/react": "^3.1.0",
+    "@material-ui/pickers": "^3.3.10",
     "@mui/icons-material": "^5.2.4",
     "@mui/lab": "^5.0.0-alpha.59",
     "@mui/material": "^5.2.2",

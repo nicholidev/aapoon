@@ -21,7 +21,7 @@ function maxLength(object) {
   }
 }
 
-export default function VerifyCodeForm({ id, mobile, setAuthMeeting }) {
+export default function VerifyCodeForm({ id, mobile, setAuthMeeting, name }) {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
   const VerifyCodeSchema = Yup.object().shape({
@@ -35,13 +35,13 @@ export default function VerifyCodeForm({ id, mobile, setAuthMeeting }) {
     validationSchema: VerifyCodeSchema,
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
       try {
-        await verifyOtp(values.code, id, mobile);
+        let response = await verifyOtp(values.code, id, mobile, name);
         enqueueSnackbar('Verify success', { variant: 'success' });
         setSubmitting(false);
         localStorage.setItem('mid', id);
-        localStorage.setItem('mjwt', 'query.jwt');
+        localStorage.setItem('mjwt', response.data.token);
 
-        setAuthMeeting({ isAuth: true, id: id, jwt: '' });
+        setAuthMeeting({ isAuth: true, id: id, jwt: response.data.token });
       } catch (err) {
         setSubmitting(false);
         resetForm();

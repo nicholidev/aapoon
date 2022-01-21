@@ -126,7 +126,7 @@ function MenuMobileItem({ item, isOpen, onOpen }) {
         <Collapse in={isOpen} timeout="auto" unmountOnExit>
           <Box style={{ background: '#fafafa', paddingLeft: 32 }}>
             <ListItemStyle href={'/'} component={Link}>
-              <ListItemText disableTypography primary={'scheduled meeting'} />
+              <ListItemText disableTypography primary={'schedule meeting'} />
             </ListItemStyle>
             <ListItemStyle href={'/'} component={Link}>
               <ListItemText disableTypography primary={'instant meeting'} />

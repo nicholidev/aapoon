@@ -1,3 +1,7 @@
+/*
+ Copyright ©. All Rights Reserved. Confidential and proprietary.
+ XYZ. Contact address: XYZ@xyz.pa .
+ */
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import { useEffect } from 'react';

@@ -82,7 +82,7 @@ function TermsOfService() {
         }}
       />
       <RootStyle>
-        <DashboardHeader />
+        {/* <DashboardHeader /> */}
 
         <Container>
           <Paper>
@@ -93,12 +93,12 @@ function TermsOfService() {
                 </IconButtonAnimate>
                 &nbsp;&nbsp;&nbsp;&nbsp; */}
                 <Typography variant="h2" align="center" gutterBottom sx={{ fontSize: { xs: '18px', md: '24px' } }}>
-                  Terms Of Service
+                  aapoon meet Terms Of Service
                 </Typography>
                 <br />
                 <br />
                 <Typography variant="subtitle1" sx={{ fontSize: { xs: '14px', md: '18px' } }} gutterBottom>
-                  EFFECTIVE: jan 01, 2022
+                  EFFECTIVE: January 01, 2022
                 </Typography>
               </Box>
 

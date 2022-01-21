@@ -25,7 +25,7 @@ import { LoadingButton } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-import TimePicker from '@mui/lab/TimePicker';
+import MobileTimePicker from '@mui/lab/MobileTimePicker';
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useIsMountedRef from '../../hooks/useIsMountedRef';
@@ -201,7 +201,7 @@ export default function FormUserMeeting() {
           </Typography>
           <Box
             component={ButtonBase}
-            onClick={() => copyTocb('https://github.com/sskjdskd/sdshdj')}
+            onClick={() => copyTocb(window.origin + '/meeting?meetingid=' + data.id)}
             sx={{
               border: '1px solid #DDDDDD',
               borderRadius: 1,
@@ -221,7 +221,7 @@ export default function FormUserMeeting() {
               align="center"
               sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center' }}
             >
-              {window.origin + '/meeting/' + data.id}
+              {window.origin + '/meeting?meetingid=' + data.id}
             </Typography>
             <Iconify icon="fluent:copy-20-filled" sx={{ fontSize: 24, ml: 2, color: 'text.secondary' }} />
           </Box>
@@ -335,7 +335,7 @@ export default function FormUserMeeting() {
                     <Typography sx={{ fontWeight: 500 }}> Start Time * </Typography>
                     <Stack spacing={1} direction="row">
                       <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <TimePicker
+                        <MobileTimePicker
                           {...getFieldProps('meetingDateTime')}
                           onChange={(newValue) => {
                             formik.setFieldValue('meetingDateTime', newValue);

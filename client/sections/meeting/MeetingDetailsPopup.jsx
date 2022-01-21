@@ -95,7 +95,7 @@ function MeetingDetailsPopup(props) {
             </Typography>
             <Box
               component={ButtonBase}
-              onClick={() => copyTocb('https://github.com/sskjdskd/sdshdj')}
+              onClick={() => copyTocb(window.origin + '/meeting?meetingid=' + data?.id)}
               sx={{
                 border: '1px solid #DDDDDD',
                 borderRadius: 1,
@@ -115,15 +115,13 @@ function MeetingDetailsPopup(props) {
                 align="center"
                 sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center' }}
               >
-                {window.origin + '/meeting/' + data?.id}
+                {window.origin + '/meeting?meetingid=' + data?.id}
               </Typography>
               <Iconify icon="fluent:copy-20-filled" sx={{ fontSize: 24, ml: 2, color: 'text.secondary' }} />
             </Box>
             <br />
             <Button variant="outlined">
-              <Typography variant="h6" >
-                Join Now
-              </Typography>
+              <Typography variant="h6">Join Now</Typography>
             </Button>
             <br />
             <Typography sx={{ fontWeight: 500, display: 'flex' }} variant="body" gutterBottom>

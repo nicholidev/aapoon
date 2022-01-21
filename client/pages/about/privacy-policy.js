@@ -103,7 +103,7 @@ function PrivacyPolicy() {
                 <br />
                 <br />
                 <Typography variant="subtitle1" gutterBottom style={{ fontStyle: 'italic' }}>
-                  EFFECTIVE: Jan 01, 2022
+                  EFFECTIVE: January 01, 2022
                 </Typography>
               </Box>
 

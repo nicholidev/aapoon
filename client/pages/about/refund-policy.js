@@ -82,7 +82,7 @@ function RefundPolicy() {
         }}
       />
       <RootStyle>
-        <DashboardHeader />
+        {/* <DashboardHeader /> */}
 
         <Container sx={{ mt: { xs: 2 } }}>
           <Paper>
