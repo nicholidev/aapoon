@@ -49,7 +49,7 @@ export default function MyApp(props) {
 
   const getLayout = Component.getLayout ?? ((page) => page);
   useEffect(() => {
-    addJWTInterceptor(localStorage.getItem('authToken'));
+    if (localStorage.getItem('authToken')) addJWTInterceptor(localStorage.getItem('authToken'));
   }, []);
   return (
     <>

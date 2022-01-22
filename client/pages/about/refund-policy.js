@@ -127,8 +127,8 @@ function RefundPolicy() {
                 </Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  MEETAAP will issue a refund if a duplicate payment for the same service is charged due to a technical
-                  error or mistake.
+                  aapoon meet will issue a refund if a duplicate payment for the same service is charged due to a
+                  technical error or mistake.
                 </Typography>
               </Box>
               <Box sx={{ pl: 2, display: 'flex' }}>
@@ -137,8 +137,8 @@ function RefundPolicy() {
                 </Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  MEETAAP will issue a refund if a duplicate payment for the same service is charged due to a technical
-                  error or mistake.
+                  aapoon meet will issue a refund if a duplicate payment for the same service is charged due to a
+                  technical error or mistake.
                 </Typography>
               </Box>
               <Box sx={{ pl: 2, display: 'flex' }}>
@@ -176,7 +176,7 @@ function RefundPolicy() {
                 </Typography>
               </Box>
               <Typography sx={{ fontSize: { xs: '12px', md: '14px' } }}>
-                You may notify MEETAAP of any issues by sending an Email to &nbsp;
+                You may notify aapoon meet of any issues by sending an Email to &nbsp;
                 <a href="mailto:support@meetapp.in">support@meetapp.in</a>
               </Typography>
             </ContentStyle>
