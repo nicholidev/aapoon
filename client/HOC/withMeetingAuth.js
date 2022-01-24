@@ -172,11 +172,11 @@ const withMeetingAuth = (WrappedComponent) => {
                 <div id="captcha-container"></div>
                 <Typography variant="caption" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
                   By clicking on Join meeting, you agree to our &nbsp;
-                  <Link underline="always" color="text.primary" href="#">
+                  <Link underline="always" color="text.primary" href="/about/terms-of-service">
                     Terms and conditions &nbsp;
                   </Link>
                   and you acknowledge having read our &nbsp;
-                  <Link underline="always" color="text.primary" href="#">
+                  <Link underline="always" color="text.primary" href="/about/privacy-policy">
                     Privacy Policy
                   </Link>
                   .

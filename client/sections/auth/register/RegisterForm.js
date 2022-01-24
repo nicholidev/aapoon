@@ -22,6 +22,7 @@ import FormLabel from '@mui/material/FormLabel';
 // @mui
 import { Stack, TextField, IconButton, InputAdornment, Alert, Button, Select, MenuItem } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import NumberFormat from 'react-number-format';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
@@ -32,9 +33,12 @@ import PhoneInput from 'react-phone-number-input';
 import CustomPhone from '../../../components/Phonenumber';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../../utils/errorMessage';
+import NumberFormatCustom from "../../../components/NumberInput"
 import { acceptInvitation, getCountry } from '../../../api/user';
+
 export default function RegisterForm(query) {
   const { register, user } = useAuth();
+  const [numf,setnumf]=useState("12")
   const [open, setOpen] = useState(user.email && user.phoneNumber ? false : true);
   const [countryCode, setCountryCode] = useState('US');
   const isMountedRef = useIsMountedRef();
@@ -225,9 +229,17 @@ export default function RegisterForm(query) {
                         </Select>
                       </FormControl>
                       <TextField
-                        type="number"
+                      
                         placeholder="Enter number of employees"
-                        {...getFieldProps('numberOfEmployees')}
+                        name="numberOfEmployees"
+                        InputProps={{
+                          inputComponent: NumberFormatCustom,
+                        }}
+                        inputComponent={NumberFormatCustom}
+                     
+                    
+                   
+                       {...getFieldProps('numberOfEmployees')}
                       />
                     </>
                   )}

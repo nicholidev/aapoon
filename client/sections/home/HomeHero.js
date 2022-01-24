@@ -106,7 +106,7 @@ export default function HomeHero() {
                   size="large"
                   variant="contained"
                   sx={{ width: 200 }}
-                  onClick={() => (user.id ? push('/dashboard/schedule-meeting') : push('/auth/Login'))}
+                  onClick={() => (user.id ? push('/dashboard/calendar') : push('/auth/Login'))}
                   startIcon={<Iconify icon={'feather:video'} width={20} height={20} />}
                 >
                   Start a meeting
@@ -120,7 +120,7 @@ export default function HomeHero() {
                     sx={{ ml: { xs: 0, sm: 2 }, mt: { xs: 2, sm: 0 }, width: 200 }}
                     startIcon={<Iconify icon={'ph:browser'} width={20} height={20} />}
                   >
-                    Join Meeting
+                    Instant meeting
                   </Button>
                 ) : (
                   <InstantMeetingPopup sx={{ ml: { xs: 0, sm: 2 }, mt: { xs: 2, sm: 0 }, width: 200 }}>
@@ -129,7 +129,7 @@ export default function HomeHero() {
                       variant="outlined"
                       startIcon={<Iconify icon={'ph:browser'} width={20} height={20} />}
                     >
-                      Join Meeting
+                      Instant meeting
                     </Button>
                   </InstantMeetingPopup>
                 )}
