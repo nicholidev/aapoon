@@ -25,6 +25,7 @@ import GlobalStyles from '@mui/material/GlobalStyles';
 import { IconButtonAnimate } from '../../components/animate';
 import Iconify from '../../components/Iconify';
 import { useRouter } from 'next/router';
+import useAuth from '../../hooks/useAuth';
 const RootStyle = styled('div')(({ theme }) => ({}));
 
 const HeaderStyle = styled('header')(({ theme }) => ({
@@ -70,6 +71,8 @@ function ScheduleMeeting() {
   const mdUp = useResponsive('up', 'md');
   const router = useRouter();
 
+  const { method, user } = useAuth();
+
   return (
     <Page title="Schedule Meeting">
       <GlobalStyles
@@ -85,17 +88,17 @@ function ScheduleMeeting() {
             <ContentStyle>
               <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
                 <IconButtonAnimate onClick={() => router.back()}>
-                  <Iconify icon={'eva:arrow-back-fill'} />
+                  <Iconify icon={'eva:arrow-back-fill'} color="common.black" />
                 </IconButtonAnimate>
                 &nbsp;&nbsp;&nbsp;&nbsp;
                 <Box sx={{ flexGrow: 1 }}>
-                  <Typography variant="h4" align="left" gutterBottom>
+                  <Typography variant="h4" align="left">
                     Schedule Meeting
                   </Typography>
                 </Box>
               </Box>
 
-              <FormUserMeeting />
+              <FormUserMeeting isCustomerAdmin={user.accountType ? true : false} />
             </ContentStyle>
           </Paper>
         </Container>

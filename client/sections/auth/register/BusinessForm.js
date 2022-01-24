@@ -19,6 +19,7 @@ import {
   MenuItem,
   Box,
   FormHelperText,
+  Button,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // hooks
@@ -264,9 +265,11 @@ export default function RegisterForm(props) {
             </Grid>
           </Grid>
           <Stack justifyContent={'flex-end'} direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 2 }}>
-            {/* <LoadingButton size="large" color="primary">
+          {props.isUpdate &&
+            <Button size="large" color="primary" onClick={() => router.back()}>
               Cancel
-            </LoadingButton> */}
+            </Button>
+           }
             <LoadingButton size="large" type="submit" variant="contained" loading={isSubmitting}>
               {props.isUpdate? "Update":"Register"}
             </LoadingButton>
