@@ -114,7 +114,7 @@ export default function LoginForm() {
             control={<Checkbox {...getFieldProps('remember')} checked={values.remember} />}
             label="Remember me"
           />
-          <RouterLink href={'/auth/ResetPassword'} passHref>
+          <RouterLink href={'/auth/ForgotPassword'} passHref>
             <Link variant="subtitle2">Forgot password?</Link>
           </RouterLink>
         </Stack>

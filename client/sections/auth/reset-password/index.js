@@ -2,4 +2,4 @@
  Copyright ©. All Rights Reserved. Confidential and proprietary.
  XYZ. Contact address: XYZ@xyz.pa .
  */
-export { default as ResetPasswordForm } from './ResetPasswordForm';
+export { default as ForgotPasswordForm } from './ForgotPasswordForm';
