@@ -5,6 +5,7 @@
 import { capitalCase } from 'change-case';
 import RouterLink from 'next/link';
 // @mui
+import { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { Box, Card, Link, Container, Typography, Tooltip, Paper } from '@mui/material';
 // hooks
@@ -26,6 +27,7 @@ import GlobalStyles from '@mui/material/GlobalStyles';
 import { IconButtonAnimate } from '../components/animate';
 import Iconify from '../components/Iconify';
 import { useRouter } from 'next/router';
+import useAuth from './../hooks/useAuth';
 import FormHelpDesk from '../sections/helpDesk/FormHelpDesk';
 const RootStyle = styled('div')(({ theme }) => ({}));
 
@@ -59,7 +61,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
   maxWidth: 880,
   margin: 'auto',
   display: 'flex',
-  minHeight: '100vh',
+
   flexDirection: 'column',
 
   padding: theme.spacing(8, 2),
@@ -70,8 +72,9 @@ const ContentStyle = styled('div')(({ theme }) => ({
 function HelpDesk() {
   const smUp = useResponsive('up', 'sm');
   const mdUp = useResponsive('up', 'md');
+  const [showLinksentModal, setLinkSentModal] = useState(false);
   const router = useRouter();
-
+  const { user } = useAuth();
   return (
     <Page title="Schedule Meeting">
       <GlobalStyles
@@ -85,19 +88,64 @@ function HelpDesk() {
         <Container sx={{ mt: { xs: 4, lg: 4, xl: 4 } }}>
           <Paper>
             <ContentStyle>
-              <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
-                <IconButtonAnimate onClick={() => router.back()}>
-                  <Iconify icon={'eva:arrow-back-fill'} />
-                </IconButtonAnimate>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <Box sx={{ flexGrow: 1 }}>
-                  <Typography variant="h4" align="left" gutterBottom>
-                    Help Desk
-                  </Typography>
+              {
+                <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
+                  <IconButtonAnimate onClick={() => router.back()}>
+                    <Iconify icon={'eva:arrow-back-fill'} />
+                  </IconButtonAnimate>
+                  &nbsp;&nbsp;&nbsp;&nbsp;
+                  {!showLinksentModal && (
+                    <Box sx={{ flexGrow: 1 }}>
+                      <Typography variant="h4" align="left" gutterBottom>
+                        Help Desk
+                      </Typography>
+                    </Box>
+                  )}
                 </Box>
-              </Box>
+              }
 
-              <FormHelpDesk />
+              {showLinksentModal ? (
+                <Box
+                  sx={{
+                    width: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <Paper
+                    sx={{
+                      elevation: 2,
+                      padding: 4,
+                      justifyContent: 'center',
+                      display: 'flex',
+                      alignItems: 'center',
+                      flexDirection: 'column',
+                    }}
+                    elevation={2}
+                  >
+                    <Typography variant="h4" align="center" gutterBottom>
+                      Query Received
+                    </Typography>
+                    <br />
+                    <img src="/images/help/check.png" width="100" />
+                    <br />
+                    <br />
+                    <Typography sx={{ maxWidth: 380, lineHeight: 2, width: '100%' }} gutterBottom align={'left'}>
+                      Dear {user.displayName ? user.displayName : 'user'},
+                      <br />
+                      Thank you for writing to us!
+                      <br />
+                    </Typography>
+                    <Typography sx={{ maxWidth: 380 }}>
+                      We have received your query and will get back to you soon
+                    </Typography>
+                  </Paper>
+                </Box>
+              ) : (
+                <FormHelpDesk setLinkSentModal={setLinkSentModal} />
+              )}
             </ContentStyle>
           </Paper>
         </Container>

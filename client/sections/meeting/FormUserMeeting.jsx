@@ -77,11 +77,12 @@ export default function FormUserMeeting(props) {
     initialValues: {
       meetingTopic: '',
       meetingDescription: '',
-
+      lobby: true,
+      reccurring: false,
       estimatedDuration: '15',
       password: '',
       meetingDateTime: new Date(),
-
+      meetingEndDate: new Date(),
       timeZone: '',
     },
     validationSchema: RegisterSchema,
@@ -90,6 +91,7 @@ export default function FormUserMeeting(props) {
       const tz = findTimeZone(values.timeZone);
 
       const nativeDate = values.meetingDateTime;
+      let meetingEndDate = values.meetingEndDate;
       const DateTime = {
         year: nativeDate.getFullYear(),
         month: nativeDate.getMonth() + 1,
@@ -97,12 +99,19 @@ export default function FormUserMeeting(props) {
         hours: nativeDate.getHours(),
         minutes: nativeDate.getMinutes(),
       };
-
+      const DateTimeEnd = {
+        year: meetingEndDate.getFullYear(),
+        month: meetingEndDate.getMonth() + 1,
+        day: meetingEndDate.getDate(),
+        hours: meetingEndDate.getHours(),
+        minutes: meetingEndDate.getMinutes(),
+      };
       let myDate = getUnixTime(DateTime, tz);
+      let myEndDate = getUnixTime(DateTimeEnd, tz);
       setSubmitting(true);
 
       try {
-        let meetingData = await scheduleMeeting({ scheduleAt: myDate, ...values });
+        let meetingData = await scheduleMeeting({ scheduleAt: myDate, reccuringEndDate: myEndDate, ...values });
 
         enqueueSnackbar('New meeting scheduled', {
           variant: 'success',
@@ -195,10 +204,10 @@ export default function FormUserMeeting(props) {
   const handleMeetingType = (event) => {
     setMeetingType(event.target.value);
     if (event.target.value == 'recurring') {
-      formik.setValues({ ...formik.values, meetingEndDate: new Date() });
+      formik.setValues({ ...formik.values, meetingEndDate: new Date(), reccurring: true });
       RegisterSchema.fields.meetingEndDate.required('Please enter valid date');
     } else {
-      let newValues = { ...formik.values };
+      let newValues = { ...formik.values, reccurring: false };
       delete newValues.meetingEndDate;
       formik.setValues(newValues);
       RegisterSchema.fields.meetingEndDate.notRequired();
@@ -207,6 +216,7 @@ export default function FormUserMeeting(props) {
 
   const handleMeetingLobby = (event) => {
     setWaitInLobby(event.target.checked);
+    formik.setValues({ ...formik.values, lobby: event.target.checked });
   };
 
   return (

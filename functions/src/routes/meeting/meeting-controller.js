@@ -39,23 +39,19 @@ const scheduleMeeting = async (req, res) => {
     scheduleAt,
     timeZone,
     password = "",
+    reccuringEndDate,
+    lobby,
+    reccurring,
   } = req.body;
   const uid = new ShortUniqueId({ length: 10 });
 
   let meetingDb = admin.firestore().collection("meeting");
 
   const timestamp = admin.firestore.Timestamp.fromDate(new Date(scheduleAt));
-  console.log(
-    timestamp,
-    meetingDescription,
-    meetingTopic,
-    estimatedDuration,
-    scheduleAt,
-    timeZone,
-    password,
-    uid(),
-    req.user
+  const endReccr = admin.firestore.Timestamp.fromDate(
+    new Date(reccuringEndDate)
   );
+
   let data = {
     uid: uid(),
     description: meetingDescription,
@@ -71,6 +67,10 @@ const scheduleMeeting = async (req, res) => {
     createdAt: timestamp,
     createdBy: admin.firestore().collection("users").doc(req.user.user_id),
     joinedBy: [],
+    reccuringEndDate: endReccr,
+
+    lobby,
+    reccurring,
   };
   meetingDb
     .add(data)

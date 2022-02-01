@@ -135,9 +135,13 @@ function InstantMeetingPopup(props) {
           </FormikProvider>
         </div>
       </Dialog>
-      <Box component={ButtonBase} sx={props.sx} onClick={() => setOpen(true)}>
-        {props.children}
-      </Box>
+      {props.noButton ? (
+        props.children
+      ) : (
+        <Box component={ButtonBase} sx={props.sx} onClick={() => setOpen(true)}>
+          {props.children}
+        </Box>
+      )}
     </>
   );
 }

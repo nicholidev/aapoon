@@ -11,7 +11,7 @@ const miscRoutes = require("./src/routes/misc/misc-routes");
 const meetingRoutes = require("./src/routes/meeting/meeting-route");
 const { sendWelcomeEmail } = require("./src/triggers/auth");
 const { sendInviteEmail } = require("./src/triggers/invites");
-
+const { sendHelpConfirmEmail } = require("./src/triggers/help");
 const { ErrorReporting } = require("@google-cloud/error-reporting");
 const errors = new ErrorReporting();
 admin.initializeApp();
@@ -24,3 +24,4 @@ meetingRoutes(app);
 exports.app = functions.https.onRequest(app);
 exports.sendWelcomeEmail = sendWelcomeEmail;
 exports.sendInviteeEmail = sendInviteEmail;
+exports.sendHelpConfirmEmail = sendHelpConfirmEmail;

@@ -19,38 +19,43 @@ import {
 // layouts
 import DashboardLayout from '../../layouts/dashboard';
 // hooks
+import { useEffect } from 'react';
 import useSettings from '../../hooks/useSettings';
 // components
+import { getStats } from '../../api/meeting';
+import { startOfWeek, endOfWeek } from 'date-fns';
 import Page from '../../components/Page';
 import GlobalStyles from '@mui/material/GlobalStyles';
 // ----------------------------------------------------------------------
 import withAuth from '../../HOC/withAuth';
 import Iconify from '../../components/Iconify';
 import PersonIcon from '@mui/icons-material/Person';
+
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import StarIcon from '@mui/icons-material/Star';
 import AppNewInvoice from '../../sections/@dashboard/general/app/AppNewInvoice';
 import InviteData from '../../components/invite/InviteData';
 import InviteModal from '../../components/invite/InviteModal';
 import { useState } from 'react';
+import useAuth from '../../hooks/useAuth';
 import BottomNavigation from '../../components/BottomNavigation';
 const Sidebar = styled('header')(({ theme }) => ({
-  width: '240px',
+  width: '320px',
   height: '100%',
   padding: theme.spacing(1),
   paddingTop: theme.spacing(2),
-  paddingLeft: theme.spacing(4),
+  paddingLeft: theme.spacing(2),
   [theme.breakpoints.down('md')]: {
     display: 'none',
   },
 }));
 
 const Content = styled('div')(({ theme }) => ({
-  width: 'calc(100% - 240px)',
+  width: 'calc(100% - 320px)',
   height: '100%',
 
   paddingTop: theme.spacing(4),
-  paddingLeft: theme.spacing(4),
+  paddingLeft: theme.spacing(2),
   marginTop: theme.spacing(6),
   [theme.breakpoints.down('md')]: {
     width: '100%',
@@ -138,7 +143,13 @@ function PageOne() {
   const { themeStretch } = useSettings();
   const [inviteOpen, setInviteOpen] = useState(false);
   const [fetch, setFetch] = useState(false);
+  const [stats, setStats] = useState({});
   const [current, setCurrent] = useState('dashboard');
+  const { user } = useAuth();
+  useEffect(() => {
+    if (user.id)
+      getStats(startOfWeek(new Date()), endOfWeek(new Date()), new Date(), user.id).then((data) => setStats(data));
+  }, [user.id]);
   return (
     <>
       <Page title="Dashboard">
@@ -190,7 +201,7 @@ function PageOne() {
                 <InfoCard>
                   <InfoHeading>Total meetings this week</InfoHeading>
                   <InfoNumbers>
-                    <h3>34</h3>
+                    <h3>{stats.curr ? stats.curr : 0}</h3>
                   </InfoNumbers>
                   <PersonIcon style={infoIconStyle} />
                 </InfoCard>
@@ -199,7 +210,7 @@ function PageOne() {
                 <InfoCard>
                   <InfoHeading>Upcoming Meetings this week</InfoHeading>
                   <InfoNumbers>
-                    <h3>12</h3>
+                    <h3>{stats.up ? stats.up : 0}</h3>
                   </InfoNumbers>
                   <CheckCircleIcon style={infoIconStyle} />
                 </InfoCard>
@@ -208,7 +219,7 @@ function PageOne() {
                 <InfoCard>
                   <InfoHeading>Meetings attended this week</InfoHeading>
                   <InfoNumbers>
-                    <h3>10</h3>
+                    <h3>0</h3>
                   </InfoNumbers>
                   <StarIcon style={infoIconStyle} />
                 </InfoCard>

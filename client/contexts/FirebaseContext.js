@@ -131,6 +131,20 @@ function AuthProvider({ children }) {
     return firebase.auth().signInWithPopup(provider);
   };
 
+  const deleteAccount = () => {
+    firebase.auth().currentUser.delete();
+    dispatch({
+      type: 'UPDATE',
+      payload: {
+        user: {},
+      },
+    });
+    window.location = '/';
+
+    localStorage.removeItem('isAuthenticated');
+    localStorage.clear();
+  };
+
   const loginWithFaceBook = () => {
     const provider = new firebase.auth.FacebookAuthProvider();
     return firebase.auth().signInWithPopup(provider);
@@ -425,6 +439,7 @@ function AuthProvider({ children }) {
         loginWithFaceBook,
         loginWithTwitter,
         logout,
+        deleteAccount,
         resetPassword,
         updateProfile,
         registerBusiness,

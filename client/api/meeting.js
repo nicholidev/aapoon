@@ -6,7 +6,7 @@ import axios from 'axios';
 import firebase from 'firebase/compat/app';
 
 import 'firebase/compat/firestore';
-// const endpoint = 'http://localhost:5000/meetaap-55e58/us-central1/app';
+//const endpoint = 'http://localhost:5000/meetaap-55e58/us-central1/app';
 
 const endpoint = 'https://us-central1-meetaap-55e58.cloudfunctions.net/app';
 
@@ -34,22 +34,78 @@ export const getMeetingEvents = (start, end, user) => {
       .get()
       .then((snapshot) => {
         let data = snapshot.docs.map((i) => {
-          return {
-            id: i.id,
-            title: i.title,
-            description: i.description,
-            start: i.data().scheduledAt.toDate(),
-            textColor: '#1890FF',
-            end: i.data()?.endAt?.toDate(),
-            ...i.data(),
-          };
+          return i.data().reccurring
+            ? {
+                groupId: i.id,
+                id: i.id,
+
+                startTime: `${i.data().scheduledAt.toDate().getHours()}:${i
+                  .data()
+                  .scheduledAt.toDate()
+                  .getMinutes()}:${i.data().scheduledAt.toDate().getSeconds()}`,
+                endTime: `${i.data().endAt.toDate().getHours()}:${i.data().endAt.toDate().getMinutes()}:${i
+                  .data()
+                  .endAt.toDate()
+                  .getSeconds()}`,
+                startRecur: i.data().scheduledAt.toDate(),
+                endRecur: i.data().reccuringEndDate.toDate(),
+
+                backgroundColor: '#FFE9E9',
+                color: '#FFE9E9',
+                textColor: '#000',
+
+                end: i.data()?.endAt?.toDate(),
+                ...i.data(),
+                endAt: undefined,
+                startAt: undefined,
+              }
+            : {
+                id: i.id,
+                title: i.title,
+                description: i.description,
+                start: i.data().scheduledAt.toDate(),
+                backgroundColor: i.data().scheduledAt.toDate() < new Date() ? '#D8D8E2' : '#E9FFEE',
+                color: i.data().scheduledAt.toDate() < new Date() ? '#D8D8E2' : '#E9FFEE',
+                textColor: '#000',
+                end: i.data()?.endAt?.toDate(),
+                ...i.data(),
+              };
         });
-        console.log(data);
+
         resolve(data);
       })
       .catch((err) => {
         reject(err);
       });
+  });
+};
+
+export const getStats = (start, end, curr, user) => {
+  return new Promise(async (resolve, reject) => {
+    const startTme = firebase.firestore.Timestamp.fromDate(start);
+    const endDate = firebase.firestore.Timestamp.fromDate(end);
+    const todayDate = firebase.firestore.Timestamp.fromDate(new Date());
+    const userRef = firebase.firestore().collection('users').doc(user);
+    console.log(startTme, endDate);
+    let thisWeek = await firebase
+      .firestore()
+      .collection('meeting')
+      .where('createdBy', '==', userRef)
+      .where('scheduledAt', '>=', startTme)
+      .where('scheduledAt', '<=', endDate)
+      .where('type', '==', 'scheduled')
+      .get();
+
+    let upcomming = await firebase
+      .firestore()
+      .collection('meeting')
+      .where('createdBy', '==', userRef)
+      .where('scheduledAt', '>=', todayDate)
+      .where('scheduledAt', '<=', endDate)
+      .where('type', '==', 'scheduled')
+      .get();
+
+    resolve({ curr: thisWeek.docs.length, up: upcomming.docs.length });
   });
 };
 

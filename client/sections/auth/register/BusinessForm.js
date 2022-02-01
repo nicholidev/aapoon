@@ -38,7 +38,7 @@ import { useRouter } from 'next/router'
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../../utils/errorMessage';
 export default function RegisterForm(props) {
-  const { registerBusiness,user } = useAuth();
+  const { registerBusiness,user ,deleteAccount} = useAuth();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
@@ -265,11 +265,11 @@ export default function RegisterForm(props) {
             </Grid>
           </Grid>
           <Stack justifyContent={'flex-end'} direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 2 }}>
-          {props.isUpdate &&
-            <Button size="large" color="primary" onClick={() => router.back()}>
+       
+            <Button size="large" color="primary" onClick={() => deleteAccount()}>
               Cancel
             </Button>
-           }
+           
             <LoadingButton size="large" type="submit" variant="contained" loading={isSubmitting}>
               {props.isUpdate? "Update":"Register"}
             </LoadingButton>

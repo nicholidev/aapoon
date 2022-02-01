@@ -120,7 +120,7 @@ function MeetingDetailsPopup(props) {
               <Iconify icon="fluent:copy-20-filled" sx={{ fontSize: 24, ml: 2, color: 'text.secondary' }} />
             </Box>
             <br />
-            <Button variant="outlined">
+            <Button variant="outlined" onClick={() => router.push(window.origin + '/meeting?meetingid=' + data?.id)}>
               <Typography variant="h6">Join Now</Typography>
             </Button>
             <br />

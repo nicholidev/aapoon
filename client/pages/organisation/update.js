@@ -96,7 +96,7 @@ function Register() {
       <RootStyle>
         <DashboardHeader />
 
-        <Container sx={{ mt: { xs: 4, lg: 8 } }}>
+        <Container sx={{ mt: { xs: 10, lg: 12 } }}>
           <Paper>
             <ContentStyle>
               <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>

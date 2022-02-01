@@ -26,7 +26,9 @@ import { IconButtonAnimate } from '../../components/animate';
 import Iconify from '../../components/Iconify';
 import { useRouter } from 'next/router';
 import useAuth from '../../hooks/useAuth';
-const RootStyle = styled('div')(({ theme }) => ({}));
+const RootStyle = styled('div')(({ theme }) => ({
+  paddingBottom: 2,
+}));
 
 const HeaderStyle = styled('header')(({ theme }) => ({
   top: 0,
@@ -83,7 +85,7 @@ function ScheduleMeeting() {
       <RootStyle>
         <DashboardHeader />
 
-        <Container sx={{ mt: { xs: 4, lg: 8, xl: 12 } }}>
+        <Container sx={{ mt: { xs: 12, lg: 12, xl: 12 }, mb: 4 }}>
           <Paper>
             <ContentStyle>
               <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>

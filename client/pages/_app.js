@@ -31,13 +31,15 @@ import GlobalStyles from '../theme/globalStyles';
 import Settings from '../components/settings';
 import RtlLayout from '../components/RtlLayout';
 import ProgressBar from '../components/ProgressBar';
+import Box from '@mui/material/Box';
 import ThemeColorPresets from '../components/ThemeColorPresets';
 import MotionLazyContainer from '../components/animate/MotionLazyContainer';
 import { SnackbarProvider } from 'notistack';
 // ----------------------------------------------------------------------
 import { AuthProvider } from '../contexts/FirebaseContext';
 import { addJWTInterceptor } from '../utils/Interceptor';
-import { useEffect } from 'react';
+import ScreenRotationIcon from '@mui/icons-material/ScreenRotation';
+import { useEffect, useState } from 'react';
 import 'react-phone-number-input/style.css';
 MyApp.propTypes = {
   Component: PropTypes.func,
@@ -46,9 +48,17 @@ MyApp.propTypes = {
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
-
+  const [isLandscape, setLandScape] = useState(false);
   const getLayout = Component.getLayout ?? ((page) => page);
   useEffect(() => {
+    window.addEventListener('orientationchange', (event) => {
+      if (event.target.screen.orientation.angle == 90 || event.target.screen.orientation.angle == 270) {
+        setLandScape(true);
+      } else {
+        setLandScape(false);
+      }
+    });
+
     if (localStorage.getItem('authToken')) addJWTInterceptor(localStorage.getItem('authToken'));
   }, []);
   return (
@@ -64,7 +74,30 @@ export default function MyApp(props) {
               <MotionLazyContainer>
                 <GlobalStyles />
                 <ProgressBar />
-                <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
+
+                {!isLandscape ? (
+                  <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
+                ) : (
+                  <Box
+                    sx={{
+                      backgroundColor: '#E25630',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      flexDirection: 'column',
+                    }}
+                    style={{ height: '100vh', width: '100vw' }}
+                  >
+                    <ScreenRotationIcon style={{ fontSize: 150, color: '#fff' }} />
+                    <br />
+                    <br />
+                    <h3 style={{ color: '#fff', textAlign: 'center' }}>
+                      Landscape mode is not supported
+                      <br />
+                      please rotate to portrait mode
+                    </h3>
+                  </Box>
+                )}
               </MotionLazyContainer>
             </SnackbarProvider>
           </ThemeProvider>
