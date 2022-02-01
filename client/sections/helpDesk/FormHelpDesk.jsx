@@ -136,10 +136,15 @@ export default function FormHelpDesk() {
                 <MenuItem selected value={''} disabled>
                   Select Topic
                 </MenuItem>
-                <MenuItem value={'15'}>Support issue</MenuItem>
-                <MenuItem value={'20'}>Bug Report</MenuItem>
+                <MenuItem value={'1'}>Support issue</MenuItem>
+                <MenuItem value={'2'}>Bug Report</MenuItem>
 
-                <MenuItem value={'30'}>Other</MenuItem>
+                <MenuItem value={'4'}>delete account</MenuItem>
+                <MenuItem value={'5'}>plans and pricing</MenuItem>
+                <MenuItem value={'6'}>how to degrade account</MenuItem>
+                <MenuItem value={'7'}> how to upgrade account</MenuItem>
+
+                <MenuItem value={'8'}>Other</MenuItem>
               </Select>
               {Boolean(touched.topic && errors.topic) && (
                 <Typography variant="caption" color="error.main" style={{ marginLeft: '10px' }}>

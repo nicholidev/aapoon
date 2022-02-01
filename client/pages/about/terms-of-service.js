@@ -82,7 +82,7 @@ function TermsOfService() {
         }}
       />
       <RootStyle>
-        <DashboardHeader />
+        {/* <DashboardHeader /> */}
 
         <Container>
           <Paper>
@@ -93,38 +93,38 @@ function TermsOfService() {
                 </IconButtonAnimate>
                 &nbsp;&nbsp;&nbsp;&nbsp; */}
                 <Typography variant="h2" align="center" gutterBottom sx={{ fontSize: { xs: '18px', md: '24px' } }}>
-                  Terms Of Service
+                  aapoon meet Terms Of Service
                 </Typography>
                 <br />
                 <br />
                 <Typography variant="subtitle1" sx={{ fontSize: { xs: '14px', md: '18px' } }} gutterBottom>
-                  EFFECTIVE: jan 01, 2022
+                  EFFECTIVE: January 01, 2022
                 </Typography>
               </Box>
 
               <Box sx={{ mb: 2 }}>
                 <Typography sx={{ fontSize: { xs: '12px', md: '16px' }, fontWeight: 'bold' }}>
                   IMPORTANT, READ CAREFULLY: YOUR USE OF AND ACCESS TO THE WEBSITE AND PRODUCTS AND SERVICES AND
-                  ASSOCIATED SOFTWARE (COLLECTIVELY, THE "SERVICES") OF AAPOON, INC. AND ITS AFFILIATES ("MEETAAP") IS
-                  CONDITIONED UPON YOUR COMPLIANCE WITH AND ACCEPTANCE OF THESE TERMS, WHICH INCLUDE YOUR AGREEMENT TO
-                  ARBITRATE CLAIMS. PLEASE REVIEW THOROUGHLY BEFORE ACCEPTING.
+                  ASSOCIATED SOFTWARE (COLLECTIVELY, THE "SERVICES") OF AAPOON, INC. AND ITS AFFILIATES ("aapoon meet")
+                  IS CONDITIONED UPON YOUR COMPLIANCE WITH AND ACCEPTANCE OF THESE TERMS, WHICH INCLUDE YOUR AGREEMENT
+                  TO ARBITRATE CLAIMS. PLEASE REVIEW THOROUGHLY BEFORE ACCEPTING.
                 </Typography>
                 <Typography sx={{ fontSize: { xs: '12px', md: '16px' } }} style={{ marginTop: 10, fontWeight: 'bold' }}>
-                  BY CLICKING/CHECKING THE "I AGREE" BUTTON/BOX, ACCESSING THE MEETAAP WEBSITE OR BY UTILIZING THE MEET
-                  AAP SERVICES YOU AGREE TO BE BOUND BY THESE TERMS OF SERVICE AND ALL EXHIBITS, ORDER FORMS, AND
+                  BY CLICKING/CHECKING THE "I AGREE" BUTTON/BOX, ACCESSING THE aapoon meet WEBSITE OR BY UTILIZING THE
+                  MEET AAP SERVICES YOU AGREE TO BE BOUND BY THESE TERMS OF SERVICE AND ALL EXHIBITS, ORDER FORMS, AND
                   INCORPORATED POLICIES (THE “AGREEMENT” OR “TOS”). THE MEET AAP SERVICES ARE NOT AVAILABLE TO PERSONS
                   WHO ARE NOT LEGALLY ELIGIBLE TO BE BOUND BY THESE TERMS OF SERVICE.
                 </Typography>
               </Box>
               <Box sx={{ mb: 2 }}>
                 <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  MEETAAP will provide the Services, and you may access and use the Services, in accordance with this
-                  Agreement. MEETAAP may provide any of the Services hereunder through any of its Affiliates. If You
-                  order Services through an on-line registration page or an order form (each an "Order Form"), the Order
-                  Form may contain additional terms and conditions and information regarding the Services you are
-                  ordering. Unless otherwise expressly set forth in any such additional terms and conditions applicable
-                  to the specific Service which You choose to use, those additional terms are hereby incorporated into
-                  this Agreement in relation to Your use of that Service.
+                  aapoon meet will provide the Services, and you may access and use the Services, in accordance with
+                  this Agreement. aapoon meet may provide any of the Services hereunder through any of its Affiliates.
+                  If You order Services through an on-line registration page or an order form (each an "Order Form"),
+                  the Order Form may contain additional terms and conditions and information regarding the Services you
+                  are ordering. Unless otherwise expressly set forth in any such additional terms and conditions
+                  applicable to the specific Service which You choose to use, those additional terms are hereby
+                  incorporated into this Agreement in relation to Your use of that Service.
                 </Typography>
               </Box>
               <Box sx={{ mb: 2 }}>
@@ -182,10 +182,10 @@ function TermsOfService() {
                   <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
                     SERVICES
                   </Typography>
-                  . MEETAAP will provide the Services as described on the Order Form, and standard updates to the
-                  Services that are made generally available by MEETAAP during the term. MEETAAP may, in its sole
-                  discretion, discontinue the Services or modify the features of the Services from time to time without
-                  prior notice.
+                  . aapoon meet will provide the Services as described on the Order Form, and standard updates to the
+                  Services that are made generally available by aapoon meet during the term. aapoon meet may, in its
+                  sole discretion, discontinue the Services or modify the features of the Services from time to time
+                  without prior notice.
                   <Box sx={{ pl: 5, display: 'flex' }}>
                     <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
                       a.
@@ -195,12 +195,12 @@ function TermsOfService() {
                       <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
                         Beta Services
                       </Typography>
-                      . MEETAAP may, from time to time, offer access to services that are classified as Beta version.
-                      Access to and use of Beta versions may be subject to additional agreements. MEETAAP makes no
-                      representations that a Beta version will ever be made generally available and reserves the right
-                      to discontinue or modify a Beta version at any time without notice. Beta versions are provided AS
-                      IS, may contain bugs, errors or other defects, and Your use of a Beta version is at Your sole
-                      risk.
+                      . aapoon meet may, from time to time, offer access to services that are classified as Beta
+                      version. Access to and use of Beta versions may be subject to additional agreements. aapoon meet
+                      makes no representations that a Beta version will ever be made generally available and reserves
+                      the right to discontinue or modify a Beta version at any time without notice. Beta versions are
+                      provided AS IS, may contain bugs, errors or other defects, and Your use of a Beta version is at
+                      Your sole risk.
                     </Typography>
                   </Box>
                 </Typography>
@@ -247,15 +247,15 @@ function TermsOfService() {
                       or displayed or uploaded by You in using the Services and for compliance with all Laws pertaining
                       to the Content, including, but not limited to, Laws requiring You to obtain the consent of a third
                       party to use the Content and to provide appropriate notices of third-party rights. You represent
-                      and warrant that You have the right to upload the Content to MEETAAP and that such use does not
-                      violate or infringe on any rights of any third party. Under no circumstances will MEETAAP be
-                      liable in any way for any (a) Content that is transmitted or viewed while using the Services, (b)
-                      errors or omissions in the Content, or (c) any loss or damage of any kind incurred as a result of
-                      the use of, access to, or denial of access to Content. Although MEETAAP is not responsible for any
-                      Content, MEETAAP may delete any Content, at any time without notice to You, if MEETAAP becomes
-                      aware that it violates any provision of this Agreement, or any law. You retain copyright and any
-                      other rights You already hold in Content which You submit, post or display on or through, the
-                      Services.
+                      and warrant that You have the right to upload the Content to aapoon meet and that such use does
+                      not violate or infringe on any rights of any third party. Under no circumstances will aapoon meet
+                      be liable in any way for any (a) Content that is transmitted or viewed while using the Services,
+                      (b) errors or omissions in the Content, or (c) any loss or damage of any kind incurred as a result
+                      of the use of, access to, or denial of access to Content. Although aapoon meet is not responsible
+                      for any Content, aapoon meet may delete any Content, at any time without notice to You, if aapoon
+                      meet becomes aware that it violates any provision of this Agreement, or any law. You retain
+                      copyright and any other rights You already hold in Content which You submit, post or display on or
+                      through, the Services.
                     </Typography>
                   </Box>
                   <Box sx={{ pl: 5, display: 'flex' }}>
@@ -267,9 +267,9 @@ function TermsOfService() {
                       <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
                         Recordings
                       </Typography>
-                      . You are responsible for compliance will all recording laws. The host can choose to record
-                      MEETAAP meetings and Webinars. By using the Services, you are giving MEETAAP consent to store
-                      recordings for any or all MEETAAP meetings or webinars that you join, if such recordings are
+                      . You are responsible for compliance will all recording laws. The host can choose to record aapoon
+                      meet meetings and Webinars. By using the Services, you are giving aapoon meet consent to store
+                      recordings for any or all aapoon meet meetings or webinars that you join, if such recordings are
                       stored in our systems. You will receive a notification (visual or otherwise) when recording is
                       enabled. If you do not consent to being recorded, you can choose to leave the meeting or webinar
                     </Typography>
@@ -286,7 +286,7 @@ function TermsOfService() {
                       . You agree that You will not use, and will not permit any End User to use, the Services to: (i)
                       modify, disassemble, decompile, prepare derivative works of, reverse engineer or otherwise attempt
                       to gain access to the source code of the Services; (ii) knowingly or negligently use the Services
-                      in a way that abuses, interferes with, or disrupts MEETAAP’s networks, Your accounts, or the
+                      in a way that abuses, interferes with, or disrupts aapoon meet’s networks, Your accounts, or the
                       Services; (iii) engage in activity that is illegal, fraudulent, false, or misleading, (iv)
                       transmit through the Services any material that may infringe the intellectual property or other
                       rights of third parties; (v) build or benchmark a competitive product or service, or copy any
@@ -297,11 +297,11 @@ function TermsOfService() {
                       under any applicable law or regulation; (vii) upload or transmit any software, Content or code
                       that does or is intended to harm, disable, destroy or adversely affect performance of the Services
                       in any way or which does or is intended to harm or extract information or data from other
-                      hardware, software or networks of MEETAAP or other users of Services; (viii) engage in any
+                      hardware, software or networks of aapoon meet or other users of Services; (viii) engage in any
                       activity or use the Services in any manner that could damage, disable, overburden, impair or
                       otherwise interfere with or disrupt the Services, or any servers or networks connected to the
-                      Services or MEETAAP's security systems. (ix) use the Services in violation of any MEETAAP policy
-                      or in a manner that violates applicable law, including but not limited to anti-spam, export
+                      Services or aapoon meet's security systems. (ix) use the Services in violation of any aapoon meet
+                      policy or in a manner that violates applicable law, including but not limited to anti-spam, export
                       control, privacy, and antiterrorism laws and regulations and laws requiring the consent of
                       subjects of audio and video recordings, and You agree that You are solely responsible for
                       compliance with all such laws and regulations.
@@ -318,7 +318,7 @@ function TermsOfService() {
                       </Typography>
                       . You may not reproduce, resell, or distribute the Services or any reports or data generated by
                       the Services for any purpose unless You have been specifically permitted to do so under a separate
-                      agreement with MEETAAP. You may not offer or enable any third parties to use the Services
+                      agreement with aapoon meet. You may not offer or enable any third parties to use the Services
                       purchased by You, display on any website or otherwise publish the Services or any Content obtained
                       from a Service (other than Content created by You) or otherwise generate income from the Services
                       or use the Services for the development, production or marketing of a service or product
@@ -338,15 +338,15 @@ function TermsOfService() {
                   </Typography>
                   . You are responsible for the activities of all End Users who access or use the Services through your
                   account and you agree to ensure that any such End User will comply with the terms of this Agreement
-                  and any MEETAAP policies. MEETAAP assumes no responsibility or liability for violations. If You become
-                  aware of any violation of this Agreement in connection with use of the Services by any person, please
-                  contact MEETAAP at support@meetaap.in. MEETAAP may investigate any complaints and violations that come
-                  to its attention and may take any (or no) action that it believes is appropriate, including, but not
-                  limited to issuing warnings, removing the content or terminating accounts and/or User profiles. Under
-                  no circumstances will MEETAAP be liable in any way for any data or other content viewed while using
-                  the Services, including, but not limited to, any errors or omissions in any such data or content, or
-                  any loss or damage of any kind incurred as a result of the use of, access to, or denial of access to
-                  any data or content.
+                  and any aapoon meet policies. aapoon meet assumes no responsibility or liability for violations. If
+                  You become aware of any violation of this Agreement in connection with use of the Services by any
+                  person, please contact aapoon meet at support@meetaap.in. aapoon meet may investigate any complaints
+                  and violations that come to its attention and may take any (or no) action that it believes is
+                  appropriate, including, but not limited to issuing warnings, removing the content or terminating
+                  accounts and/or User profiles. Under no circumstances will aapoon meet be liable in any way for any
+                  data or other content viewed while using the Services, including, but not limited to, any errors or
+                  omissions in any such data or content, or any loss or damage of any kind incurred as a result of the
+                  use of, access to, or denial of access to any data or content.
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
@@ -358,12 +358,12 @@ function TermsOfService() {
                   <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
                     MEET AAP OBLIGATIONS FOR CONTENT
                   </Typography>
-                  . MEETAAP will maintain reasonable physical and technical safeguards to prevent unauthorized
-                  disclosure of or access to Content, in accordance with industry standards. MEETAAP will notify You if
-                  it becomes aware of unauthorized access to Content. MEETAAP will not access, view or process Content
-                  except (a) as provided for in this Agreement and in MEETAAP’s Privacy Statement; (b) as authorized or
-                  instructed by You, (c) as required to perform its obligations under this Agreement; or (d) as required
-                  by Law. MEETAAP has no other obligations with respect to Content.
+                  . aapoon meet will maintain reasonable physical and technical safeguards to prevent unauthorized
+                  disclosure of or access to Content, in accordance with industry standards. aapoon meet will notify You
+                  if it becomes aware of unauthorized access to Content. aapoon meet will not access, view or process
+                  Content except (a) as provided for in this Agreement and in aapoon meet’s Privacy Statement; (b) as
+                  authorized or instructed by You, (c) as required to perform its obligations under this Agreement; or
+                  (d) as required by Law. aapoon meet has no other obligations with respect to Content.
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
@@ -391,9 +391,9 @@ function TermsOfService() {
                     INTENDED USE; RESTRICTION ON USE BY CHILDREN
                   </Typography>
                   . The Services are intended for business use. You may choose to use the Services for other purposes,
-                  subject to the terms and limitations of this Agreement. MEETAAP is not intended for use by individuals
-                  under the age of 16, unless it is through a School Subscriber (as that term is defined in the Services
-                  Description) using MEETAAP for Education (K-12).
+                  subject to the terms and limitations of this Agreement. aapoon meet is not intended for use by
+                  individuals under the age of 16, unless it is through a School Subscriber (as that term is defined in
+                  the Services Description) using aapoon meet for Education (K-12).
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
@@ -405,22 +405,23 @@ function TermsOfService() {
                   <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
                     CHARGES AND CANCELLATION
                   </Typography>
-                  . You agree that MEETAAP may charge to Your credit card or other payment mechanism selected by You and
-                  approved by MEETAAP ("Your Account") all amounts due and owing for the Services, including taxes and
-                  service fees, set up fees, subscription fees, or any other fee or charge associated with Your Account.
-                  MEETAAP may change prices at any time, including changing from a free service to a paid service and
-                  charging for Services that were previously offered free of charge; provided, however, that MEETAAP
-                  will provide you with prior notice and an opportunity to terminate Your Account if MEETAAP changes the
-                  price of a Service to which you are subscribed and will not charge you for a previously free Service
-                  unless you have been notified of the applicable fees and agreed to pay such fees. You agree that in
-                  the event MEETAAP is unable to collect the fees owed to MEETAAP for the Services through Your Account,
-                  MEETAAP may take any other steps it deems necessary to collect such fees from You and that You will be
-                  responsible for all costs and expenses incurred by MEETAAP in connection with such collection
-                  activity, including collection fees, court costs and attorneys' fees. You further agree that MEETAAP
-                  may collect interest at the lesser of 1.5% per month or the highest amount permitted by law on any
-                  amounts not paid when due. You may cancel your subscription at any time. If you cancel, you will not
-                  be billed for any additional terms of service, and service will continue until the end of the current
-                  Subscription Term. If you cancel, you will not receive a refund for any service already paid for.
+                  . You agree that aapoon meet may charge to Your credit card or other payment mechanism selected by You
+                  and approved by aapoon meet ("Your Account") all amounts due and owing for the Services, including
+                  taxes and service fees, set up fees, subscription fees, or any other fee or charge associated with
+                  Your Account. aapoon meet may change prices at any time, including changing from a free service to a
+                  paid service and charging for Services that were previously offered free of charge; provided, however,
+                  that aapoon meet will provide you with prior notice and an opportunity to terminate Your Account if
+                  aapoon meet changes the price of a Service to which you are subscribed and will not charge you for a
+                  previously free Service unless you have been notified of the applicable fees and agreed to pay such
+                  fees. You agree that in the event aapoon meet is unable to collect the fees owed to aapoon meet for
+                  the Services through Your Account, aapoon meet may take any other steps it deems necessary to collect
+                  such fees from You and that You will be responsible for all costs and expenses incurred by aapoon meet
+                  in connection with such collection activity, including collection fees, court costs and attorneys'
+                  fees. You further agree that aapoon meet may collect interest at the lesser of 1.5% per month or the
+                  highest amount permitted by law on any amounts not paid when due. You may cancel your subscription at
+                  any time. If you cancel, you will not be billed for any additional terms of service, and service will
+                  continue until the end of the current Subscription Term. If you cancel, you will not receive a refund
+                  for any service already paid for.
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
@@ -432,15 +433,15 @@ function TermsOfService() {
                   <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
                     TERMINATION
                   </Typography>
-                  . The MEETAAP website contains information on how to terminate Your Account. If you have purchased a
-                  Service for a specific term, such termination will be effective on the last day of the then-current
+                  . The aapoon meet website contains information on how to terminate Your Account. If you have purchased
+                  a Service for a specific term, such termination will be effective on the last day of the then-current
                   term. Your Order Form may provide that a Renewal Term will begin automatically unless either party
                   provides notice of termination at least thirty (30) days prior to the commencement of the next Renewal
-                  Term. If You fail to comply with any provision of this Agreement, MEETAAP may terminate this Agreement
-                  immediately and retain any fees previously paid by You. Sections 1 and 3 through 20, inclusive, shall
-                  survive any termination of this Agreement. Upon any termination of this Agreement, You must cease any
-                  further use of the Services. If at any time You are not happy with the Services, Your sole remedy is
-                  to cease using the Services and follow this termination process.
+                  Term. If You fail to comply with any provision of this Agreement, aapoon meet may terminate this
+                  Agreement immediately and retain any fees previously paid by You. Sections 1 and 3 through 20,
+                  inclusive, shall survive any termination of this Agreement. Upon any termination of this Agreement,
+                  You must cease any further use of the Services. If at any time You are not happy with the Services,
+                  Your sole remedy is to cease using the Services and follow this termination process.
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
@@ -452,12 +453,12 @@ function TermsOfService() {
                   <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
                     PROPRIETARY RIGHTS
                   </Typography>
-                  . MEETAAP and/or its suppliers, as applicable, retain ownership of all proprietary rights in the
-                  Services and in all trade names, trademarks, service marks, logos, and domain names ("MEETAAP Marks")
-                  associated or displayed with the Services. You may not frame or utilize framing techniques to enclose
-                  any MEETAAP Marks, or other proprietary information (including images, text, page layout, or form) of
-                  MEETAAP without express written consent. You may not use any meta tags or any other "hidden text"
-                  utilizing MEETAAP Marks without MEETAAP's express written consent.
+                  . aapoon meet and/or its suppliers, as applicable, retain ownership of all proprietary rights in the
+                  Services and in all trade names, trademarks, service marks, logos, and domain names ("aapoon meet
+                  Marks") associated or displayed with the Services. You may not frame or utilize framing techniques to
+                  enclose any aapoon meet Marks, or other proprietary information (including images, text, page layout,
+                  or form) of aapoon meet without express written consent. You may not use any meta tags or any other
+                  "hidden text" utilizing aapoon meet Marks without aapoon meet's express written consent.
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
@@ -471,9 +472,9 @@ function TermsOfService() {
                   </Typography>
                   . You may not post, modify, distribute, or reproduce in any way copyrighted material, trademarks,
                   rights of publicity or other proprietary rights without obtaining the prior written consent of the
-                  owner of such proprietary rights. MEETAAP may deny access to the Services to any User who is alleged
-                  to infringe another party's copyright. Without limiting the foregoing, if You believe that Your
-                  copyright has been infringed, please notify MEETAAP by sending an email to &nbsp;
+                  owner of such proprietary rights. aapoon meet may deny access to the Services to any User who is
+                  alleged to infringe another party's copyright. Without limiting the foregoing, if You believe that
+                  Your copyright has been infringed, please notify aapoon meet by sending an email to &nbsp;
                   <a href="mailto:support@meetapp.in">support@meetapp.in</a>
                 </Typography>
               </Box>
@@ -488,12 +489,12 @@ function TermsOfService() {
                   </Typography>
                   . You acknowledge that the Services, or a portion thereof, are subject to the Export Administration
                   Regulations, 15 C.F.R. Parts 730-774, of the United States and may be subject to other applicable
-                  country export control and trade sanctions laws (“Export Control and Sanctions Laws”). MEETAAP will
-                  provide the U.S. export classification(s) applicable to its Services upon request. You and Your End
-                  Users may not access, use, export, re-export, divert, transfer or disclose any portion of the Services
-                  or any related technical information or materials, directly or indirectly, in violation of Export
-                  Control and Sanctions Laws. You represent and warrant that: (i) You and Your End Users (a) are not
-                  citizens of, or located within, a country or territory that is subject to U.S. trade sanctions or
+                  country export control and trade sanctions laws (“Export Control and Sanctions Laws”). aapoon meet
+                  will provide the U.S. export classification(s) applicable to its Services upon request. You and Your
+                  End Users may not access, use, export, re-export, divert, transfer or disclose any portion of the
+                  Services or any related technical information or materials, directly or indirectly, in violation of
+                  Export Control and Sanctions Laws. You represent and warrant that: (i) You and Your End Users (a) are
+                  not citizens of, or located within, a country or territory that is subject to U.S. trade sanctions or
                   other significant trade restrictions (including without limitation Cuba, Iran, North Korea, Syria, and
                   the Crimea region of Ukraine) and that You and Your End Users will not access or use the Services, or
                   export, re-export, divert, or transfer the Services, in or to such countries or territories; (b) are
@@ -502,13 +503,13 @@ function TermsOfService() {
                   Sanctions Evaders Lists; and (c) are not persons on the U.S. Department of Commerce’s Denied Persons
                   List, Entity List, or Unverified List, or U.S. Department of State proliferation-related lists; (ii)
                   You and Your End Users located in China, Russia, or Venezuela are not Military End Users and will not
-                  put MEETAAP’s Services to a Military End Use, as defined in 15 C.F.R. 744.21; (iii) no Content created
-                  or submitted by You or Your End Users is subject to any restriction on disclosure, transfer, download,
-                  export or re-export under the Export Control and Sanctions Laws; and (iv) You and Your End Users will
-                  not take any action that would constitute a violation of, or be penalized under, U.S. antiboycott laws
-                  administered by the U.S. Department of Commerce or the U.S. Department of the Treasury. You are solely
-                  responsible for complying with the Export Control and Sanctions Laws and monitoring them for any
-                  modifications.
+                  put aapoon meet’s Services to a Military End Use, as defined in 15 C.F.R. 744.21; (iii) no Content
+                  created or submitted by You or Your End Users is subject to any restriction on disclosure, transfer,
+                  download, export or re-export under the Export Control and Sanctions Laws; and (iv) You and Your End
+                  Users will not take any action that would constitute a violation of, or be penalized under, U.S.
+                  antiboycott laws administered by the U.S. Department of Commerce or the U.S. Department of the
+                  Treasury. You are solely responsible for complying with the Export Control and Sanctions Laws and
+                  monitoring them for any modifications.
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
@@ -537,10 +538,11 @@ function TermsOfService() {
                   </Typography>
                   . You acknowledge that any use of the Services contrary to this Agreement, or any transfer,
                   sublicensing, copying or disclosure of technical information or materials related to the Services, may
-                  cause irreparable injury to MEETAAP, its Affiliates, suppliers and any other party authorized by
-                  MEETAAP to resell, distribute, or promote the Services ("Resellers"), and under such circumstances
-                  MEETAAP, its Affiliates, suppliers and Resellers will be entitled to equitable relief, without posting
-                  bond or other security, including, but not limited to, preliminary and permanent injunctive relief.
+                  cause irreparable injury to aapoon meet, its Affiliates, suppliers and any other party authorized by
+                  aapoon meet to resell, distribute, or promote the Services ("Resellers"), and under such circumstances
+                  aapoon meet, its Affiliates, suppliers and Resellers will be entitled to equitable relief, without
+                  posting bond or other security, including, but not limited to, preliminary and permanent injunctive
+                  relief.
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
@@ -576,7 +578,7 @@ function TermsOfService() {
                   <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
                     INDEMNIFICATION
                   </Typography>
-                  . You agree to indemnify, defend and hold harmless MEETAAP, its affiliates, officers, directors,
+                  . You agree to indemnify, defend and hold harmless aapoon meet, its affiliates, officers, directors,
                   employees, consultants, agents, suppliers and Resellers from any and all third party claims,
                   liability, damages and/or costs (including, but not limited to, attorneys' fees) arising from Your use
                   of the Services, Your violation of this Agreement or the infringement or violation by You or any other
@@ -634,12 +636,12 @@ function TermsOfService() {
                   <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
                     PRIVACY AND OTHER POLICIES
                   </Typography>
-                  . Use of the Services is also subject to MEETAAP's Privacy Statement, a link to which can be found by
-                  selecting “Privacy Policy ” in the footer of MEETAAP.IN website. The Privacy Statement and all
+                  . Use of the Services is also subject to aapoon meet's Privacy Statement, a link to which can be found
+                  by selecting “Privacy Policy ” in the footer of aapoon meet.IN website. The Privacy Statement and all
                   policies noticed at <a href="https://www.meetaap.in/privacy-policy">www.meetaap.in/privacy-policy</a>{' '}
                   are incorporated into this Agreement by this reference. Additionally, You understand and agree that
-                  MEETAAP may contact You via e-mail or otherwise with information relevant to Your use of the Services,
-                  regardless of whether You have opted out of receiving marketing communications or notices.
+                  aapoon meet may contact You via e-mail or otherwise with information relevant to Your use of the
+                  Services, regardless of whether You have opted out of receiving marketing communications or notices.
                 </Typography>
               </Box>
               <Box sx={{ mb: 3, pl: 5, display: 'flex' }}>
@@ -676,8 +678,8 @@ function TermsOfService() {
                   <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
                     Contracting Entity
                   </Typography>
-                  . In the event Your MEETAAP account reflects a bill to/sold to address in India, the contracting
-                  entity under these TOS shall be MEETAAP’s Affiliate, AAPOON DIGITAL Pvt. Ltd.
+                  . In the event Your aapoon meet account reflects a bill to/sold to address in India, the contracting
+                  entity under these TOS shall be aapoon meet’s Affiliate, AAPOON DIGITAL Pvt. Ltd.
                 </Typography>
               </Box>
               <Box sx={{ mb: 2, display: 'flex' }}>
@@ -711,13 +713,13 @@ function TermsOfService() {
                   between the Parties respecting such subject matter, except that if You or Your company have executed a
                   separate written agreement or you have signed an order form referencing a separate agreement governing
                   your use of the Services, then such agreement shall control to the extent that any provision of this
-                  Agreement conflicts with the terms of such agreement. MEETAAP may elect to change or supplement the
-                  terms of this Agreement from time to time at its sole discretion. MEETAAP will exercise commercially
-                  reasonable business efforts to provide notice to You of any material changes to this Agreement. Within
-                  ten (10) business days of posting changes to this Agreement (or ten (10) business days from the date
-                  of notice, if such is provided), they will be binding on You. If You do not agree with the changes,
-                  You should discontinue using the Services. If You continue using the Services after such
-                  ten-business-day period, You will be deemed to have accepted the changes to the terms of this
+                  Agreement conflicts with the terms of such agreement. aapoon meet may elect to change or supplement
+                  the terms of this Agreement from time to time at its sole discretion. aapoon meet will exercise
+                  commercially reasonable business efforts to provide notice to You of any material changes to this
+                  Agreement. Within ten (10) business days of posting changes to this Agreement (or ten (10) business
+                  days from the date of notice, if such is provided), they will be binding on You. If You do not agree
+                  with the changes, You should discontinue using the Services. If You continue using the Services after
+                  such ten-business-day period, You will be deemed to have accepted the changes to the terms of this
                   Agreement. In order to participate in certain Services, You may be notified that You are required to
                   download software and/or agree to additional terms and conditions. Unless expressly set forth in such
                   additional terms and conditions, those additional terms are hereby incorporated into this Agreement.
@@ -751,15 +753,15 @@ function TermsOfService() {
                   <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
                     Disputes
                   </Typography>
-                  . A dispute is any controversy between You and MEETAAP concerning the Services, any software related
-                  to the Services, the price of the Services, Your account, MEETAAP’s advertising, marketing, or
-                  communications, Your purchase transaction or billing, or any term of this Agreement, under any legal
-                  theory including contract, warranty, tort, statute, or regulation, except disputes relating to the
-                  enforcement or validity of Your or MEETAAP’s intellectual property rights. As part of the best efforts
-                  process to resolve disputes, and prior to initiating arbitration proceedings, each party agrees to
-                  provide notice of the dispute to the other party, including a description of the dispute, what efforts
-                  have been made to resolve it, and what the disputing party is requesting as resolution, to
-                  support@meetapp.in.
+                  . A dispute is any controversy between You and aapoon meet concerning the Services, any software
+                  related to the Services, the price of the Services, Your account, aapoon meet’s advertising,
+                  marketing, or communications, Your purchase transaction or billing, or any term of this Agreement,
+                  under any legal theory including contract, warranty, tort, statute, or regulation, except disputes
+                  relating to the enforcement or validity of Your or aapoon meet’s intellectual property rights. As part
+                  of the best efforts process to resolve disputes, and prior to initiating arbitration proceedings, each
+                  party agrees to provide notice of the dispute to the other party, including a description of the
+                  dispute, what efforts have been made to resolve it, and what the disputing party is requesting as
+                  resolution, to support@meetapp.in.
                 </Typography>
               </Box>
               <Box sx={{ pl: 10, display: 'flex' }}>
@@ -772,8 +774,8 @@ function TermsOfService() {
                     Small Claims Court Available
                   </Typography>
                   . You may initiate an action in your local Small Claims Court if You meets the court’s requirements.
-                  However, if such a claim is transferred, removed or appealed to a different court, MEETAAP reserves
-                  the right to require arbitration.
+                  However, if such a claim is transferred, removed or appealed to a different court, aapoon meet
+                  reserves the right to require arbitration.
                 </Typography>
               </Box>
               <Box sx={{ pl: 10, display: 'flex' }}>
@@ -811,10 +813,10 @@ function TermsOfService() {
                   <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
                     Arbitration Fees
                   </Typography>
-                  . If You are unable to afford the arbitration costs, MEETAAP will advance those costs to You, subject
-                  to the arbitrator’s determination if costs should be reimbursed to MEETAAP if MEETAAP prevails. For
-                  disputes involving more than $75,000, the AAA rules will govern payment of filing fees and the AAA’s
-                  and arbitrator’s fees and expenses.
+                  . If You are unable to afford the arbitration costs, aapoon meet will advance those costs to You,
+                  subject to the arbitrator’s determination if costs should be reimbursed to aapoon meet if aapoon meet
+                  prevails. For disputes involving more than $75,000, the AAA rules will govern payment of filing fees
+                  and the AAA’s and arbitrator’s fees and expenses.
                 </Typography>
               </Box>
               <Box sx={{ pl: 10, display: 'flex' }}>

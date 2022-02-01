@@ -2,7 +2,6 @@
  Copyright ©. All Rights Reserved. Confidential and proprietary.
  XYZ. Contact address: XYZ@xyz.pa .
  */
-
 const checkIndianMobile = (mobile) => {
     if (typeof mobile == "string") {
         const regexExp = /\+91[6-9]\d{9}$/gi;

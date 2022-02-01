@@ -2,7 +2,6 @@
  Copyright ©. All Rights Reserved. Confidential and proprietary.
  XYZ. Contact address: XYZ@xyz.pa .
  */
-
 const config = {
     awsAccessKey: "AKIA4YYA7W7DQXUJSQHR",
     awsSecret: "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",

@@ -72,6 +72,7 @@ function AuthProvider({ children }) {
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           user.getIdToken().then((token) => {
+            localStorage.setItem('authToken', token);
             addJWTInterceptor(token);
           });
           const docRef = firebase.firestore().collection('users').doc(user.uid);
@@ -117,6 +118,7 @@ function AuthProvider({ children }) {
             payload: { isAuthenticated: false, user: null },
           });
           localStorage.removeItem('isAuthenticated');
+          localStorage.removeItem('authToken');
         }
       }),
     [dispatch]

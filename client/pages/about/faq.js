@@ -118,7 +118,7 @@ function PrivacyPolicy() {
                   </AccordionSummary>
                   <AccordionDetails>
                     <Typography>
-                      Meeting invitation link can be sent through either a scheduled meeting or an instant meeting.
+                      Meeting invitation link can be sent through either a schedule meeting or an instant meeting.
                     </Typography>
                   </AccordionDetails>
                 </Accordion>

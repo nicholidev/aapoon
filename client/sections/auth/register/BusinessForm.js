@@ -19,6 +19,7 @@ import {
   MenuItem,
   Box,
   FormHelperText,
+  Button,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // hooks
@@ -51,7 +52,7 @@ export default function RegisterForm(props) {
     teamsize: Yup.string().required('Teamsize is required'),
     address1: Yup.string().min(2, 'Too Short!').required('Adress is required'),
     address2: Yup.string(),
-    state: Yup.string().min(2, 'Too Short!').required('State is required'),
+    state: Yup.string().min(2, 'Too Short!').required('State is required').matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field "),
     pincode: Yup.number('Please enter valid code').required('pincode is required'),
     logo: Yup.mixed()
       
@@ -129,7 +130,7 @@ export default function RegisterForm(props) {
         state:user.businessDetails?.state,
         pincode: user.businessDetails?.pincode,
         teamsize: user.businessDetails?.teamsize,
-        logo: user.businessDetails?.logo,
+        // logo: user.businessDetails?.logo,
       });
     }
 
@@ -172,15 +173,15 @@ export default function RegisterForm(props) {
                 autoComplete="addrerss"
                 placeholder="Address 1 *"
                 {...getFieldProps('address1')}
-                error={Boolean(touched.addrerss1 && errors.addrerss1)}
-                helperText={touched.addrerss1 && errors.addrerss1}
+                error={Boolean(touched.address1 && errors.address1)}
+                helperText={touched.address1 && errors.address1}
               />
               <TextField
                 fullWidth
                 placeholder="Address 2 *"
                 {...getFieldProps('address2')}
-                error={Boolean(touched.addrerss2 && errors.addrerss2)}
-                helperText={touched.addrerss2 && errors.addrerss2}
+                error={Boolean(touched.address2 && errors.address2)}
+                helperText={touched.address2 && errors.address2}
               />
             </Stack>
             <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
@@ -264,9 +265,11 @@ export default function RegisterForm(props) {
             </Grid>
           </Grid>
           <Stack justifyContent={'flex-end'} direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 2 }}>
-            <LoadingButton size="large" color="primary">
+          {props.isUpdate &&
+            <Button size="large" color="primary" onClick={() => router.back()}>
               Cancel
-            </LoadingButton>
+            </Button>
+           }
             <LoadingButton size="large" type="submit" variant="contained" loading={isSubmitting}>
               {props.isUpdate? "Update":"Register"}
             </LoadingButton>

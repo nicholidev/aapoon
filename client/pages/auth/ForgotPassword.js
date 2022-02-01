@@ -32,7 +32,7 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const ResetPassword = () => {
+const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   const router = useRouter();
@@ -85,4 +85,4 @@ const ResetPassword = () => {
   );
 };
 
-export default withoutAuth(ResetPassword);
+export default withoutAuth(ForgotPassword);

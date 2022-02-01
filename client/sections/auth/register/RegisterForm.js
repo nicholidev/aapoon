@@ -49,7 +49,7 @@ export default function RegisterForm(query) {
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string()
       .required('Password is required')
-      .min(6, 'Password should be 6 letter long')
+    
       .matches(
         rePass,
         'Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character'
@@ -221,6 +221,7 @@ export default function RegisterForm(query) {
                           <MenuItem value={'Computers & Electronics'}>Computers & Electronics </MenuItem>
                           <MenuItem value={'Construction & Contractors '}>Construction & Contractors </MenuItem>
                           <MenuItem value={'Entertainment'}>Entertainment </MenuItem>
+                          <MenuItem value={'Other'}>Other </MenuItem>
                         </Select>
                       </FormControl>
                       <TextField
@@ -245,6 +246,7 @@ export default function RegisterForm(query) {
                           <MenuItem value={'Doctor'}>Doctor</MenuItem>
                           <MenuItem value={'Teacher'}>Teacher</MenuItem>
                           <MenuItem value={'Journalist'}>Journalist</MenuItem>
+                          <MenuItem value={'Other'}>Other </MenuItem>
                         </Select>
                       </FormControl>
                     </>

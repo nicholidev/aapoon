@@ -19,7 +19,7 @@ import NavSection from '../../components/nav-section';
 import { IconButtonAnimate } from '../../components/animate';
 import useAuth from '../../hooks/useAuth';
 // ----------------------------------------------------------------------
-
+import InstantMeetingPopup from '../../sections/meeting/InstantMeetingPopup';
 const ListItemStyle = styled(ListItemButton)(({ theme }) => ({
   ...theme.typography.body2,
   height: DASHBOARD_NAVBAR_ROOT_ITEM_HEIGHT,
@@ -58,6 +58,10 @@ export default function MenuMobile({ isOffset, isHome, navConfig, id }) {
   const handleDrawerClose = () => {
     setDrawerOpen(false);
   };
+  const pushItem = (link) => {
+    handleDrawerClose();
+    push(link);
+  };
 
   return (
     <>
@@ -87,8 +91,10 @@ export default function MenuMobile({ isOffset, isHome, navConfig, id }) {
                 <MenuMobileItem
                   key={link.title}
                   item={link}
+                  handleDrawerClose={handleDrawerClose}
+                  id={id}
                   isOpen={open}
-                  onOpen={() => (link.children ? handleOpen() : push(link.path))}
+                  onOpen={() => (link.children ? handleOpen() : pushItem(link.path))}
                 />
               ) : null
             )}
@@ -128,7 +134,7 @@ MenuMobileItem.propTypes = {
   onOpen: PropTypes.func,
 };
 
-function MenuMobileItem({ item, isOpen, onOpen }) {
+function MenuMobileItem({ item, isOpen, onOpen, id, handleDrawerClose }) {
   const { title, path, icon, children } = item;
 
   if (children) {
@@ -145,12 +151,20 @@ function MenuMobileItem({ item, isOpen, onOpen }) {
 
         <Collapse in={isOpen} timeout="auto" unmountOnExit>
           <Box style={{ background: '#fafafa', paddingLeft: 32 }}>
-            <ListItemStyle href={'/'} component={Link}>
-              <ListItemText disableTypography primary={'scheduled meeting'} />
+            <ListItemStyle href={id ? '/dashboard/schedule-meeting' : '/auth/Login'} component={Link}>
+              <ListItemText disableTypography primary={'schedule meeting'} />
             </ListItemStyle>
-            <ListItemStyle href={'/'} component={Link}>
-              <ListItemText disableTypography primary={'instant meeting'} />
-            </ListItemStyle>
+            {id ? (
+              <InstantMeetingPopup>
+                <ListItemStyle component={Button}>
+                  <ListItemText disableTypography primary={'instant meeting'} />
+                </ListItemStyle>
+              </InstantMeetingPopup>
+            ) : (
+              <ListItemStyle href={'/auth/Login'} component={Link}>
+                <ListItemText disableTypography primary={'instant meeting'} />
+              </ListItemStyle>
+            )}
           </Box>
         </Collapse>
       </>

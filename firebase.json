@@ -8,6 +8,14 @@
       {
         "source": "/app/**",
         "function": "app"
+      },
+      {
+        "source": "/meeting/*",
+        "destination": "/meeting.html"
+      },
+      {
+        "source": "/meeting",
+        "destination": "/404.html"
       }
     ]
   },

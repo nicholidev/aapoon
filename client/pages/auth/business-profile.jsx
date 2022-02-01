@@ -55,10 +55,19 @@ const ContentStyle = styled('div')(({ theme }) => ({
   maxWidth: 880,
   margin: 'auto',
   display: 'flex',
-  minHeight: '100vh',
   flexDirection: 'column',
-
+  zIndex: 100,
   padding: theme.spacing(8, 2),
+}));
+
+const Spacer = styled('div')(({ theme }) => ({
+  minWidth: '100%',
+  height: '30px',
+  backgroundColor: '#fff',
+  zIndex: 101,
+  position: 'sticky',
+  bottom: 0,
+  left: 0,
 }));
 
 // ----------------------------------------------------------------------
@@ -93,6 +102,7 @@ function Register() {
 
               <RegisterForm isUpdate={user.businessDetails?.businessName ? true : false} />
             </ContentStyle>
+            <Spacer></Spacer>
           </Paper>
         </Container>
       </RootStyle>

@@ -51,7 +51,7 @@ export default function HomeCleanInterfaces() {
               </MotionInView>
               <MotionInView variants={varFade().inUp}>
                 <Typography variant="h2" sx={{ mb: 3 }}>
-                  Great Brand
+                  Great Brands
                 </Typography>
               </MotionInView>
             </ContentStyle>

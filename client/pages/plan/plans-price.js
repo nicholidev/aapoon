@@ -143,7 +143,7 @@ const TabContainer = styled(Box)(({ theme }) => ({
 const PlanDiv = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  padding: theme.spacing(5),
+  padding: theme.spacing(5, 5, 1, 5),
 }));
 
 const IconContainer = styled('div')(({ theme }) => ({
@@ -568,7 +568,7 @@ function PlanPricePage() {
                       </MenuItem>
                     </Select>
                   </Box>
-                  <Box sx={{ margin: { xs: 0, xl: '0 100px 0 0' } }}>
+                  <Box sx={{ margin: { xs: 0, xl: '0 100px 0 0' }, display: { xs: 'block', sm: 'none' } }}>
                     <CustomButton fullWidth variant="contained" size="large" sx={{ mt: 7 }}>
                       Choose plan
                     </CustomButton>
@@ -651,8 +651,36 @@ function PlanPricePage() {
                       </MenuItem>
                     </Select>
                   </Box>
-                  <Box sx={{ margin: { xs: 0, xl: '0 100px 0 0' } }}>
+                  <Box sx={{ margin: { xs: 0, xl: '0 100px 0 0' }, display: { xs: 'block', sm: 'none' } }}>
                     <CustomButton fullWidth variant="contained" size="large" sx={{ mt: 7 }}>
+                      Choose plan
+                    </CustomButton>
+                  </Box>
+                </PlanDiv>
+              </Grid>
+
+              <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
+                <Grid item xs={1}></Grid>
+              </Box>
+            </Grid>
+
+            <Grid container spacing={1} justifyContent={'space-around'} sx={{ display: { xs: 'none', sm: 'flex' } }}>
+              <Grid item xs={12} sm={6} md={5} lg={4} xl={4}>
+                <PlanDiv>
+                  <Box sx={{ margin: { xs: 0, xl: '0 100px 0 0' } }}>
+                    <CustomButton fullWidth variant="contained" size="large">
+                      Choose plan
+                    </CustomButton>
+                  </Box>
+                </PlanDiv>
+              </Grid>
+              <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
+                <Grid item xs={1}></Grid>
+              </Box>
+              <Grid item xs={12} sm={6} md={5} lg={4} xl={4}>
+                <PlanDiv>
+                  <Box sx={{ margin: { xs: 0, xl: '0 100px 0 0' } }}>
+                    <CustomButton fullWidth variant="contained" size="large">
                       Choose plan
                     </CustomButton>
                   </Box>
@@ -662,6 +690,8 @@ function PlanPricePage() {
                 <Grid item xs={1}></Grid>
               </Box>
             </Grid>
+            <br />
+            <br />
             <br />
             <Grid container spacing={1} justifyContent={'space-around'}>
               <Grid item xs={12} sm={10} md={9} lg={7} xl={6}>

@@ -15,11 +15,13 @@ import {
   ListItemButton,
   ListItemIcon,
   Stack,
+  IconButton,
   styled,
   Typography,
   Divider,
   ButtonBase,
 } from '@mui/material';
+import { useRouter } from 'next/router';
 // layouts
 import DashboardLayout from '../../layouts/dashboard';
 // hooks
@@ -122,7 +124,7 @@ const DataHead = styled('div')(({ theme }) => ({
   width: '100%',
   backgroundColor: '#FAFAFA',
   padding: theme.spacing(1),
-  paddingTop: theme.spacing(6),
+  paddingTop: theme.spacing(4),
   paddingBottom: theme.spacing(6),
   [theme.breakpoints.down('lg')]: {
     padding: theme.spacing(3),
@@ -152,6 +154,7 @@ function ProfilePage() {
   const [current, setCurrent] = useState('dashboard');
   const { user } = useAuth();
   console.log(user);
+  const { back } = useRouter();
   return (
     <Page title="Dashboard" sx={{ width: '100vw' }}>
       <GlobalStyles
@@ -163,7 +166,10 @@ function ProfilePage() {
         <Content>
           <DataSection>
             <DataHead>
-              <Box display="flex" justifyContent="flex-end" padding="0 10px">
+              <Box display="flex" justifyContent="space-between" padding="0 10px" sx={{ mb: 4, pl: 2, pr: 2 }}>
+                <IconButton onClick={() => back()}>
+                  <Iconify icon={'eva:arrow-back-outline'} width="32px" height="32px" />
+                </IconButton>
                 <Box>
                   <Link href="/organisation/update" passHref={true}>
                     <ListItemButton>
@@ -223,7 +229,7 @@ function ProfilePage() {
                       <Typography variant="subtitle2" color="GrayText">
                         Address
                       </Typography>
-                      <Typography variant="h6">
+                      <Typography variant="h6" style={{ wordBreak: 'break-word' }}>
                         {user.businessDetails?.address1 + ' , ' + user.businessDetails?.address2}
                       </Typography>
                     </Stack>

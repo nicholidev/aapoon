@@ -15,6 +15,7 @@ import {
   ListItemButton,
   ListItemIcon,
   Stack,
+  IconButton,
   styled,
   Typography,
   Divider,
@@ -24,6 +25,7 @@ import DashboardLayout from '../../layouts/dashboard';
 // hooks
 import useSettings from '../../hooks/useSettings';
 import useAuth from '../../hooks/useAuth';
+import { useRouter } from 'next/router';
 // components
 import Page from '../../components/Page';
 import GlobalStyles from '@mui/material/GlobalStyles';
@@ -110,7 +112,7 @@ const DataHead = styled('div')(({ theme }) => ({
   width: '100%',
   backgroundColor: '#FAFAFA',
   padding: theme.spacing(1),
-  paddingTop: theme.spacing(6),
+  paddingTop: theme.spacing(4),
   paddingBottom: theme.spacing(6),
   [theme.breakpoints.down('lg')]: {
     padding: theme.spacing(3),
@@ -134,6 +136,7 @@ const infoIconStyle = {
 };
 
 function ProfilePage() {
+  const { back } = useRouter();
   const { themeStretch } = useSettings();
   const [inviteOpen, setInviteOpen] = useState(false);
   const [fetch, setFetch] = useState(false);
@@ -151,7 +154,10 @@ function ProfilePage() {
         <Content>
           <DataSection>
             <DataHead>
-              <Box display="flex" justifyContent="flex-end" padding="0 10px">
+              <Box display="flex" justifyContent="space-between" padding="0 10px" sx={{ mb: 4, pl: 2, pr: 2 }}>
+                <IconButton onClick={() => back()}>
+                  <Iconify icon={'eva:arrow-back-outline'} width="32px" height="32px" />
+                </IconButton>
                 <Box>
                   <UpdateUserProfile>
                     <ListItemButton>

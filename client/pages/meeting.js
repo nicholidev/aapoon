@@ -17,24 +17,14 @@ import {
   Typography,
 } from '@mui/material';
 // layouts
-import DashboardLayout from '../../layouts/dashboard';
+
 // hooks
-import useSettings from '../../hooks/useSettings';
+import useSettings from './../hooks/useSettings';
 // components
-import Page from '../../components/Page';
-import GlobalStyles from '@mui/material/GlobalStyles';
-// ----------------------------------------------------------------------
-import withAuth from '../../HOC/withAuth';
-import Iconify from '../../components/Iconify';
-import PersonIcon from '@mui/icons-material/Person';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import StarIcon from '@mui/icons-material/Star';
-import AppNewInvoice from '../../sections/@dashboard/general/app/AppNewInvoice';
-import InviteData from '../../components/invite/InviteData';
-import InviteModal from '../../components/invite/InviteModal';
+
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import withMeetingAuth from '../../HOC/withMeetingAuth';
+import withMeetingAuth from './../HOC/withMeetingAuth';
 const Sidebar = styled('header')(({ theme }) => ({
   width: '240px',
   height: '100%',
@@ -125,16 +115,16 @@ const infoIconStyle = {
   right: 12,
 };
 
-function Meeting() {
+function Meeting(props) {
   const { themeStretch } = useSettings();
   const router = useRouter();
 
-  const domain = 'meet.aapoon.com';
+  const domain = 'p.meetaap.in';
   let api = {};
   const [meetingState, setMeetingState] = useState({});
 
   const handleClose = () => {
-    console.log('handleClose');
+    window.location = '/';
   };
 
   const handleParticipantLeft = async (participant) => {
@@ -173,6 +163,10 @@ function Meeting() {
     });
   };
 
+  const participantKickedOut = (data) => {
+    console.log(data);
+  };
+
   // custom events
   const executeCommand = (command) => {
     api.executeCommand(command);
@@ -192,6 +186,7 @@ function Meeting() {
   const startMeet = () => {
     let options = {
       roomName: meetingState.room,
+      jwt: props.token,
       width: '100%',
       height: '100%',
       configOverwrite: { prejoinPageEnabled: false },
@@ -199,9 +194,6 @@ function Meeting() {
         // overwrite interface properties
       },
       parentNode: document.querySelector('#jitsi-iframe'),
-      userInfo: {
-        displayName: meetingState.user.name,
-      },
     };
 
     api = new window.JitsiMeetExternalAPI(domain, options);
@@ -213,6 +205,7 @@ function Meeting() {
       videoConferenceLeft: handleVideoConferenceLeft,
       audioMuteStatusChanged: handleMuteStatus,
       videoMuteStatusChanged: handleVideoStatus,
+      participantKickedOut: participantKickedOut,
     });
   };
 
@@ -220,6 +213,7 @@ function Meeting() {
     if (router.query.meetingid) {
       setMeetingState({
         room: router.query.meetingid,
+        jwt: props.token,
         user: {
           name: 'Akash Verma',
         },
@@ -245,37 +239,37 @@ function Meeting() {
   return (
     <Content id="jitsi-iframe" style={{ height: '100%' }}>
       {/* <div class="item-center">
-              <span>Custom Controls</span>
-            </div>
-            <div class="item-center">
-              <span>&nbsp;&nbsp;</span>
-              <i
-                onClick={() => executeCommand('toggleAudio')}
-                className={`fas fa-2x grey-color ${
-                  meetingState.isAudioMuted ? 'fa-microphone-slash' : 'fa-microphone'
-                }`}
-                aria-hidden="true"
-                title="Mute / Unmute"
-              ></i>
-              <i
-                onClick={() => executeCommand('hangup')}
-                className="fas fa-phone-slash fa-2x red-color"
-                aria-hidden="true"
-                title="Leave"
-              ></i>
-              <i
-                onClick={() => executeCommand('toggleVideo')}
-                className={`fas fa-2x grey-color ${meetingState.isVideoMuted ? 'fa-video-slash' : 'fa-video'}`}
-                aria-hidden="true"
-                title="Start / Stop camera"
-              ></i>
-              <i
-                onClick={() => executeCommand('toggleShareScreen')}
-                className="fas fa-film fa-2x grey-color"
-                aria-hidden="true"
-                title="Share your screen"
-              ></i>
-            </div> */}
+               <span>Custom Controls</span>
+             </div>
+             <div class="item-center">
+               <span>&nbsp;&nbsp;</span>
+               <i
+                 onClick={() => executeCommand('toggleAudio')}
+                 className={`fas fa-2x grey-color ${
+                   meetingState.isAudioMuted ? 'fa-microphone-slash' : 'fa-microphone'
+                 }`}
+                 aria-hidden="true"
+                 title="Mute / Unmute"
+               ></i>
+               <i
+                 onClick={() => executeCommand('hangup')}
+                 className="fas fa-phone-slash fa-2x red-color"
+                 aria-hidden="true"
+                 title="Leave"
+               ></i>
+               <i
+                 onClick={() => executeCommand('toggleVideo')}
+                 className={`fas fa-2x grey-color ${meetingState.isVideoMuted ? 'fa-video-slash' : 'fa-video'}`}
+                 aria-hidden="true"
+                 title="Start / Stop camera"
+               ></i>
+               <i
+                 onClick={() => executeCommand('toggleShareScreen')}
+                 className="fas fa-film fa-2x grey-color"
+                 aria-hidden="true"
+                 title="Share your screen"
+               ></i>
+             </div> */}
     </Content>
   );
 }
