@@ -171,12 +171,13 @@ const sendEmailInvite = async (req, res) => {
       let invite = await admin
         .firestore()
         .collection("invites")
-        .doc(email)
+        .doc(email.toLowerCase())
         .set({
           token: token,
-          email: email,
+          email: email.toLowerCase(),
           firstName: firstName,
           lastName: lastName,
+          displayName: firstName + " " + lastName,
           invitedBy: invitedBy,
           expiresAt: expiry,
           createdAt: admin.firestore.Timestamp.now(),
@@ -243,6 +244,15 @@ const InviteList = async (req, res) => {
       .firestore()
       .collection("invites")
       .where("invitedBy", "==", invitedBy)
+      .select(
+        "displayName",
+        "email",
+        "profilePic",
+        "status",
+        "createdAt",
+        "firstName",
+        "lastName"
+      )
       .get();
 
     if (invites.empty) {

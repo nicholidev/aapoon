@@ -368,24 +368,23 @@ export default function FormUserMeeting(props) {
                 />
               </Stack>
 
-              {isCustomerAdmin && (
-                <Stack direction={'row'} spacing={5}>
-                  <Box display={'flex'} alignItems={'center'}>
-                    <Radio checked={meetingType == 'oneTime'} onChange={handleMeetingType} value={'oneTime'} />
-                    &nbsp;
-                    <Typography variant="subtitle1" color="initial">
-                      One Time
-                    </Typography>
-                  </Box>
-                  <Box display={'flex'} alignItems={'center'}>
-                    <Radio checked={meetingType == 'recurring'} onChange={handleMeetingType} value={'recurring'} />
-                    &nbsp;
-                    <Typography variant="subtitle1" color="initial">
-                      Recurring
-                    </Typography>
-                  </Box>
-                </Stack>
-              )}
+              <Stack direction={'row'} spacing={5}>
+                <Box display={'flex'} alignItems={'center'}>
+                  <Radio checked={meetingType == 'oneTime'} onChange={handleMeetingType} value={'oneTime'} />
+                  &nbsp;
+                  <Typography variant="subtitle1" color="initial">
+                    One Time
+                  </Typography>
+                </Box>
+                <Box display={'flex'} alignItems={'center'}>
+                  <Radio checked={meetingType == 'recurring'} onChange={handleMeetingType} value={'recurring'} />
+                  &nbsp;
+                  <Typography variant="subtitle1" color="initial">
+                    Recurring
+                  </Typography>
+                </Box>
+              </Stack>
+
               <Grid container rowSpacing={3} columnSpacing={0} justifyContent={'space-between'}>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1} sx={{ marginRight: { sm: '20px', xs: 0 } }}>

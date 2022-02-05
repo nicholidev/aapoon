@@ -79,7 +79,7 @@ export default function InviteData(props) {
                     </ListItemIcon>
                     <ListItemText>
                       <Typography variant="subtitle1" color="text.primary">
-                        {`${row.firstName + row.lastName}`}
+                        {`${row.firstName + ' ' + row.lastName}`}
                       </Typography>
                     </ListItemText>
                   </ListItem>

@@ -20,6 +20,14 @@ exports.sendWelcomeEmail = functions.firestore
   .document("users/{userid}")
   .onCreate(async (snap, context) => {
     const newValue = snap.data();
+    await admin
+      .firestore()
+      .collection("invites")
+      .doc(newValue.email.toLowerCase())
+      .update({
+        ...newValue,
+        status: "joined",
+      });
     let mail = await sendEmail(
       newValue.email,
       "Welcome to aapoon Meet",
@@ -693,4 +701,19 @@ exports.sendWelcomeEmail = functions.firestore
     );
 
     return mail;
+  });
+
+exports.updateUser = functions.firestore
+  .document("users/{userid}")
+  .onUpdate(async (change, context) => {
+    const newValue = change.after.data();
+
+    await admin
+      .firestore()
+      .collection("invites")
+      .doc(newValue.email.toLowerCase())
+      .update({
+        ...newValue,
+        status: "joined",
+      });
   });

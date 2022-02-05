@@ -40,6 +40,7 @@ import { AuthProvider } from '../contexts/FirebaseContext';
 import { addJWTInterceptor } from '../utils/Interceptor';
 import ScreenRotationIcon from '@mui/icons-material/ScreenRotation';
 import { useEffect, useState } from 'react';
+import { isJwtExpired } from 'jwt-check-expiration';
 import 'react-phone-number-input/style.css';
 MyApp.propTypes = {
   Component: PropTypes.func,
@@ -48,6 +49,7 @@ MyApp.propTypes = {
 
 export default function MyApp(props) {
   const { Component, pageProps } = props;
+
   const [isLandscape, setLandScape] = useState(false);
   const getLayout = Component.getLayout ?? ((page) => page);
   useEffect(() => {
@@ -59,7 +61,10 @@ export default function MyApp(props) {
       }
     });
 
-    if (localStorage.getItem('authToken')) addJWTInterceptor(localStorage.getItem('authToken'));
+    if (localStorage.getItem('authToken') && !isJwtExpired(localStorage.getItem('authToken'))) {
+      addJWTInterceptor(localStorage.getItem('authToken'));
+    }
+    // if (localStorage.getItem('authToken')) ;
   }, []);
   return (
     <>

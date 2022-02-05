@@ -20,6 +20,7 @@ export const scheduleMeeting = async (data) => {
 
 export const getMeetingEvents = (start, end, user) => {
   return new Promise((resolve, reject) => {
+    let totalMeeting = [];
     const startTme = firebase.firestore.Timestamp.fromDate(start);
     const endDate = firebase.firestore.Timestamp.fromDate(end);
     const userRef = firebase.firestore().collection('users').doc(user);
@@ -31,6 +32,7 @@ export const getMeetingEvents = (start, end, user) => {
       .where('scheduledAt', '>=', startTme)
       .where('scheduledAt', '<=', endDate)
       .where('type', '==', 'scheduled')
+      .where('reccurring', '==', false)
       .get()
       .then((snapshot) => {
         let data = snapshot.docs.map((i) => {
@@ -72,7 +74,61 @@ export const getMeetingEvents = (start, end, user) => {
               };
         });
 
-        resolve(data);
+        totalMeeting = [...totalMeeting, ...data];
+        firebase
+          .firestore()
+          .collection('meeting')
+          .where('createdBy', '==', userRef)
+          .where('reccuringEndDate', '>=', startTme)
+          .where('type', '==', 'scheduled')
+          .where('reccurring', '==', true)
+          .get()
+          .then((snapshot) => {
+            let data2 = snapshot.docs.map((i) => {
+              return i.data().reccurring
+                ? {
+                    groupId: i.id,
+                    id: i.id,
+
+                    startTime: `${i.data().scheduledAt.toDate().getHours()}:${i
+                      .data()
+                      .scheduledAt.toDate()
+                      .getMinutes()}:${i.data().scheduledAt.toDate().getSeconds()}`,
+                    endTime: `${i.data().endAt.toDate().getHours()}:${i.data().endAt.toDate().getMinutes()}:${i
+                      .data()
+                      .endAt.toDate()
+                      .getSeconds()}`,
+                    startRecur: i.data().scheduledAt.toDate(),
+                    endRecur: i.data().reccuringEndDate.toDate(),
+
+                    backgroundColor: '#FFE9E9',
+                    color: '#FFE9E9',
+                    textColor: '#000',
+
+                    end: i.data()?.endAt?.toDate(),
+                    ...i.data(),
+                    endAt: undefined,
+                    startAt: undefined,
+                  }
+                : {
+                    id: i.id,
+                    title: i.title,
+                    description: i.description,
+                    start: i.data().scheduledAt.toDate(),
+                    backgroundColor: i.data().scheduledAt.toDate() < new Date() ? '#D8D8E2' : '#E9FFEE',
+                    color: i.data().scheduledAt.toDate() < new Date() ? '#D8D8E2' : '#E9FFEE',
+                    textColor: '#000',
+                    end: i.data()?.endAt?.toDate(),
+                    ...i.data(),
+                  };
+            });
+
+            totalMeeting = [...totalMeeting, ...data2];
+            resolve(totalMeeting);
+          })
+          .catch((err) => {
+            reject(err);
+          });
       })
       .catch((err) => {
         reject(err);

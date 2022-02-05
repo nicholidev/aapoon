@@ -94,7 +94,23 @@ const withMeetingAuth = (WrappedComponent) => {
             jwt: localStorage.getItem('mjwt'),
           });
         }
-      }, [query?.meetingid, token]);
+      }, [query?.meetingid]);
+
+      useEffect(() => {
+        if (localStorage.getItem('isAuthenticated') && !meetData?.password) {
+          setAuthMeeting({
+            isAuth: true,
+            id: query.meetingid,
+            jwt: token,
+          });
+        } else {
+          setAuthMeeting({
+            isAuth: localStorage.getItem('mid') == query.meetingid,
+            id: localStorage.getItem('mid'),
+            jwt: localStorage.getItem('mjwt'),
+          });
+        }
+      }, [token, query?.meetingid]);
 
       useEffect(() => {
         setRequirePass(false);
