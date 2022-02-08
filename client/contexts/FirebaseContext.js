@@ -72,6 +72,7 @@ function AuthProvider({ children }) {
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
           user.getIdToken().then((token) => {
+            localStorage.setItem('authToken', token);
             addJWTInterceptor(token);
           });
           const docRef = firebase.firestore().collection('users').doc(user.uid);
@@ -117,6 +118,7 @@ function AuthProvider({ children }) {
             payload: { isAuthenticated: false, user: null },
           });
           localStorage.removeItem('isAuthenticated');
+          localStorage.removeItem('authToken');
         }
       }),
     [dispatch]
@@ -127,6 +129,20 @@ function AuthProvider({ children }) {
   const loginWithGoogle = () => {
     const provider = new firebase.auth.GoogleAuthProvider();
     return firebase.auth().signInWithPopup(provider);
+  };
+
+  const deleteAccount = () => {
+    firebase.auth().currentUser.delete();
+    dispatch({
+      type: 'UPDATE',
+      payload: {
+        user: {},
+      },
+    });
+    window.location = '/';
+
+    localStorage.removeItem('isAuthenticated');
+    localStorage.clear();
   };
 
   const loginWithFaceBook = () => {
@@ -423,6 +439,7 @@ function AuthProvider({ children }) {
         loginWithFaceBook,
         loginWithTwitter,
         logout,
+        deleteAccount,
         resetPassword,
         updateProfile,
         registerBusiness,

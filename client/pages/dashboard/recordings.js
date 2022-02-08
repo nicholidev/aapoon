@@ -37,22 +37,22 @@ import { useState } from 'react';
 import RecordingData from '../../components/recording/RecordingData';
 
 const Sidebar = styled('header')(({ theme }) => ({
-  width: '240px',
+  width: '320px',
   height: '100%',
   padding: theme.spacing(1),
   paddingTop: theme.spacing(2),
-  paddingLeft: theme.spacing(4),
+  paddingLeft: theme.spacing(2),
   [theme.breakpoints.down('md')]: {
     display: 'none',
   },
 }));
 
 const Content = styled('div')(({ theme }) => ({
-  width: 'calc(100% - 240px)',
+  width: 'calc(100% - 320px)',
   height: '100%',
   padding: theme.spacing(1),
   paddingTop: theme.spacing(4),
-  paddingLeft: theme.spacing(4),
+  paddingLeft: theme.spacing(2),
   marginTop: theme.spacing(6),
   [theme.breakpoints.down('md')]: {
     width: '100%',
@@ -152,7 +152,7 @@ function RecordingsPage() {
         <Sidebar>
           <SideSection>
             <List sx={{ width: '100%' }}>
-              <Link href="/dashboard/calendar" passHref={true}>
+              <Link href="/dashboard/one" passHref={true}>
                 <ListItem disablePadding>
                   <ListItemButton>
                     <ListItemIcon>

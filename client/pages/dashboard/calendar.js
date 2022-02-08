@@ -38,7 +38,7 @@ import Page from '../../components/Page';
 import Iconify from '../../components/Iconify';
 import { DialogAnimate } from '../../components/animate';
 // sections
-
+import { useRouter } from 'next/router';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import { CalendarStyle, CalendarToolbar } from '../../sections/@dashboard/calendar';
 import DashboardLayout from '../../layouts/dashboard';
@@ -49,22 +49,22 @@ import useAuth from '../../hooks/useAuth';
 import InstantMeetingPopup from '../../sections/meeting/InstantMeetingPopup';
 import MeetingDetailsPopup from '../../sections/meeting/MeetingDetailsPopup';
 const Sidebar = styled('header')(({ theme }) => ({
-  width: '240px',
+  width: '320px',
   height: '100%',
   padding: theme.spacing(1),
   paddingTop: theme.spacing(2),
-  paddingLeft: theme.spacing(4),
+  paddingLeft: theme.spacing(2),
   [theme.breakpoints.down('md')]: {
     display: 'none',
   },
 }));
 
 const Content = styled('div')(({ theme }) => ({
-  width: 'calc(100% - 240px)',
+  width: 'calc(100% - 320px)',
   height: '100%',
   padding: theme.spacing(1),
   paddingTop: theme.spacing(6),
-  paddingLeft: theme.spacing(4),
+  paddingLeft: theme.spacing(2),
 
   [theme.breakpoints.down('md')]: {
     width: '100%',
@@ -110,6 +110,7 @@ function CalendarPage() {
   const [view, setView] = useState(isDesktop ? 'dayGridMonth' : 'listWeek');
   const [events, setEvents] = useState([]);
   const { user } = useAuth();
+  const { push } = useRouter();
   useEffect(() => {
     const calendarEl = calendarRef.current;
     if (calendarEl) {
@@ -124,6 +125,7 @@ function CalendarPage() {
       console.log('event exexcuted', date);
       getMeetingEvents(startOfMonth(date), endOfMonth(date), user.id).then((data) => {
         setEvents(data);
+        console.log('event', data);
       });
     }
   }, [user, date]);
@@ -194,7 +196,7 @@ function CalendarPage() {
         data={meetingOpen.data}
         onClose={() => setMeetingOpen({ isOpen: false })}
       ></MeetingDetailsPopup>
-      <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex' }}>
+      <Container maxWidth={'xl'} sx={{ display: 'flex' }}>
         <Sidebar>
           <SideSection>
             <List sx={{ width: '100%' }}>
@@ -233,7 +235,7 @@ function CalendarPage() {
             <List sx={{ width: '100%' }}>
               <ListItem disablePadding>
                 <ListItemButton>
-                  <ListItemText primary={<h4>Scheduled Meetings</h4>} />
+                  <ListItemText primary={<h4>Schedule Meetings</h4>} />
                 </ListItemButton>
               </ListItem>
               <ListItem disablePadding>
@@ -251,13 +253,21 @@ function CalendarPage() {
                         buttonText: '4 day',
                       },
                     }}
-                    slotDuration={'00:15:00'}
+                    slotDuration={'00:05:00'}
+                    scrollTime={`${new Date().getHours() < 10 ? '0' + new Date().getHours() : new Date().getHours()}:${
+                      new Date().getMinutes() < 10 ? '0' + new Date().getMinutes() : new Date().getMinutes()
+                    }:${new Date().getSeconds() < 10 ? '0' + new Date().getSeconds() : new Date().getSeconds()}`}
                     rerenderDelay={10}
                     initialDate={date}
                     initialView={'timeGridDay'}
-                    dayMaxEventRows={3}
+                    dayMaxEventRows={5}
                     eventDisplay="block"
                     headerToolbar={false}
+                    expandRows={true}
+                    slotEventOverlap={false}
+                    eventShortHeight={180}
+                    eventMaxStack={10}
+                    expandRows={true}
                     eventResizableFromStart
                     select={handleSelectRange}
                     // eventDrop={handleDropEvent}
@@ -274,7 +284,7 @@ function CalendarPage() {
         <Content>
           <DataSection>
             <DataHead>
-              <Button variant="contained" color="primary" href="/dashboard/schedule-meeting">
+              <Button variant="contained" color="primary" onClick={() => push('/dashboard/schedule-meeting')}>
                 Schedule Meeting
               </Button>
               &nbsp;&nbsp;&nbsp;&nbsp;
@@ -313,6 +323,12 @@ function CalendarPage() {
                 initialDate={date}
                 initialView={view}
                 dayMaxEventRows={3}
+                displayEventEnd={true}
+                eventTimeFormat={{
+                  hour: 'numeric',
+                  minute: '2-digit',
+                  meridiem: 'short',
+                }}
                 eventDisplay="block"
                 headerToolbar={false}
                 allDayMaintainDuration

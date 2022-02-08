@@ -22,6 +22,7 @@ import FormLabel from '@mui/material/FormLabel';
 // @mui
 import { Stack, TextField, IconButton, InputAdornment, Alert, Button, Select, MenuItem } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
+import NumberFormat from 'react-number-format';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
@@ -32,9 +33,12 @@ import PhoneInput from 'react-phone-number-input';
 import CustomPhone from '../../../components/Phonenumber';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../../utils/errorMessage';
+import NumberFormatCustom from '../../../components/NumberInput';
 import { acceptInvitation, getCountry } from '../../../api/user';
+import MuiPhoneNumber from 'material-ui-phone-number';
 export default function RegisterForm(query) {
   const { register, user } = useAuth();
+  const [numf, setnumf] = useState('12');
   const [open, setOpen] = useState(user.email && user.phoneNumber ? false : true);
   const [countryCode, setCountryCode] = useState('US');
   const isMountedRef = useIsMountedRef();
@@ -49,7 +53,7 @@ export default function RegisterForm(query) {
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string()
       .required('Password is required')
-      .min(6, 'Password should be 6 letter long')
+
       .matches(
         rePass,
         'Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character'
@@ -72,6 +76,7 @@ export default function RegisterForm(query) {
     },
     validationSchema: RegisterSchema,
     onSubmit: async (values, { setErrors, setSubmitting }) => {
+      setSubmitting(true);
       try {
         await register(values.email, values.password, values.firstName, values.lastName, values.phone, values);
         enqueueSnackbar('Register success', {
@@ -87,7 +92,7 @@ export default function RegisterForm(query) {
         if (isMountedRef.current) {
           setSubmitting(false);
         }
-     
+
         if(user.accountType=="Business"){
           window?.location="/dashboard/one";
         }
@@ -120,6 +125,8 @@ export default function RegisterForm(query) {
       setCountryCode(res.data.country_code);
     });
   }, [query?.query?.email]);
+
+  console.log(values);
 
   return (
     <FormikProvider value={formik}>
@@ -154,7 +161,20 @@ export default function RegisterForm(query) {
             error={Boolean(touched.email && errors.email)}
             helperText={touched.email && errors.email}
           />
-          <PhoneInput
+
+          <MuiPhoneNumber
+            defaultCountry={countryCode?.toLocaleLowerCase()}
+            variant="outlined"
+            {...getFieldProps('phone')}
+            onChange={(data) => {
+              setFieldValue('phone', data);
+            }}
+            label="Phone"
+            autoFormat={false}
+            error={Boolean(touched.phone && errors.phone)}
+            helperText={touched.phone && errors.phone}
+          />
+          {/* <PhoneInput
             placeholder="Enter phone number"
             international
             defaultCountry={countryCode}
@@ -165,7 +185,7 @@ export default function RegisterForm(query) {
             onBlur={getFieldProps('phone').onBlur}
             error={Boolean(touched.phone && errors.phone)}
             helperText={touched.phone && errors.phone}
-          />
+          /> */}
 
           <TextField
             fullWidth
@@ -221,11 +241,16 @@ export default function RegisterForm(query) {
                           <MenuItem value={'Computers & Electronics'}>Computers & Electronics </MenuItem>
                           <MenuItem value={'Construction & Contractors '}>Construction & Contractors </MenuItem>
                           <MenuItem value={'Entertainment'}>Entertainment </MenuItem>
+                          <MenuItem value={'Other'}>Other </MenuItem>
                         </Select>
                       </FormControl>
                       <TextField
-                        type="number"
                         placeholder="Enter number of employees"
+                        name="numberOfEmployees"
+                        InputProps={{
+                          inputComponent: NumberFormatCustom,
+                        }}
+                        inputComponent={NumberFormatCustom}
                         {...getFieldProps('numberOfEmployees')}
                       />
                     </>
@@ -245,6 +270,7 @@ export default function RegisterForm(query) {
                           <MenuItem value={'Doctor'}>Doctor</MenuItem>
                           <MenuItem value={'Teacher'}>Teacher</MenuItem>
                           <MenuItem value={'Journalist'}>Journalist</MenuItem>
+                          <MenuItem value={'Other'}>Other </MenuItem>
                         </Select>
                       </FormControl>
                     </>

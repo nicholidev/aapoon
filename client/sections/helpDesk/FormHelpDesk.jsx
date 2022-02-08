@@ -36,13 +36,16 @@ import PhoneInput from 'react-phone-number-input/input';
 import CustomPhone from '../../components/Phonenumber';
 import InputLabel from '@mui/material/InputLabel';
 import { acceptInvitation, getCountry } from '../../api/user';
+import { addHelp } from '../../api/help';
+import { useRouter } from 'next/router';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../utils/errorMessage';
-export default function FormHelpDesk() {
-  const { registerBusiness, user } = useAuth();
+export default function FormHelpDesk(props) {
+  const { user } = useAuth();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const rePhoneNumber = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
+  const { replace } = useRouter();
   const RegisterSchema = Yup.object().shape({
     email: Yup.string().min(2, 'Too Short!').required('Email is required').email('Please enter a valid email'),
     topic: Yup.string().required('Topic is required'),
@@ -75,32 +78,34 @@ export default function FormHelpDesk() {
     onSubmit: async (values, { setErrors, setSubmitting }) => {
       console.log(values);
 
-      // try {
-      //   await registerBusiness(values);
-      //   enqueueSnackbar('Business details updates', {
-      //     variant: 'success',
-      //     action: (key) => (
-      //       <IconButtonAnimate size="small" onClick={() => closeSnackbar(key)}>
-      //         <Iconify icon={'eva:close-fill'} />
-      //       </IconButtonAnimate>
-      //     ),
-      //   });
+      try {
+        await addHelp({ ...values, id: user.id, name: user.displayName });
+        enqueueSnackbar('Message sent to support center', {
+          variant: 'success',
+          action: (key) => (
+            <IconButtonAnimate size="small" onClick={() => closeSnackbar(key)}>
+              <Iconify icon={'eva:close-fill'} />
+            </IconButtonAnimate>
+          ),
+        });
 
-      //   if (localStorage.getItem('inviteToken'))
-      //     acceptInvitation({ email: user.email, token: localStorage.getItem('inviteToken') });
-      //   localStorage.setItem('isAuthenticated', true)
-
-      //   window?.location = "/dashboard/one";
-      //   if (isMountedRef.current) {
-      //     setSubmitting(false);
-      //   }
-      // } catch (error) {
-      //   console.log(error);
-      //   if (isMountedRef.current) {
-      //     setErrors({ afterSubmit: ErrorMessages[error.code] });
-      //     setSubmitting(false);
-      //   }
-      // }
+        props.setLinkSentModal(true);
+        props;
+        if (isMountedRef.current) {
+          setSubmitting(false);
+        }
+      } catch (error) {
+        console.log(error);
+        enqueueSnackbar('Unable to send message to support center', {
+          variant: 'error',
+          action: (key) => (
+            <IconButtonAnimate size="small" onClick={() => closeSnackbar(key)}>
+              <Iconify icon={'eva:close-fill'} />
+            </IconButtonAnimate>
+          ),
+        });
+        setSubmitting(false);
+      }
     },
   });
 
@@ -136,10 +141,15 @@ export default function FormHelpDesk() {
                 <MenuItem selected value={''} disabled>
                   Select Topic
                 </MenuItem>
-                <MenuItem value={'15'}>Support issue</MenuItem>
-                <MenuItem value={'20'}>Bug Report</MenuItem>
+                <MenuItem value={'1'}>Support issue</MenuItem>
+                <MenuItem value={'2'}>Bug Report</MenuItem>
 
-                <MenuItem value={'30'}>Other</MenuItem>
+                <MenuItem value={'4'}>delete account</MenuItem>
+                <MenuItem value={'5'}>plans and pricing</MenuItem>
+                <MenuItem value={'6'}>how to degrade account</MenuItem>
+                <MenuItem value={'7'}> how to upgrade account</MenuItem>
+
+                <MenuItem value={'8'}>Other</MenuItem>
               </Select>
               {Boolean(touched.topic && errors.topic) && (
                 <Typography variant="caption" color="error.main" style={{ marginLeft: '10px' }}>
@@ -191,7 +201,7 @@ export default function FormHelpDesk() {
               direction={{ xs: 'column', sm: 'row' }}
               spacing={{ xs: 1, sm: 2, md: 2 }}
             >
-              <LoadingButton size="large" color="primary">
+              <LoadingButton size="large" color="primary" onClick={() => replace('/')}>
                 Cancel
               </LoadingButton>
               <LoadingButton size="large" type="submit" variant="contained" loading={isSubmitting}>

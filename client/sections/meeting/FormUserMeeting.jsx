@@ -20,12 +20,17 @@ import {
   Box,
   ButtonBase,
   FormHelperText,
+  Radio,
+  ListItem,
+  ListItemText,
+  withStyles,
+  Checkbox,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DatePicker from '@mui/lab/DatePicker';
-import TimePicker from '@mui/lab/TimePicker';
+import MobileTimePicker from '@mui/lab/MobileTimePicker';
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useIsMountedRef from '../../hooks/useIsMountedRef';
@@ -45,8 +50,10 @@ import { addTocalender } from '../../utils/addToCalender/AddToCalander';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../utils/errorMessage';
 
-export default function FormUserMeeting() {
+export default function FormUserMeeting(props) {
   const { registerBusiness, user } = useAuth();
+
+  const { isCustomerAdmin } = props;
   const router = useRouter();
   const timeZones = listTimeZones();
   const isMountedRef = useIsMountedRef();
@@ -63,17 +70,19 @@ export default function FormUserMeeting() {
     estimatedDuration: Yup.string().required('Duration is required'),
     password: Yup.string(),
     meetingDateTime: Yup.date().required('Please enter valid date'),
+    meetingEndDate: Yup.date(),
   });
 
   const formik = useFormik({
     initialValues: {
       meetingTopic: '',
       meetingDescription: '',
-
+      lobby: true,
+      reccurring: false,
       estimatedDuration: '15',
       password: '',
       meetingDateTime: new Date(),
-
+      meetingEndDate: new Date(),
       timeZone: '',
     },
     validationSchema: RegisterSchema,
@@ -82,6 +91,7 @@ export default function FormUserMeeting() {
       const tz = findTimeZone(values.timeZone);
 
       const nativeDate = values.meetingDateTime;
+      let meetingEndDate = values.meetingEndDate;
       const DateTime = {
         year: nativeDate.getFullYear(),
         month: nativeDate.getMonth() + 1,
@@ -89,12 +99,19 @@ export default function FormUserMeeting() {
         hours: nativeDate.getHours(),
         minutes: nativeDate.getMinutes(),
       };
-
+      const DateTimeEnd = {
+        year: meetingEndDate.getFullYear(),
+        month: meetingEndDate.getMonth() + 1,
+        day: meetingEndDate.getDate(),
+        hours: meetingEndDate.getHours(),
+        minutes: meetingEndDate.getMinutes(),
+      };
       let myDate = getUnixTime(DateTime, tz);
+      let myEndDate = getUnixTime(DateTimeEnd, tz);
       setSubmitting(true);
 
       try {
-        let meetingData = await scheduleMeeting({ scheduleAt: myDate, ...values });
+        let meetingData = await scheduleMeeting({ scheduleAt: myDate, reccuringEndDate: myEndDate, ...values });
 
         enqueueSnackbar('New meeting scheduled', {
           variant: 'success',
@@ -181,6 +198,27 @@ export default function FormUserMeeting() {
     addTocalender(event, type, false);
   };
 
+  const [meetingType, setMeetingType] = useState('oneTime');
+  const [waitInLobby, setWaitInLobby] = useState(true);
+
+  const handleMeetingType = (event) => {
+    setMeetingType(event.target.value);
+    if (event.target.value == 'recurring') {
+      formik.setValues({ ...formik.values, meetingEndDate: new Date(), reccurring: true });
+      RegisterSchema.fields.meetingEndDate.required('Please enter valid date');
+    } else {
+      let newValues = { ...formik.values, reccurring: false };
+      delete newValues.meetingEndDate;
+      formik.setValues(newValues);
+      RegisterSchema.fields.meetingEndDate.notRequired();
+    }
+  };
+
+  const handleMeetingLobby = (event) => {
+    setWaitInLobby(event.target.checked);
+    formik.setValues({ ...formik.values, lobby: event.target.checked });
+  };
+
   return (
     <div>
       {isSubmitted ? (
@@ -201,7 +239,7 @@ export default function FormUserMeeting() {
           </Typography>
           <Box
             component={ButtonBase}
-            onClick={() => copyTocb('https://github.com/sskjdskd/sdshdj')}
+            onClick={() => copyTocb(window.origin + '/meeting?meetingid=' + data.id)}
             sx={{
               border: '1px solid #DDDDDD',
               borderRadius: 1,
@@ -221,7 +259,7 @@ export default function FormUserMeeting() {
               align="center"
               sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center' }}
             >
-              {window.origin + '/meeting/' + data.id}
+              {window.origin + '/meeting?meetingid=' + data.id}
             </Typography>
             <Iconify icon="fluent:copy-20-filled" sx={{ fontSize: 24, ml: 2, color: 'text.secondary' }} />
           </Box>
@@ -329,13 +367,31 @@ export default function FormUserMeeting() {
                   helperText={touched.meetingDescription && errors.meetingDescription}
                 />
               </Stack>
-              <Grid container direction={{ xs: 'column', sm: 'row' }}>
+
+              <Stack direction={'row'} spacing={5}>
+                <Box display={'flex'} alignItems={'center'}>
+                  <Radio checked={meetingType == 'oneTime'} onChange={handleMeetingType} value={'oneTime'} />
+                  &nbsp;
+                  <Typography variant="subtitle1" color="initial">
+                    One Time
+                  </Typography>
+                </Box>
+                <Box display={'flex'} alignItems={'center'}>
+                  <Radio checked={meetingType == 'recurring'} onChange={handleMeetingType} value={'recurring'} />
+                  &nbsp;
+                  <Typography variant="subtitle1" color="initial">
+                    Recurring
+                  </Typography>
+                </Box>
+              </Stack>
+
+              <Grid container rowSpacing={3} columnSpacing={0} justifyContent={'space-between'}>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1} sx={{ marginRight: { sm: '20px', xs: 0 } }}>
                     <Typography sx={{ fontWeight: 500 }}> Start Time * </Typography>
                     <Stack spacing={1} direction="row">
                       <LocalizationProvider dateAdapter={AdapterDateFns}>
-                        <TimePicker
+                        <MobileTimePicker
                           {...getFieldProps('meetingDateTime')}
                           onChange={(newValue) => {
                             formik.setFieldValue('meetingDateTime', newValue);
@@ -356,8 +412,24 @@ export default function FormUserMeeting() {
                   </Stack>
                 </Grid>
                 <Grid item xs={12} sm={6}>
+                  <Stack spacing={1} sx={{ marginLeft: { sm: '20px', xs: 0 } }}>
+                    <Typography sx={{ fontWeight: 500 }}> Estimated Duration * </Typography>
+                    <Select
+                      {...getFieldProps('estimatedDuration')}
+                      error={Boolean(touched.estimatedDuration && errors.estimatedDuration)}
+                      helperText={touched.estimatedDuration && errors.estimatedDuration}
+                    >
+                      <MenuItem value={'15'}>15 Minutes</MenuItem>
+                      <MenuItem value={'30'}>30 Minutes</MenuItem>
+                      <MenuItem value={'60'}>60 Minutes</MenuItem>
+                    </Select>
+                  </Stack>
+                </Grid>
+                <Grid item xs={12} sm={6}>
                   <Stack spacing={1} sx={{ marginRight: { sm: '20px', xs: 0 } }}>
-                    <Typography sx={{ fontWeight: 500 }}> Meeting Date * </Typography>
+                    <Typography sx={{ fontWeight: 500 }}>
+                      {meetingType == 'recurring' ? 'Meeting Start date *' : 'Meeting Date *'}{' '}
+                    </Typography>
                     <Stack spacing={1} direction="row">
                       <LocalizationProvider dateAdapter={AdapterDateFns}>
                         <DatePicker
@@ -380,38 +452,57 @@ export default function FormUserMeeting() {
                     </Stack>
                   </Stack>
                 </Grid>
-              </Grid>
-              <Stack spacing={1}>
-                <Typography sx={{ fontWeight: 500 }}>Time Zone * </Typography>
-                <Select
-                  autoComplete="username"
-                  placeholder="Business Website"
-                  {...getFieldProps('timeZone')}
-                  error={Boolean(touched.timeZone && errors.timeZone)}
-                  helperText={touched.timeZone && errors.timeZone}
-                >
-                  {timeZones.map((item) => (
-                    <MenuItem value={item}>{item}</MenuItem>
-                  ))}
-                </Select>
-              </Stack>
-              <Grid container direction={{ xs: 'column', sm: 'row' }}>
+                {meetingType == 'recurring' && (
+                  <Grid item xs={12} sm={6}>
+                    <Stack spacing={1} sx={{ marginLeft: { sm: '20px', xs: 0 } }}>
+                      <Typography sx={{ fontWeight: 500 }}>Meeting End date *</Typography>
+                      <Stack spacing={1} direction="row">
+                        <LocalizationProvider dateAdapter={AdapterDateFns}>
+                          <DatePicker
+                            {...getFieldProps('meetingEndDate')}
+                            onChange={(newValue) => {
+                              formik.setFieldValue('meetingEndDate', newValue);
+                            }}
+                            minDateTime={new Date()}
+                            variant="dialog"
+                            renderInput={(params) => (
+                              <TextField
+                                fullWidth
+                                {...params}
+                                error={Boolean(touched.meetingEndDate && errors.meetingEndDate)}
+                                helperText={touched.meetingEndDate && errors.meetingEndDate}
+                              />
+                            )}
+                          />
+                        </LocalizationProvider>
+                      </Stack>
+                    </Stack>
+                  </Grid>
+                )}
                 <Grid item xs={12} sm={6}>
-                  <Stack spacing={1} sx={{ marginRight: { sm: '20px', xs: 0 } }}>
-                    <Typography sx={{ fontWeight: 500 }}> Estimated Duration * </Typography>
+                  <Stack
+                    spacing={1}
+                    sx={{ margin: { sm: meetingType == 'recurring' ? '0 20px 0 0' : '0 0 0 20px', xs: 0 } }}
+                  >
+                    <Typography sx={{ fontWeight: 500 }}>Time Zone * </Typography>
                     <Select
-                      {...getFieldProps('estimatedDuration')}
-                      error={Boolean(touched.estimatedDuration && errors.estimatedDuration)}
-                      helperText={touched.estimatedDuration && errors.estimatedDuration}
+                      autoComplete="username"
+                      placeholder="Business Website"
+                      {...getFieldProps('timeZone')}
+                      error={Boolean(touched.timeZone && errors.timeZone)}
+                      helperText={touched.timeZone && errors.timeZone}
                     >
-                      <MenuItem value={'15'}>15 Minutes</MenuItem>
-                      <MenuItem value={'30'}>30 Minutes</MenuItem>
-                      <MenuItem value={'60'}>60 Minutes</MenuItem>
+                      {timeZones.map((item) => (
+                        <MenuItem value={item}>{item}</MenuItem>
+                      ))}
                     </Select>
                   </Stack>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Stack spacing={1} sx={{ marginLeft: { sm: '20px', xs: 0 }, marginTop: { xs: '20px', sm: 0 } }}>
+                  <Stack
+                    spacing={1}
+                    sx={{ margin: { sm: meetingType == 'recurring' ? '0  0 0 20px' : '0 20px 0 0', xs: 0 } }}
+                  >
                     <Typography sx={{ fontWeight: 500 }}> Meeting Password </Typography>
                     <Stack spacing={1} direction="row">
                       <TextField
@@ -425,6 +516,33 @@ export default function FormUserMeeting() {
                     </Stack>
                   </Stack>
                 </Grid>
+                <Grid item xs={12} sm={6}>
+                  {isCustomerAdmin && (
+                    <Stack
+                      spacing={1}
+                      direction="row"
+                      sx={{ margin: { sm: meetingType == 'recurring' ? '40px 20px 0 0' : '40px 0 0 20px', xs: 0 } }}
+                    >
+                      <Checkbox
+                        icon={<Iconify icon="akar-icons:square" width="30px" height="30px" />}
+                        checkedIcon={
+                          <Iconify icon="feather:check-square" color="primary.main" width="30px" height="30px" />
+                        }
+                        checked={waitInLobby}
+                        onChange={handleMeetingLobby}
+                        name="lobbyWait"
+                      />
+                      <Box>
+                        <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>
+                          Waiting Lobby
+                        </Typography>
+                        <Typography variant="caption" color="GrayText">
+                          Only users admitted by the host can join the meeting
+                        </Typography>
+                      </Box>
+                    </Stack>
+                  )}
+                </Grid>
               </Grid>
 
               <Stack
@@ -433,7 +551,9 @@ export default function FormUserMeeting() {
                 spacing={{ xs: 1, sm: 2, md: 2 }}
               >
                 <LoadingButton size="large" color="primary" onClick={() => router.replace('/dashboard/calendar')}>
-                  Cancel
+                  <Typography variant="subtitle1" color="GrayText">
+                    Cancel
+                  </Typography>
                 </LoadingButton>
                 <LoadingButton size="large" type="submit" variant="contained" loading={isSubmitting}>
                   Schedule

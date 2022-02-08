@@ -3,10 +3,10 @@
  XYZ. Contact address: XYZ@xyz.pa .
  */
 import { capitalCase } from 'change-case';
-import RouterLink from 'next/link';
+import Link from 'next/link';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Card, Link, Container, Typography, Tooltip, Paper } from '@mui/material';
+import { Box, Card, Container, Typography, Tooltip, Paper, IconButton } from '@mui/material';
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useResponsive from '../../hooks/useResponsive';
@@ -23,6 +23,9 @@ import Divider from '@mui/material/Divider';
 import withoutAuth from '../../HOC/withOutAuth';
 // ----------------------------------------------------------------------
 import GlobalStyles from '@mui/material/GlobalStyles';
+import Iconify from '../../components/Iconify';
+import { useRouter } from 'next/router';
+import { ComingSoonIllustration } from '../../assets';
 const RootStyle = styled('div')(({ theme }) => ({}));
 
 const HeaderStyle = styled('header')(({ theme }) => ({
@@ -55,10 +58,20 @@ const ContentStyle = styled('div')(({ theme }) => ({
   maxWidth: 880,
   margin: 'auto',
   display: 'flex',
-  minHeight: '100vh',
+  // minHeight: '100vh',
   flexDirection: 'column',
-
+  zIndex: 100,
   padding: theme.spacing(8, 2),
+}));
+
+const Spacer = styled('div')(({ theme }) => ({
+  minWidth: '100%',
+  height: '30px',
+  backgroundColor: '#fff',
+  zIndex: 101,
+  position: 'sticky',
+  bottom: 0,
+  left: 0,
 }));
 
 // ----------------------------------------------------------------------
@@ -66,6 +79,9 @@ const ContentStyle = styled('div')(({ theme }) => ({
 function Register() {
   const { method, user } = useAuth();
 
+  console.log(user);
+
+  const router = useRouter();
   const smUp = useResponsive('up', 'sm');
   const mdUp = useResponsive('up', 'md');
   console.log(user);
@@ -80,19 +96,21 @@ function Register() {
       <RootStyle>
         <DashboardHeader />
 
-        <Container sx={{ mt: { xs: 4, lg: 8 } }}>
+        <Container sx={{ mt: { xs: 10, lg: 12 } }}>
           <Paper>
             <ContentStyle>
-              <Box sx={{ mb: 5, display: 'flex' }}>
-                <Box sx={{ flexGrow: 1 }}>
-                  <Typography variant="h4" align="left" gutterBottom>
-                    Business Profile
-                  </Typography>
-                </Box>
+              <Box sx={{ mb: 5, display: 'flex', alignItems: 'center' }}>
+                {user.businessDetails?.businessName && (
+                  <IconButton sx={{ marginRight: '10px' }} onClick={() => router.back()}>
+                    <Iconify icon="eva:arrow-back-fill" color="common.black" />
+                  </IconButton>
+                )}
+                <Typography variant="h4">Business Profile</Typography>
               </Box>
 
               <RegisterForm isUpdate={user.businessDetails?.businessName ? true : false} updateMode={true} />
             </ContentStyle>
+            <Spacer></Spacer>
           </Paper>
         </Container>
       </RootStyle>

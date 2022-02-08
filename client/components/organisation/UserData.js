@@ -39,7 +39,7 @@ const AvtarContainer = styled(Card)(({ theme }) => ({
   borderRadius: '44px',
 }));
 export default function UserData(props) {
-  const [userData, setUserData] = useState([{}, {}, {}]);
+  const [userData, setUserData] = useState([]);
   const { user } = useAuth();
   console.log('user', user);
 

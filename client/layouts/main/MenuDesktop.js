@@ -174,17 +174,16 @@ function MenuDesktopItem({ item, isHome, isOpen, isOffset, onOpen, onClose, push
         >
           {user.id ? (
             <Stack spacing={{ xs: 2 }} sx={{ p: 2 }}>
-              <InstantMeetingPopup>
+              <InstantMeetingPopup noButton>
                 <MenuItem>Instant meeting</MenuItem>
               </InstantMeetingPopup>
-              <MenuItem onClick={() => push('/dashboard/schedule-meeting')}>Scheduled meeting</MenuItem>
+              <MenuItem onClick={() => push('/dashboard/schedule-meeting')}>Schedule meeting</MenuItem>
             </Stack>
           ) : (
             <Stack spacing={{ xs: 2 }} sx={{ p: 2 }}>
-              <InstantMeetingPopup>
-                <MenuItem onClick={() => push('/auth/Login')}>Instant meeting</MenuItem>
-              </InstantMeetingPopup>
-              <MenuItem onClick={() => push('/auth/Login')}>Scheduled meeting</MenuItem>
+              <MenuItem onClick={() => push('/auth/Login')}>Instant meeting</MenuItem>
+
+              <MenuItem onClick={() => push('/auth/Login')}>Schedule meeting</MenuItem>
             </Stack>
           )}
         </MenuPopover>

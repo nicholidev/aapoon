@@ -4,11 +4,12 @@
  */
 import { m } from 'framer-motion';
 import { Link as RouterLink } from 'next/link';
+import { useRouter } from 'next/router';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Button, Box, Link, Container, Typography, Stack, Divider, Grid } from '@mui/material';
 // routes
-
+import InstantMeetingPopup from '../../sections/meeting/InstantMeetingPopup';
 // components
 import Image from '../../components/Image';
 import Iconify from '../../components/Iconify';
@@ -80,6 +81,7 @@ const HeroImgStyle = styled(m.img)(({ theme }) => ({
 
 export default function HomeHero() {
   const { user } = useAuth();
+  const { push } = useRouter();
   return (
     <RootStyle>
       <Grid container>
@@ -104,19 +106,33 @@ export default function HomeHero() {
                   size="large"
                   variant="contained"
                   sx={{ width: 200 }}
+                  onClick={() => (user.id ? push('/dashboard/calendar') : push('/auth/Login'))}
                   startIcon={<Iconify icon={'feather:video'} width={20} height={20} />}
                 >
                   Start a meeting
                 </Button>
 
-                <Button
-                  size="large"
-                  variant="outlined"
-                  sx={{ ml: { xs: 0, sm: 2 }, mt: { xs: 2, sm: 0 }, width: 200 }}
-                  startIcon={<Iconify icon={'ph:browser'} width={20} height={20} />}
-                >
-                  Join Meeting
-                </Button>
+                {!user.id ? (
+                  <Button
+                    size="large"
+                    variant="outlined"
+                    onClick={() => push('/auth/Login')}
+                    sx={{ ml: { xs: 0, sm: 2 }, mt: { xs: 2, sm: 0 }, width: 200 }}
+                    startIcon={<Iconify icon={'ph:browser'} width={20} height={20} />}
+                  >
+                    Instant meeting
+                  </Button>
+                ) : (
+                  <InstantMeetingPopup sx={{ ml: { xs: 0, sm: 2 }, mt: { xs: 2, sm: 0 }, width: 200 }}>
+                    <Button
+                      size="large"
+                      variant="outlined"
+                      startIcon={<Iconify icon={'ph:browser'} width={20} height={20} />}
+                    >
+                      Instant meeting
+                    </Button>
+                  </InstantMeetingPopup>
+                )}
               </m.div>
 
               <Stack spacing={2.5}>

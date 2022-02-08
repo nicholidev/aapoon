@@ -187,9 +187,9 @@ export default function HomeHugePackElements() {
                     color: isLight ? 'text.secondary' : 'common.white',
                   }}
                 >
-                  Easy scheduling, video recording & saving, and an option to choose background dias, helps to stay
-                  connected with aapoon meet. Connections are made easy by aapoon for the benefit of the users. Meet is
-                  a user-friendly application. Stay connected and stay safe!
+                  Easy scheduling, video recording & saving, and an option to choose background, helps to stay connected
+                  with aapoon meet. Connections are made easy by aapoon for the benefit of the users. Meet is a
+                  user-friendly application. Stay connected and stay safe!
                 </Typography>
               </MotionInView>
             </ContentStyle>

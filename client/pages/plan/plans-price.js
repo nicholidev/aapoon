@@ -28,15 +28,16 @@ import DashboardLayout from '../../layouts/main';
 import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
+import Paper from '@mui/material/Paper';
 import GlobalStyles from '@mui/material/GlobalStyles';
 // ----------------------------------------------------------------------
 
 import Iconify from '../../components/Iconify';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import PlansComparison from '../../components/plan/PlansComparison';
-
+import { getAllProducts } from '../../api/payments';
 const Sidebar = styled('header')(({ theme }) => ({
   width: '240px',
   height: '100%',
@@ -72,13 +73,10 @@ const Content = styled('div')(({ theme }) => ({
   },
 }));
 
-const PlatinumCard = styled('div')(({ theme }) => ({
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  marginTop: 5,
-  padding: '20px 30px 50px',
-  // height: '100%',
+const PlatinumCard = styled(Paper)(({ theme }) => ({
+  height: '100%',
+  padding: theme.spacing(5, 5, 5, 5),
+  justifyContent: 'space-between',
   width: '100%',
   backgroundColor: '#225082',
   display: 'flex',
@@ -143,7 +141,10 @@ const TabContainer = styled(Box)(({ theme }) => ({
 const PlanDiv = styled('div')(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  padding: theme.spacing(5),
+  justifyContent: 'space-between',
+  height: '100%',
+
+  padding: theme.spacing(5, 5, 1, 5),
 }));
 
 const IconContainer = styled('div')(({ theme }) => ({
@@ -171,7 +172,7 @@ function PlanPricePage() {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [fetch, setFetch] = useState(false);
   const [current, setCurrent] = useState('monthly');
-
+  const [planData, setPlanData] = useState([]);
   const handleTabChange = (event, newValue) => {
     console.log(newValue);
     if (newValue == 0) {
@@ -179,6 +180,25 @@ function PlanPricePage() {
     } else {
       setCurrent('annual');
     }
+  };
+
+  useEffect(() => {
+    getAllProducts().then((data) => setPlanData(data));
+  }, []);
+
+  const getPlanDetails = (name) => {
+    console.log(planData);
+    return planData.find((i) => i.name == name);
+  };
+
+  const getPrice = (name) => {
+    return planData.find((i) => i.name == name)?.prices.find((i) => i.currency == 'inr');
+  };
+
+  const getFeatures = (name) => {
+    let data = planData.find((i) => i.name == name);
+    if (!data) return [];
+    else return Object.values(data.metadata);
   };
   return (
     <Page title="Plan and pricing">
@@ -255,47 +275,49 @@ function PlanPricePage() {
                </InfoCard>
              </Grid>
           </InfoContainer> */}
-          <DataSection>
+          <DataSection style={{ overflow: 'visible' }}>
             <Grid container spacing={1} justifyContent={'space-around'} style={{ width: '100%' }}>
               <Grid item xs={12} sm={6} md={5} lg={3}>
                 <PlanDiv>
-                  <Typography variant="h4" color="initial">
-                    Free
-                  </Typography>
-                  <br />
-                  <Typography variant="h4" color="initial">
-                    Basic
-                  </Typography>
-                  <Typography variant="subtitle2" color="GrayText" sx={{ mt: 1 }}>
-                    For Personal
-                  </Typography>
-                  <br />
-                  <br />
-                  <Box display={'flex'} sx={{ mb: 1 }}>
-                    <ListItemIcon>
-                      <IconContainer>
-                        <Iconify icon={'bi:check-lg'} color="secondary.dark" />
-                      </IconContainer>
-                    </ListItemIcon>
-                    <ListItemText>
-                      <Typography variant="subtitle2" color="GrayText">
-                        Unlimited 1:1 meetings
-                      </Typography>
-                    </ListItemText>
+                  <Box>
+                    <Typography variant="h4" color="initial">
+                      Free
+                    </Typography>
+                    <br />
+                    <Typography variant="h4" color="initial">
+                      Basic
+                    </Typography>
+                    <Typography variant="subtitle2" color="GrayText" sx={{ mt: 1 }}>
+                      For Personal
+                    </Typography>
+                    <br />
+                    <br />
+                    <Box display={'flex'} sx={{ mb: 1 }}>
+                      <ListItemIcon>
+                        <IconContainer>
+                          <Iconify icon={'bi:check-lg'} color="secondary.dark" />
+                        </IconContainer>
+                      </ListItemIcon>
+                      <ListItemText>
+                        <Typography variant="subtitle2" color="GrayText">
+                          Unlimited 1:1 meetings
+                        </Typography>
+                      </ListItemText>
+                    </Box>
+                    <Box display={'flex'}>
+                      <ListItemIcon>
+                        <IconContainer>
+                          <Iconify icon={'bi:check-lg'} color="secondary.dark" />
+                        </IconContainer>
+                      </ListItemIcon>
+                      <ListItemText>
+                        <Typography variant="subtitle2" color="GrayText">
+                          Free 55-minutes meetings
+                        </Typography>
+                      </ListItemText>
+                    </Box>
                   </Box>
-                  <Box display={'flex'}>
-                    <ListItemIcon>
-                      <IconContainer>
-                        <Iconify icon={'bi:check-lg'} color="secondary.dark" />
-                      </IconContainer>
-                    </ListItemIcon>
-                    <ListItemText>
-                      <Typography variant="subtitle2" color="GrayText">
-                        Free 55-minutes meetings
-                      </Typography>
-                    </ListItemText>
-                  </Box>
-                  <CustomButton variant="contained" size="large" sx={{ mt: 18 }}>
+                  <CustomButton variant="contained" size="large" sx={{ mt: 8, mb: 4 }}>
                     Choose plan
                   </CustomButton>
                 </PlanDiv>
@@ -303,36 +325,42 @@ function PlanPricePage() {
               <Grid item xs={12} sm={6} md={5} lg={3}>
                 {' '}
                 <PlanDiv>
-                  <Typography variant="h4" color="initial" sx={{ display: 'flex' }}>
-                    ₹600&nbsp;
-                    <Typography variant="subtitle2" color="GrayText" sx={{ mt: 1 }}>
-                      /User/month
-                    </Typography>
-                  </Typography>
-                  <br />
-                  <Typography variant="h4" color="initial">
-                    Premuium
-                  </Typography>
-                  <Typography variant="subtitle2" color="GrayText" sx={{ mt: 1 }}>
-                    For Small Teams
-                  </Typography>
-                  <Typography variant="subtitle2" color="GrayText">
-                    1-100 Accounts
-                  </Typography>
-                  <br />
-                  <Box display={'flex'} sx={{ mb: 1 }}>
-                    <ListItemIcon>
-                      <IconContainer>
-                        <Iconify icon={'bi:check-lg'} color="secondary.dark" />
-                      </IconContainer>
-                    </ListItemIcon>
-                    <ListItemText>
-                      <Typography variant="subtitle2" color="GrayText">
-                        Host up to 100 participants
+                  <Box>
+                    <Typography variant="h4" color="initial" sx={{ display: 'flex' }}>
+                      ₹{getPrice('Premium') ? getPrice('Premium').unit_amount / 100 : '600'}&nbsp;
+                      <Typography variant="subtitle2" color="GrayText" sx={{ mt: 1 }}>
+                        /User/month
                       </Typography>
-                    </ListItemText>
-                  </Box>
-                  <Box display={'flex'} sx={{ mb: 1 }}>
+                    </Typography>
+                    <br />
+                    <Typography variant="h4" color="initial">
+                      {getPlanDetails('Premium') ? getPlanDetails('Premium').name : 'Premium'}
+                    </Typography>
+                    <Typography variant="subtitle2" color="GrayText" sx={{ mt: 1 }}>
+                      {getPlanDetails('Premium') ? getPlanDetails('Premium').description : 'For Small Teams'}
+                    </Typography>
+                    <Typography variant="subtitle2" color="GrayText">
+                      1-100 Accounts
+                    </Typography>
+                    <br />
+                    {getFeatures('Premium').map((i) => {
+                      return (
+                        <Box display={'flex'} sx={{ mb: 1 }}>
+                          <ListItemIcon>
+                            <IconContainer>
+                              <Iconify icon={'bi:check-lg'} color="secondary.dark" />
+                            </IconContainer>
+                          </ListItemIcon>
+                          <ListItemText>
+                            <Typography variant="subtitle2" color="GrayText">
+                              {i}
+                            </Typography>
+                          </ListItemText>
+                        </Box>
+                      );
+                    })}
+
+                    {/* <Box display={'flex'} sx={{ mb: 1 }}>
                     <ListItemIcon>
                       <IconContainer>
                         <Iconify icon={'bi:check-lg'} color="secondary.dark" />
@@ -367,40 +395,18 @@ function PlanPricePage() {
                         Tracking attendance
                       </Typography>
                     </ListItemText>
+                  </Box> */}
                   </Box>
-                  <CustomButton variant="contained" size="large" sx={{ mt: 7 }}>
+                  <CustomButton variant="contained" size="large" sx={{ mt: 8, mb: 4 }}>
                     Choose plan
                   </CustomButton>
                 </PlanDiv>
               </Grid>
-              <Grid item xs={12} sm={6} md={5} lg={3}>
-                <div
-                  style={{
-                    position: 'relative',
-                    height: '600px',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    width: '100%',
-                  }}
-                >
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      top: -20,
-                      right: 0,
-                      display: 'flex',
-                      backgroundColor: '#fff',
-                      padding: '0 20px',
-                      borderRadius: '25px',
-                    }}
-                  >
-                    <Typography variant="subtitle2" color="common.black">
-                      MOST POPULAR
-                    </Typography>
-                  </Box>
-                  <PlatinumCard>
+              <Grid item xs={12} sm={6} md={5} lg={3} style={{ position: 'relative', zIndex: 23 }}>
+                <PlatinumCard elevation={3} style={{ position: 'absolute', bottom: -32, zIndex: 3400 }}>
+                  <Box>
                     <Typography variant="h3" color="common.white" sx={{ display: 'flex' }}>
-                      ₹1,150&nbsp;
+                      ₹{getPrice('Platinum') ? getPrice('Platinum').unit_amount / 100 : '600'}&nbsp;
                       <Typography variant="subtitle2" color="common.white" sx={{ mt: 2 }}>
                         /User/month
                       </Typography>
@@ -410,25 +416,27 @@ function PlanPricePage() {
                       Premuium
                     </Typography>
                     <Typography variant="subtitle2" color="common.white" sx={{ mt: 1 }}>
-                      For Large Teams
+                      {getPrice('Platinum') ? getPrice('Platinum').description : 'For large team'}
                     </Typography>
-                    <Typography variant="subtitle2" color="common.white">
-                      Up to 100 Accounts
-                    </Typography>
+
                     <br />
-                    <Box display={'flex'} sx={{ mb: 1 }}>
-                      <ListItemIcon>
-                        <IconContainerPlatinum>
-                          <Iconify icon={'bi:check-lg'} color="common.white" />
-                        </IconContainerPlatinum>
-                      </ListItemIcon>
-                      <ListItemText>
-                        <Typography variant="subtitle2" color="common.white">
-                          Host up to 100 participants
-                        </Typography>
-                      </ListItemText>
-                    </Box>
-                    <Box display={'flex'} sx={{ mb: 1 }}>
+                    {getFeatures('Platinum').map((i) => {
+                      return (
+                        <Box display={'flex'} sx={{ mb: 1 }}>
+                          <ListItemIcon>
+                            <IconContainer>
+                              <Iconify icon={'bi:check-lg'} color="secondary.dark" />
+                            </IconContainer>
+                          </ListItemIcon>
+                          <ListItemText>
+                            <Typography variant="subtitle2" color="GrayText">
+                              {i}
+                            </Typography>
+                          </ListItemText>
+                        </Box>
+                      );
+                    })}
+                    {/* <Box display={'flex'} sx={{ mb: 1 }}>
                       <ListItemIcon>
                         <IconContainerPlatinum>
                           <Iconify icon={'bi:check-lg'} color="common.white" />
@@ -475,16 +483,13 @@ function PlanPricePage() {
                           Tracking attendance
                         </Typography>
                       </ListItemText>
-                    </Box>
-                    <Button variant="contained" size="large" sx={{ mt: 4, borderRadius: '50px' }}>
-                      Choose plan
-                    </Button>
-                  </PlatinumCard>
-                </div>
+                    </Box> */}
+                  </Box>
+                  <Button variant="contained" size="large" sx={{ mt: 8, borderRadius: '50px', mb: 4 }}>
+                    Choose plan
+                  </Button>
+                </PlatinumCard>
               </Grid>
-              <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
-                <Grid item xs={1}></Grid>
-              </Box>
             </Grid>
           </DataSection>
           <br />
@@ -568,7 +573,7 @@ function PlanPricePage() {
                       </MenuItem>
                     </Select>
                   </Box>
-                  <Box sx={{ margin: { xs: 0, xl: '0 100px 0 0' } }}>
+                  <Box sx={{ margin: { xs: 0, xl: '0 100px 0 0' }, display: { xs: 'block', sm: 'none' } }}>
                     <CustomButton fullWidth variant="contained" size="large" sx={{ mt: 7 }}>
                       Choose plan
                     </CustomButton>
@@ -651,8 +656,36 @@ function PlanPricePage() {
                       </MenuItem>
                     </Select>
                   </Box>
-                  <Box sx={{ margin: { xs: 0, xl: '0 100px 0 0' } }}>
+                  <Box sx={{ margin: { xs: 0, xl: '0 100px 0 0' }, display: { xs: 'block', sm: 'none' } }}>
                     <CustomButton fullWidth variant="contained" size="large" sx={{ mt: 7 }}>
+                      Choose plan
+                    </CustomButton>
+                  </Box>
+                </PlanDiv>
+              </Grid>
+
+              <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
+                <Grid item xs={1}></Grid>
+              </Box>
+            </Grid>
+
+            <Grid container spacing={1} justifyContent={'space-around'} sx={{ display: { xs: 'none', sm: 'flex' } }}>
+              <Grid item xs={12} sm={6} md={5} lg={4} xl={4}>
+                <PlanDiv>
+                  <Box sx={{ margin: { xs: 0, xl: '0 100px 0 0' } }}>
+                    <CustomButton fullWidth variant="contained" size="large">
+                      Choose plan
+                    </CustomButton>
+                  </Box>
+                </PlanDiv>
+              </Grid>
+              <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
+                <Grid item xs={1}></Grid>
+              </Box>
+              <Grid item xs={12} sm={6} md={5} lg={4} xl={4}>
+                <PlanDiv>
+                  <Box sx={{ margin: { xs: 0, xl: '0 100px 0 0' } }}>
+                    <CustomButton fullWidth variant="contained" size="large">
                       Choose plan
                     </CustomButton>
                   </Box>
@@ -662,6 +695,8 @@ function PlanPricePage() {
                 <Grid item xs={1}></Grid>
               </Box>
             </Grid>
+            <br />
+            <br />
             <br />
             <Grid container spacing={1} justifyContent={'space-around'}>
               <Grid item xs={12} sm={10} md={9} lg={7} xl={6}>

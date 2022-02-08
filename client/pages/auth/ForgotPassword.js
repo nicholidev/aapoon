@@ -14,7 +14,7 @@ import LogoOnlyLayout from '../../layouts/LogoOnlyLayout';
 // components
 import Page from '../../components/Page';
 // sections
-import { ResetPasswordForm } from '../../sections/auth/reset-password';
+import { ForgotPasswordForm } from '../../sections/auth/reset-password';
 // assets
 import { SentIcon } from '../../assets';
 import withoutAuth from '../../HOC/withOutAuth';
@@ -32,7 +32,7 @@ const RootStyle = styled('div')(({ theme }) => ({
 
 // ----------------------------------------------------------------------
 
-const ResetPassword = () => {
+const ForgotPassword = () => {
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   const router = useRouter();
@@ -53,7 +53,7 @@ const ResetPassword = () => {
                   password.
                 </Typography>
 
-                <ResetPasswordForm onSent={() => setSent(true)} onGetEmail={(value) => setEmail(value)} />
+                <ForgotPasswordForm onSent={() => setSent(true)} onGetEmail={(value) => setEmail(value)} />
 
                 <Button fullWidth size="large" onClick={() => router.back()} sx={{ mt: 1 }}>
                   Back
@@ -85,4 +85,4 @@ const ResetPassword = () => {
   );
 };
 
-export default withoutAuth(ResetPassword);
+export default withoutAuth(ForgotPassword);

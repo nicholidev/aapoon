@@ -4,6 +4,7 @@
  */
 import PropTypes from 'prop-types';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Stack, AppBar, Toolbar, Divider } from '@mui/material';
@@ -64,7 +65,7 @@ DashboardHeader.propTypes = {
 
 export default function DashboardHeader({ onOpenSidebar }) {
   const { isCollapse } = useCollapseDrawer();
-
+  let { pathname } = useRouter();
   const isDesktop = useResponsive('up', 'lg');
 
   return (
@@ -78,7 +79,7 @@ export default function DashboardHeader({ onOpenSidebar }) {
         <Box sx={{ flexGrow: 1 }} />
 
         <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
-          <Searchbar />
+          {['/dashboard/one', '/dashboard/recordings'].includes(pathname) ? <Searchbar /> : null}
 
           <Link href="/help" passHref={true}>
             <IconButtonAnimate onClick={onOpenSidebar} sx={{ color: 'text.primary' }}>

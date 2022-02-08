@@ -17,6 +17,7 @@ import {
   Grid,
   Select,
   MenuItem,
+  ButtonBase,
   Box,
   Dialog,
   FormHelperText,
@@ -77,7 +78,7 @@ function InstantMeetingPopup(props) {
         setOpen(false);
         resetForm();
         // window.open('https://meet.aapoon.com/' + meetingData.data.id);
-        router.push(`/meeting/${meetingData.data.id}`);
+        router.push(`/meeting?meetingid=${meetingData.data.id}`);
       } catch (error) {
         enqueueSnackbar('Error in creating meeting', {
           variant: 'error',
@@ -94,7 +95,7 @@ function InstantMeetingPopup(props) {
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, values } = formik;
 
   return (
-    <div>
+    <>
       <Dialog open={open} maxWidth={'xs'} fullWidth onClose={() => setOpen(false)}>
         <div style={{ padding: '40px' }}>
           <Typography variant="h4" align="center" gutterBottom>
@@ -134,8 +135,14 @@ function InstantMeetingPopup(props) {
           </FormikProvider>
         </div>
       </Dialog>
-      <div onClick={() => setOpen(true)}>{props.children}</div>
-    </div>
+      {props.noButton ? (
+        props.children
+      ) : (
+        <Box component={ButtonBase} sx={props.sx} onClick={() => setOpen(true)}>
+          {props.children}
+        </Box>
+      )}
+    </>
   );
 }
 
