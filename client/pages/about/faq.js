@@ -213,7 +213,7 @@ function PrivacyPolicy() {
                   </AccordionSummary>
                   <AccordionDetails>
                     <Typography>
-                      Aapoon meet subscriptions aren’t named users, and hence admin can delete and assign new users
+                      aapoon meet subscriptions aren’t named users, and hence admin can delete and assign new users
                       during the subscription period.
                     </Typography>
                   </AccordionDetails>

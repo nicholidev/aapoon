@@ -23,6 +23,10 @@ const phoneInput = (props, ref) => {
       }}
       inputRef={ref}
       fullWidth
+      onChange={(e) => {
+        e.target.value = e.target.value.replace(/\+/g, '');
+        props.onChange(e);
+      }}
       label="Phone Number"
       variant="outlined"
       name="phone"

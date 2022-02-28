@@ -229,6 +229,8 @@ export default function FormUserMeeting(props) {
     formik.setValues({ ...formik.values, lobby: event.target.checked });
   };
 
+  console.log(data);
+
   return (
     <div>
       {isSubmitted ? (
@@ -448,7 +450,7 @@ export default function FormUserMeeting(props) {
                     >
                       <MenuItem value={'15'}>15 Minutes</MenuItem>
                       <MenuItem value={'30'}>30 Minutes</MenuItem>
-                      <MenuItem value={'60'}>60 Minutes</MenuItem>
+                      <MenuItem value={'55'}>55 Minutes</MenuItem>
                     </Select>
                   </Stack>
                 </Grid>

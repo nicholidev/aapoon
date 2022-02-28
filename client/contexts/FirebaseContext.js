@@ -29,7 +29,6 @@ const initialState = {
 };
 
 const reducer = (state, action) => {
-  console.log(state, action);
   if (action.type === 'INITIALISE') {
     const { isAuthenticated, user } = action.payload;
     return {
@@ -102,9 +101,13 @@ function AuthProvider({ children }) {
           .then((doc) => {
             if (doc.exists) {
               setProfile(doc.data());
-              if (doc.data().accountType == 'Business' && !doc.data().businessDetails && user.phoneNumber)
+              if (doc.data().accountType == 'Business' && !doc.data().businessDetails && user.phoneNumber) {
+                dispatch({
+                  type: 'UPDATE',
+                  payload: { user: { uid: user.uid } },
+                });
                 router.push('/auth/business-profile');
-              else {
+              } else {
                 localStorage.setItem('isAuthenticated', true);
                 firebase
                   .firestore()
@@ -122,7 +125,6 @@ function AuthProvider({ children }) {
             dispatch({ type: 'TOGGLE_LOADING', payload: false });
           })
           .catch((error) => {
-            console.error(error);
             dispatch({ type: 'TOGGLE_LOADING', payload: false });
           });
 
@@ -165,7 +167,6 @@ function AuthProvider({ children }) {
             docs.push({ ...data, product });
           }
 
-          console.log(docs);
           dispatch({
             type: 'UPDATE_SUB',
             //payload: {},
@@ -197,7 +198,6 @@ function AuthProvider({ children }) {
 
   useEffect(() => {
     getCountry().then((res) => {
-      console.log(res.data);
       dispatch({
         type: 'UPDATE_LOCALE',
         //payload: {},
@@ -245,11 +245,10 @@ function AuthProvider({ children }) {
 
   const registerBusiness = (data) => {
     return new Promise((resolve, reject) => {
-      console.log(data);
       if (data.logo) {
         var storageRef = firebase.storage().ref();
         var busRef = storageRef.child(`account/${state.user.uid}/business/logo/${data.logo.name}`);
-        console.log('business rej2');
+
         busRef
           .put(data.logo)
           .then(async (snapshot) => {
@@ -417,9 +416,7 @@ function AuthProvider({ children }) {
         type: 'UPDATE',
         payload: { confirmation: confirmation, appVerifier },
       });
-    } catch (error) {
-      console.log(error);
-    }
+    } catch (error) {}
   };
   const verifyMobileLinkCode = (code) => {
     return new Promise((resolve, reject) => {
@@ -454,8 +451,6 @@ function AuthProvider({ children }) {
                 })
                 .then((result) => {
                   resolve(user);
-
-                  console.log(result);
                 })
                 .catch((err) => {
                   reject(err);

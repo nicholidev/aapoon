@@ -105,7 +105,7 @@ function Register() {
             <Typography variant="caption" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
               By clicking on Complete Signup, you agree to our &nbsp;
               <Link underline="always" color="text.primary" href="/about/terms-of-service">
-                Terms and conditions &nbsp;
+                Terms of Service &nbsp;
               </Link>
               and you acknowledge having read our &nbsp;
               <Link underline="always" color="text.primary" href="/about/privacy-policy">

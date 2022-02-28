@@ -61,6 +61,7 @@ export default function MyApp(props) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
   const [isLandscape, setLandScape] = useState(false);
+  const [loading, setLoading] = useState(true);
   const getLayout = Component.getLayout ?? ((page) => page);
   useEffect(() => {
     window.addEventListener('orientationchange', (event) => {
@@ -74,6 +75,13 @@ export default function MyApp(props) {
     if (localStorage.getItem('authToken') && !isJwtExpired(localStorage.getItem('authToken'))) {
       addJWTInterceptor(localStorage.getItem('authToken'));
     }
+
+    window.onload = function () {
+      // can also use window.addEventListener('load', (event) => {
+      setLoading(false);
+
+      // image is loaded at this time
+    };
     // if (localStorage.getItem('authToken')) ;
   }, []);
   return (
@@ -93,10 +101,10 @@ export default function MyApp(props) {
 
                   {!isLandscape ? (
                     <AuthProvider>
-                      <LoadingScreen>
+                      <LoadingScreen load={loading}>
                         <ModalSub />
 
-                        {getLayout(<Component {...pageProps} />)}
+                        {!loading && getLayout(<Component {...pageProps} />)}
                       </LoadingScreen>
                     </AuthProvider>
                   ) : (

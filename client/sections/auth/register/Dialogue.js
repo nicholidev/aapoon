@@ -18,6 +18,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 import { TextField } from '@mui/material';
 import { countryCodes } from './counrtyCode';
 import { ButtonBase } from '@mui/material';
+import Flag from '../../../components/Flag';
 export default function DialogSelect(props) {
   const [open, setOpen] = React.useState(false);
   const [age, setAge] = React.useState('');
@@ -53,8 +54,11 @@ export default function DialogSelect(props) {
                 {props.countryCodes.map((option) => {
                   return (
                     <MenuItem value={option.code}>
-                      <i>{option.flag}</i> &nbsp;&nbsp;
-                      {option.label} &nbsp;&nbsp;({option.value})
+                      <Box display={'flex'} alignItems="center">
+                        <Flag code={option.code.toUpperCase()} />
+                        &nbsp;&nbsp;
+                        {option.label} &nbsp;&nbsp;({option.value})
+                      </Box>
                     </MenuItem>
                   );
                 })}

@@ -14,6 +14,7 @@ import {
   ListItemIcon,
   ListItemText,
   styled,
+  Box,
   Typography,
 } from '@mui/material';
 // layouts
@@ -36,7 +37,7 @@ import StarIcon from '@mui/icons-material/Star';
 
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import AppNewInvoice from '../../sections/@dashboard/general/app/AppNewInvoice';
-import InviteData from '../../components/invite/InviteData';
+import InviteData from '../../components/invite/Invite2';
 import LicenceData from '../../components/licence';
 import InviteModal from '../../components/invite/InviteModal';
 import { useState } from 'react';
@@ -106,7 +107,7 @@ const InfoContainer = styled(Grid)(({ theme }) => ({
 const DataSection = styled(Card)(({ theme }) => ({
   marginTop: theme.spacing(4),
   margin: theme.spacing(6),
-  height: 600,
+
   [theme.breakpoints.down('md')]: {
     marginLeft: 0,
     marginRight: 0,
@@ -116,7 +117,7 @@ const DataSection = styled(Card)(({ theme }) => ({
 const DataHead = styled('div')(({ theme }) => ({
   display: 'flex',
   width: '100%',
-  padding: theme.spacing(3),
+  padding: theme.spacing(4),
   justifyContent: 'space-between',
   [theme.breakpoints.down('md')]: {
     padding: theme.spacing(2),
@@ -269,7 +270,7 @@ function PageOne() {
                 <DataHead>
                   <h4 style={{ display: 'inline' }}>Assign license</h4>
                   <Button
-                    variant="contained"
+                    variant="outlined"
                     color="primary"
                     onClick={() => push('/dashboard/assign-license')}
                     startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
@@ -291,9 +292,11 @@ function PageOne() {
             ) : (
               <DataSection>
                 <DataHead>
-                  <h4 style={{ display: 'inline' }}>Recent Invites</h4>
+                  <Typography variant="h5" style={{ display: 'inline' }}>
+                    Recent Invites
+                  </Typography>
                   <Button
-                    variant="contained"
+                    variant="outlined"
                     color="primary"
                     onClick={() => setInviteOpen(true)}
                     startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
@@ -302,7 +305,9 @@ function PageOne() {
                     Invite User
                   </Button>
                 </DataHead>
-                <InviteData fetch={fetch} />
+                <Box sx={{ p: 4, pt: 0 }}>
+                  <InviteData fetch={fetch} />
+                </Box>
                 <InviteModal
                   open={inviteOpen}
                   handleClose={() => {

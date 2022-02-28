@@ -49,7 +49,7 @@ const scheduleMeeting = async (req, res) => {
 
   const timestamp = admin.firestore.Timestamp.fromDate(new Date(scheduleAt));
   const endReccr = admin.firestore.Timestamp.fromDate(
-    new Date(reccuringEndDate)
+    new Date(scheduleAt + Number(estimatedDuration) * 60 * 1000)
   );
 
   let data = {

@@ -625,7 +625,7 @@ exports.sendWelcomeEmail = functions.firestore
                                             </p>
                                             <br /><br /><span style="font-size: 18px"
                                               >See you on the other side.
-                                              <br /><br />Regards,<br /> Aapoon
+                                              <br /><br />Regards,<br /> aapoon
                                               Support</span
                                             >
                                             <p

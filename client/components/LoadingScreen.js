@@ -35,12 +35,12 @@ LoadingScreen.propTypes = {
   isDashboard: PropTypes.bool,
 };
 
-export default function LoadingScreen({ isDashboard, children, ...other }) {
+export default function LoadingScreen({ isDashboard, children, load, ...other }) {
   const { loading } = useAuth();
   console.log(loading);
   return (
     <>
-      {loading && (
+      {(loading || load) && (
         <RootStyle
           sx={{
             ...(isDashboard && {

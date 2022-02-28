@@ -34,7 +34,7 @@ import { IconButtonAnimate } from '../../../components/animate';
 import PhoneInput from 'react-phone-number-input';
 import CustomPhone from '../../../components/Phonenumber';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
-
+import Flag from '../../../components/Flag';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../../utils/errorMessage';
 import NumberFormatCustom from '../../../components/NumberInput';
@@ -183,7 +183,7 @@ const setccd =(e)=>{
           /> */}
           <PhoneInput
             placeholder="Enter phone number"
-           
+            countryCallingCodeEditable={false}
             countrySelectComponent={(props=>{
 
             
@@ -194,8 +194,9 @@ const setccd =(e)=>{
             position="start"
             sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'text.secondary' }}
           >
-            <i style={{marginRight:4}}>{countryCodes.find(i=>i.code==countryCode)?.flag}{' '}</i>&nbsp; 
-            {countryCodes.find(i=>i.code==countryCode)?.value}{' '}
+           
+            {countryCodes.find(i=>i.code==countryCode)?<Flag code={countryCodes.find(i=>i.code==countryCode).code}/>:""}&nbsp;&nbsp;
+            <i style={{marginRight:4}}>{countryCodes.find(i=>i.code==countryCode)?.value}{' '}</i>
             <Divider
               orientation="vertical"
               flexItem
@@ -302,6 +303,7 @@ const setccd =(e)=>{
                           <MenuItem value={'Doctor'}>Doctor</MenuItem>
                           <MenuItem value={'Teacher'}>Teacher</MenuItem>
                           <MenuItem value={'Journalist'}>Journalist</MenuItem>
+                          <MenuItem value={'Student'}>Student</MenuItem>
                           <MenuItem value={'Other'}>Other </MenuItem>
                         </Select>
                       </FormControl>

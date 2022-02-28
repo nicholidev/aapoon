@@ -154,7 +154,7 @@ exports.countryCodes = [
   { label: 'Nauru', value: '+674', code: 'NR', flag: '🇳🇷' },
   { label: 'Nepal', value: '+977', code: 'NP', flag: '🇳🇵' },
   { label: 'Netherlands', value: '+31', code: 'NL', flag: '🇳🇱' },
-  { label: 'Netherlands Antilles', value: '+599', code: 'AN', flag: '🇦🇳' },
+
   { label: 'New Caledonia', value: '+687', code: 'NC', flag: '🇳🇨' },
   { label: 'New Zealand', value: '+64', code: 'NZ', flag: '🇳🇿' },
   { label: 'Nicaragua', value: '+505', code: 'NI', flag: '🇳🇮' },
@@ -243,5 +243,4 @@ exports.countryCodes = [
   { label: 'Yemen', value: '+967', code: 'YE', flag: '🇾🇪' },
   { label: 'Zambia', value: '+260', code: 'ZM', flag: '🇿🇲' },
   { label: 'Zimbabwe', value: '+263', code: 'ZW', flag: '🇿🇼' },
-  { label: 'Åland Islands', value: '+358', code: 'AX', flag: '🇦🇽' },
 ];
