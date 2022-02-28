@@ -160,7 +160,7 @@ function ProfilePage() {
           body: { backgroundColor: '#F1F1F1' },
         }}
       />
-      <Container maxWidth={themeStretch ? false : 'lg'} sx={{ justifyContent: 'center' }}>
+      <Container maxWidth={themeStretch ? false : 'xl'} sx={{ justifyContent: 'center' }}>
         <Content>
           <DataSection>
             <DataHead>
@@ -168,20 +168,6 @@ function ProfilePage() {
                 <IconButton onClick={() => back()}>
                   <Iconify icon={'eva:arrow-back-outline'} width="32px" height="32px" />
                 </IconButton>
-                <Box>
-                  <UpdateUserProfile>
-                    <ListItemButton>
-                      <ListItemIcon>
-                        <Iconify icon={'feather:edit'} width="20px" height="20px" />
-                      </ListItemIcon>
-                      <ListItemText>
-                        <Typography variant="subtitle2" color="primary.main">
-                          Edit
-                        </Typography>
-                      </ListItemText>
-                    </ListItemButton>
-                  </UpdateUserProfile>
-                </Box>
               </Box>
               <Grid container spacing={3} justifyContent={'center'}>
                 <Grid item xs={12} sm={4} lg={2}>
@@ -198,16 +184,29 @@ function ProfilePage() {
                       />
                     </AvatarContainer>
                   </div>
-                  <br />
-                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <div style={{ display: 'flex', justifyContent: 'center', margin: '15px 0 10px' }}>
                     <Typography
                       variant="caption"
                       color="common.white"
-                      sx={{ backgroundColor: 'error.main', borderRadius: '50px', padding: '2px 10px' }}
+                      sx={{ backgroundColor: 'success.main', borderRadius: '50px', padding: '2px 10px' }}
                     >
                       {user.accountType}
                     </Typography>
                   </div>
+                  <Box display="flex" justifyContent={'center'}>
+                    <UpdateUserProfile>
+                      <Button variant="text">
+                        <ListItemIcon>
+                          <Iconify icon={'feather:edit'} width="20px" height="20px" color="common.black" />
+                        </ListItemIcon>
+                        <ListItemText>
+                          <Typography variant="subtitle2" color="primary.main">
+                            Edit Profile
+                          </Typography>
+                        </ListItemText>
+                      </Button>
+                    </UpdateUserProfile>
+                  </Box>
                 </Grid>
                 <Grid item xs={12} sm={7} lg={3}>
                   <Stack spacing={3}>
@@ -272,20 +271,20 @@ function ProfilePage() {
                       <Typography variant="subtitle2" color="GrayText">
                         No. Of Licenses
                       </Typography>
-                      <Typography variant="h6">{user?.activeLicenses?.count || 0}</Typography>
+                      <Typography variant="h6">{user?.activeLicenses?.count || "NA"}</Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
                         Assigned Licenses
                       </Typography>
-                      <Typography variant="h6">{user?.activeLicenses?.assigned || 0}</Typography>
+                      <Typography variant="h6">{user?.activeLicenses?.assigned || "NA"}</Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
                         Unassigned Licenses
                       </Typography>
                       <Typography variant="h6">
-                        {user.activeLicenses.count ? user.activeLicenses.count - (user.activeLicenses.assigned + 1) : 0}
+                        {user.activeLicenses.count ? user.activeLicenses.count - (user.activeLicenses.assigned + 1) : "NA"}
                       </Typography>
                     </Stack>
                   </Stack>
@@ -293,26 +292,15 @@ function ProfilePage() {
                 <Stack direction="row" display={{ xs: 'none', lg: 'flex' }}>
                   <Divider orientation="vertical" variant="middle" flexItem />
                 </Stack>
-                <Grid item xs={12} sm={4} lg={2}>
+                <Grid item xs={12} sm={4} lg={2} xl={2}>
                   <Stack spacing={5}>
-                    <Stack spacing={0}>
-                      {/* <ListItem disablePadding>
+                    <Stack spacing={5}>
+                      <ListItem disablePadding>
                         <ListItemButton>
                           <ListItemText
                             secondary={
-                              <Typography variant="subtitle1" color="GrayText">
-                                Delete
-                              </Typography>
-                            }
-                          />
-                        </ListItemButton>
-                      </ListItem> */}
-                      <ListItem disablePadding>
-                        <ListItemButton onClick={() => openPortal()}>
-                          <ListItemText
-                            primary={
-                              <Typography variant="subtitle1" color="GrayText">
-                                Change plan
+                              <Typography variant="subtitle1" color="error">
+                                Delete Account
                               </Typography>
                             }
                           />
@@ -323,15 +311,26 @@ function ProfilePage() {
                           <ListItemText
                             primary={
                               <Typography variant="subtitle1" color="success.main">
-                                Upgrade plan
+                                Renew
                               </Typography>
                             }
                           />
                         </ListItemButton>
                       </ListItem>
+                      {/* <ListItem disablePadding>
+                        <ListItemButton onClick={() => openPortal()}>
+                          <ListItemText
+                            primary={
+                              <Typography variant="subtitle1" color="GrayText">
+                                Change plan
+                              </Typography>
+                            }
+                          />
+                        </ListItemButton>
+                      </ListItem> */}
                     </Stack>
 
-                    {/* <Stack spacing={0}>
+                    <Stack spacing={0}>
                       <ListItem disablePadding>
                         <ListItemButton>
                           <ListItemIcon>
@@ -346,7 +345,7 @@ function ProfilePage() {
                           />
                         </ListItemButton>
                       </ListItem>
-                    </Stack> */}
+                    </Stack>
                   </Stack>
                 </Grid>
               </Grid>

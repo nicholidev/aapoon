@@ -492,7 +492,7 @@ function PlanPricePage() {
                 <PremiumCardRecurring elevation={3} style={{ position: 'absolute', top: 0, zIndex: 3400 }}>
                   <Box>
                     <Typography variant="h3" color="common.white" sx={{ display: 'flex' }}>
-                      ₹{getPrice('PremiumRecurring') ? getPrice('PremiumRecurring').unit_amount / 100 : '600'}&nbsp;
+                      ₹{getPrice('Premium') ? getPrice('Premium').unit_amount / 100 : '600'}&nbsp;
                       <Typography variant="subtitle2" color="common.white" sx={{ mt: 2 }}>
                         /User/{current}
                       </Typography>
@@ -501,13 +501,11 @@ function PlanPricePage() {
                       Premium
                     </Typography>
                     <Typography variant="subtitle2" color="common.white" sx={{ mt: 1 }}>
-                      {getPrice('PremiumRecurring')
-                        ? getPrice('PremiumRecurring').description
-                        : 'For Small Teams (1-100)'}
+                      {getPlanDetails('Premium') ? getPlanDetails('Premium').description : 'For Small Teams (1-100)'}
                     </Typography>
 
                     <br />
-                    {getFeatures('PremiumRecurring').map((i) => {
+                    {getFeatures('Premium').map((i) => {
                       return (
                         <Box display={'flex'} sx={{ mb: 1 }}>
                           <ListItemIcon>
@@ -525,13 +523,13 @@ function PlanPricePage() {
                     })}
                   </Box>
                   <Button
-                    onClick={() => startCheckoutSession(getPrice('Platinum').id)}
-                    disabled={subscription?.find((i) => i.product.name == 'Platinum') ? true : false}
+                    onClick={() => startCheckoutSession(getPrice('Premium').id)}
+                    disabled={subscription?.find((i) => i.product.name == 'Premium') ? true : false}
                     variant="contained"
                     size="large"
                     sx={{ mt: 8, borderRadius: '50px', mb: 4 }}
                   >
-                    {subscription?.find((i) => i.product.name == 'Platinum') ? 'Current Plan' : 'Choose plan'}
+                    {subscription?.find((i) => i.product.name == 'Premium') ? 'Current Plan' : 'Choose plan'}
                   </Button>
                 </PremiumCardRecurring>
               </Grid>

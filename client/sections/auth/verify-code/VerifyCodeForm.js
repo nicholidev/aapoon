@@ -60,7 +60,7 @@ export default function VerifyCodeForm({ verifyMobileLinkCode, user }) {
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <OtpInput
-          containerStyle={{ justifyContent: 'space-around' }}
+          containerStyle={{ justifyContent: 'space-between' }}
           inputStyle={{ width: 48, height: 48, border: '2px solid #f0f0f0', borderRadius: 6, overflow: 'hidden' }}
           value={getFieldProps('code').value}
           placeholder={'------'}
@@ -75,7 +75,7 @@ export default function VerifyCodeForm({ verifyMobileLinkCode, user }) {
         </FormHelperText>
 
         <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting} sx={{ mt: 3 }}>
-          Verify
+          Verify Now
         </LoadingButton>
       </Form>
     </FormikProvider>

@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { Link as RouterLink } from 'next/link';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Button, Container, Typography, TextField, Link } from '@mui/material';
+import { Box, Button, Container, Typography, TextField, Link, IconButton } from '@mui/material';
 // layouts
 import LogoOnlyLayout from '../../layouts/LogoOnlyLayout';
 // routes
@@ -29,7 +29,8 @@ import { useRouter } from 'next/router';
 const RootStyle = styled('div')(({ theme }) => ({
   display: 'flex',
   minHeight: '100%',
-  alignItems: 'center',
+  // alignItems: 'center',
+  marginTop: 50,
   justifyContent: 'center',
   padding: theme.spacing(12, 0),
 }));
@@ -125,27 +126,29 @@ const ResetPassword = () => {
                   </>
                 ) : (
                   <>
+                    <Box display="flex" alignItems="center" position={'relative'}>
+                      {' '}
+                      <IconButton
+                        size="large"
+                        onClick={() => router.back()}
+                        sx={{ mr: 1, position: 'fixed', left: 100 }}
+                      >
+                        <Iconify icon={'bx:bx-arrow-back'} />
+                      </IconButton>
+                    </Box>
                     <Typography
                       variant="h4"
                       paragraph
                       sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                     >
-                      <IconButtonAnimate size="large" onClick={() => router.back()} sx={{ mr: 1 }}>
-                        <Iconify icon={'bx:bx-arrow-back'} />
-                      </IconButtonAnimate>
                       Verify Phone number
                     </Typography>
                     <Typography sx={{ color: 'text.secondary', align: 'center' }} align="center">
                       Verification Code has been sent to {user.phoneNumber}
                     </Typography>
-
-                    <Box sx={{ mt: 5, mb: 3 }}>
-                      <VerifyCodeForm verifyMobileLinkCode={verifyMobileLinkCode} user={user} />
-                    </Box>
-
-                    <Typography variant="body2" align="center">
-                      Don’t receive code? &nbsp;
-                      {showCounter ? (
+                    <br />
+                    <Box display={'flex'} justifyContent="center">
+                      {showCounter && (
                         <Countdown
                           date={Date.now() + 60000}
                           renderer={({ hours, minutes, seconds, completed }) => {
@@ -155,23 +158,34 @@ const ResetPassword = () => {
                             } else {
                               return (
                                 <>
-                                  Resend in {minutes < 1 ? '00' : minutes}:{seconds < 10 ? '0' + seconds : seconds}{' '}
+                                  {minutes < 1 ? '00' : minutes}:{seconds < 10 ? '0' + seconds : seconds}{' '}
                                 </>
                               );
                             }
                           }}
                         />
-                      ) : (
-                        <Link
-                          variant="subtitle2"
-                          underline="none"
-                          style={{ cursor: 'pointer' }}
-                          onClick={() => sendMobileVerification()}
-                        >
-                          resend code
-                        </Link>
                       )}
-                    </Typography>
+                    </Box>
+                    <Box sx={{ mt: 10, mb: 5 }}>
+                      <Typography variant="subtitle1" color="initial">
+                        Enter Verification Code
+                      </Typography>
+                      <br />
+                      <VerifyCodeForm verifyMobileLinkCode={verifyMobileLinkCode} user={user} />
+                    </Box>
+
+                    {!showCounter && (
+                      <Link
+                        variant="subtitle2"
+                        underline="none"
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => sendMobileVerification()}
+                      >
+                        <Typography variant="subtitle2" align="center" color="initial">
+                          Resend
+                        </Typography>
+                      </Link>
+                    )}
                   </>
                 )}
               </>
