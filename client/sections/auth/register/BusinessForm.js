@@ -50,7 +50,7 @@ export default function RegisterForm(props) {
       .url('Please enter valid url with http or https')
     ,
     teamsize: Yup.string().required('Teamsize is required'),
-    address1: Yup.string().min(2, 'Too Short!').required('Adress is required'),
+    address1: Yup.string().min(2, 'Too Short!').required('Address is required'),
     address2: Yup.string(),
     state: Yup.string().min(2, 'Too Short!').required('State is required').matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field "),
     pincode: Yup.number('Please enter valid code').required('pincode is required'),
@@ -178,7 +178,7 @@ export default function RegisterForm(props) {
               />
               <TextField
                 fullWidth
-                placeholder="Address 2 *"
+                placeholder="Address 2 "
                 {...getFieldProps('address2')}
                 error={Boolean(touched.address2 && errors.address2)}
                 helperText={touched.address2 && errors.address2}
@@ -271,7 +271,7 @@ export default function RegisterForm(props) {
             </Button>
            
             <LoadingButton size="large" type="submit" variant="contained" loading={isSubmitting}>
-              {props.isUpdate? "Update":"Register"}
+              {props.isUpdate? "Update":"Save details"}
             </LoadingButton>
           </Stack>
         </Stack>

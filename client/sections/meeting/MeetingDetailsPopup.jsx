@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
 import { useFormik, Form, FormikProvider } from 'formik';
 import { IconButtonAnimate } from '../../components/animate';
+import { differenceInDays } from 'date-fns';
 // @mui
 import {
   Stack,
@@ -54,17 +55,27 @@ function MeetingDetailsPopup(props) {
     });
   };
 
+  const recudays = data?.extendedProps?.reccurring
+    ? differenceInDays(
+        new Date(data?.extendedProps.reccuringEndDate.seconds * 1000),
+        new Date(data?.extendedProps.scheduledAt.seconds * 1000)
+      )
+    : false;
+
   const addCalender = (type) => {
     let event = {
       title: data.title,
-      description: data.description,
+      link: window.origin + '/meeting?meetingid=' + data?.id,
       location: '',
       startTime: new Date(data.start),
       endTime: new Date(data.end),
+      password: data?.extendedProps?.password,
+      description: data?.extendedProps?.description,
+      recur: data?.extendedProps?.reccurring ? `RRULE:FREQ=DAILY;COUNT=${recudays + 1}` : '',
     };
     addTocalender(event, type, false);
   };
-
+  console.log(data?.extendedProps);
   return (
     <div>
       <Dialog
@@ -85,14 +96,21 @@ function MeetingDetailsPopup(props) {
               {data?.extendedProps?.description}
             </Typography>
             {data?.extendedProps?.password && (
-              <Typography variant="body">Meeting Password : {data?.extendedProps.password}</Typography>
+              <Typography variant="body">Meeting Password : {data?.extendedProps?.password}</Typography>
             )}
 
             <br />
             <Typography variant="body2">
-              {moment(new Date(data?.start)).format('LLL')}&nbsp;<span style={{ fontWeight: 700 }}>To</span>&nbsp;
-              {moment(new Date(data?.end)).format('LLL')}
+              {moment(new Date(data?.start)).format('LLL')}&nbsp;<span style={{ fontWeight: 700 }}> To </span>&nbsp;
+              {data?.extendedProps?.reccurring
+                ? moment(new Date(data?.extendedProps.reccuringEndDate.seconds * 1000)).format('LLL')
+                : moment(new Date(data?.end)).format('LLL')}
             </Typography>
+            {data?.extendedProps?.reccurring && (
+              <Typography variant="caption">
+                Reccuring ( {moment(new Date(data?.start)).format('LT')} - {moment(new Date(data?.end)).format('LT')} )
+              </Typography>
+            )}
             <Box
               component={ButtonBase}
               onClick={() => copyTocb(window.origin + '/meeting?meetingid=' + data?.id)}

@@ -14,6 +14,10 @@ export default class helpers {
     let formattedDate = moment.utc(date).format('YYYYMMDDTHHmmssZ');
     return formattedDate.replace('+00:00', 'Z');
   }
+  formatTimeOutlook(date) {
+    let formattedDate = moment(date).format('YYYY-MM-DDTHH:mm:SS');
+    return formattedDate;
+  }
 
   calculateDuration(startTime, endTime) {
     // snag parameters and format properly in UTC
@@ -43,7 +47,14 @@ export default class helpers {
         calendarUrl += '/' + this.formatTime(event.endTime);
         calendarUrl += '&location=' + encodeURIComponent(event.location);
         calendarUrl += '&text=' + encodeURIComponent(event.title);
-        calendarUrl += '&details=' + encodeURIComponent(event.description);
+        calendarUrl += '&recur=' + encodeURIComponent(event.recur);
+        calendarUrl +=
+          '&details=' +
+          encodeURIComponent(
+            `${event.description}<br/>meeting link : <a href="${event.link}">${event.link}</a><br/>${
+              event.password ? 'Password : ' + event.password : ''
+            }`
+          );
         break;
 
       case 'yahoo':
@@ -53,18 +64,29 @@ export default class helpers {
         calendarUrl += '&title=' + encodeURIComponent(event.title);
         calendarUrl += '&st=' + this.formatTime(event.startTime);
         calendarUrl += '&dur=' + duration;
-        calendarUrl += '&desc=' + encodeURIComponent(event.description);
-        calendarUrl += '&in_loc=' + encodeURIComponent(event.location);
+        calendarUrl +=
+          '&desc=' +
+          encodeURIComponent(
+            `meeting link : <a href="${event.link}">${event.link}</a><br/>${true ? 'Password : ' + event.password : ''}`
+          );
+        calendarUrl += '&in_loc=' + encodeURIComponent(event.link);
         break;
 
       case 'outlookcom':
         calendarUrl = 'https://outlook.live.com/owa/?rru=addevent';
-        calendarUrl += '&startdt=' + this.formatTime(event.startTime);
-        calendarUrl += '&enddt=' + this.formatTime(event.endTime);
+        calendarUrl += '&startdt=' + this.formatTimeOutlook(event.startTime);
+        calendarUrl += '&enddt=' + this.formatTimeOutlook(event.endTime);
         calendarUrl += '&subject=' + encodeURIComponent(event.title);
-        calendarUrl += '&location=' + encodeURIComponent(event.location);
-        calendarUrl += '&body=' + encodeURIComponent(event.description);
+        calendarUrl += '&location=' + encodeURIComponent(event.link);
+        calendarUrl +=
+          '&body=' +
+          encodeURIComponent(
+            `${event.description}<br/>meeting link : <a href="${event.link}">${event.link}</a><br/>${
+              event.password ? 'Password : ' + event.password : ''
+            }`
+          );
         calendarUrl += '&allday=false';
+        calendarUrl += '&recur=RRULE:FREQ=DAILY';
         calendarUrl += '&uid=' + this.getRandomKey();
         calendarUrl += '&path=/calendar/view/Month';
         break;
@@ -74,13 +96,15 @@ export default class helpers {
           'BEGIN:VCALENDAR',
           'VERSION:2.0',
           'BEGIN:VEVENT',
-          'URL:' + document.URL,
+          'URL:' + event.link,
           'DTSTART:' + this.formatTime(event.startTime),
           'DTEND:' + this.formatTime(event.endTime),
           'SUMMARY:' + event.title,
-          'DESCRIPTION:' + event.description,
+          'DESCRIPTION:' +
+            `${event.description}\\n${event.link}$\\n${event.password ? 'Password =' + event.password : ''}`,
           'LOCATION:' + event.location,
           'END:VEVENT',
+          event.recur,
           'END:VCALENDAR',
         ].join('\n');
 

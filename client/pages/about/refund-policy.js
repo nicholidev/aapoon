@@ -97,7 +97,7 @@ function RefundPolicy() {
                 </Typography>
 
                 {/* <Typography variant="h6" gutterBottom style={{ fontStyle: 'italic' }}>
-                  EFFECTIVE: August 09, 2021
+                  EFFECTIVE: August 09, 2022
                 </Typography> */}
               </Box>
 

@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { useState, useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import { useFormik, Form, FormikProvider } from 'formik';
-
+import {useRouter} from "next/router"
 //dialogues
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -18,9 +18,11 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
+import Autocomplete from './Dialogue';
+import {countryCodes} from "./counrtyCode"
 import FormLabel from '@mui/material/FormLabel';
 // @mui
-import { Stack, TextField, IconButton, InputAdornment, Alert, Button, Select, MenuItem } from '@mui/material';
+import { Stack, TextField, IconButton, InputAdornment, Alert, Button, Select, MenuItem ,Box,Divider} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import NumberFormat from 'react-number-format';
 // hooks
@@ -31,6 +33,8 @@ import Iconify from '../../../components/Iconify';
 import { IconButtonAnimate } from '../../../components/animate';
 import PhoneInput from 'react-phone-number-input';
 import CustomPhone from '../../../components/Phonenumber';
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
+
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../../utils/errorMessage';
 import NumberFormatCustom from '../../../components/NumberInput';
@@ -42,10 +46,11 @@ export default function RegisterForm(query) {
   const [open, setOpen] = useState(user.email && user.phoneNumber ? false : true);
   const [countryCode, setCountryCode] = useState('US');
   const isMountedRef = useIsMountedRef();
+ 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
   const rePhoneNumber = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
-  const rePass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  const rePass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,10}$/;
   const reAlpha = /^[a-zA-Z]+$/;
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string().matches(reAlpha, 'Firstname is not valid').required('First name required'),
@@ -58,17 +63,17 @@ export default function RegisterForm(query) {
         rePass,
         'Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character'
       ),
-    phone: Yup.string().matches(rePhoneNumber, 'Phone number is not valid').required('Phone is required'),
+    phone: Yup.string().matches(rePhoneNumber, 'Phone number is not valid').required('Phone number is required'),
     accountType: Yup.string().required('Account type is required'),
     businessType: Yup.string(),
     numberOfEmployees: Yup.number(),
     professionType: Yup.string(),
   });
-
+const {push}=useRouter();
   const formik = useFormik({
     initialValues: {
-      firstName: user.firstName,
-      lastName: user.lastName,
+      firstName:query?.query?.firstName ? query?.query?.firstName: user.firstName,
+      lastName: query?.query?.lastName ? query?.query?.lastName:user.lastName,
       email: query?.query?.email ? query?.query?.email : user.email,
       password: user.password,
       phone: user.phoneNumber,
@@ -127,7 +132,9 @@ export default function RegisterForm(query) {
   }, [query?.query?.email]);
 
   console.log(values);
-
+const setccd =(e)=>{
+ setCountryCode(e.target.value);
+}
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -162,7 +169,7 @@ export default function RegisterForm(query) {
             helperText={touched.email && errors.email}
           />
 
-          <MuiPhoneNumber
+          {/* <MuiPhoneNumber
             defaultCountry={countryCode?.toLocaleLowerCase()}
             variant="outlined"
             {...getFieldProps('phone')}
@@ -173,11 +180,36 @@ export default function RegisterForm(query) {
             autoFormat={false}
             error={Boolean(touched.phone && errors.phone)}
             helperText={touched.phone && errors.phone}
-          />
-          {/* <PhoneInput
+          /> */}
+          <PhoneInput
             placeholder="Enter phone number"
-            international
+           
+            countrySelectComponent={(props=>{
+
+            
+            return( null)})}
+          endorment={
+          <Autocomplete  value={countryCode} countryCodes={countryCodes} setccd={setccd}   renderInput={(params) => <TextField {...params} label="Movie" />} >
+   <Box
+            position="start"
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'text.secondary' }}
+          >
+            <i style={{marginRight:4}}>{countryCodes.find(i=>i.code==countryCode)?.flag}{' '}</i>&nbsp; 
+            {countryCodes.find(i=>i.code==countryCode)?.value}{' '}
+            <Divider
+              orientation="vertical"
+              flexItem
+              sx={{ justifyContent: 'center', alignItems: 'center', mx: 1, borderWidth: '0.2px' }}
+            />
+          </Box>
+        
+            </Autocomplete>
+        
+        
+        
+        }
             defaultCountry={countryCode}
+          
             inputComponent={CustomPhone}
             {...getFieldProps('phone')}
             onChange={(data) => setFieldValue('phone', data)}
@@ -185,7 +217,7 @@ export default function RegisterForm(query) {
             onBlur={getFieldProps('phone').onBlur}
             error={Boolean(touched.phone && errors.phone)}
             helperText={touched.phone && errors.phone}
-          /> */}
+          />
 
           <TextField
             fullWidth
@@ -214,8 +246,8 @@ export default function RegisterForm(query) {
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title" align="center">
-              {`Select your ${values.accountType == 'Business' ? 'business' : 'profession'}`}
+            <DialogTitle id="alert-dialog-title" align="center" sx={{display: 'flex',justifyContent:"space-between",alignItems: 'center'}}>
+           <span></span>   {`Select your ${values.accountType == 'Business' ? 'business' : 'profession'}`} <IconButtonAnimate onClick={()=>push("/")}><CancelOutlinedIcon/></IconButtonAnimate>
             </DialogTitle>
             <DialogContent sx={{ mt: 4, padding: 5, pb: 1 }}>
               <DialogContentText id="alert-dialog-description">

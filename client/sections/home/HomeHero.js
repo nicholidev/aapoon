@@ -69,11 +69,11 @@ const HeroImgStyle = styled(m.img)(({ theme }) => ({
   },
   [theme.breakpoints.down('lg')]: {
     right: 0,
-    maxWidth: 580,
+    maxWidth: 520,
   },
   [theme.breakpoints.down('md')]: {
     right: 0,
-    maxWidth: 580,
+    maxWidth: 180,
   },
 }));
 
@@ -112,7 +112,7 @@ export default function HomeHero() {
                   Start a meeting
                 </Button>
 
-                {!user.id ? (
+                {!user?.id ? (
                   <Button
                     size="large"
                     variant="outlined"

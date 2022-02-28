@@ -79,7 +79,7 @@ export default function FormHelpDesk(props) {
       console.log(values);
 
       try {
-        await addHelp({ ...values, id: user.id, name: user.displayName });
+        await addHelp({ ...values, id: user?.id || '', name: user?.displayName || '' });
         enqueueSnackbar('Message sent to support center', {
           variant: 'success',
           action: (key) => (

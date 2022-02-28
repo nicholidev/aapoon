@@ -153,7 +153,7 @@ function ProfilePage() {
   const [fetch, setFetch] = useState(false);
   const [current, setCurrent] = useState('dashboard');
   const { user } = useAuth();
-  console.log(user);
+
   const { back } = useRouter();
   return (
     <Page title="Dashboard" sx={{ width: '100vw' }}>
@@ -253,7 +253,7 @@ function ProfilePage() {
                       <Typography variant="subtitle2" color="GrayText">
                         Team Size
                       </Typography>
-                      <Typography variant="h6">25</Typography>
+                      <Typography variant="h6">{user.businessDetails?.teamsize}</Typography>
                     </Stack>
                   </Stack>
                 </Grid>

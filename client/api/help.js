@@ -41,6 +41,7 @@ export const addHelp = (data) => {
           resolve(ref);
         })
         .catch((err) => {
+          console.log(err);
           reject(err);
         });
     }

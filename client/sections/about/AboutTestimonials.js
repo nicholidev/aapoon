@@ -20,37 +20,37 @@ const TESTIMONIALS = [
   {
     name: 'Jenny Wilson',
     rating: 5,
-    dateCreate: 'April 19, 2021',
+    dateCreate: 'April 19, 2022',
     content: `Excellent Work! Thanks a lot!`,
   },
   {
     name: 'Cody Fisher',
     rating: 5,
-    dateCreate: 'April 19, 2021',
+    dateCreate: 'April 19, 2022',
     content: `It's a very good dashboard and we are really liking the product . We've done some things, like migrate to TS and implementing a react useContext api, to fit our job methodology but the product is one of the best in terms of design and application architecture. The team did a really good job.`,
   },
   {
     name: 'Marvin McKinney',
     rating: 5,
-    dateCreate: 'April 19, 2021',
+    dateCreate: 'April 19, 2022',
     content: `Customer support is realy fast and helpful the desgin of this theme is looks amazing also the code is very clean and readble realy good job !`,
   },
   {
     name: 'Darrell Steward',
     rating: 5,
-    dateCreate: 'April 19, 2021',
+    dateCreate: 'April 19, 2022',
     content: `Amazing, really good code quality and gives you a lot of examples for implementations.`,
   },
   {
     name: 'Jacob Jones',
     rating: 5,
-    dateCreate: 'April 19, 2021',
+    dateCreate: 'April 19, 2022',
     content: `Got a few questions after purchasing the product. The owner responded very fast and very helpfull. Overall the code is excellent and works very good. 5/5 stars!`,
   },
   {
     name: 'Bessie Cooper',
     rating: 5,
-    dateCreate: 'April 19, 2021',
+    dateCreate: 'April 19, 2022',
     content: `CEO of Codealy.io here. We’ve built a developer assessment platform that makes sense - tasks are based on git repositories and run in virtual machines. We automate the pain points - storing candidates code, running it and sharing test results with the whole team, remotely. Bought this template as we need to provide an awesome dashboard for our early customers. I am super happy with purchase. The code is just as good as the design. Thanks!`,
   },
 ];

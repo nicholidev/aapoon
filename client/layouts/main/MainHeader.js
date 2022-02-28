@@ -14,7 +14,7 @@ import cssStyles from '../../utils/cssStyles';
 // config
 import { MAIN_HEADER_DESKTOP, MAIN_HEADER_MOBILE } from '../../config';
 // components
-import Logo from '../../components/Logo';
+import Logo from '../../components/LogoHome';
 import Label from '../../components/Label';
 //
 import AccountPopover from '../dashboard/header/AccountPopover';

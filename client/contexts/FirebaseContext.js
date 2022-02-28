@@ -11,7 +11,7 @@ import 'firebase/compat/storage';
 import { FIREBASE_API } from '../config';
 import { useRouter } from 'next/router';
 import { phoneExists } from '../services/misc-service';
-import { acceptInvitation } from './../api/user';
+import { acceptInvitation, getCountry } from './../api/user';
 import { addJWTInterceptor } from '../utils/Interceptor';
 // ----------------------------------------------------------------------
 
@@ -23,7 +23,9 @@ if (!firebase.apps.length) {
 const initialState = {
   isAuthenticated: false,
   isInitialized: false,
+  loading: true,
   user: null,
+  locale: {},
 };
 
 const reducer = (state, action) => {
@@ -37,11 +39,29 @@ const reducer = (state, action) => {
       user,
     };
   }
+  if (action.type === 'TOGGLE_LOADING') {
+    return {
+      ...state,
+      loading: action.payload,
+    };
+  }
 
   if (action.type === 'UPDATE') {
     return {
       ...state,
       ...action.payload,
+    };
+  }
+  if (action.type == 'UPDATE_LOCALE') {
+    return {
+      ...state,
+      locale: action.payload.locale,
+    };
+  }
+  if (action.type === 'UPDATE_SUB') {
+    return {
+      ...state,
+      user: { ...state.user, ...action.payload },
     };
   }
 
@@ -67,62 +87,126 @@ function AuthProvider({ children }) {
   const [profile, setProfile] = useState(null);
   const [state, dispatch] = useReducer(reducer, initialState);
   let router = useRouter();
-  useEffect(
-    () =>
-      firebase.auth().onAuthStateChanged((user) => {
-        if (user) {
-          user.getIdToken().then((token) => {
-            localStorage.setItem('authToken', token);
-            addJWTInterceptor(token);
-          });
-          const docRef = firebase.firestore().collection('users').doc(user.uid);
-          docRef
-            .get()
-            .then((doc) => {
-              if (doc.exists) {
-                setProfile(doc.data());
-                if (doc.data().accountType == 'Business' && !doc.data().businessDetails && user.phoneNumber)
-                  router.push('/auth/business-profile');
-                else {
-                  localStorage.setItem('isAuthenticated', true);
-                  firebase
-                    .firestore()
-                    .collection('users')
-                    .doc(user.uid)
-                    .get()
-                    .then((response) => {
-                      dispatch({
-                        type: 'UPDATE',
-                        payload: { isAuthenticated: true, user: { ...state.user, ...response.data() } },
-                      });
-                    });
-                }
-              }
-            })
-            .catch((error) => {
-              console.error(error);
-            });
+  useEffect(() => {
+    dispatch({ type: 'TOGGLE_LOADING', payload: true });
 
-          dispatch({
-            type: 'INITIALISE',
-            payload: { isAuthenticated: true, user },
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        user.getIdToken().then((token) => {
+          localStorage.setItem('authToken', token);
+          addJWTInterceptor(token);
+        });
+        const docRef = firebase.firestore().collection('users').doc(user.uid);
+        docRef
+          .get()
+          .then((doc) => {
+            if (doc.exists) {
+              setProfile(doc.data());
+              if (doc.data().accountType == 'Business' && !doc.data().businessDetails && user.phoneNumber)
+                router.push('/auth/business-profile');
+              else {
+                localStorage.setItem('isAuthenticated', true);
+                firebase
+                  .firestore()
+                  .collection('users')
+                  .doc(user.uid)
+                  .get()
+                  .then((response) => {
+                    dispatch({
+                      type: 'UPDATE',
+                      payload: { isAuthenticated: true, user: { ...state.user, ...response.data() } },
+                    });
+                  });
+              }
+            }
+            dispatch({ type: 'TOGGLE_LOADING', payload: false });
+          })
+          .catch((error) => {
+            console.error(error);
+            dispatch({ type: 'TOGGLE_LOADING', payload: false });
           });
-          if (!user?.phoneNumber) {
-            router.push('/auth/VerificationProcess');
-            localStorage.removeItem('isAuthenticated');
-          } else {
-          }
-        } else {
-          dispatch({
-            type: 'INITIALISE',
-            payload: { isAuthenticated: false, user: null },
-          });
+
+        dispatch({
+          type: 'INITIALISE',
+          payload: { isAuthenticated: true, user },
+        });
+        if (!user?.phoneNumber) {
+          router.push('/auth/VerificationProcess');
           localStorage.removeItem('isAuthenticated');
-          localStorage.removeItem('authToken');
+        } else {
         }
-      }),
-    [dispatch]
-  );
+      } else {
+        dispatch({
+          type: 'INITIALISE',
+          payload: { isAuthenticated: false, user: null },
+        });
+        localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('authToken');
+        dispatch({ type: 'TOGGLE_LOADING', payload: false });
+      }
+    });
+  }, [dispatch]);
+
+  useEffect(() => {
+    let unsub;
+    if (state.user?.uid) {
+      unsub = firebase
+        .firestore()
+        .collection('customers')
+        .doc(state.user.uid)
+        .collection('subscriptions')
+        .where('status', 'in', ['trialing', 'active', 'past_due'])
+        .onSnapshot(async (snapshot) => {
+          let docs = [];
+          // In this implementation we only expect one active or trialing subscription to exist.
+          for (const doc of snapshot.docs) {
+            let data = doc.data();
+            let product = (await data.product.get()).data();
+            docs.push({ ...data, product });
+          }
+
+          console.log(docs);
+          dispatch({
+            type: 'UPDATE_SUB',
+            //payload: {},
+            payload: { subscription: docs },
+          });
+        });
+    }
+  }, [state.user?.uid]);
+
+  useEffect(() => {
+    if (state.user?.uid) {
+      firebase
+        .firestore()
+        .collection('users')
+        .doc(state.user.uid)
+        .collection('licences')
+        .doc('premium')
+        .onSnapshot(async (snapshot) => {
+          dispatch({
+            type: 'UPDATE_SUB',
+            //payload: {},
+            payload: {
+              activeLicenses: { count: snapshot.data()?.count || 0, assigned: snapshot.data()?.assigned || 0 },
+            },
+          });
+        });
+    }
+  }, [state.user?.uid, state.user?.subscription]);
+
+  useEffect(() => {
+    getCountry().then((res) => {
+      console.log(res.data);
+      dispatch({
+        type: 'UPDATE_LOCALE',
+        //payload: {},
+        payload: {
+          locale: res.data,
+        },
+      });
+    });
+  }, []);
 
   const login = (email, password) => firebase.auth().signInWithEmailAndPassword(email, password);
 
@@ -407,6 +491,10 @@ function AuthProvider({ children }) {
     });
   };
 
+  const setLoading = (payload) => {
+    dispatch({ type: 'TOGGLE_LOADING', payload: payload });
+  };
+
   const auth = { ...state.user };
 
   return (
@@ -415,13 +503,15 @@ function AuthProvider({ children }) {
         confirmation: state.confirmation,
         appVerifier: state.appVerifier,
         method: 'firebase',
+        loading: state.loading,
+        locale: state.locale,
         user: {
           isEmailVerified: state.user?.emailVerified,
           id: state.user?.uid,
           email: state.user?.email,
           photoURL: state.user?.photoURL || profile?.photoURL,
           displayName: state.user?.displayName || profile?.displayName,
-
+          activeLicenses: { count: 0, assigned: 0 },
           phoneNumber: state.user?.phoneNumber || profile?.phoneNumber || '',
           country: profile?.country || '',
           address: profile?.address || '',
@@ -439,6 +529,7 @@ function AuthProvider({ children }) {
         loginWithFaceBook,
         loginWithTwitter,
         logout,
+        setLoading,
         deleteAccount,
         resetPassword,
         updateProfile,

@@ -12,9 +12,9 @@ import 'react-quill/dist/quill.snow.css';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import 'react-lazy-load-image-component/src/effects/opacity.css';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
-import '@fullcalendar/common/main.css';
-import '@fullcalendar/daygrid/main.css';
-import '@fullcalendar/timegrid/main.css';
+// import '@fullcalendar/common/main.css';
+// import '@fullcalendar/daygrid/main.css';
+// import '@fullcalendar/timegrid/main.css';
 import PropTypes from 'prop-types';
 // next
 import Head from 'next/head';
@@ -28,11 +28,10 @@ import { CollapseDrawerProvider } from '../contexts/CollapseDrawerContext';
 import ThemeProvider from '../theme';
 import GlobalStyles from '../theme/globalStyles';
 // components
-import Settings from '../components/settings';
-import RtlLayout from '../components/RtlLayout';
+
 import ProgressBar from '../components/ProgressBar';
 import Box from '@mui/material/Box';
-import ThemeColorPresets from '../components/ThemeColorPresets';
+
 import MotionLazyContainer from '../components/animate/MotionLazyContainer';
 import { SnackbarProvider } from 'notistack';
 // ----------------------------------------------------------------------
@@ -41,14 +40,25 @@ import { addJWTInterceptor } from '../utils/Interceptor';
 import ScreenRotationIcon from '@mui/icons-material/ScreenRotation';
 import { useEffect, useState } from 'react';
 import { isJwtExpired } from 'jwt-check-expiration';
-import 'react-phone-number-input/style.css';
+import LoadingScreen from '../components/LoadingScreen';
+import ModalSub from '../components/SubscriiptionModal';
+
+import 'firebase/firestore';
+import 'firebase/auth';
+import { FuegoProvider } from '@nandorojo/swr-firestore';
+import { Fuego } from '../Fuego';
+import { FIREBASE_API } from '../config';
+import createEmotionCache from '../src/createEmotionCache';
+import { CacheProvider } from '@emotion/react';
+
 MyApp.propTypes = {
   Component: PropTypes.func,
   pageProps: PropTypes.any,
 };
-
+const fuego = new Fuego(FIREBASE_API);
+const clientSideEmotionCache = createEmotionCache();
 export default function MyApp(props) {
-  const { Component, pageProps } = props;
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
   const [isLandscape, setLandScape] = useState(false);
   const getLayout = Component.getLayout ?? ((page) => page);
@@ -67,7 +77,7 @@ export default function MyApp(props) {
     // if (localStorage.getItem('authToken')) ;
   }, []);
   return (
-    <>
+    <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
       </Head>
@@ -75,39 +85,47 @@ export default function MyApp(props) {
       <SettingsProvider>
         <CollapseDrawerProvider>
           <ThemeProvider>
-            <SnackbarProvider autoHideDuration={3000}>
-              <MotionLazyContainer>
-                <GlobalStyles />
-                <ProgressBar />
+            <FuegoProvider fuego={fuego}>
+              <SnackbarProvider autoHideDuration={3000}>
+                <MotionLazyContainer>
+                  <GlobalStyles />
+                  <ProgressBar />
 
-                {!isLandscape ? (
-                  <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
-                ) : (
-                  <Box
-                    sx={{
-                      backgroundColor: '#E25630',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      flexDirection: 'column',
-                    }}
-                    style={{ height: '100vh', width: '100vw' }}
-                  >
-                    <ScreenRotationIcon style={{ fontSize: 150, color: '#fff' }} />
-                    <br />
-                    <br />
-                    <h3 style={{ color: '#fff', textAlign: 'center' }}>
-                      Landscape mode is not supported
+                  {!isLandscape ? (
+                    <AuthProvider>
+                      <LoadingScreen>
+                        <ModalSub />
+
+                        {getLayout(<Component {...pageProps} />)}
+                      </LoadingScreen>
+                    </AuthProvider>
+                  ) : (
+                    <Box
+                      sx={{
+                        backgroundColor: '#E25630',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexDirection: 'column',
+                      }}
+                      style={{ height: '100vh', width: '100vw' }}
+                    >
+                      <ScreenRotationIcon style={{ fontSize: 150, color: '#fff' }} />
                       <br />
-                      please rotate to portrait mode
-                    </h3>
-                  </Box>
-                )}
-              </MotionLazyContainer>
-            </SnackbarProvider>
+                      <br />
+                      <h3 style={{ color: '#fff', textAlign: 'center' }}>
+                        Landscape mode is not supported
+                        <br />
+                        please rotate to portrait mode
+                      </h3>
+                    </Box>
+                  )}
+                </MotionLazyContainer>
+              </SnackbarProvider>
+            </FuegoProvider>
           </ThemeProvider>
         </CollapseDrawerProvider>
       </SettingsProvider>
-    </>
+    </CacheProvider>
   );
 }

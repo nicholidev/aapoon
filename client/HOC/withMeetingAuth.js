@@ -200,7 +200,7 @@ const withMeetingAuth = (WrappedComponent) => {
                 <Divider sx={{ mt: 8 }} />
                 <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
                   Already have an account?{' '}
-                  <Link passHref href={'/auth/Login'}>
+                  <Link passHref href={'/auth/Login?return=' + window.location.href}>
                     <Link variant="subtitle2">Login</Link>
                   </Link>
                 </Typography>

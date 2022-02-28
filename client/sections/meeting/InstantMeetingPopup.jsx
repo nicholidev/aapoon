@@ -136,7 +136,7 @@ function InstantMeetingPopup(props) {
         </div>
       </Dialog>
       {props.noButton ? (
-        props.children
+        <div onClick={() => setOpen(true)}>{props.children}</div>
       ) : (
         <Box component={ButtonBase} sx={props.sx} onClick={() => setOpen(true)}>
           {props.children}

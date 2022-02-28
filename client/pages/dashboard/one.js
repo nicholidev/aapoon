@@ -30,11 +30,14 @@ import GlobalStyles from '@mui/material/GlobalStyles';
 import withAuth from '../../HOC/withAuth';
 import Iconify from '../../components/Iconify';
 import PersonIcon from '@mui/icons-material/Person';
-
+import { useRouter } from 'next/router';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import StarIcon from '@mui/icons-material/Star';
+
+import StopCircleIcon from '@mui/icons-material/StopCircle';
 import AppNewInvoice from '../../sections/@dashboard/general/app/AppNewInvoice';
 import InviteData from '../../components/invite/InviteData';
+import LicenceData from '../../components/licence';
 import InviteModal from '../../components/invite/InviteModal';
 import { useState } from 'react';
 import useAuth from '../../hooks/useAuth';
@@ -146,6 +149,7 @@ function PageOne() {
   const [stats, setStats] = useState({});
   const [current, setCurrent] = useState('dashboard');
   const { user } = useAuth();
+  const { push } = useRouter();
   useEffect(() => {
     if (user.id)
       getStats(startOfWeek(new Date()), endOfWeek(new Date()), new Date(), user.id).then((data) => setStats(data));
@@ -196,58 +200,119 @@ function PageOne() {
             {/* <SideSection /> */}
           </Sidebar>
           <Content>
-            <InfoContainer container spacing={4}>
-              <Grid xs={12} sm={6} lg={4}>
-                <InfoCard>
-                  <InfoHeading>Total meetings this week</InfoHeading>
-                  <InfoNumbers>
-                    <h3>{stats.curr ? stats.curr : 0}</h3>
-                  </InfoNumbers>
-                  <PersonIcon style={infoIconStyle} />
-                </InfoCard>
-              </Grid>
-              <Grid xs={12} sm={6} lg={4}>
-                <InfoCard>
-                  <InfoHeading>Upcoming Meetings this week</InfoHeading>
-                  <InfoNumbers>
-                    <h3>{stats.up ? stats.up : 0}</h3>
-                  </InfoNumbers>
-                  <CheckCircleIcon style={infoIconStyle} />
-                </InfoCard>
-              </Grid>
-              <Grid xs={12} sm={6} lg={4}>
-                <InfoCard>
-                  <InfoHeading>Meetings attended this week</InfoHeading>
-                  <InfoNumbers>
-                    <h3>0</h3>
-                  </InfoNumbers>
-                  <StarIcon style={infoIconStyle} />
-                </InfoCard>
-              </Grid>
-            </InfoContainer>
-            <DataSection>
-              <DataHead>
-                <h4 style={{ display: 'inline' }}>Recent Invites</h4>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => setInviteOpen(true)}
-                  startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
-                >
-                  {' '}
-                  Invite User
-                </Button>
-              </DataHead>
-              <InviteData fetch={fetch} />
-              <InviteModal
-                open={inviteOpen}
-                handleClose={() => {
-                  setInviteOpen(false);
-                  setFetch(!fetch);
-                }}
-              />
-              {/* <AppNewInvoice/> */}
-            </DataSection>
+            {user?.activeLicenses?.count > 1 ? (
+              <InfoContainer container spacing={3}>
+                <Grid xs={12} sm={6} lg={4}>
+                  <InfoCard>
+                    <InfoHeading>Total number of Licenses</InfoHeading>
+                    <InfoNumbers>
+                      <h3>{user?.activeLicenses?.count || 0}</h3>
+                    </InfoNumbers>
+                    <PersonIcon style={infoIconStyle} />
+                  </InfoCard>
+                </Grid>
+                <Grid xs={12} sm={6} lg={4}>
+                  <InfoCard>
+                    <InfoHeading>Assigned Licenses</InfoHeading>
+                    <InfoNumbers>
+                      <h3>{user?.activeLicenses?.assigned || 0}</h3>
+                    </InfoNumbers>
+                    <CheckCircleIcon style={infoIconStyle} />
+                  </InfoCard>
+                </Grid>
+                <Grid xs={12} sm={6} lg={4}>
+                  <InfoCard>
+                    <InfoHeading>Remaining Licenses</InfoHeading>
+                    <InfoNumbers>
+                      <h3>
+                        {' '}
+                        {user.activeLicenses.count ? user.activeLicenses.count - (user.activeLicenses.assigned + 1) : 0}
+                      </h3>
+                    </InfoNumbers>
+                    <StopCircleIcon style={infoIconStyle} />
+                  </InfoCard>
+                </Grid>
+              </InfoContainer>
+            ) : (
+              <InfoContainer container spacing={4}>
+                <Grid xs={12} sm={6} lg={4}>
+                  <InfoCard>
+                    <InfoHeading>Total meetings this week</InfoHeading>
+                    <InfoNumbers>
+                      <h3>{stats.curr ? stats.curr : 0}</h3>
+                    </InfoNumbers>
+                    <PersonIcon style={infoIconStyle} />
+                  </InfoCard>
+                </Grid>
+                <Grid xs={12} sm={6} lg={4}>
+                  <InfoCard>
+                    <InfoHeading>Upcoming Meetings this week</InfoHeading>
+                    <InfoNumbers>
+                      <h3>{stats.up ? stats.up : 0}</h3>
+                    </InfoNumbers>
+                    <CheckCircleIcon style={infoIconStyle} />
+                  </InfoCard>
+                </Grid>
+                <Grid xs={12} sm={6} lg={4}>
+                  <InfoCard>
+                    <InfoHeading>Meetings attended this week</InfoHeading>
+                    <InfoNumbers>
+                      <h3>0</h3>
+                    </InfoNumbers>
+                    <StarIcon style={infoIconStyle} />
+                  </InfoCard>
+                </Grid>
+              </InfoContainer>
+            )}
+            {user?.activeLicenses?.count > 1 ? (
+              <DataSection>
+                <DataHead>
+                  <h4 style={{ display: 'inline' }}>Assign license</h4>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => push('/dashboard/assign-license')}
+                    startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
+                  >
+                    {' '}
+                    Assign license
+                  </Button>
+                </DataHead>
+                <LicenceData fetch={fetch} />
+                <InviteModal
+                  open={inviteOpen}
+                  handleClose={() => {
+                    setInviteOpen(false);
+                    setFetch(!fetch);
+                  }}
+                />
+                {/* <AppNewInvoice/> */}
+              </DataSection>
+            ) : (
+              <DataSection>
+                <DataHead>
+                  <h4 style={{ display: 'inline' }}>Recent Invites</h4>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => setInviteOpen(true)}
+                    startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
+                  >
+                    {' '}
+                    Invite User
+                  </Button>
+                </DataHead>
+                <InviteData fetch={fetch} />
+                <InviteModal
+                  open={inviteOpen}
+                  handleClose={() => {
+                    setInviteOpen(false);
+                    setFetch(!fetch);
+                  }}
+                />
+                {/* <AppNewInvoice/> */}
+              </DataSection>
+            )}
           </Content>
         </Container>
       </Page>

@@ -40,7 +40,8 @@ import InviteData from '../../components/invite/InviteData';
 import InviteModal from '../../components/invite/InviteModal';
 import { useState } from 'react';
 import UpdateUserProfile from '../../sections/user/UpdateUserProfile';
-
+import { openCustomerPortal } from '../../api/payments';
+import moment from 'moment';
 const Sidebar = styled('header')(({ theme }) => ({
   width: '240px',
   height: '100%',
@@ -141,7 +142,16 @@ function ProfilePage() {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [fetch, setFetch] = useState(false);
   const [current, setCurrent] = useState('dashboard');
-  const { user } = useAuth();
+  const { user, setLoading } = useAuth();
+  const openPortal = () => {
+    setLoading(true);
+    openCustomerPortal().then((url) => {
+      window.location = url;
+      setLoading(false);
+    });
+  };
+
+  let activeSub = user.subscription?.find((i) => i.status == 'active');
 
   return (
     <Page title="Dashboard" sx={{ width: '100vw' }}>
@@ -213,7 +223,9 @@ function ProfilePage() {
                       <Typography variant="subtitle2" color="GrayText">
                         Email
                       </Typography>
-                      <Typography variant="h6">{user.email}</Typography>
+                      <Typography noWrap variant="h6">
+                        {user.email}
+                      </Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
@@ -229,19 +241,28 @@ function ProfilePage() {
                       <Typography variant="subtitle2" color="GrayText">
                         Subscription Type
                       </Typography>
-                      <Typography variant="h6">Free</Typography>
+                      <Typography variant="h6">{user?.activeLicenses?.count ? 'Premium' : 'Free'}</Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
                         Purchase Date
                       </Typography>
-                      <Typography variant="h6">May 26, 2019</Typography>
+                      <Typography variant="h6">
+                        {activeSub
+                          ? moment(new Date(activeSub?.current_period_start.seconds * 1000)).format('ll')
+                          : 'N/A'}
+                      </Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
                         Expiration Date
                       </Typography>
-                      <Typography variant="h6">May 26, 2020</Typography>
+                      <Typography variant="h6">
+                        {' '}
+                        {activeSub
+                          ? moment(new Date(activeSub?.current_period_end.seconds * 1000)).format('ll')
+                          : 'N/A'}
+                      </Typography>
                     </Stack>
                   </Stack>
                 </Grid>
@@ -251,19 +272,21 @@ function ProfilePage() {
                       <Typography variant="subtitle2" color="GrayText">
                         No. Of Licenses
                       </Typography>
-                      <Typography variant="h6">1</Typography>
+                      <Typography variant="h6">{user?.activeLicenses?.count || 0}</Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
                         Assigned Licenses
                       </Typography>
-                      <Typography variant="h6">NA</Typography>
+                      <Typography variant="h6">{user?.activeLicenses?.assigned || 0}</Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
                         Unassigned Licenses
                       </Typography>
-                      <Typography variant="h6">NA</Typography>
+                      <Typography variant="h6">
+                        {user.activeLicenses.count ? user.activeLicenses.count - (user.activeLicenses.assigned + 1) : 0}
+                      </Typography>
                     </Stack>
                   </Stack>
                 </Grid>
@@ -273,7 +296,7 @@ function ProfilePage() {
                 <Grid item xs={12} sm={4} lg={2}>
                   <Stack spacing={5}>
                     <Stack spacing={0}>
-                      <ListItem disablePadding>
+                      {/* <ListItem disablePadding>
                         <ListItemButton>
                           <ListItemText
                             secondary={
@@ -283,9 +306,9 @@ function ProfilePage() {
                             }
                           />
                         </ListItemButton>
-                      </ListItem>
+                      </ListItem> */}
                       <ListItem disablePadding>
-                        <ListItemButton>
+                        <ListItemButton onClick={() => openPortal()}>
                           <ListItemText
                             primary={
                               <Typography variant="subtitle1" color="GrayText">
@@ -300,7 +323,7 @@ function ProfilePage() {
                           <ListItemText
                             primary={
                               <Typography variant="subtitle1" color="success.main">
-                                Renew
+                                Upgrade plan
                               </Typography>
                             }
                           />

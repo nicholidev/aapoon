@@ -12,7 +12,7 @@ const withAuth = (WrappedComponent) => {
       const router = useRouter();
 
       if (localStorage.getItem('isAuthenticated')) {
-        router.replace('/dashboard/one');
+        router.replace(window?.location?.href.includes('return') ? window?.location?.href : '/dashboard/one');
         return null;
       }
 

@@ -37,6 +37,7 @@ export default function InviteModal(props) {
         });
         setSubmitting(false);
         setLinkSent(true);
+        resetForm();
       } catch (error) {
         setSubmitting(false);
         console.log(error.response.data);

@@ -22,6 +22,7 @@ import {
   FormHelperText,
   Radio,
   ListItem,
+  Button,
   ListItemText,
   withStyles,
   Checkbox,
@@ -46,6 +47,7 @@ import { acceptInvitation, getCountry } from '../../api/user';
 import { scheduleMeeting } from '../../api/meeting';
 import { useRouter } from 'next/router';
 import moment from 'moment';
+import { differenceInDays } from 'date-fns';
 import { addTocalender } from '../../utils/addToCalender/AddToCalander';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../utils/errorMessage';
@@ -187,13 +189,21 @@ export default function FormUserMeeting(props) {
     });
   };
 
+  const recudays = data?.reccurring
+    ? differenceInDays(new Date(data?.reccuringEndDate?._seconds * 1000), new Date(data?.scheduledAt?._seconds * 1000))
+    : false;
+
   const addCalender = (type) => {
     let event = {
       title: data.title,
-      description: data.description,
-      location: '',
+      link: window.origin + '/meeting?meetingid=' + data?.id,
+      password: data.password,
+      description: data?.description,
       startTime: new Date(data.scheduledAt._seconds * 1000),
       endTime: new Date(data.endAt._seconds * 1000),
+      password: data?.password,
+      description: data?.description,
+      recur: data?.reccurring ? `RRULE:FREQ=DAILY;COUNT=${recudays + 1}` : '',
     };
     addTocalender(event, type, false);
   };
@@ -233,10 +243,23 @@ export default function FormUserMeeting(props) {
 
           <br />
           <Typography variant="body2">
+            {moment(new Date(data.scheduledAt?._seconds * 1000)).format('LLL')}&nbsp;
+            <span style={{ fontWeight: 700 }}> To </span>&nbsp;
+            {data?.reccurring
+              ? moment(new Date(data?.reccuringEndDate?._seconds * 1000)).format('LLL')
+              : moment(new Date(data.endAt?._seconds * 1000)).format('LLL')}
+          </Typography>
+          {data?.reccurring && (
+            <Typography variant="caption">
+              Reccuring ( {moment(new Date(data.scheduledAt?._seconds * 1000)).format('LT')} -{' '}
+              {moment(new Date(data.endAt?._seconds * 1000)).format('LT')} )
+            </Typography>
+          )}
+          {/* <Typography variant="body2">
             {moment(new Date(data.scheduledAt?._seconds * 1000)).format('LLL') +
               ' to ' +
               moment(new Date(data.endAt?._seconds * 1000)).format('LLL')}
-          </Typography>
+          </Typography> */}
           <Box
             component={ButtonBase}
             onClick={() => copyTocb(window.origin + '/meeting?meetingid=' + data.id)}
@@ -263,6 +286,10 @@ export default function FormUserMeeting(props) {
             </Typography>
             <Iconify icon="fluent:copy-20-filled" sx={{ fontSize: 24, ml: 2, color: 'text.secondary' }} />
           </Box>
+          <br />
+          <Button variant="outlined" onClick={() => router.push(window.origin + '/meeting?meetingid=' + data?.id)}>
+            <Typography variant="h6">Join Now</Typography>
+          </Button>
           <br />
           <Typography sx={{ fontWeight: 500, display: 'flex' }} variant="body" gutterBottom>
             Add To Calander
@@ -437,7 +464,7 @@ export default function FormUserMeeting(props) {
                           onChange={(newValue) => {
                             formik.setFieldValue('meetingDateTime', newValue);
                           }}
-                          minDateTime={new Date()}
+                          minDate={new Date()}
                           variant="dialog"
                           renderInput={(params) => (
                             <TextField
@@ -463,7 +490,7 @@ export default function FormUserMeeting(props) {
                             onChange={(newValue) => {
                               formik.setFieldValue('meetingEndDate', newValue);
                             }}
-                            minDateTime={new Date()}
+                            minDate={new Date()}
                             variant="dialog"
                             renderInput={(params) => (
                               <TextField

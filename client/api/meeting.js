@@ -8,7 +8,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 //const endpoint = 'http://localhost:5000/meetaap-55e58/us-central1/app';
 
-const endpoint = 'https://us-central1-meetaap-55e58.cloudfunctions.net/app';
+const endpoint = process.env.NEXT_PUBLIC_FUNCTION_URL;
 
 export const instantMeeting = async (data) => {
   return axios.post(`${endpoint}/meeting/instant`, data);

@@ -10,7 +10,7 @@ import { Box, Button, Container, Typography, TextField, Link } from '@mui/materi
 // layouts
 import LogoOnlyLayout from '../../layouts/LogoOnlyLayout';
 // routes
-
+import Countdown from 'react-countdown';
 // components
 import Page from '../../components/Page';
 import { VerifyCodeForm } from '../../sections/auth/verify-code';
@@ -40,6 +40,7 @@ const ResetPassword = () => {
   const [email, setEmail] = useState('');
   const [sent, setSent] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [showCounter, setCounter] = useState(true);
   const [sendMobile, setSendMobile] = useState(false);
   const router = useRouter();
   const { user, resendEmailVerification, sendMobileVerificationCode, verifyMobileLinkCode } = useAuth();
@@ -62,7 +63,7 @@ const ResetPassword = () => {
 
   const sendMobileVerification = () => {
     setIsLoading(true);
-
+    setCounter(true);
     sendMobileVerificationCode()
       .then((response) => {
         setSendMobile(true);
@@ -143,15 +144,33 @@ const ResetPassword = () => {
                     </Box>
 
                     <Typography variant="body2" align="center">
-                      Don’t have a code? &nbsp;
-                      <Link
-                        variant="subtitle2"
-                        underline="none"
-                        style={{ cursor: 'pointer' }}
-                        onClick={() => sendMobileVerification()}
-                      >
-                        Resend code
-                      </Link>
+                      Don’t receive code? &nbsp;
+                      {showCounter ? (
+                        <Countdown
+                          date={Date.now() + 60000}
+                          renderer={({ hours, minutes, seconds, completed }) => {
+                            if (completed) {
+                              setCounter(false);
+                              return '';
+                            } else {
+                              return (
+                                <>
+                                  Resend in {minutes < 1 ? '00' : minutes}:{seconds < 10 ? '0' + seconds : seconds}{' '}
+                                </>
+                              );
+                            }
+                          }}
+                        />
+                      ) : (
+                        <Link
+                          variant="subtitle2"
+                          underline="none"
+                          style={{ cursor: 'pointer' }}
+                          onClick={() => sendMobileVerification()}
+                        >
+                          resend code
+                        </Link>
+                      )}
                     </Typography>
                   </>
                 )}

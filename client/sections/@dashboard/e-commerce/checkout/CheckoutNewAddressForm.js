@@ -36,7 +36,7 @@ CheckoutNewAddressForm.propTypes = {
 export default function CheckoutNewAddressForm({ open, onClose, onNextStep, onCreateBilling }) {
   const NewAddressSchema = Yup.object().shape({
     receiver: Yup.string().required('Fullname is required'),
-    phone: Yup.string().required('Phone is required'),
+    phone: Yup.string().required('Phone number is required'),
     address: Yup.string().required('Address is required'),
     city: Yup.string().required('City is required'),
     state: Yup.string().required('State is required'),

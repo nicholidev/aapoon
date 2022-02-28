@@ -11,7 +11,16 @@ const miscRoutes = require("./src/routes/misc/misc-routes");
 const meetingRoutes = require("./src/routes/meeting/meeting-route");
 const { sendWelcomeEmail, updateUser } = require("./src/triggers/auth");
 const { sendInviteEmail } = require("./src/triggers/invites");
-const { sendHelpConfirmEmail } = require("./src/triggers/help");
+const { sendHelpConfirmEmail, sendSuppotMail } = require("./src/triggers/help");
+const {
+  onSubscriptionCreate,
+  onSubscriptionUpdate,
+} = require("./src/triggers/subscription");
+const {
+  onLicensesCreate,
+  onLicensesUpdate,
+  updateUserLicenses,
+} = require("./src/triggers/licenses");
 const { ErrorReporting } = require("@google-cloud/error-reporting");
 const errors = new ErrorReporting();
 admin.initializeApp();
@@ -24,6 +33,11 @@ meetingRoutes(app);
 exports.app = functions.https.onRequest(app);
 exports.sendWelcomeEmail = sendWelcomeEmail;
 exports.sendInviteeEmail = sendInviteEmail;
-exports.sendHelpConfirmEmail = sendHelpConfirmEmail;
+
+exports.sendSuppotMail = sendSuppotMail;
 exports.updateUser = updateUser;
-exports.stripe = require("./src/stripe/stripe-firebase-extensions/firestore-stripe-payments/functions/lib/index");
+exports.onSubscriptionCreate = onSubscriptionCreate;
+exports.onSubscriptionUpdate = onSubscriptionUpdate;
+exports.onLicensesCreate = onLicensesCreate;
+exports.onLicensesUpdate = onLicensesUpdate;
+exports.updateUserLicenses = updateUserLicenses;

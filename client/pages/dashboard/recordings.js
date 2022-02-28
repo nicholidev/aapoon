@@ -23,6 +23,7 @@ import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import GlobalStyles from '@mui/material/GlobalStyles';
+import { startOfWeek, endOfWeek } from 'date-fns';
 // ----------------------------------------------------------------------
 import withAuth from '../../HOC/withAuth';
 import Iconify from '../../components/Iconify';
@@ -33,9 +34,10 @@ import StopCircleIcon from '@mui/icons-material/StopCircle';
 import AppNewInvoice from '../../sections/@dashboard/general/app/AppNewInvoice';
 import InviteData from '../../components/invite/InviteData';
 import InviteModal from '../../components/invite/InviteModal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getStats } from '../../api/meeting';
 import RecordingData from '../../components/recording/RecordingData';
-
+import useAuth from '../../hooks/useAuth';
 const Sidebar = styled('header')(({ theme }) => ({
   width: '320px',
   height: '100%',
@@ -141,6 +143,12 @@ function RecordingsPage() {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [fetch, setFetch] = useState(false);
   const [current, setCurrent] = useState('dashboard');
+  const [stats, setStats] = useState({});
+  const { user } = useAuth();
+  useEffect(() => {
+    if (user.id)
+      getStats(startOfWeek(new Date()), endOfWeek(new Date()), new Date(), user.id).then((data) => setStats(data));
+  }, [user?.activeLicenses?.count]);
   return (
     <Page title="Dashboard">
       <GlobalStyles
@@ -185,35 +193,70 @@ function RecordingsPage() {
           {/* <SideSection /> */}
         </Sidebar>
         <Content>
-          <InfoContainer container spacing={3}>
-            <Grid xs={12} sm={6} lg={4}>
-              <InfoCard>
-                <InfoHeading>Total number of Licences</InfoHeading>
-                <InfoNumbers>
-                  <h3>34</h3>
-                </InfoNumbers>
-                <PersonIcon style={infoIconStyle} />
-              </InfoCard>
-            </Grid>
-            <Grid xs={12} sm={6} lg={4}>
-              <InfoCard>
-                <InfoHeading>Assigned Licences</InfoHeading>
-                <InfoNumbers>
-                  <h3>12</h3>
-                </InfoNumbers>
-                <CheckCircleIcon style={infoIconStyle} />
-              </InfoCard>
-            </Grid>
-            <Grid xs={12} sm={6} lg={4}>
-              <InfoCard>
-                <InfoHeading>Remaining Licenses</InfoHeading>
-                <InfoNumbers>
-                  <h3>10</h3>
-                </InfoNumbers>
-                <StopCircleIcon style={infoIconStyle} />
-              </InfoCard>
-            </Grid>
-          </InfoContainer>
+          {user?.activeLicenses?.count > 1 ? (
+            <InfoContainer container spacing={3}>
+              <Grid xs={12} sm={6} lg={4}>
+                <InfoCard>
+                  <InfoHeading>Total number of Licenses</InfoHeading>
+                  <InfoNumbers>
+                    <h3>{user?.activeLicenses?.count || 0}</h3>
+                  </InfoNumbers>
+                  <PersonIcon style={infoIconStyle} />
+                </InfoCard>
+              </Grid>
+              <Grid xs={12} sm={6} lg={4}>
+                <InfoCard>
+                  <InfoHeading>Assigned Licenses</InfoHeading>
+                  <InfoNumbers>
+                    <h3>{user?.activeLicenses?.assigned || 0}</h3>
+                  </InfoNumbers>
+                  <CheckCircleIcon style={infoIconStyle} />
+                </InfoCard>
+              </Grid>
+              <Grid xs={12} sm={6} lg={4}>
+                <InfoCard>
+                  <InfoHeading>Remaining Licenses</InfoHeading>
+                  <InfoNumbers>
+                    <h3>
+                      {' '}
+                      {user.activeLicenses.count ? user.activeLicenses.count - (user.activeLicenses.assigned + 1) : 0}
+                    </h3>
+                  </InfoNumbers>
+                  <StopCircleIcon style={infoIconStyle} />
+                </InfoCard>
+              </Grid>
+            </InfoContainer>
+          ) : (
+            <InfoContainer container spacing={4}>
+              <Grid xs={12} sm={6} lg={4}>
+                <InfoCard>
+                  <InfoHeading>Total meetings this week</InfoHeading>
+                  <InfoNumbers>
+                    <h3>{stats.curr ? stats.curr : 0}</h3>
+                  </InfoNumbers>
+                  <PersonIcon style={infoIconStyle} />
+                </InfoCard>
+              </Grid>
+              <Grid xs={12} sm={6} lg={4}>
+                <InfoCard>
+                  <InfoHeading>Upcoming Meetings this week</InfoHeading>
+                  <InfoNumbers>
+                    <h3>{stats.up ? stats.up : 0}</h3>
+                  </InfoNumbers>
+                  <CheckCircleIcon style={infoIconStyle} />
+                </InfoCard>
+              </Grid>
+              <Grid xs={12} sm={6} lg={4}>
+                <InfoCard>
+                  <InfoHeading>Meetings attended this week</InfoHeading>
+                  <InfoNumbers>
+                    <h3>0</h3>
+                  </InfoNumbers>
+                  <StarIcon style={infoIconStyle} />
+                </InfoCard>
+              </Grid>
+            </InfoContainer>
+          )}
           <DataSection>
             <DataHead>
               <h4 style={{ display: 'inline' }}>Recordings</h4>
