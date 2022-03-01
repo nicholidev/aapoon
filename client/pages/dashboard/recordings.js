@@ -38,6 +38,8 @@ import { useState, useEffect } from 'react';
 import { getStats } from '../../api/meeting';
 import RecordingData from '../../components/recording/RecordingData';
 import useAuth from '../../hooks/useAuth';
+import DashboardSidebar from '../../components/dashboard/DashboardSidebar';
+import DashboardInfoHeader from '../../components/dashboard/DashboardInfoHeader';
 const Sidebar = styled('header')(({ theme }) => ({
   width: '320px',
   height: '100%',
@@ -52,10 +54,7 @@ const Sidebar = styled('header')(({ theme }) => ({
 const Content = styled('div')(({ theme }) => ({
   width: 'calc(100% - 320px)',
   height: '100%',
-  padding: theme.spacing(1),
-  paddingTop: theme.spacing(4),
-  paddingLeft: theme.spacing(2),
-  marginTop: theme.spacing(6),
+  paddingTop: theme.spacing(6),
   [theme.breakpoints.down('md')]: {
     width: '100%',
     paddingLeft: 0,
@@ -64,8 +63,7 @@ const Content = styled('div')(({ theme }) => ({
 }));
 
 const SideSection = styled(Card)(({ theme }) => ({
-  paddingTop: 16,
-  paddingBottom: 16,
+  padding: '16px 0',
   width: '100%',
   marginTop: theme.spacing(4),
   display: 'flex',
@@ -99,9 +97,10 @@ const InfoContainer = styled(Grid)(({ theme }) => ({
   },
 }));
 
-const DataSection = styled(Card)(({ theme }) => ({
-  marginTop: theme.spacing(4),
-  margin: theme.spacing(6),
+const DataSection = styled("div")(({ theme }) => ({
+  margin: theme.spacing(3, 2, 2),
+  backgroundColor: '#fff',
+  borderRadius: '10px',
   height: 600,
   [theme.breakpoints.down('md')]: {
     marginLeft: 0,
@@ -157,106 +156,9 @@ function RecordingsPage() {
         }}
       />
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex' }}>
-        <Sidebar>
-          <SideSection>
-            <List sx={{ width: '100%' }}>
-              <Link href="/dashboard/one" passHref={true}>
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <Iconify icon={'lucide:layout-dashboard'} width={24} height={24} />
-                    </ListItemIcon>
-                    <ListItemText primary={<h4>Dashboard</h4>} />
-                  </ListItemButton>
-                </ListItem>
-              </Link>
-              <Link href="/dashboard/calendar" passHref={true}>
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <Iconify icon={'uil:calender'} width={24} height={24} />
-                    </ListItemIcon>
-                    <ListItemText primary={<h4>Calendar</h4>} />
-                  </ListItemButton>
-                </ListItem>
-              </Link>
-              <ListItem disablePadding selected={true}>
-                <ListItemButton>
-                  <ListItemIcon sx={{ pl: '3px' }}>
-                    <Iconify icon={'ant-design:video-camera-add-outlined'} width={24} height={24} />
-                  </ListItemIcon>
-                  <ListItemText primary={<h4>Recordings</h4>} />
-                </ListItemButton>
-              </ListItem>
-            </List>
-          </SideSection>
-          {/* <SideSection /> */}
-        </Sidebar>
+        <DashboardSidebar currentPage="recordings" />
         <Content>
-          {user?.activeLicenses?.count > 1 ? (
-            <InfoContainer container spacing={3}>
-              <Grid xs={12} sm={6} lg={4}>
-                <InfoCard>
-                  <InfoHeading>Total number of Licenses</InfoHeading>
-                  <InfoNumbers>
-                    <h3>{user?.activeLicenses?.count || 0}</h3>
-                  </InfoNumbers>
-                  <PersonIcon style={infoIconStyle} />
-                </InfoCard>
-              </Grid>
-              <Grid xs={12} sm={6} lg={4}>
-                <InfoCard>
-                  <InfoHeading>Assigned Licenses</InfoHeading>
-                  <InfoNumbers>
-                    <h3>{user?.activeLicenses?.assigned || 0}</h3>
-                  </InfoNumbers>
-                  <CheckCircleIcon style={infoIconStyle} />
-                </InfoCard>
-              </Grid>
-              <Grid xs={12} sm={6} lg={4}>
-                <InfoCard>
-                  <InfoHeading>Remaining Licenses</InfoHeading>
-                  <InfoNumbers>
-                    <h3>
-                      {' '}
-                      {user.activeLicenses.count ? user.activeLicenses.count - (user.activeLicenses.assigned + 1) : 0}
-                    </h3>
-                  </InfoNumbers>
-                  <StopCircleIcon style={infoIconStyle} />
-                </InfoCard>
-              </Grid>
-            </InfoContainer>
-          ) : (
-            <InfoContainer container spacing={4}>
-              <Grid xs={12} sm={6} lg={4}>
-                <InfoCard>
-                  <InfoHeading>Total meetings this week</InfoHeading>
-                  <InfoNumbers>
-                    <h3>{stats.curr ? stats.curr : 0}</h3>
-                  </InfoNumbers>
-                  <PersonIcon style={infoIconStyle} />
-                </InfoCard>
-              </Grid>
-              <Grid xs={12} sm={6} lg={4}>
-                <InfoCard>
-                  <InfoHeading>Upcoming Meetings this week</InfoHeading>
-                  <InfoNumbers>
-                    <h3>{stats.up ? stats.up : 0}</h3>
-                  </InfoNumbers>
-                  <CheckCircleIcon style={infoIconStyle} />
-                </InfoCard>
-              </Grid>
-              <Grid xs={12} sm={6} lg={4}>
-                <InfoCard>
-                  <InfoHeading>Meetings attended this week</InfoHeading>
-                  <InfoNumbers>
-                    <h3>0</h3>
-                  </InfoNumbers>
-                  <StarIcon style={infoIconStyle} />
-                </InfoCard>
-              </Grid>
-            </InfoContainer>
-          )}
+          <DashboardInfoHeader />
           <DataSection>
             <DataHead>
               <h4 style={{ display: 'inline' }}>Recordings</h4>

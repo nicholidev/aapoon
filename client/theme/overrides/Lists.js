@@ -35,5 +35,17 @@ export default function Lists(theme) {
         },
       },
     },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 7,
+          color: '#808080',
+          '&.Mui-selected': {
+            color: theme.palette.primary.main,
+            backgroundColor: '#F5F5F5',
+          },
+        },
+      },
+    },
   };
 }

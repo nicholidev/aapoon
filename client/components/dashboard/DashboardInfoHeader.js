@@ -27,11 +27,11 @@ import useSettings from '../../hooks/useSettings';
 // components
 import { getStats } from '../../api/meeting';
 import { startOfWeek, endOfWeek } from 'date-fns';
-import Page from '../../components/Page';
+import Page from '../Page';
 import GlobalStyles from '@mui/material/GlobalStyles';
 // ----------------------------------------------------------------------
 import withAuth from '../../HOC/withAuth';
-import Iconify from '../../components/Iconify';
+import Iconify from '../Iconify';
 import PersonIcon from '@mui/icons-material/Person';
 import { useRouter } from 'next/router';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
@@ -39,18 +39,17 @@ import StarIcon from '@mui/icons-material/Star';
 
 import StopCircleIcon from '@mui/icons-material/StopCircle';
 import AppNewInvoice from '../../sections/@dashboard/general/app/AppNewInvoice';
-import InviteData from '../../components/invite/Invite2';
-import LicenceData from '../../components/licence';
-import InviteModal from '../../components/invite/InviteModal';
+import InviteData from '../invite/Invite2';
+import LicenceData from '../licence';
+import InviteModal from '../invite/InviteModal';
 import { useState } from 'react';
 import useAuth from '../../hooks/useAuth';
-import BottomNavigation from '../../components/BottomNavigation';
+import BottomNavigation from '../BottomNavigation';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import StaticDatePicker from '@mui/lab/StaticDatePicker';
-import RenewPlanPrompt from '../../components/plan/RenewPlanPrompt';
-import DashboardSidebar from '../../components/dashboard/DashboardSidebar';
-import DashboardInfoHeader from '../../components/dashboard/DashboardInfoHeader';
+import RenewPlanPrompt from '../plan/RenewPlanPrompt';
+import DashboardSidebar from './DashboardSidebar';
 
 const Sidebar = styled('header')(({ theme }) => ({
   width: '320px',
@@ -153,7 +152,7 @@ const infoIconStyle = {
   right: 12,
 };
 
-function PageOne() {
+export default function DashboardInfoHeader() {
   const { themeStretch } = useSettings();
   const [inviteOpen, setInviteOpen] = useState(false);
   const [fetch, setFetch] = useState(false);
@@ -168,81 +167,91 @@ function PageOne() {
   }, [user.id]);
   return (
     <>
-      <Page title="Dashboard">
-        <GlobalStyles
-          styles={{
-            body: { backgroundColor: '#F1F1F1' },
-          }}
-        />
-        <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex' }}>
-          <DashboardSidebar currentPage="dashboard" />
-          <Content>
-            <DashboardInfoHeader />
-            {user?.activeLicenses?.count > 1 ? (
-              <DataSection>
-                <DataHead>
-                  <h4 style={{ display: 'inline' }}>Assign license</h4>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => push('/dashboard/assign-license')}
-                    startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
-                  >
-                    {' '}
-                    Assign license
-                  </Button>
-                </DataHead>
-                <LicenceData fetch={fetch} />
-                <InviteModal
-                  open={inviteOpen}
-                  handleClose={() => {
-                    setInviteOpen(false);
-                    setFetch(!fetch);
-                  }}
-                />
-                {/* <AppNewInvoice/> */}
-              </DataSection>
-            ) : (
-              <DataSection>
-                <DataHead>
-                  <Typography variant="h5" style={{ display: 'inline' }}>
-                    Recent Invites
-                  </Typography>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => setInviteOpen(true)}
-                    startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
-                  >
-                    {' '}
-                    Invite User
-                  </Button>
-                </DataHead>
-                <Box sx={{ p: 4, pt: 0 }}>
-                  <InviteData fetch={fetch} />
-                </Box>
-                <InviteModal
-                  open={inviteOpen}
-                  handleClose={() => {
-                    setInviteOpen(false);
-                    setFetch(!fetch);
-                  }}
-                />
-                {/* <AppNewInvoice/> */}
-              </DataSection>
-            )}
-          </Content>
-        </Container>
-      </Page>
+      {user?.activeLicenses?.count > 1 ? (
+        <InfoContainer container spacing={3}>
+          <Grid xs={12} sm={6} lg={4}>
+            <InfoCard>
+              <InfoHeading>Total number of Licenses</InfoHeading>
+              <InfoNumbers>
+                <h3>{user?.activeLicenses?.count || 0}</h3>
+              </InfoNumbers>
+              <PersonIcon style={infoIconStyle} />
+            </InfoCard>
+          </Grid>
+          <Grid xs={12} sm={6} lg={4}>
+            <InfoCard>
+              <InfoHeading>Assigned Licenses</InfoHeading>
+              <InfoNumbers>
+                <h3>{user?.activeLicenses?.assigned || 0}</h3>
+              </InfoNumbers>
+              <CheckCircleIcon style={infoIconStyle} />
+            </InfoCard>
+          </Grid>
+          <Grid xs={12} sm={6} lg={4}>
+            <InfoCard>
+              <InfoHeading>Remaining Licenses</InfoHeading>
+              <InfoNumbers>
+                <h3>
+                  {' '}
+                  {user.activeLicenses.count ? user.activeLicenses.count - (user.activeLicenses.assigned + 1) : 0}
+                </h3>
+              </InfoNumbers>
+              <StopCircleIcon style={infoIconStyle} />
+            </InfoCard>
+          </Grid>
+        </InfoContainer>
+      ) : (
+        <InfoContainer container spacing={4}>
+          <Grid item xs={12} sm={6} lg={4}>
+            <InfoCard sx={{ backgroundColor: '#F5F9FF' }}>
+              <InfoHeading>
+                <Iconify icon={'ic:sharp-calendar-month'} width="24px" height="24px" color="secondary.main" />
+                &nbsp;&nbsp;&nbsp;
+                <Typography variant="subtitle2" color="initial">
+                  Meetings in this Week
+                </Typography>
+              </InfoHeading>
+              <InfoNumbers>
+                <Typography variant="body1" color="secondary" style={{ fontSize: '40px' }}>
+                  {stats.curr ? stats.curr : 0}
+                </Typography>
+              </InfoNumbers>
+            </InfoCard>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={4}>
+            <InfoCard sx={{ backgroundColor: '#FFF7F5' }}>
+              <InfoHeading>
+                <Iconify icon={'ic:baseline-date-range'} width="24px" height="24px" color="primary.main" />
+                &nbsp;&nbsp;&nbsp;
+                <Typography variant="subtitle2" color="initial">
+                  Upcoming Meetings
+                </Typography>
+              </InfoHeading>
+              <InfoNumbers>
+                <Typography variant="body1" color="secondary" style={{ fontSize: '40px' }}>
+                  {stats.up ? stats.up : 0}
+                </Typography>
+              </InfoNumbers>
+            </InfoCard>
+          </Grid>
+          <Grid item xs={12} sm={6} lg={4}>
+            <InfoCard sx={{ backgroundColor: '#F6FFF5' }}>
+              <InfoHeading>
+                <Iconify icon={'bx:calendar-check'} width="24px" height="24px" color="success.main" />
+                &nbsp;&nbsp;&nbsp;
+                <Typography variant="subtitle2" color="initial">
+                  Meetings Attended
+                </Typography>
+              </InfoHeading>
+              <InfoNumbers>
+                <Typography variant="body1" color="secondary" style={{ fontSize: '40px' }}>
+                  {'0'}
+                </Typography>
+              </InfoNumbers>
+            </InfoCard>
+          </Grid>
+        </InfoContainer>
+      )}
     </>
   );
 }
-
-// ----------------------------------------------------------------------
-let NewAuth = withAuth(PageOne);
-
-NewAuth.getLayout = function getLayout(page) {
-  return <DashboardLayout withBottomNav>{page}</DashboardLayout>;
-};
-
-export default NewAuth;

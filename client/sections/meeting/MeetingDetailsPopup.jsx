@@ -24,6 +24,8 @@ import {
   Dialog,
   FormHelperText,
   Button,
+  Divider,
+  Checkbox,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import Iconify from '../../components/Iconify';
@@ -88,8 +90,10 @@ function MeetingDetailsPopup(props) {
         }}
       >
         <div style={{ padding: '40px' }}>
-          <Stack spacing={1} justifyContent="center" alignItems="center">
+          <Stack spacing={1} justifyContent="center">
             <Typography variant="h5" sx={{ textTransform: 'capitalize' }}>
+              <Iconify icon="akar-icons:square-fill" color="success.main" />
+              &nbsp;&nbsp;
               {data?.title}
             </Typography>
             <Typography variant="body2" color="text.secondary">
@@ -100,18 +104,43 @@ function MeetingDetailsPopup(props) {
             )}
 
             <br />
-            <Typography variant="body2">
-              {moment(new Date(data?.start)).format('LLL')}&nbsp;<span style={{ fontWeight: 700 }}> To </span>&nbsp;
-              {data?.extendedProps?.reccurring
-                ? moment(new Date(data?.extendedProps.reccuringEndDate.seconds * 1000)).format('LLL')
-                : moment(new Date(data?.end)).format('LLL')}
-            </Typography>
+            <Box display="flex" alignItems="center">
+              <Iconify icon="ci:clock" width="20px" height="20px" color="text.secondary" /> &nbsp;&nbsp;
+              <Typography variant="body2">
+                {moment(new Date(data?.start)).format('LLL')}&nbsp;<span style={{ fontWeight: 700 }}> To </span>&nbsp;
+                {data?.extendedProps?.reccurring
+                  ? moment(new Date(data?.extendedProps.reccuringEndDate.seconds * 1000)).format('LLL')
+                  : moment(new Date(data?.end)).format('LLL')}
+              </Typography>
+            </Box>
             {data?.extendedProps?.reccurring && (
               <Typography variant="caption">
                 Reccuring ( {moment(new Date(data?.start)).format('LT')} - {moment(new Date(data?.end)).format('LT')} )
               </Typography>
             )}
-            <Box
+            <Box display={'flex'} style={{ marginTop: '16px' }}>
+              <Button variant="outlined">
+                <img src="/favicon/favicon-32x32.png" />
+                &nbsp;&nbsp; Join Aapoon Meeting
+              </Button>
+            </Box>
+            <Divider style={{ margin: '16px 0 8px' }} />
+            <Box display="flex">
+              <Iconify icon="fluent:text-description-24-filled" width="24px" height="24px" color="text.secondary" />{' '}
+              &nbsp;&nbsp;
+              <Typography variant="body2">Here we discuss the sales and marketing strategies and execution.</Typography>
+            </Box>
+            <Divider style={{ margin: '16px 0 8px' }} />
+            <Box display="flex" alignItems={'center'}>
+              <Iconify icon="akar-icons:link-chain" width="24px" height="24px" color="text.secondary" /> &nbsp;&nbsp;
+              <Typography variant="body2">{window.origin + '/meeting?meetingid=' + data?.id}</Typography>&nbsp;&nbsp;
+              <Button>
+                Copy
+                <Iconify icon="lucide:copy" sx={{ fontSize: 24, ml: 2, color: 'inherit' }} />
+              </Button>
+            </Box>
+            <Divider style={{ margin: '16px 0 8px' }} />
+            {/* <Box
               component={ButtonBase}
               onClick={() => copyTocb(window.origin + '/meeting?meetingid=' + data?.id)}
               sx={{
@@ -140,19 +169,20 @@ function MeetingDetailsPopup(props) {
             <br />
             <Button variant="outlined" onClick={() => router.push(window.origin + '/meeting?meetingid=' + data?.id)}>
               <Typography variant="h6">Join Now</Typography>
-            </Button>
-            <br />
-            <Typography sx={{ fontWeight: 500, display: 'flex' }} variant="body" gutterBottom>
+            </Button> 
+            <br />*/}
+            <Typography variant="h6" sx={{ fontWeight: 600, display: 'flex' }} variant="body" gutterBottom>
               Add To Calander
             </Typography>
 
             <Stack
               spacing={2}
-              direction={{ xs: 'column', sm: 'row', mt: 1 }}
-              justifyContent="center"
-              alignItems="center"
+              direction={'column'}
+              // direction={{ xs: 'column', sm: 'row', mt: 1 }}
+              // justifyContent="center"
+              // alignItems="center"
             >
-              <Box
+              {/* <Box
                 component={ButtonBase}
                 onClick={() => addCalender('apple')}
                 width="160px"
@@ -170,8 +200,53 @@ function MeetingDetailsPopup(props) {
                 >
                   Apple calendar
                 </Typography>
+              </Box> */}
+              <Box display={'flex'} alignItems="center" justifyContent="space-between">
+                <Box display={'flex'} alignItems="center">
+                  <Iconify icon="ant-design:apple-filled" sx={{ fontSize: 24, color: '#000' }} />
+                  &nbsp;&nbsp;
+                  <Typography variant="subtitle2">Apple Calendar</Typography>
+                </Box>
+                <Button>
+                  Download&nbsp;&nbsp;
+                  <Iconify icon="heroicons-outline:download" sx={{ fontSize: 24 }} />
+                </Button>
               </Box>
-              <Box
+              <Box display={'flex'} alignItems="center" justifyContent="space-between">
+                <Box display={'flex'} alignItems="center">
+                  <Iconify icon="vscode-icons:file-type-outlook" sx={{ fontSize: 24, color: '#225082' }} />
+                  &nbsp;&nbsp;
+                  <Typography variant="subtitle2">Outlook Calendar</Typography>
+                </Box>
+                <Button>
+                  Download&nbsp;&nbsp;
+                  <Iconify icon="heroicons-outline:download" sx={{ fontSize: 24 }} />
+                </Button>
+              </Box>{' '}
+              <Box display={'flex'} alignItems="center" justifyContent="space-between">
+                <Box display={'flex'} alignItems="center">
+                  <Iconify icon="flat-color-icons:google" sx={{ fontSize: 24, color: '#225082' }} />
+                  &nbsp;&nbsp;
+                  <Typography variant="subtitle2">Google Calendar</Typography>
+                </Box>
+                <Button>
+                  Download&nbsp;&nbsp;
+                  <Iconify icon="heroicons-outline:download" sx={{ fontSize: 24 }} />
+                </Button>
+              </Box>
+              <br />
+              <Box display={'flex'} alignItems="center" justifyContent="space-between">
+                <Box display={'flex'} alignItems="center">
+                  <Checkbox />
+                  <Typography variant="body1" color="text.secondary">
+                    Delete All recurring meetings
+                  </Typography>
+                </Box>
+                <Button variant="contained" size="large">
+                  Remove Meeting
+                </Button>
+              </Box>
+              {/* <Box
                 component={ButtonBase}
                 onClick={() => addCalender('outlookcom')}
                 width="160px"
@@ -191,8 +266,8 @@ function MeetingDetailsPopup(props) {
                 >
                   Outlook calendar
                 </Typography>
-              </Box>
-              <Box
+              </Box> */}
+              {/* <Box
                 component={ButtonBase}
                 width="160px"
                 sx={{ border: '1px solid #DDDDDD', borderRadius: 1, padding: 2, backgroundColor: '#F9F9F9' }}
@@ -211,7 +286,7 @@ function MeetingDetailsPopup(props) {
                 >
                   Google calendar
                 </Typography>
-              </Box>
+              </Box> */}
             </Stack>
           </Stack>
         </div>
