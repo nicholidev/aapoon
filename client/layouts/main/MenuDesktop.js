@@ -204,7 +204,8 @@ function MenuDesktopItem({ item, isHome, isOpen, isOffset, onOpen, onClose, push
         ...(isOffset && { color: 'text.primary' }),
         '&.active:after': {
           content: '""',
-          display: 'block',
+          display: 'flex',
+          justifyContent: 'center',
           width: '30px',
           borderBottom: '4px solid #005480',
           borderRadius: '4px',
