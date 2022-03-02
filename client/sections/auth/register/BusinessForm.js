@@ -215,9 +215,10 @@ export default function RegisterForm(props) {
                   error={Boolean(touched.teamsize && errors.teamsize)}
                   helperText={touched.teamsize && errors.teamsize}
                 >
-                  <MenuItem value={"0-10"}>0-10 Employees</MenuItem>
-                  <MenuItem value={"10-50"}>10-50 Employees</MenuItem>
+                  <MenuItem value={"0-50"}>0-50 Employees</MenuItem>
                   <MenuItem value={"50-100"}>50-100 Employees</MenuItem>
+                  <MenuItem value={"100-500"}>100-500 Employees</MenuItem>
+                  <MenuItem value={"500 & more"}>500 & more Employees</MenuItem>
                 </Select>
               </Stack>
             </Grid>
