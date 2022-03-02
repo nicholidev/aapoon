@@ -18,11 +18,13 @@ import {
   Typography,
   Divider,
   TextField,
+  MenuItem,
+  Stack,
 } from '@mui/material';
 // layouts
 import DashboardLayout from '../../layouts/dashboard';
 // hooks
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import useSettings from '../../hooks/useSettings';
 // components
 import { getStats } from '../../api/meeting';
@@ -49,8 +51,8 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import StaticDatePicker from '@mui/lab/StaticDatePicker';
 import RenewPlanPrompt from '../../components/plan/RenewPlanPrompt';
-import DashboardSidebar from '../../components/dashboard/DashboardSidebar';
-import DashboardInfoHeader from '../../components/dashboard/DashboardInfoHeader';
+import MenuPopover from '../MenuPopover';
+import InstantMeetingPopup from '../../sections/meeting/InstantMeetingPopup';
 
 const Sidebar = styled('header')(({ theme }) => ({
   width: '320px',
@@ -153,12 +155,23 @@ const infoIconStyle = {
   right: 12,
 };
 
-function PageOne() {
+export default function DashboardSidebar(props) {
   const { themeStretch } = useSettings();
   const [inviteOpen, setInviteOpen] = useState(false);
   const [fetch, setFetch] = useState(false);
   const [stats, setStats] = useState({});
-  const [current, setCurrent] = useState('dashboard');
+
+  const anchorRef = useRef(null);
+  const [open, setOpen] = useState(false);
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const { currentPage } = props;
   const { user } = useAuth();
   const { push } = useRouter();
   const [dateValue, setDateValue] = useState(new Date());
@@ -167,82 +180,88 @@ function PageOne() {
       getStats(startOfWeek(new Date()), endOfWeek(new Date()), new Date(), user.id).then((data) => setStats(data));
   }, [user.id]);
   return (
-    <>
-      <Page title="Dashboard">
-        <GlobalStyles
-          styles={{
-            body: { backgroundColor: '#F1F1F1' },
-          }}
-        />
-        <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex' }}>
-          <DashboardSidebar currentPage="dashboard" />
-          <Content>
-            <DashboardInfoHeader />
-            {user?.activeLicenses?.count > 1 ? (
-              <DataSection>
-                <DataHead>
-                  <h4 style={{ display: 'inline' }}>Assign license</h4>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => push('/dashboard/assign-license')}
-                    startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
-                  >
-                    {' '}
-                    Assign license
-                  </Button>
-                </DataHead>
-                <LicenceData fetch={fetch} />
-                <InviteModal
-                  open={inviteOpen}
-                  handleClose={() => {
-                    setInviteOpen(false);
-                    setFetch(!fetch);
-                  }}
-                />
-                {/* <AppNewInvoice/> */}
-              </DataSection>
-            ) : (
-              <DataSection>
-                <DataHead>
-                  <Typography variant="h5" style={{ display: 'inline' }}>
-                    Recent Invites
-                  </Typography>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => setInviteOpen(true)}
-                    startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
-                  >
-                    {' '}
-                    Invite User
-                  </Button>
-                </DataHead>
-                <Box sx={{ p: 4, pt: 0 }}>
-                  <InviteData fetch={fetch} />
-                </Box>
-                <InviteModal
-                  open={inviteOpen}
-                  handleClose={() => {
-                    setInviteOpen(false);
-                    setFetch(!fetch);
-                  }}
-                />
-                {/* <AppNewInvoice/> */}
-              </DataSection>
-            )}
-          </Content>
-        </Container>
-      </Page>
-    </>
+    <Sidebar>
+      <SideSection>
+        <List sx={{ width: '100%' }}>
+          <ListItem style={{ justifyContent: 'center' }}>
+            <Button ref={anchorRef} variant="contained" size="large" onClick={handleOpen}>
+              Creating Meeting
+            </Button>
+            <MenuPopover
+              open={open}
+              anchorEl={anchorRef.current}
+              sx={{ width: 220, pt: 1, pd: 1 }}
+              onClose={handleClose}
+              id={'meetingPopover2'}
+              key={'meetingPopover2'}
+            >
+              <Stack spacing={{ xs: 1 }} sx={{ p: 1 }}>
+                <InstantMeetingPopup noButton>
+                  <MenuItem>Instant meeting</MenuItem>
+                </InstantMeetingPopup>
+                <Divider />
+                <MenuItem onClick={() => push('/dashboard/schedule-meeting')}>Schedule meeting</MenuItem>
+                <br />
+              </Stack>
+            </MenuPopover>
+          </ListItem>
+          <Link href="/dashboard/one" passHref={true}>
+            <ListItem>
+              <ListItemButton selected={currentPage == 'dashboard'}>
+                <ListItemIcon>
+                  <Iconify icon={'lucide:layout-dashboard'} width={24} height={24} color="inherit" />
+                </ListItemIcon>
+                <ListItemText primary={<h4>Dashboard</h4>} />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+          <Link href="/dashboard/calendar" passHref={true}>
+            <ListItem>
+              <ListItemButton selected={currentPage == 'calendar'}>
+                <ListItemIcon>
+                  <Iconify icon={'uil:calender'} width={24} height={24} />
+                </ListItemIcon>
+                <ListItemText primary={<h4>Calendar</h4>} />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+
+          <Link href="/dashboard/recordings" passHref={true}>
+            <ListItem>
+              <ListItemButton selected={currentPage == 'recordings'}>
+                <ListItemIcon sx={{ pl: '3px' }}>
+                  <Iconify icon={'lucide:play-circle'} width={24} height={24} />
+                </ListItemIcon>
+                <ListItemText primary={<h4>Recordings</h4>} />
+              </ListItemButton>
+            </ListItem>
+          </Link>
+          <br />
+          <Divider />
+          <Box marginTop="16px" width="100%" display="flex" justifyContent={'center'}>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <StaticDatePicker
+                displayStaticWrapperAs="desktop"
+                openTo="day"
+                value={dateValue}
+                // className={{ margin: '0 !important',padding: '0 !important' }}
+                onChange={(newValue) => {
+                  setDateValue(newValue);
+                }}
+                renderInput={(params) => <TextField {...params} />}
+              />
+            </LocalizationProvider>
+          </Box>
+          <Box position="relative" height="160px">
+            <Box position="absolute" top={-50}>
+              <Divider style={{ marginBottom: '8px' }} />
+              <ListItem>
+                <RenewPlanPrompt />
+              </ListItem>
+            </Box>
+          </Box>
+        </List>
+      </SideSection>
+    </Sidebar>
   );
 }
-
-// ----------------------------------------------------------------------
-let NewAuth = withAuth(PageOne);
-
-NewAuth.getLayout = function getLayout(page) {
-  return <DashboardLayout withBottomNav>{page}</DashboardLayout>;
-};
-
-export default NewAuth;

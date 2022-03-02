@@ -277,7 +277,7 @@ const setccd =(e)=>{
                           <MenuItem value={'Other'}>Other </MenuItem>
                         </Select>
                       </FormControl>
-                      <TextField
+                      {/* <TextField
                         placeholder="Enter number of employees"
                         name="numberOfEmployees"
                         InputProps={{
@@ -285,7 +285,7 @@ const setccd =(e)=>{
                         }}
                         inputComponent={NumberFormatCustom}
                         {...getFieldProps('numberOfEmployees')}
-                      />
+                      /> */}
                     </>
                   )}
 
@@ -319,7 +319,7 @@ const setccd =(e)=>{
                 onClick={handleClose}
                 variant="contained"
                 disabled={
-                  (values.accountType == 'Business' && (!values.businessType || !values.numberOfEmployees)) ||
+                  (values.accountType == 'Business' && (!values.businessType )) ||
                   (values.accountType == 'Professional' && !values.professionType)
                 }
               >
