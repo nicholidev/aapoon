@@ -363,7 +363,7 @@ export default function FormUserMeeting(props) {
       ) : (
         <FormikProvider value={formik}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <Stack spacing={6}>
+            <Stack spacing={4}>
               {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
               <Stack spacing={1}>
                 <Typography sx={{ fontWeight: 500 }}>Meeting topic * </Typography>
@@ -397,7 +397,7 @@ export default function FormUserMeeting(props) {
                 />
               </Stack>
 
-              <Stack direction={'row'} spacing={5}>
+              {/* <Stack direction={'row'} spacing={5}>
                 <Box display={'flex'} alignItems={'center'}>
                   <Radio checked={meetingType == 'oneTime'} onChange={handleMeetingType} value={'oneTime'} />
                   &nbsp;
@@ -412,7 +412,7 @@ export default function FormUserMeeting(props) {
                     Recurring
                   </Typography>
                 </Box>
-              </Stack>
+              </Stack> */}
 
               <Grid container rowSpacing={3} columnSpacing={0} justifyContent={'space-between'}>
                 <Grid item xs={12} sm={6}>

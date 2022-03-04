@@ -41,7 +41,11 @@ export default function VerifyCodeForm({ verifyMobileLinkCode, user }) {
         if (user.accountType == 'Business') router.push('/auth/business-profile');
         else {
           localStorage.setItem('isAuthenticated', true);
-          window.location = '/dashboard/one';
+          if (router.query.return) {
+            window.location = router.query.return;
+          } else {
+            window.location = '/dashboard/one';
+          }
         }
       } catch (err) {
         console.log(err);

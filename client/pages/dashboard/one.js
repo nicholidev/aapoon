@@ -192,7 +192,9 @@ function PageOne() {
                     Assign license
                   </Button>
                 </DataHead>
-                <LicenceData fetch={fetch} />
+                <Box sx={{ p: 4, pt: 0 }}>
+                  <LicenceData fetch={fetch} />
+                </Box>
                 <InviteModal
                   open={inviteOpen}
                   handleClose={() => {

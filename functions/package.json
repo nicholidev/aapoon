@@ -34,7 +34,7 @@
     "jsonwebtoken": "^8.5.1",
     "nodemailer": "^6.6.3",
     "short-unique-id": "^4.4.4",
-    "stripe": "^8.202.0",
+    "stripe": "^8.207.0",
     "uuid": "^8.3.2"
   },
   "devDependencies": {

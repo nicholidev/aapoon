@@ -52,7 +52,7 @@ export default function FadeMenu(props) {
         onClose={handleClose}
         TransitionComponent={Fade}
       >
-        <MenuItem onClick={onRevokeLicence}>Remove licence</MenuItem>
+        <MenuItem onClick={onRevokeLicence}>Remove license</MenuItem>
         {props?.data?.expiredAt < new Date() && !props.data.isAccepted && (
           <MenuItem onClick={onResendInvitation}>Resend Invitation</MenuItem>
         )}

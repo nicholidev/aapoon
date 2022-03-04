@@ -24,7 +24,7 @@ export default function FormAssignLicense({ setEmail, setLinkSentModal }) {
   const [isSubmitted, setSubmitted] = useState(false);
   const [showteam, setShowteam] = useState(false);
   const rePhoneNumber = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
-  const reAlpha = /^[a-zA-Z]+$/;
+  const reAlpha = /^[a-zA-Z ]*$/;
   const { back } = useRouter();
 
   const RegisterSchema = Yup.object().shape({
@@ -34,7 +34,7 @@ export default function FormAssignLicense({ setEmail, setLinkSentModal }) {
       .lowercase()
       .email('Email must be a valid email address')
       .required('Email is required')
-      .notOneOf([user.email], 'You cannot assign licence to yourself'),
+      .notOneOf([user.email], 'You cannot assign license to yourself'),
     employeeId: Yup.string(),
     team: Yup.string().matches(reAlpha, 'Team name is not valid').required('This field is required'),
     department: Yup.string().min(2, 'Too Short!'),

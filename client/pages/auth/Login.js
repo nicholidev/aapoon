@@ -20,8 +20,8 @@ import Image from '../../components/Image';
 import { LoginForm } from '../../sections/auth/login';
 import withoutAut from '../../HOC/withOutAuth';
 import AuthFirebaseSocials from '../../sections/auth/AuthFirebaseSocial';
-import Router from 'next/router';
 
+import { useRouter } from 'next/router';
 // ----------------------------------------------------------------------
 
 const RootStyle = styled('div')(({ theme }) => ({
@@ -71,7 +71,7 @@ function Login() {
 
   const smUp = useResponsive('up', 'sm');
   const mdUp = useResponsive('up', 'md');
-
+  const router = useRouter();
   return (
     <Page title="Login">
       <RootStyle>
@@ -110,7 +110,10 @@ function Login() {
 
             <Typography variant="body2" align="center" sx={{ mt: 3 }}>
               Don’t have an account?{' '}
-              <RouterLink href={'/auth/Register'} passHref>
+              <RouterLink
+                href={router.query.return ? '/auth/Register?return=' + router.query.return : '/auth/Register'}
+                passHref
+              >
                 <Link variant="subtitle2">Get started</Link>
               </RouterLink>
             </Typography>

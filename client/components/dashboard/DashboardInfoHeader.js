@@ -168,35 +168,85 @@ export default function DashboardInfoHeader() {
   return (
     <>
       {user?.activeLicenses?.count > 1 ? (
-        <InfoContainer container spacing={3}>
-          <Grid xs={12} sm={6} lg={4}>
-            <InfoCard>
-              <InfoHeading>Total number of Licenses</InfoHeading>
+        // <InfoContainer container spacing={3}>
+        //   <Grid xs={12} sm={6} lg={4}>
+        //     <InfoCard>
+        //       <InfoHeading>Total number of Licenses</InfoHeading>
+        //       <InfoNumbers>
+        //         <h3>{user?.activeLicenses?.count || 0}</h3>
+        //       </InfoNumbers>
+        //       <PersonIcon style={infoIconStyle} />
+        //     </InfoCard>
+        //   </Grid>
+        //   <Grid xs={12} sm={6} lg={4}>
+        //     <InfoCard>
+        //       <InfoHeading>Assigned Licenses</InfoHeading>
+        //       <InfoNumbers>
+        //         <h3>{user?.activeLicenses?.assigned || 0}</h3>
+        //       </InfoNumbers>
+        //       <CheckCircleIcon style={infoIconStyle} />
+        //     </InfoCard>
+        //   </Grid>
+        //   <Grid xs={12} sm={6} lg={4}>
+        //     <InfoCard>
+        //       <InfoHeading>Remaining Licenses</InfoHeading>
+        //       <InfoNumbers>
+        //         <h3>
+        //           {' '}
+        //           {user.activeLicenses.count ? user.activeLicenses.count - (user.activeLicenses.assigned + 1) : 0}
+        //         </h3>
+        //       </InfoNumbers>
+        //       <StopCircleIcon style={infoIconStyle} />
+        //     </InfoCard>
+        //   </Grid>
+        // </InfoContainer>
+        <InfoContainer container spacing={4}>
+          <Grid item xs={12} sm={6} lg={4}>
+            <InfoCard sx={{ backgroundColor: '#F5F9FF' }}>
+              <InfoHeading>
+                <Iconify icon={'fluent:contact-card-20-filled'} width="28px" height="28px" color="secondary.main" />
+                &nbsp;&nbsp;&nbsp;
+                <Typography variant="subtitle2" color="initial">
+                  Total number of Licenses
+                </Typography>
+              </InfoHeading>
               <InfoNumbers>
-                <h3>{user?.activeLicenses?.count || 0}</h3>
+                <Typography variant="body1" color="secondary" style={{ fontSize: '40px' }}>
+                  {user?.activeLicenses?.count || 0}
+                </Typography>
               </InfoNumbers>
-              <PersonIcon style={infoIconStyle} />
             </InfoCard>
           </Grid>
-          <Grid xs={12} sm={6} lg={4}>
-            <InfoCard>
-              <InfoHeading>Assigned Licenses</InfoHeading>
+          <Grid item xs={12} sm={6} lg={4}>
+            <InfoCard sx={{ backgroundColor: '#FFF7F5' }}>
+              <InfoHeading>
+                <Iconify icon={'fluent:contact-card-link-16-filled'} width="28px" height="28px" color="primary.main" />
+                &nbsp;&nbsp;&nbsp;
+                <Typography variant="subtitle2" color="initial">
+                  Assigned Licenses
+                </Typography>
+              </InfoHeading>
               <InfoNumbers>
-                <h3>{user?.activeLicenses?.assigned || 0}</h3>
+                <Typography variant="body1" color="secondary" style={{ fontSize: '40px' }}>
+                  {user?.activeLicenses?.assigned || 0}
+                </Typography>
               </InfoNumbers>
-              <CheckCircleIcon style={infoIconStyle} />
             </InfoCard>
           </Grid>
-          <Grid xs={12} sm={6} lg={4}>
-            <InfoCard>
-              <InfoHeading>Remaining Licenses</InfoHeading>
+          <Grid item xs={12} sm={6} lg={4}>
+            <InfoCard sx={{ backgroundColor: '#F6FFF5' }}>
+              <InfoHeading>
+                <Iconify icon={'ic:round-contact-mail'} width="24px" height="24px" color="success.main" />
+                &nbsp;&nbsp;&nbsp;
+                <Typography variant="subtitle2" color="initial">
+                  Remaining Licenses
+                </Typography>
+              </InfoHeading>
               <InfoNumbers>
-                <h3>
-                  {' '}
+                <Typography variant="body1" color="secondary" style={{ fontSize: '40px' }}>
                   {user.activeLicenses.count ? user.activeLicenses.count - (user.activeLicenses.assigned + 1) : 0}
-                </h3>
+                </Typography>
               </InfoNumbers>
-              <StopCircleIcon style={infoIconStyle} />
             </InfoCard>
           </Grid>
         </InfoContainer>

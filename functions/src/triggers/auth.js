@@ -31,19 +31,19 @@ exports.sendWelcomeEmail = functions.firestore
   .document("users/{userid}")
   .onCreate(async (snap, context) => {
     const newValue = snap.data();
-    let custId = (
+    let custdata = (
       await admin
         .firestore()
         .collection("customers")
         .doc(context.params.userid)
         .get()
-    ).data().stripeId;
-
-    await stripe.customers.update(custId, {
-      phone: newValue.phoneNumber,
-      email: newValue.email,
-      name: newValue.displayName,
-    });
+    ).data();
+    if (custdata)
+      await stripe.customers.update(custdata.stripeId, {
+        phone: newValue.phoneNumber,
+        email: newValue.email,
+        name: newValue.displayName,
+      });
 
     await admin
       .firestore()
@@ -732,20 +732,22 @@ exports.updateUser = functions.firestore
   .document("users/{userid}")
   .onUpdate(async (change, context) => {
     const newValue = change.after.data();
-    let custId = (
+    let custdata = (
       await admin
         .firestore()
         .collection("customers")
         .doc(context.params.userid)
         .get()
-    ).data().stripeId;
+    ).data();
 
-    let striperesult = await stripe.customers.update(custId, {
-      phone: newValue.phoneNumber,
-      email: newValue.email,
-      name: newValue.displayName,
-    });
-    console.log(striperesult, custId);
+    if (custdata) {
+      await stripe.customers.update(custdata.custId, {
+        phone: newValue.phoneNumber,
+        email: newValue.email,
+        name: newValue.displayName,
+      });
+    }
+
     await admin
       .firestore()
       .collection("invites")

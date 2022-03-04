@@ -19,7 +19,7 @@ import withAuth from './../HOC/withAuth';
 import { useDocument } from '@nandorojo/swr-firestore';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import { addMinutes } from 'date-fns';
+import { addSeconds } from 'date-fns';
 import Iconify from './../components/Iconify';
 // ----------------------------------------------------------------------
 import useAuth from './../hooks/useAuth';
@@ -37,18 +37,20 @@ let Page404 = () => {
   const { query, push } = useRouter();
   const { user } = useAuth();
   const { data, update, error, loading } = useDocument(`licenses/${query.licenceId}`, {
-    listen: true,
+    listen: false,
     parseDates: ['expiredAt', 'expiredAt'],
   });
   useEffect(() => {
     if (data?.expiredAt > new Date() && user.id) {
-      update({ isAccepted: true, expiredAt: addMinutes(new Date(), 1) });
+      update({ isAccepted: true, expiredAt: addSeconds(new Date(), 3) });
     }
   }, [data?.id]);
 
   useEffect(() => {
     if (!localStorage.getItem(`authToken`) && data?.id)
-      push(`/auth/Register?email=${data.email}&lastName=${data.lastName}&firstName=${data.firstName}`);
+      push(
+        `/auth/Register?email=${data.email}&lastName=${data.lastName}&firstName=${data.firstName}&return=${window.location.href}`
+      );
   }, [user?.id, data?.id]);
 
   return (
@@ -80,8 +82,8 @@ let Page404 = () => {
                 </m.div>
                 <Typography sx={{ color: 'text.secondary', my: 4 }}>
                   {data?.isAccepted && data?.expiredAt > new Date()
-                    ? 'You license is activated'
-                    : 'Sorry, we couldn’t not activate this licence since request has been expired.'}
+                    ? 'Your license is activated'
+                    : 'Sorry, we couldn’t activate this license since request has been expired.'}
                 </Typography>
                 <NextLink href="/">
                   <Button size="large" variant="contained">

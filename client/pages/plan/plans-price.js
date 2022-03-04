@@ -229,6 +229,10 @@ function PlanPricePage() {
     else return Object.values(data.metadata);
   };
   const startCheckoutSession = (id) => {
+    if (!user.id) {
+      return router.push('/auth/Login?return=' + window.location.href);
+    }
+
     setLoading(true);
     getCheckoutSession(id)
       .then((session) => {

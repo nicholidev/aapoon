@@ -20,10 +20,10 @@ import Image from '../../components/Image';
 import { RegisterForm } from '../../sections/auth/register';
 import AuthFirebaseSocials from '../../sections/auth/AuthFirebaseSocial';
 import Divider from '@mui/material/Divider';
-import { useRouter } from 'next/router';
+
 import withoutAut from '../../HOC/withOutAuth';
 // ----------------------------------------------------------------------
-
+import { useRouter } from 'next/router';
 const RootStyle = styled('div')(({ theme }) => ({
   [theme.breakpoints.up('md')]: {
     display: 'flex',
@@ -74,7 +74,7 @@ function Register() {
   let { query } = useRouter();
   const smUp = useResponsive('up', 'sm');
   const mdUp = useResponsive('up', 'md');
-
+  const router = useRouter();
   return (
     <Page title="Register">
       <RootStyle>
@@ -116,7 +116,10 @@ function Register() {
             <Divider sx={{ mt: 8 }} />
             <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
               Already have an account?{' '}
-              <RouterLink passHref href={'/auth/Login'}>
+              <RouterLink
+                passHref
+                href={router.query.return ? '/auth/Login?return=' + router.query.return : '/auth/Login'}
+              >
                 <Link variant="subtitle2">Login</Link>
               </RouterLink>
             </Typography>

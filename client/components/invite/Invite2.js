@@ -25,18 +25,12 @@ import {
   ListItemIcon,
   TablePagination,
 } from '@mui/material';
-// utils
-// _mock_
-// import { _appInvoices } from '../../../../_mock';
-// components
-import Label from '../Label';
-import Iconify from '../Iconify';
+
 import Scrollbar from '../Scrollbar';
 import useAuth from '../../hooks/useAuth';
 import moment from 'moment';
-import { getInviteList } from '../../api/user';
-import { UserListHead, UserListToolbar, UserMoreMenu } from '../../sections/@dashboard/user/list';
-const _appInvoices = [];
+import { useCollection } from '@nandorojo/swr-firestore';
+
 const AvtarContainer = styled(Card)(({ theme }) => ({
   width: 44,
   height: 44,
@@ -55,14 +49,23 @@ export default function InviteData(props) {
   const theme = useTheme();
   const [inviteData, setInviteData] = useState([]);
   const { user } = useAuth();
-  const [userList, setUserList] = useState([]);
+  //const [userList, setUserList] = useState([]);
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const {
+    data: userList,
+    update,
+    error,
+  } = useCollection(`invites`, {
+    where: ['invitedBy', '==', user.id],
 
+    listen: true,
+    parseDates: ['createdAt'],
+  });
   const handleRequestSort = (property) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
@@ -106,25 +109,15 @@ export default function InviteData(props) {
   const handleDeleteUser = (userId) => {
     const deleteUser = userList.filter((user) => user.id !== userId);
     setSelected([]);
-    setUserList(deleteUser);
+    // setUserList(deleteUser);
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
+  const emptyRows = Math.max(0, (1 + page) * rowsPerPage - userList?.length);
 
   const filteredUsers = userList;
 
-  const isNotFound = !userList.length && Boolean(filterName);
-  useEffect(() => {
-    if (user.id)
-      getInviteList(user.id)
-        .then((res) => {
-          console.log(res.data);
-          setUserList(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-  }, [user.id, props.fetch]);
+  const isNotFound = !userList?.length && Boolean(filterName);
+
   return (
     <>
       <Scrollbar>
@@ -144,7 +137,7 @@ export default function InviteData(props) {
               </TableRow>
             </TableHead>
             <TableBody>
-              {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+              {filteredUsers?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                 const { id, displayName, email, profilePic, status, avatarUrl, isVerified } = row;
                 const isItemSelected = selected.indexOf(name) !== -1;
 
@@ -172,7 +165,7 @@ export default function InviteData(props) {
                     </TableCell>
                     <TableCell sx={{ p: '8px' }}>
                       <Typography variant="subtitle2" color="text.primary">
-                        {moment(new Date(row.createdAt._seconds * 1000)).format('ll')}
+                        {moment(new Date(row.createdAt)).format('ll')}
                       </Typography>
                     </TableCell>
                     <TableCell sx={{ p: '8px' }}>
@@ -201,9 +194,10 @@ export default function InviteData(props) {
           </Table>
         </TableContainer>
         <TablePagination
-          rowsPerPageOptions={[2, 10, 25]}
+          sx={{ borderTop: 'none' }}
+          rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={userList.length}
+          count={userList?.length || 0}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={(e, page) => setPage(page)}

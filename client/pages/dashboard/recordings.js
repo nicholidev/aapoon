@@ -14,6 +14,7 @@ import {
   ListItemIcon,
   ListItemText,
   styled,
+  Box,
   Typography,
 } from '@mui/material';
 // layouts
@@ -97,11 +98,11 @@ const InfoContainer = styled(Grid)(({ theme }) => ({
   },
 }));
 
-const DataSection = styled("div")(({ theme }) => ({
+const DataSection = styled('div')(({ theme }) => ({
   margin: theme.spacing(3, 2, 2),
   backgroundColor: '#fff',
   borderRadius: '10px',
-  height: 600,
+
   [theme.breakpoints.down('md')]: {
     marginLeft: 0,
     marginRight: 0,
@@ -161,9 +162,13 @@ function RecordingsPage() {
           <DashboardInfoHeader />
           <DataSection>
             <DataHead>
-              <h4 style={{ display: 'inline' }}>Recordings</h4>
+              <Typography variant="h5" sx={{ ml: 1 }} style={{ display: 'inline' }}>
+                Recent Invites
+              </Typography>
             </DataHead>
-            <RecordingData fetch={fetch} />
+            <Box sx={{ p: 4, pt: 0 }}>
+              <RecordingData fetch={fetch} />
+            </Box>
           </DataSection>
         </Content>
       </Container>

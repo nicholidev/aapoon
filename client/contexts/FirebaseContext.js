@@ -106,7 +106,11 @@ function AuthProvider({ children }) {
                   type: 'UPDATE',
                   payload: { user: { uid: user.uid } },
                 });
-                router.push('/auth/business-profile');
+                router.push(
+                  router.query.return
+                    ? '/auth/business-profile?return=' + router.query.return
+                    : '/auth/business-profile'
+                );
               } else {
                 localStorage.setItem('isAuthenticated', true);
                 firebase
@@ -133,7 +137,11 @@ function AuthProvider({ children }) {
           payload: { isAuthenticated: true, user },
         });
         if (!user?.phoneNumber) {
-          router.push('/auth/VerificationProcess');
+          router.push(
+            router.query.return
+              ? '/auth/VerificationProcess?return=' + router.query.return
+              : '/auth/VerificationProcess'
+          );
           localStorage.removeItem('isAuthenticated');
         } else {
         }
@@ -194,7 +202,37 @@ function AuthProvider({ children }) {
           });
         });
     }
-  }, [state.user?.uid, state.user?.subscription]);
+  }, [state.user?.subscription]);
+
+  useEffect(() => {
+    if (state.user?.uid) {
+      firebase
+        .firestore()
+        .collection('licenses')
+        .where('email', '==', state.user?.email)
+        .where('isAccepted', '==', true)
+        .where('isActivated', '==', true)
+        .onSnapshot(async (snapshot) => {
+          let docs = [];
+          // In this implementation we only expect one active or trialing subscription to exist.
+          for (const doc of snapshot.docs) {
+            let data = doc.data();
+
+            docs.push({ ...data });
+          }
+
+          console.log(docs);
+
+          dispatch({
+            type: 'UPDATE_SUB',
+            //payload: {},
+            payload: {
+              assignedToMe: docs || [],
+            },
+          });
+        });
+    }
+  }, [state.user?.email]);
 
   useEffect(() => {
     getCountry().then((res) => {
@@ -366,7 +404,11 @@ function AuthProvider({ children }) {
               .auth()
               .signInWithPhoneNumber(phoneNumber, appVerifier)
               .then((confirmationResult) => {
-                router.push('/auth/VerificationProcess');
+                router.push(
+                  router.query.return
+                    ? '/auth/VerificationProcess?return=' + router.query.return
+                    : '/auth/VerificationProcess'
+                );
                 resolve('success');
                 dispatch({
                   type: 'UPDATE',
@@ -504,6 +546,7 @@ function AuthProvider({ children }) {
           isEmailVerified: state.user?.emailVerified,
           id: state.user?.uid,
           email: state.user?.email,
+          assignedToMe: [],
           photoURL: state.user?.photoURL || profile?.photoURL,
           displayName: state.user?.displayName || profile?.displayName,
           activeLicenses: { count: 0, assigned: 0 },

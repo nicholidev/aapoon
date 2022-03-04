@@ -37,6 +37,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import StarIcon from '@mui/icons-material/Star';
 import AppNewInvoice from '../../sections/@dashboard/general/app/AppNewInvoice';
 import InviteData from '../../components/invite/InviteData';
+import LicenceData from '../../components/licence';
 import InviteModal from '../../components/invite/InviteModal';
 import { useState } from 'react';
 import UpdateUserProfile from '../../sections/user/UpdateUserProfile';
@@ -152,7 +153,7 @@ function ProfilePage() {
   };
 
   let activeSub = user.subscription?.find((i) => i.status == 'active');
-
+  console.log(user);
   return (
     <Page title="Dashboard" sx={{ width: '100vw' }}>
       <GlobalStyles
@@ -160,7 +161,7 @@ function ProfilePage() {
           body: { backgroundColor: '#F1F1F1' },
         }}
       />
-      <Container maxWidth={themeStretch ? false : 'xl'} sx={{ justifyContent: 'center' }}>
+      <Container maxWidth={'lg'} sx={{ justifyContent: 'center' }}>
         <Content>
           <DataSection>
             <DataHead>
@@ -240,7 +241,9 @@ function ProfilePage() {
                       <Typography variant="subtitle2" color="GrayText">
                         Subscription Type
                       </Typography>
-                      <Typography variant="h6">{user?.activeLicenses?.count ? 'Premium' : 'Free'}</Typography>
+                      <Typography variant="h6">
+                        {user?.activeLicenses?.count || user?.assignedToMe?.length ? 'Premium' : 'Free'}
+                      </Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
@@ -271,20 +274,22 @@ function ProfilePage() {
                       <Typography variant="subtitle2" color="GrayText">
                         No. Of Licenses
                       </Typography>
-                      <Typography variant="h6">{user?.activeLicenses?.count || "NA"}</Typography>
+                      <Typography variant="h6">{user?.activeLicenses?.count || user?.assignedToMe?.length}</Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
                         Assigned Licenses
                       </Typography>
-                      <Typography variant="h6">{user?.activeLicenses?.assigned || "NA"}</Typography>
+                      <Typography variant="h6">{user?.activeLicenses?.assigned || 'NA'}</Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
                         Unassigned Licenses
                       </Typography>
                       <Typography variant="h6">
-                        {user.activeLicenses.count ? user.activeLicenses.count - (user.activeLicenses.assigned + 1) : "NA"}
+                        {user.activeLicenses.count
+                          ? user.activeLicenses.count - (user.activeLicenses.assigned + 1)
+                          : 'NA'}
                       </Typography>
                     </Stack>
                   </Stack>
@@ -350,7 +355,63 @@ function ProfilePage() {
                 </Grid>
               </Grid>
             </DataHead>
-            <InviteData fetch={fetch} />
+            {user?.activeLicenses?.count > 1 ? (
+              <DataSection>
+                <DataHead sx={{ width: '100%', justifyContent: 'space-between', display: 'flex', px: 4, py: 3 }}>
+                  <Typography variant="h5" style={{ display: 'inline' }}>
+                    Assign license
+                  </Typography>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => push('/dashboard/assign-license')}
+                    startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
+                  >
+                    {' '}
+                    Assigned license
+                  </Button>
+                </DataHead>
+                <Box sx={{ p: 4, pt: 0, py: 0 }}>
+                  <LicenceData fetch={fetch} />
+                </Box>
+                <InviteModal
+                  open={inviteOpen}
+                  handleClose={() => {
+                    setInviteOpen(false);
+                    setFetch(!fetch);
+                  }}
+                />
+                {/* <AppNewInvoice/> */}
+              </DataSection>
+            ) : (
+              <DataSection>
+                <DataHead sx={{ width: '100%', justifyContent: 'space-between', display: 'flex', px: 4, py: 3 }}>
+                  <Typography variant="h5" style={{ display: 'inline' }}>
+                    Recent Invites
+                  </Typography>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => setInviteOpen(true)}
+                    startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
+                  >
+                    {' '}
+                    Invite User
+                  </Button>
+                </DataHead>
+                <Box sx={{ p: 4, pt: 0 }}>
+                  <InviteData fetch={fetch} />
+                </Box>
+                <InviteModal
+                  open={inviteOpen}
+                  handleClose={() => {
+                    setInviteOpen(false);
+                    setFetch(!fetch);
+                  }}
+                />
+                {/* <AppNewInvoice/> */}
+              </DataSection>
+            )}
           </DataSection>
         </Content>
       </Container>
