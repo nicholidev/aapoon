@@ -28,7 +28,7 @@ export default function PlansComparison(props) {
     { optionName: '2 GB Cloud recording', freeUsers: false, premiumUsers: true, platinumUser: true },
     { optionName: 'Organization branding', freeUsers: false, premiumUsers: false, platinumUser: true },
     { optionName: 'Background Dias', freeUsers: false, premiumUsers: false, platinumUser: true },
-    { optionName: 'Tracking attendance', freeUsers: false, premiumUsers: true, platinumUser: true },
+    { optionName: 'Tracking attendance', freeUsers: false, premiumUsers: false, platinumUser: true },
   ]);
 
   return (
@@ -37,28 +37,32 @@ export default function PlansComparison(props) {
         <Table
           sx={{
             '& .MuiTableCell-head': {
-              bgcolor: 'secondary.darker',
-              color: 'text.secondary',
+              bgcolor: '#E9EEF3',
+              color: 'secondary.darker',
             },
           }}
         >
           <TableHead>
             <TableRow key={'tableheader'}>
-              <TableCell />
-              <TableCell style={{ borderLeft: '1px solid #000' }}>
-                <Typography variant="subtitle1" color="common.white" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
+              <TableCell align="center">
+                <Typography variant="subtitle1" color="inherit" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
+                  Benefits
+                </Typography>
+              </TableCell>
+              <TableCell align="center" style={{ borderLeft: '1px solid #D3DCE6' }}>
+                <Typography variant="subtitle1" color="inherit" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
                   Free users
                 </Typography>
               </TableCell>
-              <TableCell style={{ borderLeft: '1px solid #000' }}>
+              <TableCell align="center" style={{ borderLeft: '1px solid #D3DCE6' }}>
                 {' '}
-                <Typography variant="subtitle1" color="common.white" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
+                <Typography variant="subtitle1" color="inherit" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
                   Premium users
                 </Typography>
               </TableCell>
-              <TableCell style={{ borderLeft: '1px solid #000' }}>
+              <TableCell align="center" style={{ borderLeft: '1px solid #D3DCE6' }}>
                 {' '}
-                <Typography variant="subtitle1" color="common.white" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
+                <Typography variant="subtitle1" color="inherit" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
                   Platinum users
                 </Typography>
               </TableCell>
@@ -69,10 +73,10 @@ export default function PlansComparison(props) {
             {planData.map((row) => (
               <TableRow key={row.optionName}>
                 <TableCell
-                  style={{ border: '1px solid #000' }}
+                  style={{ border: '1px solid #D3DCE6' }}
                   sx={{ fontSize: { xs: '12px', md: '16px' } }}
                 >{`${row.optionName}`}</TableCell>
-                <TableCell align="center" style={{ border: '1px solid #000' }}>
+                <TableCell align="center" style={{ border: '1px solid #D3DCE6' }}>
                   {row.freeUsers ? (
                     <Iconify
                       icon={'emojione-v1:left-check-mark'}
@@ -85,7 +89,7 @@ export default function PlansComparison(props) {
                     />
                   )}
                 </TableCell>
-                <TableCell align="center" style={{ border: '1px solid #000' }}>
+                <TableCell align="center" style={{ border: '1px solid #D3DCE6' }}>
                   {row.premiumUsers ? (
                     <Iconify
                       icon={'emojione-v1:left-check-mark'}
@@ -98,7 +102,7 @@ export default function PlansComparison(props) {
                     />
                   )}
                 </TableCell>
-                <TableCell align="center" style={{ border: '1px solid #000' }}>
+                <TableCell align="center" style={{ border: '1px solid #D3DCE6' }}>
                   {row.platinumUser ? (
                     <Iconify
                       icon={'emojione-v1:left-check-mark'}

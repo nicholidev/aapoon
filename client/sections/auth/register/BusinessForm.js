@@ -38,7 +38,7 @@ import { useRouter } from 'next/router'
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../../utils/errorMessage';
 export default function RegisterForm(props) {
-  const { registerBusiness,user } = useAuth();
+  const { registerBusiness,user ,deleteAccount} = useAuth();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
@@ -50,7 +50,7 @@ export default function RegisterForm(props) {
       .url('Please enter valid url with http or https')
     ,
     teamsize: Yup.string().required('Teamsize is required'),
-    address1: Yup.string().min(2, 'Too Short!').required('Adress is required'),
+    address1: Yup.string().min(2, 'Too Short!').required('Address is required'),
     address2: Yup.string(),
     state: Yup.string().min(2, 'Too Short!').required('State is required').matches(/^[aA-zZ\s]+$/, "Only alphabets are allowed for this field "),
     pincode: Yup.number('Please enter valid code').required('pincode is required'),
@@ -178,7 +178,7 @@ export default function RegisterForm(props) {
               />
               <TextField
                 fullWidth
-                placeholder="Address 2 *"
+                placeholder="Address 2 "
                 {...getFieldProps('address2')}
                 error={Boolean(touched.address2 && errors.address2)}
                 helperText={touched.address2 && errors.address2}
@@ -215,9 +215,10 @@ export default function RegisterForm(props) {
                   error={Boolean(touched.teamsize && errors.teamsize)}
                   helperText={touched.teamsize && errors.teamsize}
                 >
-                  <MenuItem value={"0-10"}>0-10 Employees</MenuItem>
-                  <MenuItem value={"10-50"}>10-50 Employees</MenuItem>
+                  <MenuItem value={"0-50"}>0-50 Employees</MenuItem>
                   <MenuItem value={"50-100"}>50-100 Employees</MenuItem>
+                  <MenuItem value={"100-500"}>100-500 Employees</MenuItem>
+                  <MenuItem value={"500 & more"}>500 & more Employees</MenuItem>
                 </Select>
               </Stack>
             </Grid>
@@ -265,13 +266,13 @@ export default function RegisterForm(props) {
             </Grid>
           </Grid>
           <Stack justifyContent={'flex-end'} direction={{ xs: 'column', sm: 'row' }} spacing={{ xs: 1, sm: 2, md: 2 }}>
-          {props.isUpdate &&
-            <Button size="large" color="primary" onClick={() => router.back()}>
+       
+            <Button size="large" color="primary" onClick={() => deleteAccount()}>
               Cancel
             </Button>
-           }
+           
             <LoadingButton size="large" type="submit" variant="contained" loading={isSubmitting}>
-              {props.isUpdate? "Update":"Register"}
+              {props.isUpdate? "Update":"Save details"}
             </LoadingButton>
           </Stack>
         </Stack>

@@ -29,11 +29,11 @@ export const defaultSettings = {
   themeStretch: false,
 };
 export const FIREBASE_API = {
-  apiKey: 'AIzaSyB0cYGBCsz8NoKOqK7BrBeSMyTNQCJvo9Q',
-  authDomain: 'meetaap-55e58.firebaseapp.com',
-  projectId: 'meetaap-55e58',
-  storageBucket: 'meetaap-55e58.appspot.com',
-  messagingSenderId: '515046531660',
-  appId: '1:515046531660:web:4b77b298996205be8b4ae9',
-  measurementId: '${config.measurementId}',
+  apiKey: process.env.NEXT_PUBLIC_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_PROJECT_ID,
+  appId: process.env.NEXT_PUBLIC_APP_ID,
+  measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID,
 };

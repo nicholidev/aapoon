@@ -8,7 +8,7 @@ const functions = require("firebase-functions");
 const AWS = require("aws-sdk");
 
 const { sendEmail } = require("./../services/Mail");
-
+const Stripe = require("stripe");
 AWS.config.setPromisesDependency();
 AWS.config.update({
   accessKeyId: config.awsAccessKey,
@@ -16,10 +16,43 @@ AWS.config.update({
   region: config.awsRegion,
 });
 
+const apiVersion = "2020-08-27";
+const stripe = new Stripe(functions.config().stripe.rkey, {
+  apiVersion,
+  // Register extension as a Stripe plugin
+  // https://stripe.com/docs/building-plugins#setappinfo
+  appInfo: {
+    name: "Firebase firestore-stripe-payments",
+    version: "0.2.4",
+  },
+});
+
 exports.sendWelcomeEmail = functions.firestore
   .document("users/{userid}")
   .onCreate(async (snap, context) => {
     const newValue = snap.data();
+    let custdata = (
+      await admin
+        .firestore()
+        .collection("customers")
+        .doc(context.params.userid)
+        .get()
+    ).data();
+    if (custdata)
+      await stripe.customers.update(custdata.stripeId, {
+        phone: newValue.phoneNumber,
+        email: newValue.email,
+        name: newValue.displayName,
+      });
+
+    await admin
+      .firestore()
+      .collection("invites")
+      .doc(newValue.email.toLowerCase())
+      .update({
+        ...newValue,
+        status: "joined",
+      });
     let mail = await sendEmail(
       newValue.email,
       "Welcome to aapoon Meet",
@@ -583,7 +616,7 @@ exports.sendWelcomeEmail = functions.firestore
                                                 ></span
                                               ><br /><br /><br /><span
                                                 style="font-size: 18px"
-                                                >Welcome to Aapoon meet ! <br /><br />
+                                                >Welcome to aapoon meet ! <br /><br />
                                                 We are very excited to have you onboard,
                                                 Your account is now set up and ready to
                                                 use. Lets get started with secured
@@ -592,7 +625,7 @@ exports.sendWelcomeEmail = functions.firestore
                                             </p>
                                             <br /><br /><span style="font-size: 18px"
                                               >See you on the other side.
-                                              <br /><br />Regards,<br /> Aapoon
+                                              <br /><br />Regards,<br /> aapoon
                                               Support</span
                                             >
                                             <p
@@ -669,7 +702,7 @@ exports.sendWelcomeEmail = functions.firestore
                                                 font-size: 14px;
                                               "
                                             >
-                                              © 2021, Aapoon Meet. All Right’s Reserved
+                                              © 2022, aapoon Meet. All Right’s Reserved
                                             </p>
                                           </td>
                                         </tr>
@@ -693,4 +726,34 @@ exports.sendWelcomeEmail = functions.firestore
     );
 
     return mail;
+  });
+
+exports.updateUser = functions.firestore
+  .document("users/{userid}")
+  .onUpdate(async (change, context) => {
+    const newValue = change.after.data();
+    let custdata = (
+      await admin
+        .firestore()
+        .collection("customers")
+        .doc(context.params.userid)
+        .get()
+    ).data();
+
+    if (custdata) {
+      await stripe.customers.update(custdata.custId, {
+        phone: newValue.phoneNumber,
+        email: newValue.email,
+        name: newValue.displayName,
+      });
+    }
+
+    await admin
+      .firestore()
+      .collection("invites")
+      .doc(newValue.email.toLowerCase())
+      .update({
+        ...newValue,
+        status: "joined",
+      });
   });

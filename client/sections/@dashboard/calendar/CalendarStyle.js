@@ -15,7 +15,7 @@ const CalendarStyle = styled('div')(({ theme }) => ({
     '--fc-border-color': theme.palette.divider,
     '--fc-event-border-color': theme.palette.info.light,
     '--fc-now-indicator-color': theme.palette.error.main,
-    '--fc-today-bg-color': theme.palette.action.selected,
+    '--fc-today-bg-color': '#fff',
     '--fc-page-bg-color': theme.palette.background.default,
     '--fc-neutral-bg-color': theme.palette.background.neutral,
     '--fc-list-event-hover-bg-color': theme.palette.action.hover,
@@ -36,14 +36,11 @@ const CalendarStyle = styled('div')(({ theme }) => ({
   },
 
   // Event
-  '& .fc .fc-event': {
-    borderColor: 'transparent',
-    backgroundColor: 'transparent',
-  },
+  '& .fc .fc-event': {},
   '& .fc .fc-event .fc-event-main': {
     padding: '2px 4px',
     borderRadius: 4,
-    backgroundColor: theme.palette.common.white,
+
     transition: theme.transitions.create('filter'),
     '&:hover': { filter: 'brightness(0.92)' },
     '&:before,&:after': {
@@ -59,28 +56,27 @@ const CalendarStyle = styled('div')(({ theme }) => ({
     '&:before': {
       zIndex: 8,
       opacity: 0.32,
-      border: 'solid 1px currentColor',
     },
     '&:after': {
       zIndex: 7,
       opacity: 0.24,
-      backgroundColor: 'currentColor',
     },
   },
   '& .fc .fc-event .fc-event-main-frame': {
-    fontSize: 13,
-    lineHeight: '20px',
-    filter: 'brightness(0.24)',
+    fontSize: 12,
+    lineHeight: '24px',
+    display: 'block',
   },
   '& .fc .fc-daygrid-event .fc-event-title': {
     overflow: 'hidden',
     whiteSpace: 'nowrap',
     textOverflow: 'ellipsis',
+    color: 'rgba(117, 114, 114, 1)',
   },
   '& .fc .fc-event .fc-event-time': {
     padding: 0,
     overflow: 'unset',
-    fontWeight: theme.typography.fontWeightBold,
+    fontWeight: theme.typography.fontWeightMedium,
   },
 
   // Popover
@@ -139,8 +135,15 @@ const CalendarStyle = styled('div')(({ theme }) => ({
     ...theme.typography.body2,
     color: theme.palette.text.secondary,
   },
+  '& .fc .fc-today-bg-color': {
+    backgroundColor: 'red',
+  },
   '& .fc .fc-timegrid-slot-label-cushion': {
     ...theme.typography.body2,
+  },
+  '& .fc .fc-timegrid-event .fc-event-main-frame': {
+    fontSize: 12,
+    lineHeight: '24px',
   },
 
   // Agenda View

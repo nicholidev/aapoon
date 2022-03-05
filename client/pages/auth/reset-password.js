@@ -35,7 +35,6 @@ const OuterDiv = styled('div')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   padding: '22px 15px',
-  border: '1px solid #000',
 }));
 
 const Main = styled('div')(({ theme }) => ({

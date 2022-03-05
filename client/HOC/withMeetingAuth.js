@@ -94,7 +94,23 @@ const withMeetingAuth = (WrappedComponent) => {
             jwt: localStorage.getItem('mjwt'),
           });
         }
-      }, [query?.meetingid, token]);
+      }, [query?.meetingid]);
+
+      useEffect(() => {
+        if (localStorage.getItem('isAuthenticated') && !meetData?.password) {
+          setAuthMeeting({
+            isAuth: true,
+            id: query.meetingid,
+            jwt: token,
+          });
+        } else {
+          setAuthMeeting({
+            isAuth: localStorage.getItem('mid') == query.meetingid,
+            id: localStorage.getItem('mid'),
+            jwt: localStorage.getItem('mjwt'),
+          });
+        }
+      }, [token, query?.meetingid]);
 
       useEffect(() => {
         setRequirePass(false);
@@ -172,11 +188,11 @@ const withMeetingAuth = (WrappedComponent) => {
                 <div id="captcha-container"></div>
                 <Typography variant="caption" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
                   By clicking on Join meeting, you agree to our &nbsp;
-                  <Link underline="always" color="text.primary" href="#">
-                    Terms and conditions &nbsp;
+                  <Link underline="always" color="text.primary" href="/about/terms-of-service">
+                    Terms of Service &nbsp;
                   </Link>
                   and you acknowledge having read our &nbsp;
-                  <Link underline="always" color="text.primary" href="#">
+                  <Link underline="always" color="text.primary" href="/about/privacy-policy">
                     Privacy Policy
                   </Link>
                   .
@@ -184,7 +200,7 @@ const withMeetingAuth = (WrappedComponent) => {
                 <Divider sx={{ mt: 8 }} />
                 <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
                   Already have an account?{' '}
-                  <Link passHref href={'/auth/Login'}>
+                  <Link passHref href={'/auth/Login?return=' + window.location.href}>
                     <Link variant="subtitle2">Login</Link>
                   </Link>
                 </Typography>

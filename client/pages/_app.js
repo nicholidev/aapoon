@@ -12,9 +12,9 @@ import 'react-quill/dist/quill.snow.css';
 import 'react-lazy-load-image-component/src/effects/blur.css';
 import 'react-lazy-load-image-component/src/effects/opacity.css';
 import 'react-lazy-load-image-component/src/effects/black-and-white.css';
-import '@fullcalendar/common/main.css';
-import '@fullcalendar/daygrid/main.css';
-import '@fullcalendar/timegrid/main.css';
+// import '@fullcalendar/common/main.css';
+// import '@fullcalendar/daygrid/main.css';
+// import '@fullcalendar/timegrid/main.css';
 import PropTypes from 'prop-types';
 // next
 import Head from 'next/head';
@@ -28,31 +28,64 @@ import { CollapseDrawerProvider } from '../contexts/CollapseDrawerContext';
 import ThemeProvider from '../theme';
 import GlobalStyles from '../theme/globalStyles';
 // components
-import Settings from '../components/settings';
-import RtlLayout from '../components/RtlLayout';
+
 import ProgressBar from '../components/ProgressBar';
-import ThemeColorPresets from '../components/ThemeColorPresets';
+import Box from '@mui/material/Box';
+
 import MotionLazyContainer from '../components/animate/MotionLazyContainer';
 import { SnackbarProvider } from 'notistack';
 // ----------------------------------------------------------------------
 import { AuthProvider } from '../contexts/FirebaseContext';
 import { addJWTInterceptor } from '../utils/Interceptor';
-import { useEffect } from 'react';
-import 'react-phone-number-input/style.css';
+import ScreenRotationIcon from '@mui/icons-material/ScreenRotation';
+import { useEffect, useState } from 'react';
+import { isJwtExpired } from 'jwt-check-expiration';
+import LoadingScreen from '../components/LoadingScreen';
+import ModalSub from '../components/SubscriiptionModal';
+
+import 'firebase/firestore';
+import 'firebase/auth';
+import { FuegoProvider } from '@nandorojo/swr-firestore';
+import { Fuego } from '../Fuego';
+import { FIREBASE_API } from '../config';
+import createEmotionCache from '../src/createEmotionCache';
+import { CacheProvider } from '@emotion/react';
+
 MyApp.propTypes = {
   Component: PropTypes.func,
   pageProps: PropTypes.any,
 };
-
+const fuego = new Fuego(FIREBASE_API);
+const clientSideEmotionCache = createEmotionCache();
 export default function MyApp(props) {
-  const { Component, pageProps } = props;
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
 
+  const [isLandscape, setLandScape] = useState(false);
+  const [loading, setLoading] = useState(true);
   const getLayout = Component.getLayout ?? ((page) => page);
   useEffect(() => {
-    if (localStorage.getItem('authToken')) addJWTInterceptor(localStorage.getItem('authToken'));
+    window.addEventListener('orientationchange', (event) => {
+      if (event.target.screen.orientation.angle == 90 || event.target.screen.orientation.angle == 270) {
+        setLandScape(true);
+      } else {
+        setLandScape(false);
+      }
+    });
+
+    if (localStorage.getItem('authToken') && !isJwtExpired(localStorage.getItem('authToken'))) {
+      addJWTInterceptor(localStorage.getItem('authToken'));
+    }
+
+    window.onload = function () {
+      // can also use window.addEventListener('load', (event) => {
+      setLoading(false);
+
+      // image is loaded at this time
+    };
+    // if (localStorage.getItem('authToken')) ;
   }, []);
   return (
-    <>
+    <CacheProvider value={emotionCache}>
       <Head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
       </Head>
@@ -60,16 +93,47 @@ export default function MyApp(props) {
       <SettingsProvider>
         <CollapseDrawerProvider>
           <ThemeProvider>
-            <SnackbarProvider autoHideDuration={3000}>
-              <MotionLazyContainer>
-                <GlobalStyles />
-                <ProgressBar />
-                <AuthProvider>{getLayout(<Component {...pageProps} />)}</AuthProvider>
-              </MotionLazyContainer>
-            </SnackbarProvider>
+            <FuegoProvider fuego={fuego}>
+              <SnackbarProvider autoHideDuration={3000}>
+                <MotionLazyContainer>
+                  <GlobalStyles />
+                  <ProgressBar />
+
+                  {!isLandscape ? (
+                    <AuthProvider>
+                      <LoadingScreen load={loading}>
+                        <ModalSub />
+
+                        {!loading && getLayout(<Component {...pageProps} />)}
+                      </LoadingScreen>
+                    </AuthProvider>
+                  ) : (
+                    <Box
+                      sx={{
+                        backgroundColor: '#E25630',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexDirection: 'column',
+                      }}
+                      style={{ height: '100vh', width: '100vw' }}
+                    >
+                      <ScreenRotationIcon style={{ fontSize: 150, color: '#fff' }} />
+                      <br />
+                      <br />
+                      <h3 style={{ color: '#fff', textAlign: 'center' }}>
+                        Landscape mode is not supported
+                        <br />
+                        please rotate to portrait mode
+                      </h3>
+                    </Box>
+                  )}
+                </MotionLazyContainer>
+              </SnackbarProvider>
+            </FuegoProvider>
           </ThemeProvider>
         </CollapseDrawerProvider>
       </SettingsProvider>
-    </>
+    </CacheProvider>
   );
 }

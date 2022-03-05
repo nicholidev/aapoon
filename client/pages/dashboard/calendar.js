@@ -48,23 +48,24 @@ import withAuth from '../../HOC/withAuth';
 import useAuth from '../../hooks/useAuth';
 import InstantMeetingPopup from '../../sections/meeting/InstantMeetingPopup';
 import MeetingDetailsPopup from '../../sections/meeting/MeetingDetailsPopup';
+import DashboardSidebar from '../../components/dashboard/DashboardSidebar';
 const Sidebar = styled('header')(({ theme }) => ({
-  width: '240px',
+  width: '320px',
   height: '100%',
   padding: theme.spacing(1),
   paddingTop: theme.spacing(2),
-  paddingLeft: theme.spacing(4),
+  paddingLeft: theme.spacing(2),
   [theme.breakpoints.down('md')]: {
     display: 'none',
   },
 }));
 
 const Content = styled('div')(({ theme }) => ({
-  width: 'calc(100% - 240px)',
+  width: 'calc(100% - 320px)',
   height: '100%',
   padding: theme.spacing(1),
   paddingTop: theme.spacing(6),
-  paddingLeft: theme.spacing(4),
+  paddingLeft: theme.spacing(2),
 
   [theme.breakpoints.down('md')]: {
     width: '100%',
@@ -74,8 +75,7 @@ const Content = styled('div')(({ theme }) => ({
 }));
 
 const SideSection = styled(Card)(({ theme }) => ({
-  paddingTop: 16,
-  paddingBottom: 16,
+  padding: '16px 0',
   width: '100%',
   // maxHeight: "650px",
   marginTop: theme.spacing(4),
@@ -125,6 +125,7 @@ function CalendarPage() {
       console.log('event exexcuted', date);
       getMeetingEvents(startOfMonth(date), endOfMonth(date), user.id).then((data) => {
         setEvents(data);
+        console.log('event', data);
       });
     }
   }, [user, date]);
@@ -195,95 +196,14 @@ function CalendarPage() {
         data={meetingOpen.data}
         onClose={() => setMeetingOpen({ isOpen: false })}
       ></MeetingDetailsPopup>
-      <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex' }}>
-        <Sidebar>
-          <SideSection>
-            <List sx={{ width: '100%' }}>
-              <Link href="/dashboard/one" passHref={true}>
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <Iconify icon={'lucide:layout-dashboard'} width={24} height={24} />
-                    </ListItemIcon>
-                    <ListItemText primary={<h4>Dashboard</h4>} />
-                  </ListItemButton>
-                </ListItem>
-              </Link>
-              <ListItem disablePadding selected={true}>
-                <ListItemButton>
-                  <ListItemIcon>
-                    <Iconify icon={'uil:calender'} width={24} height={24} />
-                  </ListItemIcon>
-                  <ListItemText primary={<h4>Calendar</h4>} />
-                </ListItemButton>
-              </ListItem>
-
-              <Link href="/dashboard/recordings" passHref={true}>
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon sx={{ pl: '3px' }}>
-                      <Iconify icon={'ant-design:video-camera-add-outlined'} width={24} height={24} />
-                    </ListItemIcon>
-                    <ListItemText primary={<h4>Recordings</h4>} />
-                  </ListItemButton>
-                </ListItem>
-              </Link>
-            </List>
-          </SideSection>
-          <SideSection>
-            <List sx={{ width: '100%' }}>
-              <ListItem disablePadding>
-                <ListItemButton>
-                  <ListItemText primary={<h4>Schedule Meetings</h4>} />
-                </ListItemButton>
-              </ListItem>
-              <ListItem disablePadding>
-                <CalendarStyle>
-                  <FullCalendar
-                    droppable
-                    selectable
-                    events={events}
-                    allDaySlot={false}
-                    nowIndicator
-                    views={{
-                      timeGridFourDay: {
-                        type: 'timeGrid',
-                        duration: { days: 4 },
-                        buttonText: '4 day',
-                      },
-                    }}
-                    slotDuration={'00:15:00'}
-                    rerenderDelay={10}
-                    initialDate={date}
-                    initialView={'timeGridDay'}
-                    dayMaxEventRows={3}
-                    eventDisplay="block"
-                    headerToolbar={false}
-                    eventResizableFromStart
-                    select={handleSelectRange}
-                    // eventDrop={handleDropEvent}
-                    eventClick={handleSelectEvent}
-                    // eventResize={handleResizeEvent}
-                    height={isDesktop ? 320 : 'auto'}
-                    plugins={[dayGridPlugin, timeGridPlugin]}
-                  />
-                </CalendarStyle>
-              </ListItem>
-            </List>
-          </SideSection>
-        </Sidebar>
+      <Container maxWidth={'xl'} sx={{ display: 'flex' }}>
+        <DashboardSidebar currentPage="calendar" />
         <Content>
           <DataSection>
             <DataHead>
-              <Button variant="contained" color="primary" onClick={() => push('/dashboard/schedule-meeting')}>
-                Schedule Meeting
+              <Button variant="outlined" color="primary" disabled>
+                Today
               </Button>
-              &nbsp;&nbsp;&nbsp;&nbsp;
-              <InstantMeetingPopup>
-                <Button variant="contained" color="primary">
-                  Instant Meeting
-                </Button>
-              </InstantMeetingPopup>
             </DataHead>
             {/* <InviteData fetch={fetch} />
             <InviteModal
@@ -314,6 +234,12 @@ function CalendarPage() {
                 initialDate={date}
                 initialView={view}
                 dayMaxEventRows={3}
+                displayEventEnd={true}
+                eventTimeFormat={{
+                  hour: 'numeric',
+                  minute: '2-digit',
+                  meridiem: 'short',
+                }}
                 eventDisplay="block"
                 headerToolbar={false}
                 allDayMaintainDuration

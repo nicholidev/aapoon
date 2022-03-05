@@ -117,9 +117,7 @@ function PrivacyPolicy() {
                     <Typography variant="subtitle1">How meeting invitation link is sent?</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography>
-                      Meeting invitation link can be sent through either a schedule meeting or an instant meeting.
-                    </Typography>
+                    <Typography>One can send a meeting invitation link as a scheduled or instant meeting.</Typography>
                   </AccordionDetails>
                 </Accordion>
                 <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
@@ -128,10 +126,10 @@ function PrivacyPolicy() {
                     aria-controls="panel2bh-content"
                     id="panel2bh-header"
                   >
-                    <Typography variant="subtitle1">Can I purchase one license?</Typography>
+                    <Typography variant="subtitle1">Can I purchase one Subscription?</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography>Yes. You can purchase only one license also.</Typography>
+                    <Typography>You can purchase a single subscription also.</Typography>
                   </AccordionDetails>
                 </Accordion>
                 <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
@@ -140,10 +138,10 @@ function PrivacyPolicy() {
                     aria-controls="panel3bh-content"
                     id="panel3bh-header"
                   >
-                    <Typography variant="subtitle1">How many licenses maximum I can purchase?</Typography>
+                    <Typography variant="subtitle1">How many subscriptions maximum I can purchase?</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography>A host can purchase up to 100 licenses</Typography>
+                    <Typography>A host can purchase up to 999 subscriptions.</Typography>
                   </AccordionDetails>
                 </Accordion>
 
@@ -157,8 +155,7 @@ function PrivacyPolicy() {
                   </AccordionSummary>
                   <AccordionDetails>
                     <Typography>
-                      A free user can use 55 minutes of free conference or video calling and can host up to 50
-                      participants with unlimited sessions.
+                      A free user can use 55 minutes of free conference or video calling and host up to 50
                     </Typography>
                   </AccordionDetails>
                 </Accordion>
@@ -172,7 +169,7 @@ function PrivacyPolicy() {
                     <Typography variant="subtitle1">What is a corporate plan?</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography>A corporate plan is the saver package for large organizations</Typography>
+                    <Typography>A corporate plan is the saver package for large organizations.</Typography>
                   </AccordionDetails>
                 </Accordion>
 
@@ -182,12 +179,11 @@ function PrivacyPolicy() {
                     aria-controls="panel3bh-content"
                     id="panel3bh-header"
                   >
-                    <Typography variant="subtitle1">What is a license?</Typography>
+                    <Typography variant="subtitle1">What is a subscription?</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
                     <Typography>
-                      A license is a privilege for subscribed users. A user can assign a license to the choice of his
-                      member for meetings and can make unlimited calls.
+                      A subscription is a privilege level that determines access to platform features.
                     </Typography>
                   </AccordionDetails>
                 </Accordion>
@@ -198,10 +194,10 @@ function PrivacyPolicy() {
                     aria-controls="panel3bh-content"
                     id="panel3bh-header"
                   >
-                    <Typography variant="subtitle1">Can I make unlimited calls as a free user?</Typography>
+                    <Typography variant="subtitle1">Can I make unlimited calls as free user?</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography>Yes. Any free user can make unlimited calls.</Typography>
+                    <Typography>Any free user can make unlimited calls.</Typography>
                   </AccordionDetails>
                 </Accordion>
 
@@ -212,13 +208,13 @@ function PrivacyPolicy() {
                     id="panel3bh-header"
                   >
                     <Typography variant="subtitle1">
-                      Can I assign a license to another user by removing primary user authority?
+                      Can I assign a subscription to another user by removing primary user authority?
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
                     <Typography>
-                      Yes. If the admin has 2 or more accounts, he can give access to another user by deleting the
-                      primary license assigned user.
+                      aapoon meet subscriptions aren’t named users, and hence admin can delete and assign new users
+                      during the subscription period.
                     </Typography>
                   </AccordionDetails>
                 </Accordion>
@@ -233,9 +229,9 @@ function PrivacyPolicy() {
                   </AccordionSummary>
                   <AccordionDetails>
                     <Typography>
-                      On the calendar page, click on the schedule meeting button, form page is shown, in which
-                      respective meeting details should be entered, then a meeting is scheduled. It is shown in the
-                      calendar. A host has a separate link and the participant has a separate meeting link.
+                      A user enters the meeting details such as date and time, meeting title, and description by
+                      clicking the schedule meeting button in the calendar App, and an appointment is scheduled. A host
+                      and invitees have a separate meeting URL to join.
                     </Typography>
                   </AccordionDetails>
                 </Accordion>

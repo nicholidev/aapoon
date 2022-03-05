@@ -39,7 +39,7 @@ export default function LoginForm() {
       remember: true,
     },
     validationSchema: LoginSchema,
-    onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
+    onSubmit: async (values, { setErrors, setSubmitting, resetForm, setFieldValue }) => {
       try {
         await login(values.email, values.password);
         enqueueSnackbar('Login success', {
@@ -51,13 +51,16 @@ export default function LoginForm() {
           ),
         });
         localStorage.setItem('isAuthenticated', true);
-        router.push('/dashboard/one');
+        if (router.query.return) {
+          window.location = router.query.return;
+        } else {
+          window.location = '/dashboard/one';
+        }
+        // router.push('/dashboard/one');
         if (isMountedRef.current) {
           setSubmitting(false);
         }
       } catch (error) {
-        //console.log(error.code);
-        resetForm();
         if (isMountedRef.current) {
           setSubmitting(false);
           console.log(error.code);

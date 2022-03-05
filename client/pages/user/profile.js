@@ -37,10 +37,12 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import StarIcon from '@mui/icons-material/Star';
 import AppNewInvoice from '../../sections/@dashboard/general/app/AppNewInvoice';
 import InviteData from '../../components/invite/InviteData';
+import LicenceData from '../../components/licence';
 import InviteModal from '../../components/invite/InviteModal';
 import { useState } from 'react';
 import UpdateUserProfile from '../../sections/user/UpdateUserProfile';
-
+import { openCustomerPortal } from '../../api/payments';
+import moment from 'moment';
 const Sidebar = styled('header')(({ theme }) => ({
   width: '240px',
   height: '100%',
@@ -141,8 +143,17 @@ function ProfilePage() {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [fetch, setFetch] = useState(false);
   const [current, setCurrent] = useState('dashboard');
-  const { user } = useAuth();
+  const { user, setLoading } = useAuth();
+  const openPortal = () => {
+    setLoading(true);
+    openCustomerPortal().then((url) => {
+      window.location = url;
+      setLoading(false);
+    });
+  };
 
+  let activeSub = user.subscription?.find((i) => i.status == 'active');
+  console.log(user);
   return (
     <Page title="Dashboard" sx={{ width: '100vw' }}>
       <GlobalStyles
@@ -150,7 +161,7 @@ function ProfilePage() {
           body: { backgroundColor: '#F1F1F1' },
         }}
       />
-      <Container maxWidth={themeStretch ? false : 'lg'} sx={{ justifyContent: 'center' }}>
+      <Container maxWidth={'lg'} sx={{ justifyContent: 'center' }}>
         <Content>
           <DataSection>
             <DataHead>
@@ -158,20 +169,6 @@ function ProfilePage() {
                 <IconButton onClick={() => back()}>
                   <Iconify icon={'eva:arrow-back-outline'} width="32px" height="32px" />
                 </IconButton>
-                <Box>
-                  <UpdateUserProfile>
-                    <ListItemButton>
-                      <ListItemIcon>
-                        <Iconify icon={'feather:edit'} width="20px" height="20px" />
-                      </ListItemIcon>
-                      <ListItemText>
-                        <Typography variant="subtitle2" color="primary.main">
-                          Edit
-                        </Typography>
-                      </ListItemText>
-                    </ListItemButton>
-                  </UpdateUserProfile>
-                </Box>
               </Box>
               <Grid container spacing={3} justifyContent={'center'}>
                 <Grid item xs={12} sm={4} lg={2}>
@@ -188,16 +185,29 @@ function ProfilePage() {
                       />
                     </AvatarContainer>
                   </div>
-                  <br />
-                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <div style={{ display: 'flex', justifyContent: 'center', margin: '15px 0 10px' }}>
                     <Typography
                       variant="caption"
                       color="common.white"
-                      sx={{ backgroundColor: 'error.main', borderRadius: '50px', padding: '2px 10px' }}
+                      sx={{ backgroundColor: 'success.main', borderRadius: '50px', padding: '2px 10px' }}
                     >
                       {user.accountType}
                     </Typography>
                   </div>
+                  <Box display="flex" justifyContent={'center'}>
+                    <UpdateUserProfile>
+                      <Button variant="text">
+                        <ListItemIcon>
+                          <Iconify icon={'feather:edit'} width="20px" height="20px" color="common.black" />
+                        </ListItemIcon>
+                        <ListItemText>
+                          <Typography variant="subtitle2" color="primary.main">
+                            Edit Profile
+                          </Typography>
+                        </ListItemText>
+                      </Button>
+                    </UpdateUserProfile>
+                  </Box>
                 </Grid>
                 <Grid item xs={12} sm={7} lg={3}>
                   <Stack spacing={3}>
@@ -213,7 +223,9 @@ function ProfilePage() {
                       <Typography variant="subtitle2" color="GrayText">
                         Email
                       </Typography>
-                      <Typography variant="h6">{user.email}</Typography>
+                      <Typography noWrap variant="h6">
+                        {user.email}
+                      </Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
@@ -229,19 +241,30 @@ function ProfilePage() {
                       <Typography variant="subtitle2" color="GrayText">
                         Subscription Type
                       </Typography>
-                      <Typography variant="h6">Free</Typography>
+                      <Typography variant="h6">
+                        {user?.activeLicenses?.count || user?.assignedToMe?.length ? 'Premium' : 'Free'}
+                      </Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
                         Purchase Date
                       </Typography>
-                      <Typography variant="h6">May 26, 2019</Typography>
+                      <Typography variant="h6">
+                        {activeSub
+                          ? moment(new Date(activeSub?.current_period_start.seconds * 1000)).format('ll')
+                          : 'N/A'}
+                      </Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
                         Expiration Date
                       </Typography>
-                      <Typography variant="h6">May 26, 2020</Typography>
+                      <Typography variant="h6">
+                        {' '}
+                        {activeSub
+                          ? moment(new Date(activeSub?.current_period_end.seconds * 1000)).format('ll')
+                          : 'N/A'}
+                      </Typography>
                     </Stack>
                   </Stack>
                 </Grid>
@@ -251,45 +274,38 @@ function ProfilePage() {
                       <Typography variant="subtitle2" color="GrayText">
                         No. Of Licenses
                       </Typography>
-                      <Typography variant="h6">1</Typography>
+                      <Typography variant="h6">{user?.activeLicenses?.count || user?.assignedToMe?.length}</Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
                         Assigned Licenses
                       </Typography>
-                      <Typography variant="h6">NA</Typography>
+                      <Typography variant="h6">{user?.activeLicenses?.assigned || 'NA'}</Typography>
                     </Stack>
                     <Stack spacing={0}>
                       <Typography variant="subtitle2" color="GrayText">
                         Unassigned Licenses
                       </Typography>
-                      <Typography variant="h6">NA</Typography>
+                      <Typography variant="h6">
+                        {user.activeLicenses.count
+                          ? user.activeLicenses.count - (user.activeLicenses.assigned + 1)
+                          : 'NA'}
+                      </Typography>
                     </Stack>
                   </Stack>
                 </Grid>
                 <Stack direction="row" display={{ xs: 'none', lg: 'flex' }}>
                   <Divider orientation="vertical" variant="middle" flexItem />
                 </Stack>
-                <Grid item xs={12} sm={4} lg={2}>
+                <Grid item xs={12} sm={4} lg={2} xl={2}>
                   <Stack spacing={5}>
-                    <Stack spacing={0}>
+                    <Stack spacing={5}>
                       <ListItem disablePadding>
                         <ListItemButton>
                           <ListItemText
                             secondary={
-                              <Typography variant="subtitle1" color="GrayText">
-                                Delete
-                              </Typography>
-                            }
-                          />
-                        </ListItemButton>
-                      </ListItem>
-                      <ListItem disablePadding>
-                        <ListItemButton>
-                          <ListItemText
-                            primary={
-                              <Typography variant="subtitle1" color="GrayText">
-                                Change plan
+                              <Typography variant="subtitle1" color="error">
+                                Delete Account
                               </Typography>
                             }
                           />
@@ -306,9 +322,20 @@ function ProfilePage() {
                           />
                         </ListItemButton>
                       </ListItem>
+                      {/* <ListItem disablePadding>
+                        <ListItemButton onClick={() => openPortal()}>
+                          <ListItemText
+                            primary={
+                              <Typography variant="subtitle1" color="GrayText">
+                                Change plan
+                              </Typography>
+                            }
+                          />
+                        </ListItemButton>
+                      </ListItem> */}
                     </Stack>
 
-                    {/* <Stack spacing={0}>
+                    <Stack spacing={0}>
                       <ListItem disablePadding>
                         <ListItemButton>
                           <ListItemIcon>
@@ -323,12 +350,68 @@ function ProfilePage() {
                           />
                         </ListItemButton>
                       </ListItem>
-                    </Stack> */}
+                    </Stack>
                   </Stack>
                 </Grid>
               </Grid>
             </DataHead>
-            <InviteData fetch={fetch} />
+            {user?.activeLicenses?.count > 1 ? (
+              <DataSection>
+                <DataHead sx={{ width: '100%', justifyContent: 'space-between', display: 'flex', px: 4, py: 3 }}>
+                  <Typography variant="h5" style={{ display: 'inline' }}>
+                    Assign license
+                  </Typography>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => push('/dashboard/assign-license')}
+                    startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
+                  >
+                    {' '}
+                    Assigned license
+                  </Button>
+                </DataHead>
+                <Box sx={{ p: 4, pt: 0, py: 0 }}>
+                  <LicenceData fetch={fetch} />
+                </Box>
+                <InviteModal
+                  open={inviteOpen}
+                  handleClose={() => {
+                    setInviteOpen(false);
+                    setFetch(!fetch);
+                  }}
+                />
+                {/* <AppNewInvoice/> */}
+              </DataSection>
+            ) : (
+              <DataSection>
+                <DataHead sx={{ width: '100%', justifyContent: 'space-between', display: 'flex', px: 4, py: 3 }}>
+                  <Typography variant="h5" style={{ display: 'inline' }}>
+                    Recent Invites
+                  </Typography>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => setInviteOpen(true)}
+                    startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
+                  >
+                    {' '}
+                    Invite User
+                  </Button>
+                </DataHead>
+                <Box sx={{ p: 4, pt: 0 }}>
+                  <InviteData fetch={fetch} />
+                </Box>
+                <InviteModal
+                  open={inviteOpen}
+                  handleClose={() => {
+                    setInviteOpen(false);
+                    setFetch(!fetch);
+                  }}
+                />
+                {/* <AppNewInvoice/> */}
+              </DataSection>
+            )}
           </DataSection>
         </Content>
       </Container>

@@ -11,7 +11,7 @@ import { LoadingButton } from '@mui/lab';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
-
+import ErrorMessages from '../../../utils/errorMessage';
 // ----------------------------------------------------------------------
 
 ForgotPasswordForm.propTypes = {
@@ -43,7 +43,7 @@ export default function ForgotPasswordForm({ onSent, onGetEmail }) {
       } catch (error) {
         console.error(error);
         if (isMountedRef.current) {
-          setErrors({ afterSubmit: error.message });
+          setErrors({ afterSubmit: ErrorMessages[error.code] });
           setSubmitting(false);
         }
       }

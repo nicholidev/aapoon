@@ -56,7 +56,6 @@ export default function AccountPopover() {
                 height: '100%',
                 borderRadius: '50%',
                 position: 'absolute',
-                bgcolor: (theme) => alpha(theme.palette.grey[900], 0.8),
               },
             }),
           }}

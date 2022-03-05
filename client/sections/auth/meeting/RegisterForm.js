@@ -8,19 +8,10 @@ import { useSnackbar } from 'notistack';
 import { useFormik, Form, FormikProvider } from 'formik';
 
 //dialogues
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-//Radio buttons
-import Radio from '@mui/material/Radio';
-import RadioGroup from '@mui/material/RadioGroup';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
+import Autocomplete from '../register/Dialogue';
+import {countryCodes} from "../register/counrtyCode"
 // @mui
-import { Stack, TextField, IconButton, InputAdornment, Alert, Button, Select, MenuItem } from '@mui/material';
+import { Stack, TextField, IconButton, InputAdornment, Alert, Button, Select, MenuItem ,Box,Divider} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // hooks
 import useAuth from '../../../hooks/useAuth';
@@ -30,6 +21,7 @@ import Iconify from '../../../components/Iconify';
 import { IconButtonAnimate } from '../../../components/animate';
 import PhoneInput from 'react-phone-number-input';
 import CustomPhone from '../../../components/Phonenumber';
+import Flag from '../../../components/Flag';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../../utils/errorMessage';
 import { acceptInvitation, getCountry } from '../../../api/user';
@@ -49,7 +41,7 @@ export default function RegisterForm(query) {
     lastName: Yup.string().matches(reAlpha, 'Lastname is not valid').required('Last name required'),
     password:Yup.string(),
  
-    phone: Yup.string().matches(rePhoneNumber, 'Phone number is not valid').required('Phone is required'),
+    phone: Yup.string().matches(rePhoneNumber, 'Phone number is not valid').required('Phone number is required'),
   
   });
 
@@ -119,7 +111,9 @@ export default function RegisterForm(query) {
       setCountryCode(res.data.country_code);
     });
   }, [query?.query?.email]);
-
+  const setccd =(e)=>{
+    setCountryCode(e.target.value);
+   }
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -146,7 +140,31 @@ export default function RegisterForm(query) {
 
           <PhoneInput
             placeholder="Enter phone number"
-            international
+            countrySelectComponent={(props=>{
+
+            
+              return( null)})}
+            endorment={
+            <Autocomplete  value={countryCode} countryCodes={countryCodes} setccd={setccd}   renderInput={(params) => <TextField {...params} label="Movie" />} >
+     <Box
+              position="start"
+              sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'text.secondary' }}
+            >
+                {countryCodes.find(i=>i.code==countryCode)?<Flag code={countryCodes.find(i=>i.code==countryCode).code}/>:""}&nbsp;&nbsp;
+            <i style={{marginRight:4}}>{countryCodes.find(i=>i.code==countryCode)?.value}{' '}</i>
+            
+              <Divider
+                orientation="vertical"
+                flexItem
+                sx={{ justifyContent: 'center', alignItems: 'center', mx: 1, borderWidth: '0.2px' }}
+              />
+            </Box>
+          
+              </Autocomplete>
+          
+          
+          
+          }
             defaultCountry={countryCode}
             inputComponent={CustomPhone}
             {...getFieldProps('phone')}

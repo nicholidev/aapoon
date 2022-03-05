@@ -121,10 +121,10 @@ function TermsOfService() {
                   aapoon meet will provide the Services, and you may access and use the Services, in accordance with
                   this Agreement. aapoon meet may provide any of the Services hereunder through any of its Affiliates.
                   If You order Services through an on-line registration page or an order form (each an "Order Form"),
-                  the Order Form may contain additional terms and conditions and information regarding the Services you
-                  are ordering. Unless otherwise expressly set forth in any such additional terms and conditions
-                  applicable to the specific Service which You choose to use, those additional terms are hereby
-                  incorporated into this Agreement in relation to Your use of that Service.
+                  the Order Form may contain additional terms of Service and information regarding the Services you are
+                  ordering. Unless otherwise expressly set forth in any such additional terms of Service applicable to
+                  the specific Service which You choose to use, those additional terms are hereby incorporated into this
+                  Agreement in relation to Your use of that Service.
                 </Typography>
               </Box>
               <Box sx={{ mb: 2 }}>

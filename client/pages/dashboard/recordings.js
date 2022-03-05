@@ -14,6 +14,7 @@ import {
   ListItemIcon,
   ListItemText,
   styled,
+  Box,
   Typography,
 } from '@mui/material';
 // layouts
@@ -23,6 +24,7 @@ import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import GlobalStyles from '@mui/material/GlobalStyles';
+import { startOfWeek, endOfWeek } from 'date-fns';
 // ----------------------------------------------------------------------
 import withAuth from '../../HOC/withAuth';
 import Iconify from '../../components/Iconify';
@@ -33,27 +35,27 @@ import StopCircleIcon from '@mui/icons-material/StopCircle';
 import AppNewInvoice from '../../sections/@dashboard/general/app/AppNewInvoice';
 import InviteData from '../../components/invite/InviteData';
 import InviteModal from '../../components/invite/InviteModal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getStats } from '../../api/meeting';
 import RecordingData from '../../components/recording/RecordingData';
-
+import useAuth from '../../hooks/useAuth';
+import DashboardSidebar from '../../components/dashboard/DashboardSidebar';
+import DashboardInfoHeader from '../../components/dashboard/DashboardInfoHeader';
 const Sidebar = styled('header')(({ theme }) => ({
-  width: '240px',
+  width: '320px',
   height: '100%',
   padding: theme.spacing(1),
   paddingTop: theme.spacing(2),
-  paddingLeft: theme.spacing(4),
+  paddingLeft: theme.spacing(2),
   [theme.breakpoints.down('md')]: {
     display: 'none',
   },
 }));
 
 const Content = styled('div')(({ theme }) => ({
-  width: 'calc(100% - 240px)',
+  width: 'calc(100% - 320px)',
   height: '100%',
-  padding: theme.spacing(1),
-  paddingTop: theme.spacing(4),
-  paddingLeft: theme.spacing(4),
-  marginTop: theme.spacing(6),
+  paddingTop: theme.spacing(6),
   [theme.breakpoints.down('md')]: {
     width: '100%',
     paddingLeft: 0,
@@ -62,8 +64,7 @@ const Content = styled('div')(({ theme }) => ({
 }));
 
 const SideSection = styled(Card)(({ theme }) => ({
-  paddingTop: 16,
-  paddingBottom: 16,
+  padding: '16px 0',
   width: '100%',
   marginTop: theme.spacing(4),
   display: 'flex',
@@ -97,10 +98,11 @@ const InfoContainer = styled(Grid)(({ theme }) => ({
   },
 }));
 
-const DataSection = styled(Card)(({ theme }) => ({
-  marginTop: theme.spacing(4),
-  margin: theme.spacing(6),
-  height: 600,
+const DataSection = styled('div')(({ theme }) => ({
+  margin: theme.spacing(3, 2, 2),
+  backgroundColor: '#fff',
+  borderRadius: '10px',
+
   [theme.breakpoints.down('md')]: {
     marginLeft: 0,
     marginRight: 0,
@@ -141,6 +143,12 @@ function RecordingsPage() {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [fetch, setFetch] = useState(false);
   const [current, setCurrent] = useState('dashboard');
+  const [stats, setStats] = useState({});
+  const { user } = useAuth();
+  useEffect(() => {
+    if (user.id)
+      getStats(startOfWeek(new Date()), endOfWeek(new Date()), new Date(), user.id).then((data) => setStats(data));
+  }, [user?.activeLicenses?.count]);
   return (
     <Page title="Dashboard">
       <GlobalStyles
@@ -149,76 +157,18 @@ function RecordingsPage() {
         }}
       />
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex' }}>
-        <Sidebar>
-          <SideSection>
-            <List sx={{ width: '100%' }}>
-              <Link href="/dashboard/calendar" passHref={true}>
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <Iconify icon={'lucide:layout-dashboard'} width={24} height={24} />
-                    </ListItemIcon>
-                    <ListItemText primary={<h4>Dashboard</h4>} />
-                  </ListItemButton>
-                </ListItem>
-              </Link>
-              <Link href="/dashboard/calendar" passHref={true}>
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <Iconify icon={'uil:calender'} width={24} height={24} />
-                    </ListItemIcon>
-                    <ListItemText primary={<h4>Calendar</h4>} />
-                  </ListItemButton>
-                </ListItem>
-              </Link>
-              <ListItem disablePadding selected={true}>
-                <ListItemButton>
-                  <ListItemIcon sx={{ pl: '3px' }}>
-                    <Iconify icon={'ant-design:video-camera-add-outlined'} width={24} height={24} />
-                  </ListItemIcon>
-                  <ListItemText primary={<h4>Recordings</h4>} />
-                </ListItemButton>
-              </ListItem>
-            </List>
-          </SideSection>
-          {/* <SideSection /> */}
-        </Sidebar>
+        <DashboardSidebar currentPage="recordings" />
         <Content>
-          <InfoContainer container spacing={3}>
-            <Grid xs={12} sm={6} lg={4}>
-              <InfoCard>
-                <InfoHeading>Total number of Licences</InfoHeading>
-                <InfoNumbers>
-                  <h3>34</h3>
-                </InfoNumbers>
-                <PersonIcon style={infoIconStyle} />
-              </InfoCard>
-            </Grid>
-            <Grid xs={12} sm={6} lg={4}>
-              <InfoCard>
-                <InfoHeading>Assigned Licences</InfoHeading>
-                <InfoNumbers>
-                  <h3>12</h3>
-                </InfoNumbers>
-                <CheckCircleIcon style={infoIconStyle} />
-              </InfoCard>
-            </Grid>
-            <Grid xs={12} sm={6} lg={4}>
-              <InfoCard>
-                <InfoHeading>Remaining Licenses</InfoHeading>
-                <InfoNumbers>
-                  <h3>10</h3>
-                </InfoNumbers>
-                <StopCircleIcon style={infoIconStyle} />
-              </InfoCard>
-            </Grid>
-          </InfoContainer>
+          <DashboardInfoHeader />
           <DataSection>
             <DataHead>
-              <h4 style={{ display: 'inline' }}>Recordings</h4>
+              <Typography variant="h5" sx={{ ml: 1 }} style={{ display: 'inline' }}>
+                Recent Invites
+              </Typography>
             </DataHead>
-            <RecordingData fetch={fetch} />
+            <Box sx={{ p: 4, pt: 0 }}>
+              <RecordingData fetch={fetch} />
+            </Box>
           </DataSection>
         </Content>
       </Container>

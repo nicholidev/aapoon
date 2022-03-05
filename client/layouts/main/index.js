@@ -43,7 +43,7 @@ export default function MainLayout({ children }) {
               <Link href="/about/privacy-policy" passHref={true}>
                 <ListItemButton>
                   <Typography sx={{ mr: { xs: 2, md: 8 } }} color="common.white">
-                    Data privacy
+                    Privacy policy
                   </Typography>
                 </ListItemButton>
               </Link>
@@ -58,7 +58,7 @@ export default function MainLayout({ children }) {
               <Link href="/about/terms-of-service" passHref={true}>
                 <ListItemButton>
                   <Typography sx={{ mr: 2 }} color="common.white">
-                    Terms and conditions
+                    Terms Of Service
                   </Typography>
                 </ListItemButton>
               </Link>

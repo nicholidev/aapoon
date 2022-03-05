@@ -22,6 +22,7 @@ import {
   FormHelperText,
   Radio,
   ListItem,
+  Button,
   ListItemText,
   withStyles,
   Checkbox,
@@ -46,6 +47,7 @@ import { acceptInvitation, getCountry } from '../../api/user';
 import { scheduleMeeting } from '../../api/meeting';
 import { useRouter } from 'next/router';
 import moment from 'moment';
+import { differenceInDays } from 'date-fns';
 import { addTocalender } from '../../utils/addToCalender/AddToCalander';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../utils/errorMessage';
@@ -77,11 +79,12 @@ export default function FormUserMeeting(props) {
     initialValues: {
       meetingTopic: '',
       meetingDescription: '',
-
+      lobby: true,
+      reccurring: false,
       estimatedDuration: '15',
       password: '',
       meetingDateTime: new Date(),
-
+      meetingEndDate: new Date(),
       timeZone: '',
     },
     validationSchema: RegisterSchema,
@@ -90,6 +93,7 @@ export default function FormUserMeeting(props) {
       const tz = findTimeZone(values.timeZone);
 
       const nativeDate = values.meetingDateTime;
+      let meetingEndDate = values.meetingEndDate;
       const DateTime = {
         year: nativeDate.getFullYear(),
         month: nativeDate.getMonth() + 1,
@@ -97,12 +101,19 @@ export default function FormUserMeeting(props) {
         hours: nativeDate.getHours(),
         minutes: nativeDate.getMinutes(),
       };
-
+      const DateTimeEnd = {
+        year: meetingEndDate.getFullYear(),
+        month: meetingEndDate.getMonth() + 1,
+        day: meetingEndDate.getDate(),
+        hours: meetingEndDate.getHours(),
+        minutes: meetingEndDate.getMinutes(),
+      };
       let myDate = getUnixTime(DateTime, tz);
+      let myEndDate = getUnixTime(DateTimeEnd, tz);
       setSubmitting(true);
 
       try {
-        let meetingData = await scheduleMeeting({ scheduleAt: myDate, ...values });
+        let meetingData = await scheduleMeeting({ scheduleAt: myDate, reccuringEndDate: myEndDate, ...values });
 
         enqueueSnackbar('New meeting scheduled', {
           variant: 'success',
@@ -178,13 +189,21 @@ export default function FormUserMeeting(props) {
     });
   };
 
+  const recudays = data?.reccurring
+    ? differenceInDays(new Date(data?.reccuringEndDate?._seconds * 1000), new Date(data?.scheduledAt?._seconds * 1000))
+    : false;
+
   const addCalender = (type) => {
     let event = {
       title: data.title,
-      description: data.description,
-      location: '',
+      link: window.origin + '/meeting?meetingid=' + data?.id,
+      password: data.password,
+      description: data?.description,
       startTime: new Date(data.scheduledAt._seconds * 1000),
       endTime: new Date(data.endAt._seconds * 1000),
+      password: data?.password,
+      description: data?.description,
+      recur: data?.reccurring ? `RRULE:FREQ=DAILY;COUNT=${recudays + 1}` : '',
     };
     addTocalender(event, type, false);
   };
@@ -195,10 +214,10 @@ export default function FormUserMeeting(props) {
   const handleMeetingType = (event) => {
     setMeetingType(event.target.value);
     if (event.target.value == 'recurring') {
-      formik.setValues({ ...formik.values, meetingEndDate: new Date() });
+      formik.setValues({ ...formik.values, meetingEndDate: new Date(), reccurring: true });
       RegisterSchema.fields.meetingEndDate.required('Please enter valid date');
     } else {
-      let newValues = { ...formik.values };
+      let newValues = { ...formik.values, reccurring: false };
       delete newValues.meetingEndDate;
       formik.setValues(newValues);
       RegisterSchema.fields.meetingEndDate.notRequired();
@@ -207,7 +226,10 @@ export default function FormUserMeeting(props) {
 
   const handleMeetingLobby = (event) => {
     setWaitInLobby(event.target.checked);
+    formik.setValues({ ...formik.values, lobby: event.target.checked });
   };
+
+  console.log(data);
 
   return (
     <div>
@@ -223,10 +245,23 @@ export default function FormUserMeeting(props) {
 
           <br />
           <Typography variant="body2">
+            {moment(new Date(data.scheduledAt?._seconds * 1000)).format('LLL')}&nbsp;
+            <span style={{ fontWeight: 700 }}> To </span>&nbsp;
+            {data?.reccurring
+              ? moment(new Date(data?.reccuringEndDate?._seconds * 1000)).format('LLL')
+              : moment(new Date(data.endAt?._seconds * 1000)).format('LLL')}
+          </Typography>
+          {data?.reccurring && (
+            <Typography variant="caption">
+              Reccuring ( {moment(new Date(data.scheduledAt?._seconds * 1000)).format('LT')} -{' '}
+              {moment(new Date(data.endAt?._seconds * 1000)).format('LT')} )
+            </Typography>
+          )}
+          {/* <Typography variant="body2">
             {moment(new Date(data.scheduledAt?._seconds * 1000)).format('LLL') +
               ' to ' +
               moment(new Date(data.endAt?._seconds * 1000)).format('LLL')}
-          </Typography>
+          </Typography> */}
           <Box
             component={ButtonBase}
             onClick={() => copyTocb(window.origin + '/meeting?meetingid=' + data.id)}
@@ -253,6 +288,10 @@ export default function FormUserMeeting(props) {
             </Typography>
             <Iconify icon="fluent:copy-20-filled" sx={{ fontSize: 24, ml: 2, color: 'text.secondary' }} />
           </Box>
+          <br />
+          <Button variant="outlined" onClick={() => router.push(window.origin + '/meeting?meetingid=' + data?.id)}>
+            <Typography variant="h6">Join Now</Typography>
+          </Button>
           <br />
           <Typography sx={{ fontWeight: 500, display: 'flex' }} variant="body" gutterBottom>
             Add To Calander
@@ -324,7 +363,7 @@ export default function FormUserMeeting(props) {
       ) : (
         <FormikProvider value={formik}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <Stack spacing={6}>
+            <Stack spacing={4}>
               {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
               <Stack spacing={1}>
                 <Typography sx={{ fontWeight: 500 }}>Meeting topic * </Typography>
@@ -358,24 +397,23 @@ export default function FormUserMeeting(props) {
                 />
               </Stack>
 
-              {isCustomerAdmin && (
-                <Stack direction={'row'} spacing={5}>
-                  <Box display={'flex'} alignItems={'center'}>
-                    <Radio checked={meetingType == 'oneTime'} onChange={handleMeetingType} value={'oneTime'} />
-                    &nbsp;
-                    <Typography variant="subtitle1" color="initial">
-                      One Time
-                    </Typography>
-                  </Box>
-                  <Box display={'flex'} alignItems={'center'}>
-                    <Radio checked={meetingType == 'recurring'} onChange={handleMeetingType} value={'recurring'} />
-                    &nbsp;
-                    <Typography variant="subtitle1" color="initial">
-                      Recurring
-                    </Typography>
-                  </Box>
-                </Stack>
-              )}
+              {/* <Stack direction={'row'} spacing={5}>
+                <Box display={'flex'} alignItems={'center'}>
+                  <Radio checked={meetingType == 'oneTime'} onChange={handleMeetingType} value={'oneTime'} />
+                  &nbsp;
+                  <Typography variant="subtitle1" color="initial">
+                    One Time
+                  </Typography>
+                </Box>
+                <Box display={'flex'} alignItems={'center'}>
+                  <Radio checked={meetingType == 'recurring'} onChange={handleMeetingType} value={'recurring'} />
+                  &nbsp;
+                  <Typography variant="subtitle1" color="initial">
+                    Recurring
+                  </Typography>
+                </Box>
+              </Stack> */}
+
               <Grid container rowSpacing={3} columnSpacing={0} justifyContent={'space-between'}>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1} sx={{ marginRight: { sm: '20px', xs: 0 } }}>
@@ -412,7 +450,7 @@ export default function FormUserMeeting(props) {
                     >
                       <MenuItem value={'15'}>15 Minutes</MenuItem>
                       <MenuItem value={'30'}>30 Minutes</MenuItem>
-                      <MenuItem value={'60'}>60 Minutes</MenuItem>
+                      <MenuItem value={'55'}>55 Minutes</MenuItem>
                     </Select>
                   </Stack>
                 </Grid>
@@ -428,7 +466,7 @@ export default function FormUserMeeting(props) {
                           onChange={(newValue) => {
                             formik.setFieldValue('meetingDateTime', newValue);
                           }}
-                          minDateTime={new Date()}
+                          minDate={new Date()}
                           variant="dialog"
                           renderInput={(params) => (
                             <TextField
@@ -454,7 +492,7 @@ export default function FormUserMeeting(props) {
                             onChange={(newValue) => {
                               formik.setFieldValue('meetingEndDate', newValue);
                             }}
-                            minDateTime={new Date()}
+                            minDate={new Date()}
                             variant="dialog"
                             renderInput={(params) => (
                               <TextField

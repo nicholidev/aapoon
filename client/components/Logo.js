@@ -39,7 +39,7 @@ const Logo = forwardRef(({ disabledLink = false, sx }, ref) => {
       </Box> */}
 
       <Box onClick={() => router.push('/')} ref={ref} style={{ cursor: 'pointer' }}>
-        <img src={'/logo/logo.jpeg'} style={{ height: 32 }} />
+        <img src={'/logo/logo.png'} style={{ height: 32 }} />
       </Box>
     </>
   );
