@@ -111,6 +111,7 @@ function AuthProvider({ children }) {
                     ? '/auth/business-profile?return=' + router.query.return
                     : '/auth/business-profile'
                 );
+                dispatch({ type: 'TOGGLE_LOADING', payload: false });
               } else {
                 localStorage.setItem('isAuthenticated', true);
                 firebase
@@ -152,12 +153,14 @@ function AuthProvider({ children }) {
         });
         localStorage.removeItem('isAuthenticated');
         localStorage.removeItem('authToken');
+        if(!state.isAuthenticated)
         dispatch({ type: 'TOGGLE_LOADING', payload: false });
       }
     });
   }, [dispatch]);
 
   useEffect(() => {
+    dispatch({ type: 'TOGGLE_LOADING', payload: true });
     let unsub;
     if (state.user?.uid) {
       unsub = firebase
@@ -181,10 +184,29 @@ function AuthProvider({ children }) {
             payload: { subscription: docs },
           });
         });
+
+        firebase
+        .firestore()
+        .collection('users')
+        .doc(state.user.uid)
+        .collection('licences')
+        .doc('premium')
+        .onSnapshot(async (snapshot) => {
+          dispatch({ type: 'TOGGLE_LOADING', payload: false });
+          dispatch({
+            type: 'UPDATE_SUB',
+            //payload: {},
+            payload: {
+              activeLicenses: { count: snapshot.data()?.count || 0, assigned: snapshot.data()?.assigned || 0 },
+            },
+          });
+        });
     }
+    
   }, [state.user?.uid]);
 
   useEffect(() => {
+    
     if (state.user?.uid) {
       firebase
         .firestore()
@@ -205,7 +227,7 @@ function AuthProvider({ children }) {
   }, [state.user?.subscription]);
 
   useEffect(() => {
-    if (state.user?.uid) {
+    if (state.user?.email) {
       firebase
         .firestore()
         .collection('licenses')
@@ -254,17 +276,21 @@ function AuthProvider({ children }) {
   };
 
   const deleteAccount = () => {
-    firebase.auth().currentUser.delete();
-    dispatch({
-      type: 'UPDATE',
-      payload: {
-        user: {},
-      },
-    });
-    window.location = '/';
-
-    localStorage.removeItem('isAuthenticated');
-    localStorage.clear();
+    dispatch({ type: 'TOGGLE_LOADING', payload: true });
+    firebase.auth().currentUser.delete().then(res=>{
+      dispatch({
+        type: 'UPDATE',
+        payload: {
+          user: {},
+        },
+      });
+      window.location = '/';
+  
+      localStorage.removeItem('isAuthenticated');
+      localStorage.clear();
+      dispatch({ type: 'TOGGLE_LOADING', payload: false });
+    })
+  
   };
 
   const loginWithFaceBook = () => {
@@ -314,14 +340,14 @@ function AuthProvider({ children }) {
           .collection('users')
           .doc(state.user.uid)
           .update({
-            businessDetails: { ...data },
+            businessDetails: { ...data ,logo:state.user?.businessDetails?.logo||"" },
           })
           .then((response) => {
             resolve('success');
 
             dispatch({
               type: 'UPDATE',
-              payload: { user: { ...state.user, businessDetails: { ...data } } },
+              payload: { user: { ...state.user, businessDetails: { ...data,logo:state.user?.businessDetails?.logo ||""} } },
             });
           })
           .catch((err) => reject(err));
@@ -387,6 +413,7 @@ function AuthProvider({ children }) {
   };
 
   const register = (email, password, firstName, lastName, phoneNumber, allValues) => {
+    console.log(allValues.countryCode+phoneNumber)
     return new Promise((resolve, reject) => {
       phoneExists(phoneNumber, email)
         .then((res) => {
@@ -402,7 +429,7 @@ function AuthProvider({ children }) {
 
             firebase
               .auth()
-              .signInWithPhoneNumber(phoneNumber, appVerifier)
+              .signInWithPhoneNumber(allValues.countryCode+phoneNumber, appVerifier)
               .then((confirmationResult) => {
                 router.push(
                   router.query.return
@@ -415,7 +442,7 @@ function AuthProvider({ children }) {
                   payload: {
                     confirmation: confirmationResult,
                     appVerifier,
-                    user: { ...allValues, phoneNumber: phoneNumber },
+                    user: { ...allValues, phoneNumber: allValues.countryCode+phoneNumber,number: phoneNumber},
                   },
                 });
               })
@@ -428,10 +455,12 @@ function AuthProvider({ children }) {
   };
 
   const logout = async () => {
+   
     await firebase.auth().signOut();
     dispatch({
       type: 'UPDATE',
       payload: {
+        loading:true,
         user: {},
       },
     });
@@ -462,6 +491,7 @@ function AuthProvider({ children }) {
   };
   const verifyMobileLinkCode = (code) => {
     return new Promise((resolve, reject) => {
+      dispatch({ type: 'TOGGLE_LOADING', payload: true });
       state.confirmation
         .confirm(code)
         .then((item) => {
@@ -492,9 +522,11 @@ function AuthProvider({ children }) {
                   },
                 })
                 .then((result) => {
+                  dispatch({ type: 'TOGGLE_LOADING', payload: false });
                   resolve(user);
                 })
                 .catch((err) => {
+                  dispatch({ type: 'TOGGLE_LOADING', payload: false });
                   reject(err);
                 });
               dispatch({
@@ -519,10 +551,12 @@ function AuthProvider({ children }) {
               });
             })
             .catch((error) => {
+              dispatch({ type: 'TOGGLE_LOADING', payload: false });
               reject(error);
             });
         })
         .catch((error) => {
+          dispatch({ type: 'TOGGLE_LOADING', payload: false });
           reject(error);
         });
     });

@@ -39,17 +39,17 @@ const Logo = forwardRef(({ disabledLink = false, sx }, ref) => {
        </Box> */}
 
       <Box onClick={() => router.push('/')} ref={ref} style={{ cursor: 'pointer' }}>
-        <img src={'/logo/logo3.png'} style={{ height: 32 }} />
+        <img src={'/logo/logo.svg'} style={{ height: 40 }} />
       </Box>
     </>
   );
 
   return <NextLink href="/">{logo}</NextLink>;
-});
+})
 
 Logo.propTypes = {
   disabledLink: PropTypes.bool,
   sx: PropTypes.object,
-};
+}
 
 export default Logo;

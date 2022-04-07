@@ -119,7 +119,7 @@ function Meeting(props) {
   const { themeStretch } = useSettings();
   const router = useRouter();
 
-  const domain = 'meet.aapoon.com';
+  const domain = 'meetaap.io';
   let api = {};
   const [meetingState, setMeetingState] = useState({});
 

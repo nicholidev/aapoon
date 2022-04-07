@@ -64,12 +64,12 @@ const ResetPassword = () => {
 
   const sendMobileVerification = () => {
     setIsLoading(true);
-    setCounter(true);
+    
     sendMobileVerificationCode()
       .then((response) => {
         setSendMobile(true);
         setIsLoading(false);
-
+        setCounter(true)
         enqueueSnackbar('Mobile verification code sent successfully', {
           variant: 'success',
           action: (key) => (
@@ -80,6 +80,7 @@ const ResetPassword = () => {
         });
       })
       .catch((error) => {
+        setIsLoading(false);
         enqueueSnackbar(error, {
           variant: 'error',
           action: (key) => (
@@ -171,7 +172,7 @@ const ResetPassword = () => {
                         Enter Verification Code
                       </Typography>
                       <br />
-                      <VerifyCodeForm verifyMobileLinkCode={verifyMobileLinkCode} user={user} />
+                      <VerifyCodeForm verifyMobileLinkCode={verifyMobileLinkCode} user={user} setCounter={setCounter} />
                     </Box>
 
                     {!showCounter && (

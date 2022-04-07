@@ -28,10 +28,10 @@
 
   "emulators": {
     "functions": {
-      "port": 5000
+      "port": 3002
     },
     "firestore": {
-      "port": 4000
+      "port": 3001
     },
     "ui": {
       "enabled": true

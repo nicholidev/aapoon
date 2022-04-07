@@ -34,6 +34,7 @@ import Iconify from '../Iconify';
 import Scrollbar from '../Scrollbar';
 import useAuth from '../../hooks/useAuth';
 import moment from 'moment';
+import Image from "../Image"
 import { getInviteList } from '../../api/user';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../../sections/@dashboard/user/list';
 const _appInvoices = [];
@@ -114,22 +115,22 @@ export default function InviteData(props) {
   const filteredUsers = userList;
 
   const isNotFound = !userList.length && Boolean(filterName);
-  useEffect(() => {
-    if (user.id)
-      getInviteList(user.id)
-        .then((res) => {
-          console.log(res.data);
-          setUserList(res.data);
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-  }, [user.id, props.fetch]);
+  // useEffect(() => {
+  //   if (user.id)
+  //     getInviteList(user.id)
+  //       .then((res) => {
+  //         console.log(res.data);
+  //         setUserList(res.data);
+  //       })
+  //       .catch((err) => {
+  //         console.log(err);
+  //       });
+  // }, [user.id, props.fetch]);
   return (
     <>
       <Scrollbar>
-        <TableContainer sx={{ minWidth: 800, borderRadius: '8px', border: '1px solid #DBDBDB' }}>
-          <Table
+        <TableContainer sx={{ borderRadius: '8px', border: filteredUsers.length&&'1px solid #DBDBDB',minHeight:475 }}>
+         {filteredUsers.length? <Table
             sx={{ border: '1px solid #DBDBDB', borderRadius: '8px' }}
             style={{ borderRadius: '8px', overflow: 'hidden' }}
           >
@@ -196,7 +197,7 @@ export default function InviteData(props) {
                 </TableRow>
               </TableBody>
             )}
-          </Table>
+          </Table>:<Box display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} minHeight={475} width={"100%"} height={"100%"}><Image src={"/images/recording/Frame.svg"} style={{maxHeight:400,width:"auto"}}/><Typography style={{fontSize:24,marginTop:24}}>You don’t have any recordings</Typography></Box>}
         </TableContainer>
         <TablePagination
           sx={{ borderTop: 'none' }}

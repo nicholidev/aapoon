@@ -20,7 +20,7 @@ function maxLength(object) {
   }
 }
 
-export default function VerifyCodeForm({ verifyMobileLinkCode, user }) {
+export default function VerifyCodeForm({ verifyMobileLinkCode, user,setCounter }) {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
   const VerifyCodeSchema = Yup.object().shape({
@@ -32,12 +32,12 @@ export default function VerifyCodeForm({ verifyMobileLinkCode, user }) {
       code: '',
     },
     validationSchema: VerifyCodeSchema,
-    onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
+    onSubmit: async (values, { setErrors, setSubmitting, resetForm, }) => {
       try {
         await verifyMobileLinkCode(values.code);
         enqueueSnackbar('Verify success', { variant: 'success' });
         setSubmitting(false);
-
+        setCounter(false)
         if (user.accountType == 'Business') router.push('/auth/business-profile');
         else {
           localStorage.setItem('isAuthenticated', true);

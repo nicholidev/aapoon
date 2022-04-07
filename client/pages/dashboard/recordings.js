@@ -150,7 +150,7 @@ function RecordingsPage() {
       getStats(startOfWeek(new Date()), endOfWeek(new Date()), new Date(), user.id).then((data) => setStats(data));
   }, [user?.activeLicenses?.count]);
   return (
-    <Page title="Dashboard">
+    <Page title="Dashboard" sx={{pb:2}}>
       <GlobalStyles
         styles={{
           body: { backgroundColor: '#F1F1F1' },
@@ -163,10 +163,10 @@ function RecordingsPage() {
           <DataSection>
             <DataHead>
               <Typography variant="h5" sx={{ ml: 1 }} style={{ display: 'inline' }}>
-                Recent Invites
+                Recordings
               </Typography>
             </DataHead>
-            <Box sx={{ p: 4, pt: 0 }}>
+            <Box sx={{ p: {xs:2,md:4}, pt: 0 ,maxWidth:"90vw"}}>
               <RecordingData fetch={fetch} />
             </Box>
           </DataSection>

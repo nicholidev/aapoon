@@ -63,7 +63,7 @@ DashboardHeader.propTypes = {
   onOpenSidebar: PropTypes.func,
 };
 
-export default function DashboardHeader({ onOpenSidebar }) {
+export default function DashboardHeader({ onOpenSidebar,withoutStack=false }) {
   const { isCollapse } = useCollapseDrawer();
   let { pathname } = useRouter();
   const isDesktop = useResponsive('up', 'lg');
@@ -78,7 +78,7 @@ export default function DashboardHeader({ onOpenSidebar }) {
 
         <Box sx={{ flexGrow: 1 }} />
 
-        <Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
+        {!withoutStack&&<Stack direction="row" alignItems="center" spacing={{ xs: 0.5, sm: 1.5 }}>
           {['/dashboard/one', '/dashboard/recordings'].includes(pathname) ? <Searchbar /> : null}
 
           <Link href="/help" passHref={true}>
@@ -96,7 +96,7 @@ export default function DashboardHeader({ onOpenSidebar }) {
               <span style={{ color: 'black' }}>Janmejay</span>
             </Box>
           </AccountPopover>
-        </Stack>
+        </Stack>}
       </ToolbarStyle>
     </RootStyle>
   );

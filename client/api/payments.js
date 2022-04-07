@@ -7,12 +7,13 @@ import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import 'firebase/compat/storage';
 import 'firebase/compat/functions';
-export const getAllProducts = async (body) => {
+export const getAllProducts = async (country) => {
   return new Promise((resolve, reject) => {
     firebase
       .firestore()
       .collection('products')
       .where('active', '==', true)
+      .where('account',"==",country)
       .get()
       .then(async (querySnapshot) => {
         var allProducts = [];
@@ -38,7 +39,7 @@ export const getAllProducts = async (body) => {
   });
 };
 
-export const getCheckoutSession = async (price) => {
+export const getCheckoutSession = async (price,taxed=false) => {
   return new Promise(async (resolve, reject) => {
     const docRef = await firebase
       .firestore()
@@ -48,7 +49,7 @@ export const getCheckoutSession = async (price) => {
       .add({
         line_items: [{ price: price, adjustable_quantity: { enabled: true, maximum: 999 }, quantity: 1 }],
         allow_promotion_codes: true,
-        tax_rates: ['txr_1KUVrASJOhf2FXpTqycP9RXN'],
+        tax_rates: taxed?['txr_1KUVrASJOhf2FXpTqycP9RXN']:false,
 
         tax_id_collection: true,
         success_url: window.location.origin + '/msg/success',
@@ -57,12 +58,7 @@ export const getCheckoutSession = async (price) => {
     // Wait for the CheckoutSession to get attached by the extension
     docRef.onSnapshot((snap) => {
       const { error, url } = snap.data();
-      if (error) {
-        // Show an error to your customer and
-        // inspect your Cloud Function logs in the Firebase console.
-        alert(`An error occured: ${error.message}`);
-        reject(`An error occured: ${error.message}`);
-      }
+    
       if (url) {
         console.log(url);
         resolve(url);

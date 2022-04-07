@@ -297,7 +297,7 @@ export default function FormUserMeeting(props) {
             Add To Calander
           </Typography>
 
-          <Stack spacing={2} direction={{ xs: 'column', sm: 'row', mt: 1 }} justifyContent="center" alignItems="center">
+          <Stack spacing={2} direction={{ xs: 'column', sm: 'row', mt: 2 }} justifyContent="center" alignItems="center">
             <Box
               component={ButtonBase}
               onClick={() => addCalender('apple')}
@@ -319,6 +319,27 @@ export default function FormUserMeeting(props) {
             </Box>
             <Box
               component={ButtonBase}
+              onClick={() => addCalender('apple')}
+              width="160px"
+              sx={{ border: '1px solid #DDDDDD', borderRadius: 1, padding: 2, backgroundColor: '#F9F9F9' }}
+              display="flex"
+              teamsize
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Iconify icon="vscode-icons:file-type-outlook" sx={{ fontSize: 40, color: '#225082' }} />
+
+              <Typography
+                variant="subtitle2"
+                align="center"
+                sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center', mt: 1 }}
+              >
+                Outlook Web
+              </Typography>
+            </Box>
+            <Box
+              component={ButtonBase}
               onClick={() => addCalender('outlookcom')}
               width="160px"
               sx={{ border: '1px solid #DDDDDD', borderRadius: 1, padding: 2, backgroundColor: '#F9F9F9' }}
@@ -335,7 +356,7 @@ export default function FormUserMeeting(props) {
                 align="center"
                 sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center', mt: 1 }}
               >
-                Outlook calendar
+                Outlook Client
               </Typography>
             </Box>
             <Box
@@ -443,15 +464,77 @@ export default function FormUserMeeting(props) {
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1} sx={{ marginLeft: { sm: '20px', xs: 0 } }}>
                     <Typography sx={{ fontWeight: 500 }}> Estimated Duration * </Typography>
-                    <Select
-                      {...getFieldProps('estimatedDuration')}
-                      error={Boolean(touched.estimatedDuration && errors.estimatedDuration)}
-                      helperText={touched.estimatedDuration && errors.estimatedDuration}
-                    >
+                   
+                      {user?.activeLicenses?.count || user?.assignedToMe?.length?
+                       <Select
+                       {...getFieldProps('estimatedDuration')}
+                       error={Boolean(touched.estimatedDuration && errors.estimatedDuration)}
+                       helperText={touched.estimatedDuration && errors.estimatedDuration}
+                     >
+                        <MenuItem value={'15'}>15 Minutes</MenuItem>
+                      <MenuItem value={'30'}>30 Minutes</MenuItem>
+                      <MenuItem value={'55'}>45 Minutes</MenuItem>
+                      <MenuItem value={'60'}>1 hour</MenuItem>
+                      <MenuItem value={'90'}>1.5 hours</MenuItem>
+                      <MenuItem value={'120'}>2 hours</MenuItem>
+                      <MenuItem value={'150'}>2.5 hours</MenuItem>
+                      <MenuItem value={'180'}>3 hours</MenuItem>
+                      <MenuItem value={'210'}>3.5 hours </MenuItem>
+                      <MenuItem value={'240'}>4 hours</MenuItem>
+                      <MenuItem value={'270'}>4.5 hours</MenuItem>
+                      <MenuItem value={'300'}>5 hours</MenuItem>
+                      <MenuItem value={'330'}>5.5 hours</MenuItem>
+                      <MenuItem value={'360'}>6 hours</MenuItem>
+                      <MenuItem value={'390'}>6.5 hours </MenuItem>
+                      <MenuItem value={'420'}>7 hours</MenuItem>
+                      <MenuItem value={'450'}>7.5 hours</MenuItem>
+                      <MenuItem value={'480'}>8 hours</MenuItem>
+                      <MenuItem value={'510'}>8.5 hours</MenuItem>
+                      <MenuItem value={'540'}>9 hours</MenuItem>
+                      <MenuItem value={'570'}>9.5 hours </MenuItem>
+                      <MenuItem value={'600'}>10 hours</MenuItem>
+                      <MenuItem value={'630'}>10.5 hours</MenuItem>
+                      <MenuItem value={'660'}>11 hours</MenuItem>
+                      <MenuItem value={'690'}>11.5 hours</MenuItem>
+                      <MenuItem value={'720'}>12 hours</MenuItem>
+                      <MenuItem value={'750'}>12.5 hours</MenuItem>
+                      <MenuItem value={'780'}>13 hours</MenuItem>
+                      <MenuItem value={'810'}>13.5 hours</MenuItem>
+                      <MenuItem value={'840'}>14 hours</MenuItem>
+                      <MenuItem value={'870'}>14.5 hours</MenuItem>
+                      <MenuItem value={'900'}>15 hours</MenuItem>
+                      <MenuItem value={'930'}>15.5 hours</MenuItem>
+                      <MenuItem value={'960'}>16 hours</MenuItem>
+                      <MenuItem value={'990'}>16.5 hours</MenuItem>
+                      <MenuItem value={'1020'}>17 hours</MenuItem>
+                      <MenuItem value={'600'}>17.5 hours</MenuItem>
+                      <MenuItem value={'600'}>18 hours</MenuItem>
+                      <MenuItem value={'600'}>18.5 hours</MenuItem>
+                      <MenuItem value={'600'}>19 hours</MenuItem>
+                      <MenuItem value={'600'}>19.5 hours</MenuItem>
+                      <MenuItem value={'600'}>20 hours</MenuItem>
+                      <MenuItem value={'600'}>20.5 hours</MenuItem>
+                      <MenuItem value={'600'}>21 hours</MenuItem>
+                      <MenuItem value={'600'}>21.5 hours</MenuItem>
+                      <MenuItem value={'600'}>22 hours</MenuItem>
+                      <MenuItem value={'600'}>22.5 hours</MenuItem>
+                      <MenuItem value={'600'}>23 hours</MenuItem>
+                      <MenuItem value={'600'}>23.5 hours</MenuItem>
+                      <MenuItem value={'600'}>24 hours</MenuItem>
+
+                     
+                      </Select>:   <Select
+                       {...getFieldProps('estimatedDuration')}
+                       error={Boolean(touched.estimatedDuration && errors.estimatedDuration)}
+                       helperText={touched.estimatedDuration && errors.estimatedDuration}
+                     >
                       <MenuItem value={'15'}>15 Minutes</MenuItem>
                       <MenuItem value={'30'}>30 Minutes</MenuItem>
+                      <MenuItem value={'30'}>45 Minutes</MenuItem>
                       <MenuItem value={'55'}>55 Minutes</MenuItem>
-                    </Select>
+                      </Select>}
+                      
+                    
                   </Stack>
                 </Grid>
                 <Grid item xs={12} sm={6}>

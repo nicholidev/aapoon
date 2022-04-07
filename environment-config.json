@@ -9,7 +9,8 @@
     "appId": "1:515046531660:web:4b77b298996205be8b4ae9",
     "measurementId": "${config.measurementId}",
     "stripeKey": "sk_test_51JzIqaSEVX0OvNkKJYi7jzZEN0C9dXUcH4GijgOdUJw8urpS99fdDxTPbZXzseb5TEOff75LyNTjEytlEP8Gdj0P00hz4tGLyT",
-    "cportal": "ext-firestore-stripe-payments-kwcs-createPortalLink"
+    "stripeWebhookSec":"whsec_C43yZYFfGXkqDLVKU3TrKAJv8pSTR0U3",
+    "cportal": "stripeFunctions-createPortalLink"
   },
   "staging": {
     "functionUrl": "https://us-central1-meetaapweb-staging.cloudfunctions.net/app",
@@ -20,6 +21,6 @@
     "messagingSenderId": "250788702010",
     "appId": "1:250788702010:web:965f8bcf42c0c7fcf39203",
     "stripeKey": "sk_test_51IbUQTSJOhf2FXpTkpwG1dGnwhvxwnrZxnAyx04iutYiP8WAdOutXyuWsJjwxtB1xwxpTyKW7BufIhMni6CXa83s00glTl2VYT",
-    "cportal": "ext-firestore-stripe-payments-createPortalLink"
+    "cportal": "stripeFunctions-createPortalLink"
   }
 }

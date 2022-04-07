@@ -21,9 +21,7 @@ exports.onSubscriptionUpdate = functions.firestore
   .onUpdate(async (change, context) => {
     let current = change.after.data();
     let before = change.before.data();
-    if (current.status == before.status) {
-      return;
-    }
+   
 
     const userId = context.params.userid;
 

@@ -17,7 +17,7 @@ AWS.config.update({
 });
 
 const apiVersion = "2020-08-27";
-const stripe = new Stripe(functions.config().stripe.rkey, {
+const stripe = new Stripe(functions.config()?.stripe?.rkey, {
   apiVersion,
   // Register extension as a Stripe plugin
   // https://stripe.com/docs/building-plugins#setappinfo

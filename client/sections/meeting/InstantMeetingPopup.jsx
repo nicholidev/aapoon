@@ -20,6 +20,7 @@ import {
   ButtonBase,
   Box,
   Dialog,
+  DialogTitle,
   FormHelperText,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
@@ -42,7 +43,7 @@ import { instantMeeting } from '../../api/meeting';
 import ErrorMessages from '../../utils/errorMessage';
 import { useRouter } from 'next/router';
 import withMeetingAuth from '../../HOC/withMeetingAuth';
-
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 function InstantMeetingPopup(props) {
   const router = useRouter();
   const { registerBusiness, user } = useAuth();
@@ -97,10 +98,13 @@ function InstantMeetingPopup(props) {
   return (
     <>
       <Dialog open={open} maxWidth={'xs'} fullWidth onClose={() => setOpen(false)}>
-        <div style={{ padding: '40px' }}>
-          <Typography variant="h4" align="center" gutterBottom>
+      <DialogTitle id="alert-dialog-title" align="center" sx={{display: 'flex',justifyContent:"space-between",alignItems: 'center'}}>
+           <span>&nbsp; &nbsp; &nbsp; &nbsp;</span>  <Typography variant="h4" align="center" gutterBottom>
             Instant Meeting
-          </Typography>
+          </Typography> <IconButtonAnimate onClick={()=>setOpen(false)}><CancelOutlinedIcon/></IconButtonAnimate>
+            </DialogTitle>
+        <div style={{ padding: '40px' ,paddingTop:24}}>
+         
           <br />
           <FormikProvider value={formik}>
             <Form autoComplete="off" noValidate onSubmit={handleSubmit}>

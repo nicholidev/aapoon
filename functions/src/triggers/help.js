@@ -593,7 +593,7 @@ exports.sendHelpConfirmEmail = functions.firestore
                                              </p>
                                              <br /><br /><span style="font-size: 18px"
                                                >
-                                              Regards,<br /> aapoon
+                                              Regards,<br />aapoon
                                                Support</span
                                              >
                                              <p
@@ -1274,11 +1274,12 @@ exports.sendSuppotMail = functions.firestore
                                                <br/>
                                                description : ${newValue.description}
                                                <br/>
-
+                                               attachment : ${newValue?.uploadFile}
+                                               <br/>
                                              </p>
                                              <br /><br /><span style="font-size: 18px"
                                                >
-                                              Regards,<br /> aapoon
+                                              Regards,<br />aapoon
                                                Support</span
                                              >
                                              <p

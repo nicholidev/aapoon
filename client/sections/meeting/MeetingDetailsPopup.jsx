@@ -179,7 +179,7 @@ function MeetingDetailsPopup(props) {
               <Typography variant="h6">Join Now</Typography>
             </Button> 
             <br />*/}
-              <Typography variant="h6" sx={{ fontWeight: 600, display: 'flex' }} variant="body" gutterBottom>
+              <Typography variant="h6" sx={{ fontWeight: 600, display: 'flex' }}  gutterBottom>
                 Add To Calander
               </Typography>
 
@@ -254,7 +254,7 @@ function MeetingDetailsPopup(props) {
                   </Button>
                 </Box>
                 <br />
-                <Box display={'flex'} alignItems="center" justifyContent="space-between">
+                {/* <Box display={'flex'} alignItems="center" justifyContent="space-between">
                   <Box display={'flex'} alignItems="center">
                     <Checkbox />
                     <Typography variant="body2" color="text.secondary">
@@ -262,7 +262,7 @@ function MeetingDetailsPopup(props) {
                     </Typography>
                   </Box>
                   <Button variant="contained">Remove Meeting</Button>
-                </Box>
+                </Box> */}
                 {/* <Box
                 component={ButtonBase}
                 onClick={() => addCalender('outlookcom')}

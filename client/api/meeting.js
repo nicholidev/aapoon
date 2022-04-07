@@ -166,6 +166,7 @@ export const getStats = (start, end, curr, user) => {
 };
 
 export const sendOtp = (mobile, meeting, password = '') => {
+  console.log(mobile)
   return axios.post(`${endpoint}/misc/send-otp`, { mobile: mobile, meeting, password: password });
 };
 
