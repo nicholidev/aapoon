@@ -133,7 +133,7 @@ function AssignMeeting() {
                     </Typography>
                   </Paper>
                 </Box>
-              ) : noLicence ? (
+              ) : user.id&&noLicence ? (
                 <Box
                   sx={{
                     width: '100%',

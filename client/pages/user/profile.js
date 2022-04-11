@@ -32,17 +32,21 @@ import GlobalStyles from '@mui/material/GlobalStyles';
 // ----------------------------------------------------------------------
 import withAuth from '../../HOC/withAuth';
 import Iconify from '../../components/Iconify';
-import PersonIcon from '@mui/icons-material/Person';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import StarIcon from '@mui/icons-material/Star';
-import AppNewInvoice from '../../sections/@dashboard/general/app/AppNewInvoice';
 import InviteData from '../../components/invite/InviteData';
 import LicenceData from '../../components/licence';
 import InviteModal from '../../components/invite/InviteModal';
 import { useState } from 'react';
 import UpdateUserProfile from '../../sections/user/UpdateUserProfile';
 import { openCustomerPortal } from '../../api/payments';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+
+import TextField from '@mui/material/TextField';
 import moment from 'moment';
+import ErrorMessages from './../../utils/errorMessage';
 const Sidebar = styled('header')(({ theme }) => ({
   width: '240px',
   height: '100%',
@@ -138,12 +142,23 @@ const infoIconStyle = {
 };
 
 function ProfilePage() {
-  const { back } = useRouter();
+  const { back ,push} = useRouter();
   const { themeStretch } = useSettings();
   const [inviteOpen, setInviteOpen] = useState(false);
   const [fetch, setFetch] = useState(false);
   const [current, setCurrent] = useState('dashboard');
-  const { user, setLoading } = useAuth();
+  const { user, setLoading,deleteAccount,login } = useAuth();
+  const [open, setOpen] = useState(false);
+const [password,setPassword ]=useState("")
+const [error,setError]=useState("")
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const openPortal = () => {
     setLoading(true);
     openCustomerPortal().then((url) => {
@@ -151,6 +166,17 @@ function ProfilePage() {
       setLoading(false);
     });
   };
+
+  const aggree=()=>{
+    login(user.email,password).then(result=>{
+      deleteAccount()
+      handleClose()
+    }).catch(err=>{
+      setError(ErrorMessages[err.code])
+    })
+   
+  
+  }
 
   let activeSub = user.subscription?.find((i) => i.status == 'active');
   console.log(user);
@@ -161,6 +187,31 @@ function ProfilePage() {
           body: { backgroundColor: '#F1F1F1' },
         }}
       />
+       <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          {"Are you sure?"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description" sx={{mt:2}}>
+           This process is Irreversible , we will not be able to recover you Account
+<br/>
+<br/>
+
+        <center> <TextField type={"password"} error={error} helperText={error} label={"Enter password"} onChange={(e)=>setPassword(e.target.value)}/></center>  
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Disagree</Button>
+          <Button onClick={aggree} autoFocus>
+            Agree
+          </Button>
+        </DialogActions>
+      </Dialog>
       <Container maxWidth={'lg'} sx={{ justifyContent: 'center' }}>
         <Content>
           <DataSection>
@@ -298,30 +349,42 @@ function ProfilePage() {
                   <Divider orientation="vertical" variant="middle" flexItem />
                 </Stack>
                 <Grid item xs={12} sm={4} lg={2} xl={2}>
-                  <Stack spacing={5}>
+                 { <Stack spacing={5}>
                     <Stack spacing={5}>
                       <ListItem disablePadding>
-                        <ListItemButton>
+                        <ListItemButton onClick={handleClickOpen}>
                           <ListItemText
                             secondary={
                               <Typography variant="subtitle1" color="error">
-                                Delete Account
+                                Close Account
                               </Typography>
                             }
                           />
                         </ListItemButton>
                       </ListItem>
-                      <ListItem disablePadding>
-                        <ListItemButton>
+                     { user?.activeLicenses?.count?<ListItem disablePadding>
+                        <ListItemButton onClick={()=>openPortal()}>
                           <ListItemText
                             primary={
                               <Typography variant="subtitle1" color="success.main">
-                                Renew
+                               Manage Billing
                               </Typography>
                             }
                           />
                         </ListItemButton>
-                      </ListItem>
+                      </ListItem>:!user?.assignedToMe?.length?
+                      <ListItem disablePadding>
+                      <ListItemButton onClick={()=>push("/plan/plans-price")}>
+                        <ListItemText
+                          primary={
+                            <Typography variant="subtitle1" color="success.main">
+                             Upgrade to premium
+                            </Typography>
+                          }
+                        />
+                      </ListItemButton>
+                    </ListItem>:
+                     ""}
                       {/* <ListItem disablePadding>
                         <ListItemButton onClick={() => openPortal()}>
                           <ListItemText
@@ -335,7 +398,7 @@ function ProfilePage() {
                       </ListItem> */}
                     </Stack>
 
-                    <Stack spacing={0}>
+                    {/* <Stack spacing={0}>
                       <ListItem disablePadding>
                         <ListItemButton>
                           <ListItemIcon>
@@ -350,8 +413,8 @@ function ProfilePage() {
                           />
                         </ListItemButton>
                       </ListItem>
-                    </Stack>
-                  </Stack>
+                    </Stack> */}
+                  </Stack>}
                 </Grid>
               </Grid>
             </DataHead>
@@ -359,19 +422,11 @@ function ProfilePage() {
               <DataSection>
                 <DataHead sx={{ width: '100%', justifyContent: 'space-between', display: 'flex', px: 4, py: 3 }}>
                   <Typography variant="h5" style={{ display: 'inline' }}>
-                    Assign license
+                  Assigned license
                   </Typography>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => push('/dashboard/assign-license')}
-                    startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
-                  >
-                    {' '}
-                    Assigned license
-                  </Button>
+                 
                 </DataHead>
-                <Box sx={{ p: 4, pt: 0, py: 0 }}>
+                <Box sx={{ p:{xs:0,md:4}, pt: 0, py: 0 }}>
                   <LicenceData fetch={fetch} />
                 </Box>
                 <InviteModal
@@ -389,7 +444,7 @@ function ProfilePage() {
                   <Typography variant="h5" style={{ display: 'inline' }}>
                     Recent Invites
                   </Typography>
-                  <Button
+                  {/* <Button
                     variant="outlined"
                     color="primary"
                     onClick={() => setInviteOpen(true)}
@@ -397,9 +452,9 @@ function ProfilePage() {
                   >
                     {' '}
                     Invite User
-                  </Button>
+                  </Button> */}
                 </DataHead>
-                <Box sx={{ p: 4, pt: 0 }}>
+                <Box sx={{ p:{xs:0,md:4}, pt: 0 }}>
                   <InviteData fetch={fetch} />
                 </Box>
                 <InviteModal

@@ -37,7 +37,9 @@ const RootStyle = styled('div')(({ theme }) => ({
 const Container = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
-  marginTop: -100,
+  marginTop: -40,
+  width:"100%",
+  justifyContent:"space-between",
   [theme.breakpoints.down('lg')]: {
     marginTop: 0,
   },
@@ -59,24 +61,10 @@ export default function CalendarToolbar({ date, view, onNextDate, onPrevDate, on
 
   return (
     <RootStyle>
-      {/* {isDesktop && (
-        <Stack direction="row" spacing={1}>
-          {VIEW_OPTIONS.map((viewOption) => (
-            <Tooltip key={viewOption.value} title={viewOption.label}>
-              <ToggleButton
-                value={view}
-                selected={viewOption.value === view}
-                onChange={() => onChangeView(viewOption.value)}
-                sx={{ width: 32, height: 32, padding: 0 }}
-              >
-                <Iconify icon={viewOption.icon} width={20} height={20} />
-              </ToggleButton>
-            </Tooltip>
-          ))}
-        </Stack>
-      )} */}
+     
 
       <Container>
+        <Box display={"flex"}>
         <Typography variant="h5" sx={{ my: { xs: 1, sm: 0 } }}>
           {fDate(date)}
         </Typography>
@@ -91,6 +79,23 @@ export default function CalendarToolbar({ date, view, onNextDate, onPrevDate, on
         <IconButton onClick={onNextDate}>
           <Iconify icon="eva:arrow-ios-forward-fill" width={18} height={18} />
         </IconButton>
+        </Box>
+        {isDesktop && (
+        <Stack direction="row" spacing={1}>
+          {VIEW_OPTIONS.map((viewOption) => (
+            <Tooltip key={viewOption.value} title={viewOption.label}>
+              <ToggleButton
+                value={view}
+                selected={viewOption.value === view}
+                onChange={() => onChangeView(viewOption.value)}
+                sx={{ width: 32, height: 32, padding: 0 }}
+              >
+                <Iconify icon={viewOption.icon} width={20} height={20} />
+              </ToggleButton>
+            </Tooltip>
+          ))}
+        </Stack>
+      )}
       </Container>
     </RootStyle>
   );

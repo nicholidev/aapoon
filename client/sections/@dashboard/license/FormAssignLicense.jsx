@@ -28,8 +28,8 @@ export default function FormAssignLicense({ setEmail, setLinkSentModal }) {
   const { back } = useRouter();
 
   const RegisterSchema = Yup.object().shape({
-    firstName: Yup.string().matches(reAlpha, 'Firstname is not valid').required('First name required'),
-    lastName: Yup.string().matches(reAlpha, 'Lastname is not valid').required('Last name required'),
+    firstName: Yup.string().matches(reAlpha, 'First name is not valid').required('First name required'),
+    lastName: Yup.string().matches(reAlpha, 'Last name is not valid').required('Last name required'),
     email: Yup.string()
       .lowercase()
       .email('Email must be a valid email address')

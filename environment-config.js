@@ -47,6 +47,11 @@ exec(
   `firebase functions:config:set stripe.rkey="${configuration[appName].stripeKey}" ${tokenString}`,
   { stdio: "inherit" }
 );
+
+exec(
+  `firebase functions:config:set stripe.webhookkey="${configuration[appName].stripeWebhookSec}" ${tokenString}`,
+  { stdio: "inherit" }
+);
 exec(`firebase use ${appName}${tokenString}`, { stdio: "inherit" });
 
 // Setting configuration for firebase functions

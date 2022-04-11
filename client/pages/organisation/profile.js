@@ -39,6 +39,8 @@ import AppNewInvoice from '../../sections/@dashboard/general/app/AppNewInvoice';
 import { useState } from 'react';
 import UserData from '../../components/organisation/UserData';
 import useAuth from '../../hooks/useAuth';
+import InviteData from '../../components/invite/InviteData';
+import LicenceData from '../../components/licence';
 const Sidebar = styled('header')(({ theme }) => ({
   width: '240px',
   height: '100%',
@@ -220,24 +222,7 @@ function ProfilePage() {
                       </Typography>
                       <Typography variant="h6">{user.businessDetails?.businessWeb}</Typography>
                     </Stack>
-                    <Box>
-                      <Typography variant="subtitle2" color="GrayText">
-                        Admin Details
-                      </Typography>
-                      <Box display={'flex'}>
-                        <Typography variant="h6" color="initial" noWrap sx={{ textTransform: 'capitalize' }}>
-                          {user?.displayName}
-                        </Typography>
-                        &nbsp;&nbsp;
-                        <Link href={'/user/profile'} passHref={true}>
-                          <ButtonBase sx={{ marginLeft: 1 }}>
-                            <Typography variant="subtitle2" color="primary.main">
-                              View Profile
-                            </Typography>
-                          </ButtonBase>
-                        </Link>
-                      </Box>
-                    </Box>
+                  
                   </Stack>
                 </Grid>
                 <Grid item xs={6} sm={4} lg={2}>
@@ -272,14 +257,66 @@ function ProfilePage() {
                       </Typography>
                       <Typography variant="h6">{user.businessDetails?.teamsize}</Typography>
                     </Stack>
+                    <Box>
+                      <Typography variant="subtitle2" color="GrayText">
+                        Admin Details
+                      </Typography>
+                      <Box display={'flex'}>
+                        <Typography variant="h6" color="initial" noWrap sx={{ textTransform: 'capitalize' }}>
+                          {user?.displayName}
+                        </Typography>
+                        &nbsp;&nbsp;
+                        <Link href={'/user/profile'} passHref={true}>
+                          <ButtonBase sx={{ marginLeft: 1 }}>
+                            <Typography variant="subtitle2" color="primary.main">
+                              View Profile
+                            </Typography>
+                          </ButtonBase>
+                        </Link>
+                      </Box>
+                    </Box>
                   </Stack>
                 </Grid>
               </Grid>
             </DataHead>
-            <Typography variant="h5" sx={{ padding: '10px 20px' }}>
-              Users
-            </Typography>
-            <UserData />
+         
+            {user?.activeLicenses?.count > 1 ? (
+              <DataSection>
+                <DataHead sx={{ width: '100%', justifyContent: 'space-between', display: 'flex', px: 4, py: 3 }}>
+                  <Typography variant="h5" style={{ display: 'inline' }}>
+                  Assigned license
+                  </Typography>
+                 
+                </DataHead>
+                <Box sx={{ p:{xs:0,md:4}, pt: 0, py: 0 }}>
+                  <LicenceData fetch={fetch} />
+                </Box>
+               
+                {/* <AppNewInvoice/> */}
+              </DataSection>
+            ) : (
+              <DataSection>
+                <DataHead sx={{ width: '100%', justifyContent: 'space-between', display: 'flex', px: 4, py: 3 }}>
+                  <Typography variant="h5" style={{ display: 'inline' }}>
+                    Recent Invites
+                  </Typography>
+                  {/* <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => setInviteOpen(true)}
+                    startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
+                  >
+                    {' '}
+                    Invite User
+                  </Button> */}
+                </DataHead>
+                <Box sx={{ p:{xs:0,md:4}, pt: 0 }}>
+                  <InviteData fetch={fetch} />
+                </Box>
+              
+                {/* <AppNewInvoice/> */}
+              </DataSection>
+            )}
           </DataSection>
         </Content>
       </Container>

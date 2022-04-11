@@ -8,6 +8,7 @@ const Stripe = require("stripe");
 
 const config = require("./config");
 const logs = require("./logs");
+const  { AsYouType } = require('libphonenumber-js')
 
 const apiVersion = "2020-08-27";
 const stripe = new Stripe(config.stripeSecretKey, {
@@ -23,7 +24,44 @@ const stripe = new Stripe(config.stripeSecretKey, {
 /**
  * Create a customer object in Stripe when a user is created.
  */
+
+
+const getStripeSecret=(mobile)=>{
+  const asYouType = new AsYouType()
+  asYouType.input(mobile)
+  let country=asYouType.getNumber().country
+  if(process.env["STRIPE_"+country])
+  {
+    return process.env["STRIPE_"+country]
+  }
+  else
+  return process.env["STRIPE_US"]
+
+}
+
+const getWebhook=(mobile)=>{
+  const asYouType = new AsYouType()
+  asYouType.input(mobile)
+  let country=asYouType.getNumber().country
+  if(process.env["STRIPE_WEBHOOK-"+country])
+  {
+    return process.env["STRIPE_WEBHOOK-"+country]
+  }
+  else
+  return process.env["STRIPE_WEBHOOK-US"]
+
+}
+
 const createCustomerRecord = async ({ email, uid, phone }) => {
+  const stripe = new Stripe(getStripeSecret(phone), {
+    apiVersion,
+    // Register extension as a Stripe plugin
+    // https://stripe.com/docs/building-plugins#setappinfo
+    appInfo: {
+      name: "Firebase firestore-stripe-payments",
+      version: "0.2.4",
+    },
+  });
   try {
     logs.creatingCustomer(uid);
     const customerData = {
@@ -103,6 +141,21 @@ exports.createCheckoutSession = functions.firestore
       logs.creatingCheckoutSession(context.params.id);
       // Get stripe customer id
       let customerRecord = (await snap.ref.parent.parent.get()).data();
+
+      const {  phoneNumber } = await admin
+      .auth()
+      .getUser(context.params.uid);
+
+      const stripe = new Stripe(getStripeSecret(phoneNumber), {
+        apiVersion,
+        // Register extension as a Stripe plugin
+        // https://stripe.com/docs/building-plugins#setappinfo
+        appInfo: {
+          name: "Firebase firestore-stripe-payments",
+          version: "0.2.4",
+        },
+      });
+
       if (!customerRecord?.stripeId) {
         const { email, phoneNumber } = await admin
           .auth()
@@ -285,6 +338,20 @@ exports.createPortalLink = functions.https.onCall(async (data, context) => {
     );
   }
   const uid = context.auth.uid;
+
+  const {  phoneNumber } = await admin
+  .auth()
+  .getUser(context.auth.uid);
+
+  const stripe = new Stripe(getStripeSecret(phoneNumber), {
+    apiVersion,
+    // Register extension as a Stripe plugin
+    // https://stripe.com/docs/building-plugins#setappinfo
+    appInfo: {
+      name: "Firebase firestore-stripe-payments",
+      version: "0.2.4",
+    },
+  });
   try {
     if (!uid) throw new Error("Not authenticated!");
     const { returnUrl: return_url, locale = "auto", configuration } = data;
@@ -325,12 +392,13 @@ const prefixMetadata = (metadata) =>
 /**
  * Create a Product record in Firestore based on a Stripe Product object.
  */
-const createProductRecord = async (product) => {
+const createProductRecord = async (product,account) => {
   const { firebaseRole, ...rawMetadata } = product.metadata;
 
   const productData = {
     active: product.active,
     name: product.name,
+    account,
     description: product.description,
     role: firebaseRole ?? null,
     images: product.images,
@@ -349,7 +417,7 @@ const createProductRecord = async (product) => {
 /**
  * Create a price (billing price plan) and insert it into a subcollection in Products.
  */
-const insertPriceRecord = async (price) => {
+const insertPriceRecord = async (price,stripe) => {
   if (price.billing_scheme === "tiered")
     // Tiers aren't included by default, we need to retireve and expand.
     price = await stripe.prices.retrieve(price.id, { expand: ["tiers"] });
@@ -404,7 +472,7 @@ const insertTaxRateRecord = async (taxRate) => {
 /**
  * Copies the billing details from the payment method to the customer object.
  */
-const copyBillingDetailsToCustomer = async (payment_method) => {
+const copyBillingDetailsToCustomer = async (payment_method,stripe) => {
   const customer = payment_method.customer;
   const { name, phone, address } = payment_method.billing_details;
   await stripe.customers.update(customer, { name, phone, address });
@@ -416,7 +484,8 @@ const copyBillingDetailsToCustomer = async (payment_method) => {
 const manageSubscriptionStatusChange = async (
   subscriptionId,
   customerId,
-  createAction
+  createAction,
+  stripe
 ) => {
   // Get customer's UID from Firestore
   const customersSnap = await admin
@@ -524,7 +593,7 @@ const manageSubscriptionStatusChange = async (
   // NOTE: This is a costly operation and should happen at the very end.
   // Copy the billing deatils to the customer object.
   if (createAction && subscription.default_payment_method) {
-    await copyBillingDetailsToCustomer(subscription.default_payment_method);
+    await copyBillingDetailsToCustomer(subscription.default_payment_method,stripe);
   }
 
   return;
@@ -556,7 +625,7 @@ const insertInvoiceRecord = async (invoice) => {
 /**
  * Add PaymentIntent objects to Cloud Firestore for one-time payments.
  */
-const insertPaymentRecord = async (payments, checkoutSession) => {
+const insertPaymentRecord = async (payments, checkoutSession,stripe) => {
   // Get customer's UID from Firestore
   const customersSnap = await admin
     .firestore()
@@ -617,7 +686,22 @@ const deleteProductOrPrice = async (pr) => {
   }
 };
 
-const deleteStripeCustomer = async ({ uid, stripeId }) => {
+const deleteStripeCustomer = async ({ uid, stripeId}) => {
+
+
+  const {  phoneNumber } = await admin
+  .auth()
+  .getUser(uid);
+
+  const stripe = new Stripe(getStripeSecret(phoneNumber), {
+    apiVersion,
+    // Register extension as a Stripe plugin
+    // https://stripe.com/docs/building-plugins#setappinfo
+    appInfo: {
+      name: "Firebase firestore-stripe-payments",
+      version: "0.2.4",
+    },
+  });
   try {
     // Delete their customer object.
     // Deleting the customer object will immediately cancel all their active subscriptions.
@@ -643,3 +727,352 @@ const deleteStripeCustomer = async ({ uid, stripeId }) => {
     logs.customerDeletionError(error, uid);
   }
 };
+
+exports.onUserDeleted = functions.auth.user().onDelete(async (user) => {
+  if (!config.autoDeleteUsers) return;
+  // Get the Stripe customer id.
+  const customer = (
+    await admin
+      .firestore()
+      .collection(config.customersCollectionPath)
+      .doc(user.uid)
+      .get()
+  ).data();
+  // If you use the `delete-user-data` extension it could be the case that the customer record is already deleted.
+  // In that case, the `onCustomerDataDeleted` function below takes care of deleting the Stripe customer object.
+  if (customer) {
+    await deleteStripeCustomer({ uid: user.uid, stripeId: customer.stripeId });
+  }
+});
+
+/*
+ * The `onCustomerDataDeleted` deletes their customer object in Stripe which immediately cancels all their subscriptions.
+ */
+exports.onCustomerDataDeleted = functions.firestore
+  .document(`/${config.customersCollectionPath}/{uid}`)
+  .onDelete(async (snap, context) => {
+    if (!config.autoDeleteUsers) return;
+    const { stripeId } = snap.data();
+    await deleteStripeCustomer({ uid: context.params.uid, stripeId });
+  });
+
+  exports.handleWebhookEventsIn = functions.https.onRequest(
+    async (req, resp) => {
+      const stripe = new Stripe(process.env["STRIPE_IN"], {
+        apiVersion,
+        // Register extension as a Stripe plugin
+        // https://stripe.com/docs/building-plugins#setappinfo
+        appInfo: {
+          name: "Firebase firestore-stripe-payments",
+          version: "0.2.4",
+        },
+      });
+      const relevantEvents = new Set([
+        'product.created',
+        'product.updated',
+        'product.deleted',
+        'price.created',
+        'price.updated',
+        'price.deleted',
+        'checkout.session.completed',
+        'checkout.session.async_payment_succeeded',
+        'checkout.session.async_payment_failed',
+        'customer.subscription.created',
+        'customer.subscription.updated',
+        'customer.subscription.deleted',
+        'tax_rate.created',
+        'tax_rate.updated',
+        'invoice.paid',
+        'invoice.payment_succeeded',
+        'invoice.payment_failed',
+        'invoice.upcoming',
+        'invoice.marked_uncollectible',
+        'invoice.payment_action_required',
+        'payment_intent.processing',
+        'payment_intent.succeeded',
+        'payment_intent.canceled',
+        'payment_intent.payment_failed',
+      ]);
+      let event
+  
+      // Instead of getting the `Stripe.Event`
+      // object directly from `req.body`,
+      // use the Stripe webhooks API to make sure
+      // this webhook call came from a trusted source
+      try {
+        event = stripe.webhooks.constructEvent(
+          req.rawBody,
+          req.headers['stripe-signature'],
+          process.env["STRIPE_WEBHOOK_IN"]
+        );
+      } catch (error) {
+        logs.badWebhookSecret(error);
+        resp.status(401).send('Webhook Error: Invalid Secret');
+        return;
+      }
+  
+      if (relevantEvents.has(event.type)) {
+        logs.startWebhookEventProcessing(event.id, event.type);
+        try {
+          switch (event.type) {
+            case 'product.created':
+            case 'product.updated':
+              await createProductRecord(event.data.object ,"IN" );
+              break;
+            case 'price.created':
+            case 'price.updated':
+              await insertPriceRecord(event.data.object,stripe);
+              break;
+            case 'product.deleted':
+              await deleteProductOrPrice(event.data.object);
+              break;
+            case 'price.deleted':
+              await deleteProductOrPrice(event.data.object );
+              break;
+            case 'tax_rate.created':
+            case 'tax_rate.updated':
+              await insertTaxRateRecord(event.data.object );
+              break;
+            case 'customer.subscription.created':
+            case 'customer.subscription.updated':
+            case 'customer.subscription.deleted':
+              const subscription = event.data.object 
+              await manageSubscriptionStatusChange(
+                subscription.id,
+                subscription.customer ,
+                event.type === 'customer.subscription.created',
+                stripe
+              );
+              break;
+            case 'checkout.session.completed':
+            case 'checkout.session.async_payment_succeeded':
+            case 'checkout.session.async_payment_failed':
+              const checkoutSession = event.data
+                .object
+              if (checkoutSession.mode === 'subscription') {
+                const subscriptionId = checkoutSession.subscription 
+                await manageSubscriptionStatusChange(
+                  subscriptionId,
+                  checkoutSession.customer ,
+                  true,
+                  stripe
+                );
+              } else {
+                const paymentIntentId = checkoutSession.payment_intent 
+                const paymentIntent = await stripe.paymentIntents.retrieve(
+                  paymentIntentId
+                );
+                await insertPaymentRecord(paymentIntent, checkoutSession,stripe);
+              }
+              if (checkoutSession.tax_id_collection?.enabled) {
+                const customersSnap = await admin
+                  .firestore()
+                  .collection(config.customersCollectionPath)
+                  .where('stripeId', '==', checkoutSession.customer )
+                  .get();
+                if (customersSnap.size === 1) {
+                  customersSnap.docs[0].ref.set(
+                    checkoutSession.customer_details,
+                    { merge: true }
+                  );
+                }
+              }
+              break;
+            case 'invoice.paid':
+            case 'invoice.payment_succeeded':
+            case 'invoice.payment_failed':
+            case 'invoice.upcoming':
+            case 'invoice.marked_uncollectible':
+            case 'invoice.payment_action_required':
+              const invoice = event.data.object 
+              await insertInvoiceRecord(invoice);
+              break;
+            case 'payment_intent.processing':
+            case 'payment_intent.succeeded':
+            case 'payment_intent.canceled':
+            case 'payment_intent.payment_failed':
+              const paymentIntent = event.data.object
+              await insertPaymentRecord(paymentIntent,stripe);
+              break;
+            default:
+              logs.webhookHandlerError(
+                new Error('Unhandled relevant event!'),
+                event.id,
+                event.type
+              );
+          }
+          logs.webhookHandlerSucceeded(event.id, event.type);
+        } catch (error) {
+          logs.webhookHandlerError(error, event.id, event.type);
+          resp.json({
+            error: 'Webhook handler failed. View function logs in Firebase.',
+          });
+          return;
+        }
+      }
+  
+      // Return a response to Stripe to acknowledge receipt of the event.
+      resp.json({ received: true });
+    }
+  );
+  
+  exports.handleWebhookEventsUs = functions.https.onRequest(
+    async (req, resp) => {
+      const stripe = new Stripe(process.env["STRIPE_US"], {
+        apiVersion,
+        // Register extension as a Stripe plugin
+        // https://stripe.com/docs/building-plugins#setappinfo
+        appInfo: {
+          name: "Firebase firestore-stripe-payments",
+          version: "0.2.4",
+        },
+      });
+      const relevantEvents = new Set([
+        'product.created',
+        'product.updated',
+        'product.deleted',
+        'price.created',
+        'price.updated',
+        'price.deleted',
+        'checkout.session.completed',
+        'checkout.session.async_payment_succeeded',
+        'checkout.session.async_payment_failed',
+        'customer.subscription.created',
+        'customer.subscription.updated',
+        'customer.subscription.deleted',
+        'tax_rate.created',
+        'tax_rate.updated',
+        'invoice.paid',
+        'invoice.payment_succeeded',
+        'invoice.payment_failed',
+        'invoice.upcoming',
+        'invoice.marked_uncollectible',
+        'invoice.payment_action_required',
+        'payment_intent.processing',
+        'payment_intent.succeeded',
+        'payment_intent.canceled',
+        'payment_intent.payment_failed',
+      ]);
+      let event
+  
+      // Instead of getting the `Stripe.Event`
+      // object directly from `req.body`,
+      // use the Stripe webhooks API to make sure
+      // this webhook call came from a trusted source
+      try {
+        event = stripe.webhooks.constructEvent(
+          req.rawBody,
+          req.headers['stripe-signature'],
+          process.env["STRIPE_WEBHOOK_US"]
+        );
+      } catch (error) {
+        logs.badWebhookSecret(error);
+        resp.status(401).send('Webhook Error: Invalid Secret');
+        return;
+      }
+  
+      if (relevantEvents.has(event.type)) {
+        logs.startWebhookEventProcessing(event.id, event.type);
+        try {
+          switch (event.type) {
+            case 'product.created':
+            case 'product.updated':
+              await createProductRecord(event.data.object ,"US" );
+              break;
+            case 'price.created':
+            case 'price.updated':
+              await insertPriceRecord(event.data.object,stripe);
+              break;
+            case 'product.deleted':
+              await deleteProductOrPrice(event.data.object);
+              break;
+            case 'price.deleted':
+              await deleteProductOrPrice(event.data.object );
+              break;
+            case 'tax_rate.created':
+            case 'tax_rate.updated':
+              await insertTaxRateRecord(event.data.object );
+              break;
+            case 'customer.subscription.created':
+            case 'customer.subscription.updated':
+            case 'customer.subscription.deleted':
+              const subscription = event.data.object 
+              await manageSubscriptionStatusChange(
+                subscription.id,
+                subscription.customer ,
+                event.type === 'customer.subscription.created',
+                stripe
+              );
+              break;
+            case 'checkout.session.completed':
+            case 'checkout.session.async_payment_succeeded':
+            case 'checkout.session.async_payment_failed':
+              const checkoutSession = event.data
+                .object
+              if (checkoutSession.mode === 'subscription') {
+                const subscriptionId = checkoutSession.subscription 
+                await manageSubscriptionStatusChange(
+                  subscriptionId,
+                  checkoutSession.customer ,
+                  true,
+                  stripe
+                );
+              } else {
+                const paymentIntentId = checkoutSession.payment_intent 
+                const paymentIntent = await stripe.paymentIntents.retrieve(
+                  paymentIntentId
+                );
+                await insertPaymentRecord(paymentIntent, checkoutSession,stripe);
+              }
+              if (checkoutSession.tax_id_collection?.enabled) {
+                const customersSnap = await admin
+                  .firestore()
+                  .collection(config.customersCollectionPath)
+                  .where('stripeId', '==', checkoutSession.customer )
+                  .get();
+                if (customersSnap.size === 1) {
+                  customersSnap.docs[0].ref.set(
+                    checkoutSession.customer_details,
+                    { merge: true }
+                  );
+                }
+              }
+              break;
+            case 'invoice.paid':
+            case 'invoice.payment_succeeded':
+            case 'invoice.payment_failed':
+            case 'invoice.upcoming':
+            case 'invoice.marked_uncollectible':
+            case 'invoice.payment_action_required':
+              const invoice = event.data.object 
+              await insertInvoiceRecord(invoice);
+              break;
+            case 'payment_intent.processing':
+            case 'payment_intent.succeeded':
+            case 'payment_intent.canceled':
+            case 'payment_intent.payment_failed':
+              const paymentIntent = event.data.object
+              await insertPaymentRecord(paymentIntent,stripe);
+              break;
+            default:
+              logs.webhookHandlerError(
+                new Error('Unhandled relevant event!'),
+                event.id,
+                event.type
+              );
+          }
+          logs.webhookHandlerSucceeded(event.id, event.type);
+        } catch (error) {
+          logs.webhookHandlerError(error, event.id, event.type);
+          resp.json({
+            error: 'Webhook handler failed. View function logs in Firebase.',
+          });
+          return;
+        }
+      }
+  
+      // Return a response to Stripe to acknowledge receipt of the event.
+      resp.json({ received: true });
+    }
+  );
+  

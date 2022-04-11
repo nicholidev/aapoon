@@ -51,7 +51,7 @@ import StaticDatePicker from '@mui/lab/StaticDatePicker';
 import RenewPlanPrompt from '../../components/plan/RenewPlanPrompt';
 import DashboardSidebar from '../../components/dashboard/DashboardSidebar';
 import DashboardInfoHeader from '../../components/dashboard/DashboardInfoHeader';
-
+import CreateMeetingButton from "../../components/dashboard/CreateMeetingButton"
 const Sidebar = styled('header')(({ theme }) => ({
   width: '320px',
   height: '100%',
@@ -168,7 +168,7 @@ function PageOne() {
   }, [user.id]);
   return (
     <>
-      <Page title="Dashboard">
+      <Page title="Dashboard" sx={{pb:2}}>
         <GlobalStyles
           styles={{
             body: { backgroundColor: '#F1F1F1' },
@@ -177,11 +177,12 @@ function PageOne() {
         <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex' }}>
           <DashboardSidebar currentPage="dashboard" />
           <Content>
+           <center><CreateMeetingButton/></center> 
             <DashboardInfoHeader />
             {user?.activeLicenses?.count > 1 ? (
               <DataSection>
                 <DataHead>
-                  <h4 style={{ display: 'inline' }}>Assign license</h4>
+                <Typography variant="h5" style={{ display: 'inline' }}>License assigned</Typography>
                   <Button
                     variant="outlined"
                     color="primary"
@@ -192,7 +193,7 @@ function PageOne() {
                     Assign license
                   </Button>
                 </DataHead>
-                <Box sx={{ p: 4, pt: 0 }}>
+                <Box sx={{ p: {xs:2,md:4},pb:{xs:6,md:1}, pt: 0 ,maxWidth:"90vw"}}>
                   <LicenceData fetch={fetch} />
                 </Box>
                 <InviteModal
@@ -220,7 +221,7 @@ function PageOne() {
                     Invite User
                   </Button>
                 </DataHead>
-                <Box sx={{ p: 4, pt: 0 }}>
+                <Box sx={{ p: {xs:2,md:4},pb:{xs:6,md:1}, pt: 0 ,maxWidth:"90vw"}}>
                   <InviteData fetch={fetch} />
                 </Box>
                 <InviteModal

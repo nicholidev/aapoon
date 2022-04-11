@@ -83,6 +83,8 @@ export default function MyApp(props) {
       // image is loaded at this time
     };
     // if (localStorage.getItem('authToken')) ;
+
+    setTimeout(()=>setLoading(false),4000)
   }, []);
   return (
     <CacheProvider value={emotionCache}>

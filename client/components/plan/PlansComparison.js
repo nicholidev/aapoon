@@ -60,12 +60,7 @@ export default function PlansComparison(props) {
                   Premium users
                 </Typography>
               </TableCell>
-              <TableCell align="center" style={{ borderLeft: '1px solid #D3DCE6' }}>
-                {' '}
-                <Typography variant="subtitle1" color="inherit" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  Platinum users
-                </Typography>
-              </TableCell>
+        
               {/* <TableCell /> */}
             </TableRow>
           </TableHead>
@@ -102,19 +97,7 @@ export default function PlansComparison(props) {
                     />
                   )}
                 </TableCell>
-                <TableCell align="center" style={{ border: '1px solid #D3DCE6' }}>
-                  {row.platinumUser ? (
-                    <Iconify
-                      icon={'emojione-v1:left-check-mark'}
-                      sx={{ width: { xs: '15px', md: '30px' }, height: { xs: '15px', md: '30px' } }}
-                    />
-                  ) : (
-                    <Iconify
-                      icon={'emojione-monotone:cross-mark'}
-                      sx={{ width: { xs: '12px', md: '25px' }, height: { xs: '12px', md: '25px' } }}
-                    />
-                  )}
-                </TableCell>
+             
                 <TableCell />
               </TableRow>
             ))}

@@ -32,6 +32,7 @@ import { IconButtonAnimate } from '../../../components/animate';
 import PhoneInput from 'react-phone-number-input/input';
 import CustomPhone from '../../../components/Phonenumber';
 import InputLabel from '@mui/material/InputLabel';
+import Image from '../../../components/Image'
 import { FileUploader } from 'react-drag-drop-files';
 import { acceptInvitation, getCountry } from '../../../api/user';
 import { useRouter } from 'next/router'
@@ -56,17 +57,18 @@ export default function RegisterForm(props) {
     pincode: Yup.number('Please enter valid code').required('pincode is required'),
     logo: Yup.mixed()
       
-      .test('fileSize', 'The file is too large', (value) => {
-        return value && value.size <= 2000000||!value;
+      .test('fileSize', 'Please upload JPEG or PNG format with maximum size of 240 KB', (value) => {
+        return value && value.size <= 240000||!value;
       })
       .test('type', 'Only the following formats are accepted: .jpeg, .jpg, .png', (value) => {
+        console.log(value)
         return (
           value &&
           (value.type === 'image/jpeg' ||
-            value.type === 'image/bmp' ||
-            value.type === 'image/png' ||
-            value.type === 'application/pdf' ||
-            value.type === 'application/msword')||!value
+            
+            value.type === 'image/png' 
+           
+           )||!value
         );
       }),
   });
@@ -79,7 +81,7 @@ export default function RegisterForm(props) {
       address2: '',
       state: '',
       pincode: '',
-      teamsize: '10',
+      teamsize: '0-50',
       logo: '',
     },
     validationSchema: RegisterSchema,
@@ -130,7 +132,7 @@ export default function RegisterForm(props) {
         state:user.businessDetails?.state,
         pincode: user.businessDetails?.pincode,
         teamsize: user.businessDetails?.teamsize,
-        // logo: user.businessDetails?.logo,
+       // logo: user.businessDetails?.logo,
       });
     }
 
@@ -232,7 +234,7 @@ export default function RegisterForm(props) {
                 <FileUploader
                   handleChange={(file) => setFieldValue('logo', file)}
                   name="file"
-                  types={['JPG', 'PNG', 'JPEG']}
+                //  types={['JPG', 'PNG', 'JPEG']}
                 >
                   <Box
                     width="100%"
@@ -242,23 +244,22 @@ export default function RegisterForm(props) {
                     alignItems="center"
                     justifyContent="center"
                   >
-                    <Iconify icon="clarity:upload-cloud-line" sx={{ fontSize: 60, color: '#225082' }} />
-                    {values.logo ? (
+                    {(!user.businessDetails?.logo||values.logo)&&<Iconify icon="clarity:upload-cloud-line" sx={{ fontSize: 60, color: '#225082' }} />}
+                    {values.logo?
                       <Typography align="center" sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center' }}>
                         {values.logo.name}
-                      </Typography>
-                    ) : (
-                      <Typography align="center" sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center' }}>
+                      </Typography>:user.businessDetails?.logo&&<Image style={{width:80}} src={user.businessDetails?.logo}/>
+}
+                     <Typography align="center" sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center' }}>
                         Drag & Drop or &nbsp;
                         <Typography align="center" color="primary" sx={{ fontWeight: 500 }}>
                           Browse{' '}
                         </Typography>
                       </Typography>
-                    )}
                   </Box>
                 </FileUploader>
                 <Typography variant="caption">Format accepted - PNG, JPEG</Typography>
-                <Typography variant="caption">Logo Dimensions - 200*200 pixels</Typography>
+                <Typography variant="caption">Maximum size of 240KB</Typography>
                 <FormHelperText error={Boolean(touched.logo && errors.logo)}>
                   {touched.logo && errors.logo}
                 </FormHelperText>
@@ -272,7 +273,7 @@ export default function RegisterForm(props) {
             </Button>
            
             <LoadingButton size="large" type="submit" variant="contained" loading={isSubmitting}>
-              {props.isUpdate? "Update":"Save details"}
+              {props.isUpdate? "Save details":"Save details"}
             </LoadingButton>
           </Stack>
         </Stack>

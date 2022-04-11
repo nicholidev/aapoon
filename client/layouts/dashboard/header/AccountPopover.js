@@ -60,14 +60,14 @@ export default function AccountPopover() {
             }),
           }}
         >
-          <Avatar src={user.profilePic} alt={user.displayName} />
+          <Avatar src={user?.accountType=="Business"?user?.businessDetails?.logo:user.profilePic} alt={user.displayName} />
         </IconButtonAnimate>
         <Typography
           variant="subtitle2"
           color="textPrimary"
           sx={{ mr: 1, textTransform: 'capitalize', display: { xs: 'none', sm: 'block' } }}
         >
-          {user?.displayName}
+          {user?.businessDetails?.businessName?user.businessDetails.businessName:user?.displayName}
         </Typography>
         <KeyboardArrowDownIcon style={{ color: 'grey' }} />
       </Box>

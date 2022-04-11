@@ -32,6 +32,7 @@
     "firebase-functions": "^3.16.0",
     "fs": "^0.0.1-security",
     "jsonwebtoken": "^8.5.1",
+    "libphonenumber-js": "^1.9.49",
     "nodemailer": "^6.6.3",
     "short-unique-id": "^4.4.4",
     "stripe": "^8.207.0",

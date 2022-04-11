@@ -50,11 +50,11 @@ export default function RegisterForm(query) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
   const rePhoneNumber = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
-  const rePass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,10}$/;
+  const rePass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/;
   const reAlpha = /^[a-zA-Z]+$/;
   const RegisterSchema = Yup.object().shape({
-    firstName: Yup.string().matches(reAlpha, 'Firstname is not valid').required('First name required'),
-    lastName: Yup.string().matches(reAlpha, 'Lastname is not valid').required('Last name required'),
+    firstName: Yup.string().matches(reAlpha, 'First name is not valid').required('First name required'),
+    lastName: Yup.string().matches(reAlpha, 'Last name is not valid').required('Last name required'),
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string()
       .required('Password is required')
@@ -77,6 +77,7 @@ const {push}=useRouter();
       email: query?.query?.email ? query?.query?.email : user.email,
       password: user.password,
       phone: user.phoneNumber,
+      countryCode:user.countryCode||countryCodes.find(i=>i.code==countryCode)?.value,
       accountType: user.accountType || 'Business',
     },
     validationSchema: RegisterSchema,
@@ -128,12 +129,14 @@ const {push}=useRouter();
     }
     getCountry().then((res) => {
       setCountryCode(res.data.country_code);
+      setFieldValue("countryCode",countryCodes.find(i=>i.code==res.data.country_code)?.value)
     });
   }, [query?.query?.email]);
 
   console.log(values);
 const setccd =(e)=>{
  setCountryCode(e.target.value);
+ setFieldValue("countryCode",countryCodes.find(i=>i.code==e.target.value)?.value)
 }
   return (
     <FormikProvider value={formik}>
@@ -181,13 +184,32 @@ const setccd =(e)=>{
             error={Boolean(touched.phone && errors.phone)}
             helperText={touched.phone && errors.phone}
           /> */}
-          <PhoneInput
+          <TextField
             placeholder="Enter phone number"
             countryCallingCodeEditable={false}
             countrySelectComponent={(props=>{
 
             
             return( null)})}
+            InputProps={{
+              inputComponent: NumberFormatCustom,
+              startAdornment: <Autocomplete  value={countryCode} countryCodes={countryCodes} setccd={setccd}   renderInput={(params) => <TextField {...params} label="Movie" />} >
+              <Box
+                       position="start"
+                       sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'text.secondary' }}
+                     >
+                      
+                       {countryCodes.find(i=>i.code==countryCode)?<Flag code={countryCodes.find(i=>i.code==countryCode).code}/>:""}&nbsp;&nbsp;
+                       <i style={{marginRight:4}}>{countryCodes.find(i=>i.code==countryCode)?.value}{' '}</i>
+                       <Divider
+                         orientation="vertical"
+                         flexItem
+                         sx={{ justifyContent: 'center', alignItems: 'center', mx: 1, borderWidth: '0.2px' }}
+                       />
+                     </Box>
+                   
+                       </Autocomplete>
+            }}
           endorment={
           <Autocomplete  value={countryCode} countryCodes={countryCodes} setccd={setccd}   renderInput={(params) => <TextField {...params} label="Movie" />} >
    <Box
@@ -210,10 +232,9 @@ const setccd =(e)=>{
         
         }
             defaultCountry={countryCode}
-          
-            inputComponent={CustomPhone}
+            inputComponent={NumberFormatCustom}
             {...getFieldProps('phone')}
-            onChange={(data) => setFieldValue('phone', data)}
+            onChange={(data) => setFieldValue('phone', data.target.value)}
             name={'phone'}
             onBlur={getFieldProps('phone').onBlur}
             error={Boolean(touched.phone && errors.phone)}

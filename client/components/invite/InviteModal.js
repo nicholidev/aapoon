@@ -14,6 +14,7 @@ import useAuth from '../../hooks/useAuth';
 export default function InviteModal(props) {
   const [linkSent, setLinkSent] = useState(false);
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const [userMail,setUserMail]=useState("")
   const { user } = useAuth();
   const schema = Yup.object().shape({
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
@@ -37,6 +38,7 @@ export default function InviteModal(props) {
         });
         setSubmitting(false);
         setLinkSent(true);
+        setUserMail(values.email)
         resetForm();
       } catch (error) {
         setSubmitting(false);
@@ -118,7 +120,7 @@ export default function InviteModal(props) {
           <br />
 
           <Typography sx={{ maxWidth: 380 }}>
-            You have invited {values.email}, A link has been sent to the user to accept and join.
+            You have invited {userMail}, A link has been sent to the user to accept and join.
           </Typography>
         </Box>
       )}

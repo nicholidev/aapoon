@@ -12,7 +12,7 @@ const meetingRoutes = require("./src/routes/meeting/meeting-route");
 const { sendWelcomeEmail, updateUser } = require("./src/triggers/auth");
 const { sendInviteEmail } = require("./src/triggers/invites");
 const { sendHelpConfirmEmail, sendSuppotMail } = require("./src/triggers/help");
-const { createCustomer } = require("./src/triggers/stripe");
+const srtipefunc = require("./src/triggers/stripe");
 const {
   onSubscriptionCreate,
   onSubscriptionUpdate,
@@ -42,4 +42,4 @@ exports.onSubscriptionUpdate = onSubscriptionUpdate;
 exports.onLicensesCreate = onLicensesCreate;
 exports.onLicensesUpdate = onLicensesUpdate;
 exports.updateUserLicenses = updateUserLicenses;
-exports.stripecust = createCustomer;
+exports.stripeFunctions = srtipefunc;

@@ -53,14 +53,14 @@ DashboardLayout.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
-export default function DashboardLayout({ children, withBottomNav }) {
+export default function DashboardLayout({ children, withBottomNav,withoutStack }) {
   const { collapseClick } = useCollapseDrawer();
 
   const [open, setOpen] = useState(false);
 
   return (
     <RootStyle>
-      <DashboardHeader onOpenSidebar={() => setOpen(true)} />
+      <DashboardHeader onOpenSidebar={() => setOpen(true)} withoutStack={withoutStack} />
 
       {/* <DashboardNavbar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} /> */}
 

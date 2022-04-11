@@ -201,9 +201,7 @@ function CalendarPage() {
         <Content>
           <DataSection>
             <DataHead>
-              <Button variant="outlined" color="primary" disabled>
-                Today
-              </Button>
+          
             </DataHead>
             {/* <InviteData fetch={fetch} />
             <InviteModal
@@ -234,6 +232,7 @@ function CalendarPage() {
                 initialDate={date}
                 initialView={view}
                 dayMaxEventRows={3}
+                slotDuration={"00:15:00"}
                 displayEventEnd={true}
                 eventTimeFormat={{
                   hour: 'numeric',

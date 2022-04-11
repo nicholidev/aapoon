@@ -51,20 +51,20 @@ export default function FormHelpDesk(props) {
     topic: Yup.string().required('Topic is required'),
     description: Yup.string().required('Description is required').min(5, 'Too Short!'),
     uploadFile: Yup.mixed()
-      .test('fileSize', 'The file is too large', (value) => {
-        return (value && value.size <= 2000000) || !value;
-      })
-      .test('type', 'Only the following formats are accepted: .jpeg, .jpg, .png', (value) => {
-        return (
-          (value &&
-            (value.type === 'image/jpeg' ||
-              value.type === 'image/bmp' ||
-              value.type === 'image/png' ||
-              value.type === 'application/pdf' ||
-              value.type === 'application/msword')) ||
-          !value
-        );
-      }),
+      // .test('fileSize', 'The file is too large', (value) => {
+      //   return (value && value.size <= 2000000) || !value;
+      // })
+      // .test('type', 'Only the following formats are accepted: .jpeg, .jpg, .png', (value) => {
+      //   return (
+      //     (value &&
+      //       (value.type === 'image/jpeg' ||
+      //         value.type === 'image/bmp' ||
+      //         value.type === 'image/png' ||
+      //         value.type === 'application/pdf' ||
+      //         value.type === 'application/msword')) ||
+      //     !value
+      //   );
+      // }),
   });
 
   const formik = useFormik({
@@ -172,7 +172,7 @@ export default function FormHelpDesk(props) {
               <FileUploader
                 handleChange={(file) => setFieldValue('uploadFile', file)}
                 name="file"
-                types={['JPG', 'PNG', 'JPEG']}
+                //types={['JPG', 'PNG', 'JPEG']}
               >
                 {values.uploadFile ? (
                   <Box

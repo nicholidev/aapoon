@@ -22,6 +22,7 @@ import { IconButtonAnimate } from '../../../components/animate';
 import PhoneInput from 'react-phone-number-input';
 import CustomPhone from '../../../components/Phonenumber';
 import Flag from '../../../components/Flag';
+import NumberFormatCustom from '../../../components/NumberInput';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../../utils/errorMessage';
 import { acceptInvitation, getCountry } from '../../../api/user';
@@ -37,8 +38,8 @@ export default function RegisterForm(query) {
   const rePass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   const reAlpha = /^[a-zA-Z]+$/;
   const RegisterSchema = Yup.object().shape({
-    firstName: Yup.string().matches(reAlpha, 'Firstname is not valid').required('First name required'),
-    lastName: Yup.string().matches(reAlpha, 'Lastname is not valid').required('Last name required'),
+    firstName: Yup.string().matches(reAlpha, 'First name is not valid').required('First name required'),
+    lastName: Yup.string().matches(reAlpha, 'Last name is not valid').required('Last name required'),
     password:Yup.string(),
  
     phone: Yup.string().matches(rePhoneNumber, 'Phone number is not valid').required('Phone number is required'),
@@ -52,12 +53,13 @@ export default function RegisterForm(query) {
       email: query?.query?.email ? query?.query?.email : user.email,
       password: user.password,
       phone: user.phoneNumber,
+      countryCode:user.countryCode||countryCodes.find(i=>i.code==countryCode)?.value,
       accountType: user.accountType || 'Business',
     },
     validationSchema: RegisterSchema,
     onSubmit: async (values, { setErrors, setSubmitting }) => {
       try {
-        await sendOtp(values.phone,query.id,values.password);
+        await sendOtp(values.countryCode+values.phone,query.id,values.password);
         enqueueSnackbar('Otp sent successfully', {
           variant: 'success',
           action: (key) => (
@@ -71,7 +73,7 @@ export default function RegisterForm(query) {
           setSubmitting(false);
         }
         query.setOtp(true)
-        query.setMobile(values.phone)
+        query.setMobile(values.countryCode+values.phone)
         query.setName(values.firstName+" "+values.lastName)
         if(user.accountType=="Business"){
           window?.location="/dashboard/one";
@@ -109,10 +111,12 @@ export default function RegisterForm(query) {
     }
     getCountry().then((res) => {
       setCountryCode(res.data.country_code);
+      setFieldValue("countryCode",countryCodes.find(i=>i.code==res.data.country_code)?.value)
     });
   }, [query?.query?.email]);
   const setccd =(e)=>{
     setCountryCode(e.target.value);
+    setFieldValue("countryCode",countryCodes.find(i=>i.code==e.target.value)?.value)
    }
   return (
     <FormikProvider value={formik}>
@@ -138,37 +142,57 @@ export default function RegisterForm(query) {
             />
           </Stack>
 
-          <PhoneInput
+          <TextField
             placeholder="Enter phone number"
+            countryCallingCodeEditable={false}
             countrySelectComponent={(props=>{
 
             
-              return( null)})}
-            endorment={
-            <Autocomplete  value={countryCode} countryCodes={countryCodes} setccd={setccd}   renderInput={(params) => <TextField {...params} label="Movie" />} >
-     <Box
-              position="start"
-              sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'text.secondary' }}
-            >
-                {countryCodes.find(i=>i.code==countryCode)?<Flag code={countryCodes.find(i=>i.code==countryCode).code}/>:""}&nbsp;&nbsp;
+            return( null)})}
+            InputProps={{
+              inputComponent: NumberFormatCustom,
+              startAdornment: <Autocomplete  value={countryCode} countryCodes={countryCodes} setccd={setccd}   renderInput={(params) => <TextField {...params} label="Movie" />} >
+              <Box
+                       position="start"
+                       sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'text.secondary' }}
+                     >
+                      
+                       {countryCodes.find(i=>i.code==countryCode)?<Flag code={countryCodes.find(i=>i.code==countryCode).code}/>:""}&nbsp;&nbsp;
+                       <i style={{marginRight:4}}>{countryCodes.find(i=>i.code==countryCode)?.value}{' '}</i>
+                       <Divider
+                         orientation="vertical"
+                         flexItem
+                         sx={{ justifyContent: 'center', alignItems: 'center', mx: 1, borderWidth: '0.2px' }}
+                       />
+                     </Box>
+                   
+                       </Autocomplete>
+            }}
+          endorment={
+          <Autocomplete  value={countryCode} countryCodes={countryCodes} setccd={setccd}   renderInput={(params) => <TextField {...params} label="Movie" />} >
+   <Box
+            position="start"
+            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'text.secondary' }}
+          >
+           
+            {countryCodes.find(i=>i.code==countryCode)?<Flag code={countryCodes.find(i=>i.code==countryCode).code}/>:""}&nbsp;&nbsp;
             <i style={{marginRight:4}}>{countryCodes.find(i=>i.code==countryCode)?.value}{' '}</i>
-            
-              <Divider
-                orientation="vertical"
-                flexItem
-                sx={{ justifyContent: 'center', alignItems: 'center', mx: 1, borderWidth: '0.2px' }}
-              />
-            </Box>
-          
-              </Autocomplete>
-          
-          
-          
-          }
+            <Divider
+              orientation="vertical"
+              flexItem
+              sx={{ justifyContent: 'center', alignItems: 'center', mx: 1, borderWidth: '0.2px' }}
+            />
+          </Box>
+        
+            </Autocomplete>
+        
+        
+        
+        }
             defaultCountry={countryCode}
-            inputComponent={CustomPhone}
+            inputComponent={NumberFormatCustom}
             {...getFieldProps('phone')}
-            onChange={(data) => setFieldValue('phone', data)}
+            onChange={(data) => setFieldValue('phone', data.target.value)}
             name={'phone'}
             onBlur={getFieldProps('phone').onBlur}
             error={Boolean(touched.phone && errors.phone)}
