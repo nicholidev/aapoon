@@ -45,6 +45,7 @@ const withMeetingAuth = (WrappedComponent) => {
       const [requirePass, setRequirePass] = useState(false);
       const [token, setToken] = useState('');
       const [name, setName] = useState('');
+      const [domain,setDomain]=useState("")
       const [authMeeting, setAuthMeeting] = useState({
         isAuth: localStorage.getItem('mid') == query.meetingid,
         id: localStorage.getItem('mid'),
@@ -60,7 +61,7 @@ const withMeetingAuth = (WrappedComponent) => {
             joinMeeting({ id: query.meetingid })
               .then((data) => {
                 setLoading(false);
-
+                setDomain(data?.data.domain)
                 setMeetData(data?.data?.data);
                 setToken(data?.data.token);
               })
@@ -236,7 +237,7 @@ const withMeetingAuth = (WrappedComponent) => {
           </Dialog>
         );
       }
-      if (authMeeting.isAuth == true && authMeeting.jwt) return <WrappedComponent {...props} token={authMeeting.jwt} />;
+      if (authMeeting.isAuth == true && authMeeting.jwt) return <WrappedComponent {...props} domain={domain} token={authMeeting.jwt} />;
       else
         return (
           <Box height={'100vh'} display="flex" justifyContent="center" alignItems="center">
