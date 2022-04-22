@@ -90,7 +90,7 @@ export default function HomeHugePackElements() {
         >
           <MotionInView variants={varFade().inUp}></MotionInView>
           <MotionInView variants={varFade().inDown}>
-            <Typography variant="h3">What aapoon has for you ?</Typography>
+            <Typography variant="h3">What aapoon meet has for you ?</Typography>
           </MotionInView>
         </Box>
         <Grid container spacing={6} justifyContent="space-between">
@@ -109,8 +109,9 @@ export default function HomeHugePackElements() {
                     color: isLight ? 'text.secondary' : 'common.white',
                   }}
                 >
-                  aapoon Meet provides authenticated and encrypted data privacy to the users. Meet video conferences are
-                  encrypted in transit and safety measures are continuously updated for data security and privacy.
+                  aapoon meet provides authenticated and encrypted data privacy to the users. aapoon meet video
+                  conferences are encrypted in transit and safety measures are continuously updated for data security
+                  and privacy.
                 </Typography>
               </MotionInView>
             </ContentStyle>
@@ -148,8 +149,8 @@ export default function HomeHugePackElements() {
                   }}
                 >
                   Invited guests on aapoon meet can join an online conference from any computer or any mobile device,
-                  using any web browser-no software required to install and with an option to download meet app. Meet is
-                  a user-friendly application.
+                  using any web browser-no software required to install and with an option to download meet app. aapoon
+                  meet is a user-friendly application.
                 </Typography>
               </MotionInView>
             </ContentStyle>
@@ -188,8 +189,8 @@ export default function HomeHugePackElements() {
                   }}
                 >
                   Easy scheduling, video recording & saving, and an option to choose background, helps to stay connected
-                  with aapoon meet. Connections are made easy by aapoon for the benefit of the users. Meet is a
-                  user-friendly application. Stay connected and stay safe!
+                  with aapoon meet. Connections are made easy by aapoon meet for the benefit of the users. aapoon meet
+                  is a user-friendly application. Stay connected and stay safe!
                 </Typography>
               </MotionInView>
             </ContentStyle>
@@ -226,9 +227,9 @@ export default function HomeHugePackElements() {
                     color: isLight ? 'text.secondary' : 'common.white',
                   }}
                 >
-                  aapoon is a unique product, specially designed to meet the users need of meeting experience. Host can
-                  choose any number of licences. As an admin, he can give access to anyone of his choice and use its
-                  privileges. aapoon has free, premium and platinum options for the users to choose their choice of
+                  aapoon meet is a unique product, specially designed to meet the users need of meeting experience. Host
+                  can choose any number of licenses. As an admin, he can give access to anyone of his choice and use its
+                  privileges. aapoon meet has free, premium and platinum options for the users to choose their choice of
                   group meetings.
                 </Typography>
               </MotionInView>

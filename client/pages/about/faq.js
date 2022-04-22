@@ -114,10 +114,12 @@ function PrivacyPolicy() {
                     aria-controls="panel1bh-content"
                     id="panel1bh-header"
                   >
-                    <Typography variant="subtitle1">How meeting invitation link is sent?</Typography>
+                    <Typography variant="body1">How meeting invitation link is sent?</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography>One can send a meeting invitation link as a scheduled or instant meeting.</Typography>
+                    <Typography variant="subtitle1">
+                      One can send a meeting invitation link as a scheduled or instant meeting.
+                    </Typography>
                   </AccordionDetails>
                 </Accordion>
                 <Accordion expanded={expanded === 'panel2'} onChange={handleChange('panel2')}>
@@ -126,10 +128,10 @@ function PrivacyPolicy() {
                     aria-controls="panel2bh-content"
                     id="panel2bh-header"
                   >
-                    <Typography variant="subtitle1">Can I purchase one Subscription?</Typography>
+                    <Typography variant="body1">Can I purchase one Subscription?</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography>You can purchase a single subscription also.</Typography>
+                    <Typography variant="subtitle1">You can purchase a single subscription also.</Typography>
                   </AccordionDetails>
                 </Accordion>
                 <Accordion expanded={expanded === 'panel3'} onChange={handleChange('panel3')}>
@@ -138,10 +140,10 @@ function PrivacyPolicy() {
                     aria-controls="panel3bh-content"
                     id="panel3bh-header"
                   >
-                    <Typography variant="subtitle1">How many subscriptions maximum I can purchase?</Typography>
+                    <Typography variant="body1">How many subscriptions maximum I can purchase?</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography>A host can purchase up to 999 subscriptions.</Typography>
+                    <Typography variant="subtitle1">A host can purchase up to 999 subscriptions.</Typography>
                   </AccordionDetails>
                 </Accordion>
 
@@ -151,10 +153,10 @@ function PrivacyPolicy() {
                     aria-controls="panel3bh-content"
                     id="panel3bh-header"
                   >
-                    <Typography variant="subtitle1">How many minutes a free user can use?</Typography>
+                    <Typography variant="body1">How many minutes a free user can use?</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography>
+                    <Typography variant="subtitle1">
                       A free user can use 55 minutes of free conference or video calling and host up to 50
                     </Typography>
                   </AccordionDetails>
@@ -166,10 +168,12 @@ function PrivacyPolicy() {
                     aria-controls="panel3bh-content"
                     id="panel3bh-header"
                   >
-                    <Typography variant="subtitle1">What is a corporate plan?</Typography>
+                    <Typography variant="body1">What is a corporate plan?</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography>A corporate plan is the saver package for large organizations.</Typography>
+                    <Typography variant="subtitle1">
+                      A corporate plan is the saver package for large organizations.
+                    </Typography>
                   </AccordionDetails>
                 </Accordion>
 
@@ -179,10 +183,10 @@ function PrivacyPolicy() {
                     aria-controls="panel3bh-content"
                     id="panel3bh-header"
                   >
-                    <Typography variant="subtitle1">What is a subscription?</Typography>
+                    <Typography variant="body1">What is a subscription?</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography>
+                    <Typography variant="subtitle1">
                       A subscription is a privilege level that determines access to platform features.
                     </Typography>
                   </AccordionDetails>
@@ -194,10 +198,10 @@ function PrivacyPolicy() {
                     aria-controls="panel3bh-content"
                     id="panel3bh-header"
                   >
-                    <Typography variant="subtitle1">Can I make unlimited calls as free user?</Typography>
+                    <Typography variant="body1">Can I make unlimited calls as free user?</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography>Any free user can make unlimited calls.</Typography>
+                    <Typography variant="subtitle1">Any free user can make unlimited calls.</Typography>
                   </AccordionDetails>
                 </Accordion>
 
@@ -207,12 +211,12 @@ function PrivacyPolicy() {
                     aria-controls="panel3bh-content"
                     id="panel3bh-header"
                   >
-                    <Typography variant="subtitle1">
+                    <Typography variant="body1">
                       Can I assign a subscription to another user by removing primary user authority?
                     </Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography>
+                    <Typography variant="subtitle1">
                       aapoon meet subscriptions aren’t named users, and hence admin can delete and assign new users
                       during the subscription period.
                     </Typography>
@@ -225,10 +229,10 @@ function PrivacyPolicy() {
                     aria-controls="panel3bh-content"
                     id="panel3bh-header"
                   >
-                    <Typography variant="subtitle1">How to schedule a meeting and add to calendar?</Typography>
+                    <Typography variant="body1">How to schedule a meeting and add to calendar?</Typography>
                   </AccordionSummary>
                   <AccordionDetails>
-                    <Typography>
+                    <Typography variant="subtitle1">
                       A user enters the meeting details such as date and time, meeting title, and description by
                       clicking the schedule meeting button in the calendar App, and an appointment is scheduled. A host
                       and invitees have a separate meeting URL to join.

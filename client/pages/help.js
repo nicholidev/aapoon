@@ -76,7 +76,7 @@ function HelpDesk() {
   const router = useRouter();
   const { user } = useAuth();
   return (
-    <Page title="Schedule Meeting">
+    <Page title="Help Desk">
       <GlobalStyles
         styles={{
           body: { backgroundColor: '#F1F1F1' },

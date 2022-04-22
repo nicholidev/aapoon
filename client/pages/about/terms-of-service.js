@@ -92,24 +92,24 @@ function TermsOfService() {
                   <Iconify icon={'eva:arrow-back-fill'} />
                 </IconButtonAnimate>
                 &nbsp;&nbsp;&nbsp;&nbsp; */}
-                <Typography variant="h2" align="center" gutterBottom sx={{ fontSize: { xs: '18px', md: '24px' } }}>
+                <Typography variant="h3" align="center" gutterBottom>
                   aapoon meet Terms Of Service
                 </Typography>
                 <br />
                 <br />
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '14px', md: '18px' } }} gutterBottom>
+                <Typography variant="subtitle1" gutterBottom>
                   EFFECTIVE: January 01, 2022
                 </Typography>
               </Box>
 
               <Box sx={{ mb: 2 }}>
-                <Typography sx={{ fontSize: { xs: '12px', md: '16px' }, fontWeight: 'bold' }}>
+                <Typography variant="body1">
                   IMPORTANT, READ CAREFULLY: YOUR USE OF AND ACCESS TO THE WEBSITE AND PRODUCTS AND SERVICES AND
                   ASSOCIATED SOFTWARE (COLLECTIVELY, THE "SERVICES") OF AAPOON, INC. AND ITS AFFILIATES ("aapoon meet")
                   IS CONDITIONED UPON YOUR COMPLIANCE WITH AND ACCEPTANCE OF THESE TERMS, WHICH INCLUDE YOUR AGREEMENT
                   TO ARBITRATE CLAIMS. PLEASE REVIEW THOROUGHLY BEFORE ACCEPTING.
                 </Typography>
-                <Typography sx={{ fontSize: { xs: '12px', md: '16px' } }} style={{ marginTop: 10, fontWeight: 'bold' }}>
+                <Typography variant="body1" style={{ marginTop: 10 }}>
                   BY CLICKING/CHECKING THE "I AGREE" BUTTON/BOX, ACCESSING THE aapoon meet WEBSITE OR BY UTILIZING THE
                   MEET AAP SERVICES YOU AGREE TO BE BOUND BY THESE TERMS OF SERVICE AND ALL EXHIBITS, ORDER FORMS, AND
                   INCORPORATED POLICIES (THE “AGREEMENT” OR “TOS”). THE MEET AAP SERVICES ARE NOT AVAILABLE TO PERSONS
@@ -117,7 +117,7 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
+                <Typography variant="body1">
                   aapoon meet will provide the Services, and you may access and use the Services, in accordance with
                   this Agreement. aapoon meet may provide any of the Services hereunder through any of its Affiliates.
                   If You order Services through an on-line registration page or an order form (each an "Order Form"),
@@ -128,8 +128,8 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     System Requirements
                   </Typography>
                   . Use of the Services requires one or more compatible devices, Internet access (fees may apply), and
@@ -141,12 +141,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  1.
-                </Typography>
+                <Typography variant="body1">1.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     DEFINITIONS
                   </Typography>
                   . The following definitions will apply in this Agreement, and any reference to the singular includes a
@@ -155,31 +153,29 @@ function TermsOfService() {
                   purposes of this Agreement, “control” means an economic or voting interest of at least fifty percent
                   (50%) or, in the absence of such economic or voting interest, the power to direct or cause the
                   direction of the management and set the policies of such entity.
-                  <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
+                  <Typography variant="body1">
                     “End User” means a Host or Participant (as defined in the Services Description) who uses the
                     Services.
                   </Typography>
-                  <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
+                  <Typography variant="body1">
                     "Initial Subscription Term" means the initial subscription term for a Service as specified in an
                     Order Form.
                   </Typography>
-                  <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
+                  <Typography variant="body1">
                     "Service Effective Date" means the date an Initial Subscription Term begins as specified in an Order
                     Form.
                   </Typography>
-                  <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
+                  <Typography variant="body1">
                     "Renewal Term" means the renewal subscription term for a Service commencing after the Initial
                     Subscription Term or another Renewal Term as specified in an Order Form.
                   </Typography>
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  2.
-                </Typography>
+                <Typography variant="body1">2.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     SERVICES
                   </Typography>
                   . aapoon meet will provide the Services as described on the Order Form, and standard updates to the
@@ -187,12 +183,10 @@ function TermsOfService() {
                   sole discretion, discontinue the Services or modify the features of the Services from time to time
                   without prior notice.
                   <Box sx={{ pl: 5, display: 'flex' }}>
-                    <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                      a.
-                    </Typography>
+                    <Typography variant="body1">a.</Typography>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                      <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                    <Typography variant="body1">
+                      <Typography sx={{ fontWeight: 600 }} component={'span'}>
                         Beta Services
                       </Typography>
                       . aapoon meet may, from time to time, offer access to services that are classified as Beta
@@ -206,12 +200,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  3.
-                </Typography>
+                <Typography variant="body1">3.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     USE OF SERVICES AND YOUR RESPONSIBILITIES
                   </Typography>
                   . You may only use the Services pursuant to the terms of this Agreement. You are solely responsible
@@ -220,12 +212,10 @@ function TermsOfService() {
                   Laws related to recording, intellectual property, privacy and export control. Use of the Services is
                   void where prohibited.
                   <Box sx={{ pl: 5, display: 'flex' }}>
-                    <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                      a.
-                    </Typography>
+                    <Typography variant="body1">a.</Typography>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                      <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                    <Typography variant="body1">
+                      <Typography sx={{ fontWeight: 600 }} component={'span'}>
                         Registration Information
                       </Typography>
                       . You may be required to provide information about Yourself in order to register for and/or use
@@ -235,12 +225,10 @@ function TermsOfService() {
                     </Typography>
                   </Box>
                   <Box sx={{ pl: 5, display: 'flex' }}>
-                    <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                      b.
-                    </Typography>
+                    <Typography variant="body1">b.</Typography>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                      <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                    <Typography variant="body1">
+                      <Typography sx={{ fontWeight: 600 }} component={'span'}>
                         Your Content
                       </Typography>
                       . You agree that You are solely responsible for the content ("Content") sent or transmitted by You
@@ -259,12 +247,10 @@ function TermsOfService() {
                     </Typography>
                   </Box>
                   <Box sx={{ pl: 5, display: 'flex' }}>
-                    <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                      c.
-                    </Typography>
+                    <Typography variant="body1">c.</Typography>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                      <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                    <Typography variant="body1">
+                      <Typography sx={{ fontWeight: 600 }} component={'span'}>
                         Recordings
                       </Typography>
                       . You are responsible for compliance will all recording laws. The host can choose to record aapoon
@@ -275,12 +261,10 @@ function TermsOfService() {
                     </Typography>
                   </Box>
                   <Box sx={{ pl: 5, display: 'flex' }}>
-                    <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                      d.
-                    </Typography>
+                    <Typography variant="body1">d.</Typography>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                      <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                    <Typography variant="body1">
+                      <Typography sx={{ fontWeight: 600 }} component={'span'}>
                         Prohibited Use
                       </Typography>
                       . You agree that You will not use, and will not permit any End User to use, the Services to: (i)
@@ -308,12 +292,10 @@ function TermsOfService() {
                     </Typography>
                   </Box>
                   <Box sx={{ pl: 5, display: 'flex' }}>
-                    <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                      e.
-                    </Typography>
+                    <Typography variant="body1">e.</Typography>
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                      <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                    <Typography variant="body1">
+                      <Typography sx={{ fontWeight: 600 }} component={'span'}>
                         Limitations on Use
                       </Typography>
                       . You may not reproduce, resell, or distribute the Services or any reports or data generated by
@@ -328,12 +310,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  4.
-                </Typography>
+                <Typography variant="body1">4.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     RESPONSIBILITY FOR END USERS
                   </Typography>
                   . You are responsible for the activities of all End Users who access or use the Services through your
@@ -350,12 +330,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  5.
-                </Typography>
+                <Typography variant="body1">5.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     MEET AAP OBLIGATIONS FOR CONTENT
                   </Typography>
                   . aapoon meet will maintain reasonable physical and technical safeguards to prevent unauthorized
@@ -367,12 +345,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  6.
-                </Typography>
+                <Typography variant="body1">6.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     ELIGIBILITY
                   </Typography>
                   . You affirm that You are at least 16 years of age and are otherwise fully able and competent to enter
@@ -382,12 +358,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  7.
-                </Typography>
+                <Typography variant="body1">7.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     INTENDED USE; RESTRICTION ON USE BY CHILDREN
                   </Typography>
                   . The Services are intended for business use. You may choose to use the Services for other purposes,
@@ -397,12 +371,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  8.
-                </Typography>
+                <Typography variant="body1">8.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     CHARGES AND CANCELLATION
                   </Typography>
                   . You agree that aapoon meet may charge to Your credit card or other payment mechanism selected by You
@@ -425,12 +397,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  9.
-                </Typography>
+                <Typography variant="body1">9.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     TERMINATION
                   </Typography>
                   . The aapoon meet website contains information on how to terminate Your Account. If you have purchased
@@ -445,12 +415,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  10.
-                </Typography>
+                <Typography variant="body1">10.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     PROPRIETARY RIGHTS
                   </Typography>
                   . aapoon meet and/or its suppliers, as applicable, retain ownership of all proprietary rights in the
@@ -462,12 +430,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  11.
-                </Typography>
+                <Typography variant="body1">11.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     COPYRIGHT
                   </Typography>
                   . You may not post, modify, distribute, or reproduce in any way copyrighted material, trademarks,
@@ -479,12 +445,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  12.
-                </Typography>
+                <Typography variant="body1">12.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     EXPORT RESTRICTIONS
                   </Typography>
                   . You acknowledge that the Services, or a portion thereof, are subject to the Export Administration
@@ -513,12 +477,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  13.
-                </Typography>
+                <Typography variant="body1">13.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     NO HIGH RISK USE
                   </Typography>
                   . The Services are not designed or licensed for use in hazardous environments requiring fail-safe
@@ -528,12 +490,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  14.
-                </Typography>
+                <Typography variant="body1">14.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     INJUNCTIVE RELIEF
                   </Typography>
                   . You acknowledge that any use of the Services contrary to this Agreement, or any transfer,
@@ -546,12 +506,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  15.
-                </Typography>
+                <Typography variant="body1">15.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     NO WARRANTIES
                   </Typography>
                   . YOU UNDERSTAND AND AGREE THAT THE SERVICES ARE PROVIDED "AS IS" AND MEET AAP, ITS AFFILIATES,
@@ -570,12 +528,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  16.
-                </Typography>
+                <Typography variant="body1">16.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     INDEMNIFICATION
                   </Typography>
                   . You agree to indemnify, defend and hold harmless aapoon meet, its affiliates, officers, directors,
@@ -587,12 +543,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  17.
-                </Typography>
+                <Typography variant="body1">17.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     LIMITATION OF LIABILITY
                   </Typography>
                   . TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT WILL MEET AAP OR ITS AFFILIATES,
@@ -610,17 +564,15 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  18.
-                </Typography>
+                <Typography variant="body1">18.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     AGREEMENT TO ARBITRATE; WAIVER OF CLASS ACTION
                   </Typography>
                   . If You are located in the United States, You agree to resolve disputes only on an individual basis,
                   through arbitration pursuant to the provisions of Exhibit A.{' '}
-                  <Typography style={{ fontWeight: 700 }}>
+                  <Typography style={{ fontWeight: 600 }}>
                     The parties expressly waive any right to bring any action, lawsuit, or proceeding as a class or
                     collective action, private attorney general action, or any other proceeding in which any party acts
                     or proposes to act in a representative capacity.
@@ -628,12 +580,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 5, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  19.
-                </Typography>
+                <Typography variant="body1">19.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     PRIVACY AND OTHER POLICIES
                   </Typography>
                   . Use of the Services is also subject to aapoon meet's Privacy Statement, a link to which can be found
@@ -645,23 +595,19 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ mb: 3, pl: 5, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  20.
-                </Typography>
+                <Typography variant="body1">20.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     MISCELLANEOUS
                   </Typography>
                 </Typography>
               </Box>
               <Box sx={{ mb: 2, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  20.1
-                </Typography>
+                <Typography variant="body1">20.1</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     Choice of Law and Forum
                   </Typography>
                   . This Agreement shall be governed by and construed under the laws of the State of TEXAS. U.S.A
@@ -670,12 +616,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ mb: 2, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  20.2
-                </Typography>
+                <Typography variant="body1">20.2</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     Contracting Entity
                   </Typography>
                   . In the event Your aapoon meet account reflects a bill to/sold to address in India, the contracting
@@ -683,12 +627,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ mb: 2, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  20.3
-                </Typography>
+                <Typography variant="body1">20.3</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     Waiver and Severability
                   </Typography>
                   . Failure by either Party to exercise any of its rights under, or to enforce any provision of, this
@@ -700,12 +642,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ mb: 4, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  20.4
-                </Typography>
+                <Typography variant="body1">20.4</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     General Provisions
                   </Typography>
                   . This Agreement embodies the entire understanding and agreement between the Parties respecting the
@@ -739,18 +679,16 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ mb: 3 }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
+                <Typography variant="body1">
                   This Exhibit A to the TOS describes the further provisions which apply to the Binding Arbitration and
                   Class Action Waiver.
                 </Typography>
               </Box>
               <Box sx={{ pl: 10, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  A.
-                </Typography>
+                <Typography variant="body1">A.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     Disputes
                   </Typography>
                   . A dispute is any controversy between You and aapoon meet concerning the Services, any software
@@ -765,12 +703,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 10, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  B.
-                </Typography>
+                <Typography variant="body1">B.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     Small Claims Court Available
                   </Typography>
                   . You may initiate an action in your local Small Claims Court if You meets the court’s requirements.
@@ -779,12 +715,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 10, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  C.
-                </Typography>
+                <Typography variant="body1">C.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     Arbitration Procedure
                   </Typography>
                   . Disputes not resolved pursuant to Section A or B shall be resolved through arbitration. The American
@@ -796,21 +730,18 @@ function TermsOfService() {
                   including the reasons for the award. The arbitrator may award damages, declaratory or injunctive
                   relief, and costs (including reasonable attorneys’ fees). Any arbitration award may be enforced (such
                   as through a judgment) in any court with jurisdiction.&nbsp;
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }}>
+                  <Typography sx={{ fontWeight: 600 }}>
                     Under AAA Rules, the arbitrator rules on his or her own jurisdiction, including the arbitrability of
                     any claim; however, a court has exclusive authority to enforce the prohibition on arbitration on a
-                    class-wide basis or in a representative capacity
+                    class-wide basis or in a representative capacity.
                   </Typography>
-                  .
                 </Typography>
               </Box>
               <Box sx={{ pl: 10, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  D.
-                </Typography>
+                <Typography variant="body1">D.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     Arbitration Fees
                   </Typography>
                   . If You are unable to afford the arbitration costs, aapoon meet will advance those costs to You,
@@ -820,24 +751,20 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 10, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  E.
-                </Typography>
+                <Typography variant="body1">E.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     Conflict with AAA Rules
                   </Typography>
                   . This Agreement governs if there is a conflict with the AAA’s Commercial Arbitration Rules.
                 </Typography>
               </Box>
               <Box sx={{ pl: 10, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  F.
-                </Typography>
+                <Typography variant="body1">F.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     Requirement to File Within One Year
                   </Typography>
                   . Notwithstanding any other statute of limitations, a claim or dispute under this Agreement must be
@@ -846,12 +773,10 @@ function TermsOfService() {
                 </Typography>
               </Box>
               <Box sx={{ pl: 10, display: 'flex' }}>
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  G.
-                </Typography>
+                <Typography variant="body1">G.</Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
-                  <Typography sx={{ fontSize: { xs: '12px', md: '18px' }, fontWeight: 700 }} component={'span'}>
+                <Typography variant="body1">
+                  <Typography sx={{ fontWeight: 600 }} component={'span'}>
                     Severability
                   </Typography>
                   . If the class action waiver is found to be illegal or unenforceable as to all or some parts of a

@@ -143,7 +143,7 @@ export default function FormUserMeeting(props) {
       }
       // try {
       //   await registerBusiness(values);
-      //   enqueueSnackbar('Business details updates', {
+      //   enqueueSnackbar('Business details updated', {
       //     variant: 'success',
       //     action: (key) => (
       //       <IconButtonAnimate size="small" onClick={() => closeSnackbar(key)}>
@@ -319,7 +319,7 @@ export default function FormUserMeeting(props) {
             </Box>
             <Box
               component={ButtonBase}
-              onClick={() => addCalender('apple')}
+              onClick={() => addCalender('outlookcom')}
               width="160px"
               sx={{ border: '1px solid #DDDDDD', borderRadius: 1, padding: 2, backgroundColor: '#F9F9F9' }}
               display="flex"
@@ -340,7 +340,7 @@ export default function FormUserMeeting(props) {
             </Box>
             <Box
               component={ButtonBase}
-              onClick={() => addCalender('outlookcom')}
+              onClick={() => addCalender('apple')}
               width="160px"
               sx={{ border: '1px solid #DDDDDD', borderRadius: 1, padding: 2, backgroundColor: '#F9F9F9' }}
               display="flex"
@@ -473,7 +473,7 @@ export default function FormUserMeeting(props) {
                      >
                         <MenuItem value={'15'}>15 Minutes</MenuItem>
                       <MenuItem value={'30'}>30 Minutes</MenuItem>
-                      <MenuItem value={'55'}>45 Minutes</MenuItem>
+                      <MenuItem value={'45'}>45 Minutes</MenuItem>
                       <MenuItem value={'60'}>1 hour</MenuItem>
                       <MenuItem value={'90'}>1.5 hours</MenuItem>
                       <MenuItem value={'120'}>2 hours</MenuItem>
@@ -507,20 +507,20 @@ export default function FormUserMeeting(props) {
                       <MenuItem value={'960'}>16 hours</MenuItem>
                       <MenuItem value={'990'}>16.5 hours</MenuItem>
                       <MenuItem value={'1020'}>17 hours</MenuItem>
-                      <MenuItem value={'600'}>17.5 hours</MenuItem>
-                      <MenuItem value={'600'}>18 hours</MenuItem>
-                      <MenuItem value={'600'}>18.5 hours</MenuItem>
-                      <MenuItem value={'600'}>19 hours</MenuItem>
-                      <MenuItem value={'600'}>19.5 hours</MenuItem>
-                      <MenuItem value={'600'}>20 hours</MenuItem>
-                      <MenuItem value={'600'}>20.5 hours</MenuItem>
-                      <MenuItem value={'600'}>21 hours</MenuItem>
-                      <MenuItem value={'600'}>21.5 hours</MenuItem>
-                      <MenuItem value={'600'}>22 hours</MenuItem>
-                      <MenuItem value={'600'}>22.5 hours</MenuItem>
-                      <MenuItem value={'600'}>23 hours</MenuItem>
-                      <MenuItem value={'600'}>23.5 hours</MenuItem>
-                      <MenuItem value={'600'}>24 hours</MenuItem>
+                      <MenuItem value={'1050'}>17.5 hours</MenuItem>
+                      <MenuItem value={'1080'}>18 hours</MenuItem>
+                      <MenuItem value={'1110'}>18.5 hours</MenuItem>
+                      <MenuItem value={'1140'}>19 hours</MenuItem>
+                      <MenuItem value={'1170'}>19.5 hours</MenuItem>
+                      <MenuItem value={'1200'}>20 hours</MenuItem>
+                      <MenuItem value={'1230'}>20.5 hours</MenuItem>
+                      <MenuItem value={'1260'}>21 hours</MenuItem>
+                      <MenuItem value={'1290'}>21.5 hours</MenuItem>
+                      <MenuItem value={'1320'}>22 hours</MenuItem>
+                      <MenuItem value={'1350'}>22.5 hours</MenuItem>
+                      <MenuItem value={'1380'}>23 hours</MenuItem>
+                      <MenuItem value={'1410'}>23.5 hours</MenuItem>
+                      <MenuItem value={'1440'}>24 hours</MenuItem>
 
                      
                       </Select>:   <Select
@@ -530,7 +530,7 @@ export default function FormUserMeeting(props) {
                      >
                       <MenuItem value={'15'}>15 Minutes</MenuItem>
                       <MenuItem value={'30'}>30 Minutes</MenuItem>
-                      <MenuItem value={'30'}>45 Minutes</MenuItem>
+                      <MenuItem value={'45'}>45 Minutes</MenuItem>
                       <MenuItem value={'55'}>55 Minutes</MenuItem>
                       </Select>}
                       

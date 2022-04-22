@@ -34,7 +34,7 @@ import Iconify from '../Iconify';
 import Scrollbar from '../Scrollbar';
 import useAuth from '../../hooks/useAuth';
 import moment from 'moment';
-import Image from "../Image"
+import Image from '../Image';
 import { getInviteList } from '../../api/user';
 import { UserListHead, UserListToolbar, UserMoreMenu } from '../../sections/@dashboard/user/list';
 const _appInvoices = [];
@@ -51,6 +51,15 @@ const TABLE_HEAD = [
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' },
 ];
+const DataHead = styled('div')(({ theme }) => ({
+  display: 'flex',
+  width: '100%',
+  padding: theme.spacing(3),
+  justifyContent: 'space-between',
+  [theme.breakpoints.down('md')]: {
+    padding: theme.spacing(2),
+  },
+}));
 
 export default function InviteData(props) {
   const theme = useTheme();
@@ -128,88 +137,114 @@ export default function InviteData(props) {
   // }, [user.id, props.fetch]);
   return (
     <>
-      <Scrollbar>
-        <TableContainer sx={{ borderRadius: '8px', border: filteredUsers.length&&'1px solid #DBDBDB',minHeight:475 }}>
-         {filteredUsers.length? <Table
-            sx={{ border: '1px solid #DBDBDB', borderRadius: '8px' }}
-            style={{ borderRadius: '8px', overflow: 'hidden' }}
-          >
-            <TableHead style={{ width: '100%', backgroundColor: '#F5f5f5' }}>
-              <TableRow>
-                <TableCell sx={{ backgroundColor: '#F5F5F5', p: '12px', px: '16px' }}>Meeting Name</TableCell>
-                <TableCell sx={{ backgroundColor: '#F5F5F5', p: '12px', px: '16px' }}>Date</TableCell>
-                <TableCell sx={{ backgroundColor: '#F5F5F5', p: '12px', px: '16px' }} align="center">
-                  Duration
-                </TableCell>
-                <TableCell sx={{ backgroundColor: '#F5F5F5', p: '12px', px: '16px' }} align="center">
-                  Actions
-                </TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                const { id, displayName, email, profilePic, status, avatarUrl, isVerified } = row;
-                const isItemSelected = selected.indexOf(name) !== -1;
+      {filteredUsers.length ? (
+        <>
+          {' '}
+          <DataHead>
+            <Typography variant="h5" sx={{ ml: 1 }} style={{ display: 'inline' }}>
+              Recordings
+            </Typography>
+          </DataHead>
+          <Box sx={{ p: { xs: 2, md: 4 }, pt: 0, maxWidth: '90vw' }}>
+            <Scrollbar>
+              <TableContainer
+                sx={{ borderRadius: '8px', border: filteredUsers.length && '1px solid #DBDBDB', minHeight: 475 }}
+              >
+                <Table
+                  sx={{ border: '1px solid #DBDBDB', borderRadius: '8px' }}
+                  style={{ borderRadius: '8px', overflow: 'hidden' }}
+                >
+                  <TableHead style={{ width: '100%', backgroundColor: '#F5f5f5' }}>
+                    <TableRow>
+                      <TableCell sx={{ backgroundColor: '#F5F5F5', p: '12px', px: '16px' }}>Meeting Name</TableCell>
+                      <TableCell sx={{ backgroundColor: '#F5F5F5', p: '12px', px: '16px' }}>Date</TableCell>
+                      <TableCell sx={{ backgroundColor: '#F5F5F5', p: '12px', px: '16px' }} align="center">
+                        Duration
+                      </TableCell>
+                      <TableCell sx={{ backgroundColor: '#F5F5F5', p: '12px', px: '16px' }} align="center">
+                        Actions
+                      </TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                      const { id, displayName, email, profilePic, status, avatarUrl, isVerified } = row;
+                      const isItemSelected = selected.indexOf(name) !== -1;
 
-                return (
-                  <TableRow key={row.token} sx={{ borderBottom: '1px solid #DBDBDB' }}>
-                    <TableCell sx={{ p: '16px' }}>
-                      {' '}
-                      <Box display="flex" alignItems="center">
-                        <Typography variant="body2" color="text.primary" sx={{ fontWeight: 600 }}>
-                          {`Scrum call`}
-                        </Typography>
-                      </Box>
-                    </TableCell>
+                      return (
+                        <TableRow key={row.token} sx={{ borderBottom: '1px solid #DBDBDB' }}>
+                          <TableCell sx={{ p: '16px' }}>
+                            {' '}
+                            <Box display="flex" alignItems="center">
+                              <Typography variant="body2" color="text.primary" sx={{ fontWeight: 600 }}>
+                                {`Scrum call`}
+                              </Typography>
+                            </Box>
+                          </TableCell>
 
-                    <TableCell sx={{ p: '16px' }}>
-                      <Typography variant="subtitle2" color="text.primary">
-                        {moment(new Date(row.createdAt._seconds * 1000)).format('ll')}
-                      </Typography>
-                    </TableCell>
-                    <TableCell sx={{ p: '16px' }} align="center">
-                      <Typography variant="subtitle2" color="text.primary">
-                        {'30:00 sec'}
-                      </Typography>
-                    </TableCell>
-                    <TableCell sx={{ p: '16px' }} align="center">
-                      <Typography variant="subtitle2" color="text.primary">
-                        <Iconify icon={'carbon:play-filled-alt'} color="#E25630" sx={{ mx: 1 }} />
-                        <Iconify icon={'bi:download'} color="#16BA08" sx={{ mx: 1 }} />
-                        <Iconify icon={'bi:upload'} color="#3F97FF" sx={{ mx: 1 }} />
-                      </Typography>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
-              {emptyRows > 0 && (
-                <TableRow style={{ height: 53 * emptyRows }}>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
-            </TableBody>
-            {isNotFound && (
-              <TableBody>
-                <TableRow>
-                  <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                    <SearchNotFound searchQuery={filterName} />
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            )}
-          </Table>:<Box display={"flex"} flexDirection={"column"} justifyContent={"center"} alignItems={"center"} minHeight={475} width={"100%"} height={"100%"}><Image src={"/images/recording/Frame.svg"} style={{maxHeight:400,width:"auto"}}/><Typography style={{fontSize:24,marginTop:24}}>You don’t have any recordings</Typography></Box>}
-        </TableContainer>
-        <TablePagination
-          sx={{ borderTop: 'none' }}
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={userList.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={(e, page) => setPage(page)}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Scrollbar>
+                          <TableCell sx={{ p: '16px' }}>
+                            <Typography variant="subtitle2" color="text.primary">
+                              {moment(new Date(row.createdAt._seconds * 1000)).format('ll')}
+                            </Typography>
+                          </TableCell>
+                          <TableCell sx={{ p: '16px' }} align="center">
+                            <Typography variant="subtitle2" color="text.primary">
+                              {'30:00 sec'}
+                            </Typography>
+                          </TableCell>
+                          <TableCell sx={{ p: '16px' }} align="center">
+                            <Typography variant="subtitle2" color="text.primary">
+                              <Iconify icon={'carbon:play-filled-alt'} color="#E25630" sx={{ mx: 1 }} />
+                              <Iconify icon={'bi:download'} color="#16BA08" sx={{ mx: 1 }} />
+                              <Iconify icon={'bi:upload'} color="#3F97FF" sx={{ mx: 1 }} />
+                            </Typography>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                    {emptyRows > 0 && (
+                      <TableRow style={{ height: 53 * emptyRows }}>
+                        <TableCell colSpan={6} />
+                      </TableRow>
+                    )}
+                  </TableBody>
+                  {isNotFound && (
+                    <TableBody>
+                      <TableRow>
+                        <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                          <SearchNotFound searchQuery={filterName} />
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  )}
+                </Table>
+              </TableContainer>
+              <TablePagination
+                sx={{ borderTop: 'none' }}
+                rowsPerPageOptions={[5, 10, 25]}
+                component="div"
+                count={userList.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onPageChange={(e, page) => setPage(page)}
+                onRowsPerPageChange={handleChangeRowsPerPage}
+              />
+            </Scrollbar>
+          </Box>
+        </>
+      ) : (
+        <Box
+          display={'flex'}
+          flexDirection={'column'}
+          justifyContent={'center'}
+          alignItems={'center'}
+          width={'100%'}
+          height={'calc(100vh - 240px)'}
+        >
+          <Image src={'/images/recording/Frame.svg'} style={{ maxHeight: 400, width: 'auto' }} />
+          <Typography style={{ fontSize: 24, marginTop: 24 }}>You don’t have any recordings</Typography>
+        </Box>
+      )}
     </>
   );
 }

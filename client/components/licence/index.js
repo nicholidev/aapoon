@@ -125,7 +125,7 @@ export default function InviteData(props) {
                     </Typography>
                   </TableCell>
                   <TableCell align="center">
-                    <Label color={row.isAccepted ? 'success' : 'warning'}>
+                    <Label variant="status" color={row.isAccepted ? 'success' : 'warning'}>
                       {row.isAccepted ? 'Active' : 'pending'}
                     </Label>
                   </TableCell>

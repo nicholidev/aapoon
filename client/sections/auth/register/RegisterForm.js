@@ -51,7 +51,7 @@ export default function RegisterForm(query) {
   const [showPassword, setShowPassword] = useState(false);
   const rePhoneNumber = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
   const rePass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/;
-  const reAlpha = /^[a-zA-Z]+$/;
+  const reAlpha = /^[a-zA-Z ]+$/;
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string().matches(reAlpha, 'First name is not valid').required('First name required'),
     lastName: Yup.string().matches(reAlpha, 'Last name is not valid').required('Last name required'),
@@ -85,7 +85,7 @@ const {push}=useRouter();
       setSubmitting(true);
       try {
         await register(values.email, values.password, values.firstName, values.lastName, values.phone, values);
-        enqueueSnackbar('Register success', {
+        enqueueSnackbar('Registered Successfully', {
           variant: 'success',
           action: (key) => (
             <IconButtonAnimate size="small" onClick={() => closeSnackbar(key)}>
