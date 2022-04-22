@@ -35,7 +35,7 @@ export default function VerifyCodeForm({ verifyMobileLinkCode, user,setCounter }
     onSubmit: async (values, { setErrors, setSubmitting, resetForm, }) => {
       try {
         await verifyMobileLinkCode(values.code);
-        enqueueSnackbar('Verify success', { variant: 'success' });
+        enqueueSnackbar('Verified Successfully', { variant: 'success' });
         setSubmitting(false);
         setCounter(false)
         if (user.accountType == 'Business') router.push('/auth/business-profile');

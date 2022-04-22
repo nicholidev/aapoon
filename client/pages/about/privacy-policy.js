@@ -97,18 +97,18 @@ function PrivacyPolicy() {
                    <Iconify icon={'eva:arrow-back-fill'} />
                  </IconButtonAnimate>
                  &nbsp;&nbsp;&nbsp;&nbsp; */}
-                <Typography variant="h2" align="center" gutterBottom sx={{ fontSize: { xs: '18px', md: '24px' } }}>
+                <Typography variant="h3" align="center" gutterBottom >
                   aapoon meet privacy policy
                 </Typography>
                 <br />
                 <br />
-                <Typography variant="subtitle1" gutterBottom style={{ fontStyle: 'italic' }}>
+                <Typography variant="subtitle1" gutterBottom >
                   EFFECTIVE: January 01, 2022
                 </Typography>
               </Box>
 
               <Box sx={{ mb: 2 }}>
-                <Typography align="left" sx={{ fontSize: { xs: '12px', md: '14px' } }}>
+                <Typography align="left" variant="body1">
                   This Privacy Policy describes what aapoon meet gathers from and about you as a User of its services
                   and platforms, how aapoon meet uses it, and the controls you have over the disclosure of your
                   information to other users. As a condition of becoming a User, or using aapoon meet’s services or

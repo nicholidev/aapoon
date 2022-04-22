@@ -96,7 +96,7 @@ function UpdateUserProfile(props) {
       setSubmitting(true);
       try {
         await updateProfile(values);
-        enqueueSnackbar('User details updates', {
+        enqueueSnackbar('User details updated', {
           variant: 'success',
           action: (key) => (
             <IconButtonAnimate size="small" onClick={() => closeSnackbar(key)}>

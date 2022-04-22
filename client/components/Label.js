@@ -17,7 +17,14 @@ const RootStyle = styled('span')(({ theme, ownerState }) => {
     color: theme.palette.common.white,
     backgroundColor: theme.palette[color].main,
   });
-
+  const styleStatus = (color) => ({
+    color: theme.palette.common.white,
+    backgroundColor: theme.palette[color].main,
+    borderRadius: 4,
+    fontSize: theme.typography.pxToRem(14),
+    textTransform: 'capitalize',
+    fontWeight: 400,
+  });
   const styleOutlined = (color) => ({
     color: theme.palette[color].main,
     backgroundColor: 'transparent',
@@ -51,6 +58,7 @@ const RootStyle = styled('span')(({ theme, ownerState }) => {
       ? {
           ...(variant === 'filled' && { ...styleFilled(color) }),
           ...(variant === 'outlined' && { ...styleOutlined(color) }),
+          ...(variant === 'status' && { ...styleStatus(color) }),
           ...(variant === 'ghost' && { ...styleGhost(color) }),
         }
       : {
@@ -72,7 +80,7 @@ const RootStyle = styled('span')(({ theme, ownerState }) => {
 Label.propTypes = {
   children: PropTypes.node,
   color: PropTypes.oneOf(['default', 'primary', 'secondary', 'info', 'success', 'warning', 'error']),
-  variant: PropTypes.oneOf(['filled', 'outlined', 'ghost']),
+  variant: PropTypes.oneOf(['filled', 'outlined', 'status', 'ghost']),
 };
 
 export default function Label({ color = 'default', variant = 'ghost', children, ...other }) {

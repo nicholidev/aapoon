@@ -121,7 +121,7 @@ export default function InviteData(props) {
   return (
     <>
       <Scrollbar>
-        <TableContainer sx={{ maxWidth:{xs:"auto",md:"auto"}, borderRadius: '8px', border: '1px solid #DBDBDB' }}>
+        <TableContainer sx={{ maxWidth: { xs: 'auto', md: 'auto' }, borderRadius: '8px', border: '1px solid #DBDBDB' }}>
           <Table
             sx={{ border: '1px solid #DBDBDB', borderRadius: '8px' }}
             style={{ borderRadius: '8px', overflow: 'hidden' }}
@@ -169,7 +169,7 @@ export default function InviteData(props) {
                       </Typography>
                     </TableCell>
                     <TableCell sx={{ p: '8px' }}>
-                      <Typography variant="subtitle2" color="text.primary">
+                      <Typography variant="subtitle2" color="text.primary" sx={{ textTransform: 'capitalize' }}>
                         {row.status}
                       </Typography>
                     </TableCell>
