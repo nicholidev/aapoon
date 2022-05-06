@@ -41,6 +41,8 @@ import RecordingData from '../../components/recording/RecordingData';
 import useAuth from '../../hooks/useAuth';
 import DashboardSidebar from '../../components/dashboard/DashboardSidebar';
 import DashboardInfoHeader from '../../components/dashboard/DashboardInfoHeader';
+import RecordingInfoHeader from '../../components/recording/RecordingInfoHeader';
+import Image from '../../components/Image';
 const Sidebar = styled('header')(({ theme }) => ({
   width: '320px',
   height: '100%',
@@ -109,16 +111,6 @@ const DataSection = styled('div')(({ theme }) => ({
   },
 }));
 
-const DataHead = styled('div')(({ theme }) => ({
-  display: 'flex',
-  width: '100%',
-  padding: theme.spacing(3),
-  justifyContent: 'space-between',
-  [theme.breakpoints.down('md')]: {
-    padding: theme.spacing(2),
-  },
-}));
-
 const InfoHeading = styled('span')(({ theme }) => ({
   fontSize: 14,
   padding: theme.spacing(2),
@@ -144,13 +136,14 @@ function RecordingsPage() {
   const [fetch, setFetch] = useState(false);
   const [current, setCurrent] = useState('dashboard');
   const [stats, setStats] = useState({});
+  const [isPremiumUser, setIsPremiumUser] = useState(false);
   const { user } = useAuth();
   useEffect(() => {
     if (user.id)
       getStats(startOfWeek(new Date()), endOfWeek(new Date()), new Date(), user.id).then((data) => setStats(data));
   }, [user?.activeLicenses?.count]);
   return (
-    <Page title="Dashboard" sx={{pb:2}}>
+    <Page title="Dashboard" sx={{ pb: 2 }}>
       <GlobalStyles
         styles={{
           body: { backgroundColor: '#F1F1F1' },
@@ -159,16 +152,28 @@ function RecordingsPage() {
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex' }}>
         <DashboardSidebar currentPage="recordings" />
         <Content>
-          <DashboardInfoHeader />
+          <RecordingInfoHeader />
           <DataSection>
-            <DataHead>
-              <Typography variant="h5" sx={{ ml: 1 }} style={{ display: 'inline' }}>
-                Recordings
-              </Typography>
-            </DataHead>
-            <Box sx={{ p: {xs:2,md:4}, pt: 0 ,maxWidth:"90vw"}}>
-              <RecordingData fetch={fetch} />
-            </Box>
+            {isPremiumUser ? (
+              <>
+                <RecordingData fetch={fetch} />
+              </>
+            ) : (
+              <Box
+                display={'flex'}
+                flexDirection={'column'}
+                justifyContent={'center'}
+                alignItems={'center'}
+                width={'100%'}
+                height={'calc(100vh - 160px)'}
+              >
+                <Image src={'/images/recording/Frame.svg'} style={{ maxHeight: 400, width: 'auto' }} />
+                <Typography align="center" style={{ fontSize: 24, marginTop: 24 }}>
+                  Are you interested in recording your meetings?
+                </Typography>
+                <Typography variant={'h4'}>Upgrade to Premium!</Typography>
+              </Box>
+            )}
           </DataSection>
         </Content>
       </Container>

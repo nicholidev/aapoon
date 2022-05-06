@@ -90,7 +90,7 @@ export default function RegisterForm(props) {
 
       try {
         await registerBusiness(values);
-        enqueueSnackbar('Business details updates', {
+        enqueueSnackbar('Business details updated', {
           variant: 'success',
           action: (key) => (
             <IconButtonAnimate size="small" onClick={() => closeSnackbar(key)}>

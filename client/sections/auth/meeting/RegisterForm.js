@@ -36,7 +36,7 @@ export default function RegisterForm(query) {
   const [showPassword, setShowPassword] = useState(false);
   const rePhoneNumber = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
   const rePass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-  const reAlpha = /^[a-zA-Z]+$/;
+  const reAlpha = /^[a-zA-Z ]+$/;
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string().matches(reAlpha, 'First name is not valid').required('First name required'),
     lastName: Yup.string().matches(reAlpha, 'Last name is not valid').required('Last name required'),

@@ -93,6 +93,21 @@ const joinMeeting = async (req, res) => {
       await admin.firestore().collection("meeting").doc(req.body.id).get()
     ).data();
 
+let sub=(await admin.firestore()
+.collection('users')
+.doc(req.user.user_id)
+.collection('licences')
+.doc('premium')
+.get()).data()?.count
+
+
+let assigned=(await admin.firestore()
+.collection('licenses')
+.where('email', '==', user.email)
+.where('isAccepted', '==', true)
+.where('isActivated', '==', true)
+.get()).docs?.length
+
     if (meeting.password && req.body.password != meeting.password) {
       return res.status(403).send();
     }
@@ -139,6 +154,7 @@ const joinMeeting = async (req, res) => {
 
     return res.status(200).send({
       data: { ...meeting, password: meeting.password ? true : false },
+      domain: sub || assigned?'meetaap.io':'meetaap.in',
       token,
     });
   } catch (err) {

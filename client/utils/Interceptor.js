@@ -4,7 +4,7 @@
  */
 import axios from 'axios';
 
-import firebase from 'firebase/compat/app';
+
 
 export const addJWTInterceptor = async (token) => {
   axios.interceptors.request.use(
