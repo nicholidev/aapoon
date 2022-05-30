@@ -24,17 +24,8 @@ import useSettings from './../hooks/useSettings';
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
+import useAuth from './../hooks/useAuth';
 import withMeetingAuth from './../HOC/withMeetingAuth';
-const Sidebar = styled('header')(({ theme }) => ({
-  width: '240px',
-  height: '100%',
-  padding: theme.spacing(1),
-  paddingTop: theme.spacing(2),
-  paddingLeft: theme.spacing(4),
-  [theme.breakpoints.down('md')]: {
-    display: 'none',
-  },
-}));
 
 const Content = styled('div')(({ theme }) => ({
   width: '100%',
@@ -47,79 +38,13 @@ const Content = styled('div')(({ theme }) => ({
   },
 }));
 
-const SideSection = styled(Card)(({ theme }) => ({
-  paddingTop: 16,
-  paddingBottom: 16,
-  width: '100%',
-  marginTop: theme.spacing(4),
-  display: 'flex',
-  alignItems: 'center',
-}));
-
-const InfoCard = styled(Card)(({ theme }) => ({
-  height: 114,
-  width: 259,
-  maxWidth: '100%',
-  paddingTop: 16,
-  position: 'relative',
-  margin: 'auto',
-  [theme.breakpoints.down('md')]: {
-    marginBottom: theme.spacing(4),
-  },
-  [theme.breakpoints.down('sm')]: {
-    width: '100%',
-  },
-}));
-
-const InfoContainer = styled(Grid)(({ theme }) => ({
-  display: 'flex',
-  paddingLeft: theme.spacing(8),
-  paddingRight: theme.spacing(8),
-  justifyContent: 'space-between',
-  [theme.breakpoints.down('md')]: {
-    justifyContent: 'center',
-  },
-}));
-
-const DataSection = styled(Card)(({ theme }) => ({
-  width: '100%',
-  height: '100%',
-}));
-
-const DataHead = styled('div')(({ theme }) => ({
-  display: 'flex',
-  width: '100%',
-  padding: theme.spacing(3),
-  justifyContent: 'space-between',
-  [theme.breakpoints.down('md')]: {
-    padding: theme.spacing(2),
-  },
-}));
-
-const InfoHeading = styled('span')(({ theme }) => ({
-  fontSize: 14,
-  padding: theme.spacing(2),
-}));
-
-const InfoNumbers = styled('div')(({ theme }) => ({
-  textAlign: 'center',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  height: '60%',
-}));
-
-const infoIconStyle = {
-  position: 'absolute',
-  bottom: 12,
-  right: 12,
-};
 
 function Meeting(props) {
   const { themeStretch } = useSettings();
+  const { user } = useAuth();
   const router = useRouter();
 
-  const domain = 'meet.aapoon.com';
+  const domain = props.domain
   let api = {};
   const [meetingState, setMeetingState] = useState({});
 

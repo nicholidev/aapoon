@@ -22,6 +22,7 @@ import {
   FormHelperText,
   Radio,
   ListItem,
+  Button,
   ListItemText,
   withStyles,
   Checkbox,
@@ -46,6 +47,7 @@ import { acceptInvitation, getCountry } from '../../api/user';
 import { scheduleMeeting } from '../../api/meeting';
 import { useRouter } from 'next/router';
 import moment from 'moment';
+import { differenceInDays } from 'date-fns';
 import { addTocalender } from '../../utils/addToCalender/AddToCalander';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../utils/errorMessage';
@@ -141,7 +143,7 @@ export default function FormUserMeeting(props) {
       }
       // try {
       //   await registerBusiness(values);
-      //   enqueueSnackbar('Business details updates', {
+      //   enqueueSnackbar('Business details updated', {
       //     variant: 'success',
       //     action: (key) => (
       //       <IconButtonAnimate size="small" onClick={() => closeSnackbar(key)}>
@@ -187,13 +189,21 @@ export default function FormUserMeeting(props) {
     });
   };
 
+  const recudays = data?.reccurring
+    ? differenceInDays(new Date(data?.reccuringEndDate?._seconds * 1000), new Date(data?.scheduledAt?._seconds * 1000))
+    : false;
+
   const addCalender = (type) => {
     let event = {
       title: data.title,
-      description: data.description,
-      location: '',
+      link: window.origin + '/meeting?meetingid=' + data?.id,
+      password: data.password,
+      description: data?.description,
       startTime: new Date(data.scheduledAt._seconds * 1000),
       endTime: new Date(data.endAt._seconds * 1000),
+      password: data?.password,
+      description: data?.description,
+      recur: data?.reccurring ? `RRULE:FREQ=DAILY;COUNT=${recudays + 1}` : '',
     };
     addTocalender(event, type, false);
   };
@@ -219,6 +229,8 @@ export default function FormUserMeeting(props) {
     formik.setValues({ ...formik.values, lobby: event.target.checked });
   };
 
+  console.log(data);
+
   return (
     <div>
       {isSubmitted ? (
@@ -233,10 +245,23 @@ export default function FormUserMeeting(props) {
 
           <br />
           <Typography variant="body2">
+            {moment(new Date(data.scheduledAt?._seconds * 1000)).format('LLL')}&nbsp;
+            <span style={{ fontWeight: 700 }}> To </span>&nbsp;
+            {data?.reccurring
+              ? moment(new Date(data?.reccuringEndDate?._seconds * 1000)).format('LLL')
+              : moment(new Date(data.endAt?._seconds * 1000)).format('LLL')}
+          </Typography>
+          {data?.reccurring && (
+            <Typography variant="caption">
+              Reccuring ( {moment(new Date(data.scheduledAt?._seconds * 1000)).format('LT')} -{' '}
+              {moment(new Date(data.endAt?._seconds * 1000)).format('LT')} )
+            </Typography>
+          )}
+          {/* <Typography variant="body2">
             {moment(new Date(data.scheduledAt?._seconds * 1000)).format('LLL') +
               ' to ' +
               moment(new Date(data.endAt?._seconds * 1000)).format('LLL')}
-          </Typography>
+          </Typography> */}
           <Box
             component={ButtonBase}
             onClick={() => copyTocb(window.origin + '/meeting?meetingid=' + data.id)}
@@ -264,11 +289,15 @@ export default function FormUserMeeting(props) {
             <Iconify icon="fluent:copy-20-filled" sx={{ fontSize: 24, ml: 2, color: 'text.secondary' }} />
           </Box>
           <br />
+          <Button variant="outlined" onClick={() => router.push(window.origin + '/meeting?meetingid=' + data?.id)}>
+            <Typography variant="h6">Join Now</Typography>
+          </Button>
+          <br />
           <Typography sx={{ fontWeight: 500, display: 'flex' }} variant="body" gutterBottom>
             Add To Calander
           </Typography>
 
-          <Stack spacing={2} direction={{ xs: 'column', sm: 'row', mt: 1 }} justifyContent="center" alignItems="center">
+          <Stack spacing={2} direction={{ xs: 'column', sm: 'row', mt: 2 }} justifyContent="center" alignItems="center">
             <Box
               component={ButtonBase}
               onClick={() => addCalender('apple')}
@@ -306,7 +335,28 @@ export default function FormUserMeeting(props) {
                 align="center"
                 sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center', mt: 1 }}
               >
-                Outlook calendar
+                Outlook Web
+              </Typography>
+            </Box>
+            <Box
+              component={ButtonBase}
+              onClick={() => addCalender('apple')}
+              width="160px"
+              sx={{ border: '1px solid #DDDDDD', borderRadius: 1, padding: 2, backgroundColor: '#F9F9F9' }}
+              display="flex"
+              teamsize
+              flexDirection="column"
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Iconify icon="vscode-icons:file-type-outlook" sx={{ fontSize: 40, color: '#225082' }} />
+
+              <Typography
+                variant="subtitle2"
+                align="center"
+                sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center', mt: 1 }}
+              >
+                Outlook Client
               </Typography>
             </Box>
             <Box
@@ -334,7 +384,7 @@ export default function FormUserMeeting(props) {
       ) : (
         <FormikProvider value={formik}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-            <Stack spacing={6}>
+            <Stack spacing={4}>
               {errors.afterSubmit && <Alert severity="error">{errors.afterSubmit}</Alert>}
               <Stack spacing={1}>
                 <Typography sx={{ fontWeight: 500 }}>Meeting topic * </Typography>
@@ -368,7 +418,7 @@ export default function FormUserMeeting(props) {
                 />
               </Stack>
 
-              <Stack direction={'row'} spacing={5}>
+              {/* <Stack direction={'row'} spacing={5}>
                 <Box display={'flex'} alignItems={'center'}>
                   <Radio checked={meetingType == 'oneTime'} onChange={handleMeetingType} value={'oneTime'} />
                   &nbsp;
@@ -383,7 +433,7 @@ export default function FormUserMeeting(props) {
                     Recurring
                   </Typography>
                 </Box>
-              </Stack>
+              </Stack> */}
 
               <Grid container rowSpacing={3} columnSpacing={0} justifyContent={'space-between'}>
                 <Grid item xs={12} sm={6}>
@@ -414,15 +464,77 @@ export default function FormUserMeeting(props) {
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1} sx={{ marginLeft: { sm: '20px', xs: 0 } }}>
                     <Typography sx={{ fontWeight: 500 }}> Estimated Duration * </Typography>
-                    <Select
-                      {...getFieldProps('estimatedDuration')}
-                      error={Boolean(touched.estimatedDuration && errors.estimatedDuration)}
-                      helperText={touched.estimatedDuration && errors.estimatedDuration}
-                    >
+                   
+                      {user?.activeLicenses?.count || user?.assignedToMe?.length?
+                       <Select
+                       {...getFieldProps('estimatedDuration')}
+                       error={Boolean(touched.estimatedDuration && errors.estimatedDuration)}
+                       helperText={touched.estimatedDuration && errors.estimatedDuration}
+                     >
+                        <MenuItem value={'15'}>15 Minutes</MenuItem>
+                      <MenuItem value={'30'}>30 Minutes</MenuItem>
+                      <MenuItem value={'45'}>45 Minutes</MenuItem>
+                      <MenuItem value={'60'}>1 hour</MenuItem>
+                      <MenuItem value={'90'}>1.5 hours</MenuItem>
+                      <MenuItem value={'120'}>2 hours</MenuItem>
+                      <MenuItem value={'150'}>2.5 hours</MenuItem>
+                      <MenuItem value={'180'}>3 hours</MenuItem>
+                      <MenuItem value={'210'}>3.5 hours </MenuItem>
+                      <MenuItem value={'240'}>4 hours</MenuItem>
+                      <MenuItem value={'270'}>4.5 hours</MenuItem>
+                      <MenuItem value={'300'}>5 hours</MenuItem>
+                      <MenuItem value={'330'}>5.5 hours</MenuItem>
+                      <MenuItem value={'360'}>6 hours</MenuItem>
+                      <MenuItem value={'390'}>6.5 hours </MenuItem>
+                      <MenuItem value={'420'}>7 hours</MenuItem>
+                      <MenuItem value={'450'}>7.5 hours</MenuItem>
+                      <MenuItem value={'480'}>8 hours</MenuItem>
+                      <MenuItem value={'510'}>8.5 hours</MenuItem>
+                      <MenuItem value={'540'}>9 hours</MenuItem>
+                      <MenuItem value={'570'}>9.5 hours </MenuItem>
+                      <MenuItem value={'600'}>10 hours</MenuItem>
+                      <MenuItem value={'630'}>10.5 hours</MenuItem>
+                      <MenuItem value={'660'}>11 hours</MenuItem>
+                      <MenuItem value={'690'}>11.5 hours</MenuItem>
+                      <MenuItem value={'720'}>12 hours</MenuItem>
+                      <MenuItem value={'750'}>12.5 hours</MenuItem>
+                      <MenuItem value={'780'}>13 hours</MenuItem>
+                      <MenuItem value={'810'}>13.5 hours</MenuItem>
+                      <MenuItem value={'840'}>14 hours</MenuItem>
+                      <MenuItem value={'870'}>14.5 hours</MenuItem>
+                      <MenuItem value={'900'}>15 hours</MenuItem>
+                      <MenuItem value={'930'}>15.5 hours</MenuItem>
+                      <MenuItem value={'960'}>16 hours</MenuItem>
+                      <MenuItem value={'990'}>16.5 hours</MenuItem>
+                      <MenuItem value={'1020'}>17 hours</MenuItem>
+                      <MenuItem value={'1050'}>17.5 hours</MenuItem>
+                      <MenuItem value={'1080'}>18 hours</MenuItem>
+                      <MenuItem value={'1110'}>18.5 hours</MenuItem>
+                      <MenuItem value={'1140'}>19 hours</MenuItem>
+                      <MenuItem value={'1170'}>19.5 hours</MenuItem>
+                      <MenuItem value={'1200'}>20 hours</MenuItem>
+                      <MenuItem value={'1230'}>20.5 hours</MenuItem>
+                      <MenuItem value={'1260'}>21 hours</MenuItem>
+                      <MenuItem value={'1290'}>21.5 hours</MenuItem>
+                      <MenuItem value={'1320'}>22 hours</MenuItem>
+                      <MenuItem value={'1350'}>22.5 hours</MenuItem>
+                      <MenuItem value={'1380'}>23 hours</MenuItem>
+                      <MenuItem value={'1410'}>23.5 hours</MenuItem>
+                      <MenuItem value={'1440'}>24 hours</MenuItem>
+
+                     
+                      </Select>:   <Select
+                       {...getFieldProps('estimatedDuration')}
+                       error={Boolean(touched.estimatedDuration && errors.estimatedDuration)}
+                       helperText={touched.estimatedDuration && errors.estimatedDuration}
+                     >
                       <MenuItem value={'15'}>15 Minutes</MenuItem>
                       <MenuItem value={'30'}>30 Minutes</MenuItem>
-                      <MenuItem value={'60'}>60 Minutes</MenuItem>
-                    </Select>
+                      <MenuItem value={'45'}>45 Minutes</MenuItem>
+                      <MenuItem value={'55'}>55 Minutes</MenuItem>
+                      </Select>}
+                      
+                    
                   </Stack>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -437,7 +549,7 @@ export default function FormUserMeeting(props) {
                           onChange={(newValue) => {
                             formik.setFieldValue('meetingDateTime', newValue);
                           }}
-                          minDateTime={new Date()}
+                          minDate={new Date()}
                           variant="dialog"
                           renderInput={(params) => (
                             <TextField
@@ -463,7 +575,7 @@ export default function FormUserMeeting(props) {
                             onChange={(newValue) => {
                               formik.setFieldValue('meetingEndDate', newValue);
                             }}
-                            minDateTime={new Date()}
+                            minDate={new Date()}
                             variant="dialog"
                             renderInput={(params) => (
                               <TextField

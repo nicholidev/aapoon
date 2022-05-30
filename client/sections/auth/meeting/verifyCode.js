@@ -36,7 +36,7 @@ export default function VerifyCodeForm({ id, mobile, setAuthMeeting, name }) {
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
       try {
         let response = await verifyOtp(values.code, id, mobile, name);
-        enqueueSnackbar('Verify success', { variant: 'success' });
+        enqueueSnackbar('Verified Successfully', { variant: 'success' });
         setSubmitting(false);
         localStorage.setItem('mid', id);
         localStorage.setItem('mjwt', response.data.token);

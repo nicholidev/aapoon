@@ -8,7 +8,7 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
 //const endpoint = 'http://localhost:5000/meetaap-55e58/us-central1/app';
 
-const endpoint = 'https://us-central1-meetaap-55e58.cloudfunctions.net/app';
+const endpoint = process.env.NEXT_PUBLIC_FUNCTION_URL;
 
 export const instantMeeting = async (data) => {
   return axios.post(`${endpoint}/meeting/instant`, data);
@@ -24,7 +24,6 @@ export const getMeetingEvents = (start, end, user) => {
     const startTme = firebase.firestore.Timestamp.fromDate(start);
     const endDate = firebase.firestore.Timestamp.fromDate(end);
     const userRef = firebase.firestore().collection('users').doc(user);
-    console.log(start, end, user);
     firebase
       .firestore()
       .collection('meeting')
@@ -142,7 +141,6 @@ export const getStats = (start, end, curr, user) => {
     const endDate = firebase.firestore.Timestamp.fromDate(end);
     const todayDate = firebase.firestore.Timestamp.fromDate(new Date());
     const userRef = firebase.firestore().collection('users').doc(user);
-    console.log(startTme, endDate);
     let thisWeek = await firebase
       .firestore()
       .collection('meeting')
@@ -166,6 +164,7 @@ export const getStats = (start, end, curr, user) => {
 };
 
 export const sendOtp = (mobile, meeting, password = '') => {
+  console.log(mobile)
   return axios.post(`${endpoint}/misc/send-otp`, { mobile: mobile, meeting, password: password });
 };
 

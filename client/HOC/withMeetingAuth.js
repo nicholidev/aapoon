@@ -45,6 +45,7 @@ const withMeetingAuth = (WrappedComponent) => {
       const [requirePass, setRequirePass] = useState(false);
       const [token, setToken] = useState('');
       const [name, setName] = useState('');
+      const [domain,setDomain]=useState("")
       const [authMeeting, setAuthMeeting] = useState({
         isAuth: localStorage.getItem('mid') == query.meetingid,
         id: localStorage.getItem('mid'),
@@ -60,7 +61,7 @@ const withMeetingAuth = (WrappedComponent) => {
             joinMeeting({ id: query.meetingid })
               .then((data) => {
                 setLoading(false);
-
+                setDomain(data?.data.domain)
                 setMeetData(data?.data?.data);
                 setToken(data?.data.token);
               })
@@ -189,7 +190,7 @@ const withMeetingAuth = (WrappedComponent) => {
                 <Typography variant="caption" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
                   By clicking on Join meeting, you agree to our &nbsp;
                   <Link underline="always" color="text.primary" href="/about/terms-of-service">
-                    Terms and conditions &nbsp;
+                    Terms of Service &nbsp;
                   </Link>
                   and you acknowledge having read our &nbsp;
                   <Link underline="always" color="text.primary" href="/about/privacy-policy">
@@ -200,7 +201,7 @@ const withMeetingAuth = (WrappedComponent) => {
                 <Divider sx={{ mt: 8 }} />
                 <Typography variant="body2" sx={{ mt: 3, textAlign: 'center' }}>
                   Already have an account?{' '}
-                  <Link passHref href={'/auth/Login'}>
+                  <Link passHref href={'/auth/Login?return=' + window.location.href}>
                     <Link variant="subtitle2">Login</Link>
                   </Link>
                 </Typography>
@@ -236,7 +237,7 @@ const withMeetingAuth = (WrappedComponent) => {
           </Dialog>
         );
       }
-      if (authMeeting.isAuth == true && authMeeting.jwt) return <WrappedComponent {...props} token={authMeeting.jwt} />;
+      if (authMeeting.isAuth == true && authMeeting.jwt) return <WrappedComponent {...props} domain={domain} token={authMeeting.jwt} />;
       else
         return (
           <Box height={'100vh'} display="flex" justifyContent="center" alignItems="center">

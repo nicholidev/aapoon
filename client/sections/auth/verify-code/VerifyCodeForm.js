@@ -20,7 +20,7 @@ function maxLength(object) {
   }
 }
 
-export default function VerifyCodeForm({ verifyMobileLinkCode, user }) {
+export default function VerifyCodeForm({ verifyMobileLinkCode, user,setCounter }) {
   const { enqueueSnackbar } = useSnackbar();
   const router = useRouter();
   const VerifyCodeSchema = Yup.object().shape({
@@ -32,16 +32,20 @@ export default function VerifyCodeForm({ verifyMobileLinkCode, user }) {
       code: '',
     },
     validationSchema: VerifyCodeSchema,
-    onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
+    onSubmit: async (values, { setErrors, setSubmitting, resetForm, }) => {
       try {
         await verifyMobileLinkCode(values.code);
-        enqueueSnackbar('Verify success', { variant: 'success' });
+        enqueueSnackbar('Verified Successfully', { variant: 'success' });
         setSubmitting(false);
-
+        setCounter(false)
         if (user.accountType == 'Business') router.push('/auth/business-profile');
         else {
           localStorage.setItem('isAuthenticated', true);
-          window.location = '/dashboard/one';
+          if (router.query.return) {
+            window.location = router.query.return;
+          } else {
+            window.location = '/dashboard/one';
+          }
         }
       } catch (err) {
         console.log(err);
@@ -60,7 +64,7 @@ export default function VerifyCodeForm({ verifyMobileLinkCode, user }) {
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
         <OtpInput
-          containerStyle={{ justifyContent: 'space-around' }}
+          containerStyle={{ justifyContent: 'space-between' }}
           inputStyle={{ width: 48, height: 48, border: '2px solid #f0f0f0', borderRadius: 6, overflow: 'hidden' }}
           value={getFieldProps('code').value}
           placeholder={'------'}
@@ -75,7 +79,7 @@ export default function VerifyCodeForm({ verifyMobileLinkCode, user }) {
         </FormHelperText>
 
         <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting} sx={{ mt: 3 }}>
-          Verify
+          Verify Now
         </LoadingButton>
       </Form>
     </FormikProvider>

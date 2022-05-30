@@ -39,6 +39,8 @@ import AppNewInvoice from '../../sections/@dashboard/general/app/AppNewInvoice';
 import { useState } from 'react';
 import UserData from '../../components/organisation/UserData';
 import useAuth from '../../hooks/useAuth';
+import InviteData from '../../components/invite/InviteData';
+import LicenceData from '../../components/licence';
 const Sidebar = styled('header')(({ theme }) => ({
   width: '240px',
   height: '100%',
@@ -153,7 +155,7 @@ function ProfilePage() {
   const [fetch, setFetch] = useState(false);
   const [current, setCurrent] = useState('dashboard');
   const { user } = useAuth();
-  console.log(user);
+
   const { back } = useRouter();
   return (
     <Page title="Dashboard" sx={{ width: '100vw' }}>
@@ -170,20 +172,6 @@ function ProfilePage() {
                 <IconButton onClick={() => back()}>
                   <Iconify icon={'eva:arrow-back-outline'} width="32px" height="32px" />
                 </IconButton>
-                <Box>
-                  <Link href="/organisation/update" passHref={true}>
-                    <ListItemButton>
-                      <ListItemIcon>
-                        <Iconify icon={'feather:edit'} width="20px" height="20px" />
-                      </ListItemIcon>
-                      <ListItemText>
-                        <Typography variant="subtitle2" color="primary.main">
-                          Edit
-                        </Typography>
-                      </ListItemText>
-                    </ListItemButton>
-                  </Link>
-                </Box>
               </Box>
               <Grid container spacing={3} justifyContent={'space-around'}>
                 <Grid item xs={12} sm={4} lg={2}>
@@ -196,8 +184,7 @@ function ProfilePage() {
                       />
                     </AvatarContainer>
                   </div>
-                  <br />
-                  <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  <div style={{ display: 'flex', justifyContent: 'center', margin: '15px 0 10px' }}>
                     <Typography
                       variant="caption"
                       color="common.white"
@@ -206,6 +193,20 @@ function ProfilePage() {
                       BUSINESS
                     </Typography>
                   </div>
+                  <Box display="flex" justifyContent={'center'}>
+                    <Link href="/organisation/update" passHref={true}>
+                      <Button>
+                        <ListItemIcon>
+                          <Iconify icon={'feather:edit'} width="20px" height="20px" color="common.black" />
+                        </ListItemIcon>
+                        <ListItemText>
+                          <Typography variant="subtitle2" color="primary.main">
+                            Edit Profile
+                          </Typography>
+                        </ListItemText>
+                      </Button>
+                    </Link>
+                  </Box>
                 </Grid>
                 <Grid item xs={12} sm={7} lg={3}>
                   <Stack spacing={3}>
@@ -221,6 +222,7 @@ function ProfilePage() {
                       </Typography>
                       <Typography variant="h6">{user.businessDetails?.businessWeb}</Typography>
                     </Stack>
+                  
                   </Stack>
                 </Grid>
                 <Grid item xs={6} sm={4} lg={2}>
@@ -253,35 +255,17 @@ function ProfilePage() {
                       <Typography variant="subtitle2" color="GrayText">
                         Team Size
                       </Typography>
-                      <Typography variant="h6">25</Typography>
+                      <Typography variant="h6">{user.businessDetails?.teamsize}</Typography>
                     </Stack>
-                  </Stack>
-                </Grid>
-              </Grid>
-              <Box
-                display="flex"
-                justifyContent="flex-end"
-                sx={{ marginTop: { lg: -2, xs: 0 }, padding: { lg: '0 20px', xs: 0 } }}
-              >
-                <Box>
-                  <Typography variant="subtitle2" color="GrayText">
-                    Admin
-                  </Typography>
-                  <AdminCard>
-                    <ListItem>
-                      <ListItemIcon>
-                        <AdminAvatar>
-                          <Avatar
-                            src={user?.profilePic}
-                            alt={user.displayName}
-                            sx={{ width: '100%', height: '100%' }}
-                          />
-                        </AdminAvatar>
-                      </ListItemIcon>
-                      <ListItemText>
+                    <Box>
+                      <Typography variant="subtitle2" color="GrayText">
+                        Admin Details
+                      </Typography>
+                      <Box display={'flex'}>
                         <Typography variant="h6" color="initial" noWrap sx={{ textTransform: 'capitalize' }}>
                           {user?.displayName}
                         </Typography>
+                        &nbsp;&nbsp;
                         <Link href={'/user/profile'} passHref={true}>
                           <ButtonBase sx={{ marginLeft: 1 }}>
                             <Typography variant="subtitle2" color="primary.main">
@@ -289,16 +273,50 @@ function ProfilePage() {
                             </Typography>
                           </ButtonBase>
                         </Link>
-                      </ListItemText>
-                    </ListItem>
-                  </AdminCard>
-                </Box>
-              </Box>
+                      </Box>
+                    </Box>
+                  </Stack>
+                </Grid>
+              </Grid>
             </DataHead>
-            <Typography variant="h5" sx={{ padding: '10px 20px' }}>
-              Users
-            </Typography>
-            <UserData />
+         
+            {user?.activeLicenses?.count > 1 ? (
+              <DataSection>
+                <DataHead sx={{ width: '100%', justifyContent: 'space-between', display: 'flex', px: 4, py: 3 }}>
+                  <Typography variant="h5" style={{ display: 'inline' }}>
+                  Assigned license
+                  </Typography>
+                 
+                </DataHead>
+                <Box sx={{ p:{xs:0,md:4}, pt: 0, py: 0 }}>
+                  <LicenceData fetch={fetch} />
+                </Box>
+               
+                {/* <AppNewInvoice/> */}
+              </DataSection>
+            ) : (
+              <DataSection>
+                <DataHead sx={{ width: '100%', justifyContent: 'space-between', display: 'flex', px: 4, py: 3 }}>
+                  <Typography variant="h5" style={{ display: 'inline' }}>
+                    Recent Invites
+                  </Typography>
+                  {/* <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => setInviteOpen(true)}
+                    startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
+                  >
+                    {' '}
+                    Invite User
+                  </Button> */}
+                </DataHead>
+                <Box sx={{ p:{xs:0,md:4}, pt: 0 }}>
+                  <InviteData fetch={fetch} />
+                </Box>
+              
+                {/* <AppNewInvoice/> */}
+              </DataSection>
+            )}
           </DataSection>
         </Content>
       </Container>

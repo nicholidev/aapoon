@@ -9,12 +9,7 @@ import Page from '../components/Page';
 // sections
 import {
   HomeHero,
-  HomeMinimal,
   HomeDarkMode,
-  HomeLookingFor,
-  HomeColorPresets,
-  HomePricingPlans,
-  HomeAdvertisement,
   HomeCleanInterfaces,
   HomeHugePackElements,
 } from '../sections/home';
@@ -40,9 +35,7 @@ export default function HomePage() {
         <ContentStyle>
           <HomeHero />
           <HomeDarkMode />
-
           <HomeHugePackElements />
-
           <HomeCleanInterfaces />
         </ContentStyle>
       </RootStyle>

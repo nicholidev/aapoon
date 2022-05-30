@@ -27,6 +27,9 @@
     "*.{js,css,md,jsx,json}": "prettier --write"
   },
   "dependencies": {
-    "@google-cloud/firestore": "^4.15.1"
+    "@google-cloud/firestore": "^4.15.1",
+    "@mui/styles": "^5.4.2",
+    "@nandorojo/swr-firestore": "^0.16.0",
+    "firebase": "^9.6.6"
   }
 }

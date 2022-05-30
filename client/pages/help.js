@@ -76,14 +76,14 @@ function HelpDesk() {
   const router = useRouter();
   const { user } = useAuth();
   return (
-    <Page title="Schedule Meeting">
+    <Page title="Help Desk">
       <GlobalStyles
         styles={{
           body: { backgroundColor: '#F1F1F1' },
         }}
       />
       <RootStyle>
-        <DashboardHeader />
+        <DashboardHeader withoutStack={user?.id?false:true} />
 
         <Container sx={{ mt: { xs: 4, lg: 4, xl: 4 } }}>
           <Paper>
@@ -155,7 +155,8 @@ function HelpDesk() {
 }
 
 HelpDesk.getLayout = function getLayout(page) {
-  return <DashboardLayout>{page}</DashboardLayout>;
+  const { user } = useAuth();
+  return <DashboardLayout withoutStack={user?.id?false:true}>{page}</DashboardLayout>;
 };
 
 export default HelpDesk;

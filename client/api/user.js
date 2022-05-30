@@ -3,7 +3,7 @@
  XYZ. Contact address: XYZ@xyz.pa .
  */
 import axios from 'axios';
-const endpoint = 'https://us-central1-meetaap-55e58.cloudfunctions.net/app';
+const endpoint = process.env.NEXT_PUBLIC_FUNCTION_URL;
 
 export const inviteUser = async (data) => {
   return axios.post(`${endpoint}/misc/send-invite`, data);

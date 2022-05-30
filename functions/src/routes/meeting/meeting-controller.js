@@ -49,7 +49,7 @@ const scheduleMeeting = async (req, res) => {
 
   const timestamp = admin.firestore.Timestamp.fromDate(new Date(scheduleAt));
   const endReccr = admin.firestore.Timestamp.fromDate(
-    new Date(reccuringEndDate)
+    new Date(scheduleAt + Number(estimatedDuration) * 60 * 1000)
   );
 
   let data = {
@@ -93,23 +93,41 @@ const joinMeeting = async (req, res) => {
       await admin.firestore().collection("meeting").doc(req.body.id).get()
     ).data();
 
+let sub=(await admin.firestore()
+.collection('users')
+.doc(req.user.user_id)
+.collection('licences')
+.doc('premium')
+.get()).data()?.count
+
+
+let assigned=(await admin.firestore()
+.collection('licenses')
+.where('email', '==', user.email)
+.where('isAccepted', '==', true)
+.where('isActivated', '==', true)
+.get()).docs?.length
+
     if (meeting.password && req.body.password != meeting.password) {
       return res.status(403).send();
     }
+
+    console.log(
+    meeting.createdBy.id)
     var token = jwt.sign(
       {
-        aud: "meetaap",
+   
         context: {
           user: {
             id: req.user.user_id,
             name: user.displayName,
             avatar: user.profilePic,
             email: user.email,
-            moderator:
-              admin.firestore().collection("users").doc(req.user.user_id) ==
-              meeting.createdBy
-                ? "true"
-                : "false",
+            affiliation:
+              req.user.user_id ==
+              meeting.createdBy.id
+                ? "owner"
+                : "member",
           },
           features: {
             livestreaming: "false",
@@ -122,16 +140,21 @@ const joinMeeting = async (req, res) => {
           },
         },
 
-        iss: "meetaap",
-
+       
+        "aud": "8B23A4BA85DE85D2922703F319496934",
+        "iss": "8B23A4BA85DE85D2922703F319496934",
+        "sub": "meetaap.io",
+        exp:new Date().getTime()+1000000,
+      nbf:300,
         room: req.body.id,
-        sub: "meetaap",
+       
       },
-      "oos3iusu"
+      "518B837725AC1959C4878BDF15362AFD8B"
     );
 
     return res.status(200).send({
       data: { ...meeting, password: meeting.password ? true : false },
+      domain: sub || assigned?'meetaap.io':'meetaap.in',
       token,
     });
   } catch (err) {
@@ -166,14 +189,14 @@ const joinMeetingWithOtp = async (req, res) => {
 
     var token = jwt.sign(
       {
-        aud: "meetaap",
+   
         context: {
           user: {
             id: req.body.mobile,
             name: req.body.name,
 
             email: req.body.mobile,
-            moderator: "false",
+            affiliation: "member",
           },
           features: {
             livestreaming: "false",
@@ -186,12 +209,13 @@ const joinMeetingWithOtp = async (req, res) => {
           },
         },
 
-        iss: "meetaap",
-
+        "aud": "jitsi",
+        "iss": "jitsi",
+        "sub": "meetaap.io",
         room: req.body.id,
-        sub: "meetaap",
+       
       },
-      "oos3iusu"
+      "518B837725AC1959C4878BDF15362AFD8B"
     );
 
     return res.status(200).send({

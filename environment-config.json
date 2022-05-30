@@ -1,0 +1,26 @@
+{
+  "dev": {
+    "functionUrl": "https://us-central1-meetaap-55e58.cloudfunctions.net/app",
+    "projectId": "meetaap-55e58",
+    "apiKey": "AIzaSyB0cYGBCsz8NoKOqK7BrBeSMyTNQCJvo9Q",
+    "authDomain": "meetaap-55e58.firebaseapp.com",
+    "storageBucket": "meetaap-55e58.appspot.com",
+    "messagingSenderId": "515046531660",
+    "appId": "1:515046531660:web:4b77b298996205be8b4ae9",
+    "measurementId": "${config.measurementId}",
+    "stripeKey": "sk_test_51JzIqaSEVX0OvNkKJYi7jzZEN0C9dXUcH4GijgOdUJw8urpS99fdDxTPbZXzseb5TEOff75LyNTjEytlEP8Gdj0P00hz4tGLyT",
+    "stripeWebhookSec":"whsec_C43yZYFfGXkqDLVKU3TrKAJv8pSTR0U3",
+    "cportal": "stripeFunctions-createPortalLink"
+  },
+  "staging": {
+    "functionUrl": "https://us-central1-meetaapweb-staging.cloudfunctions.net/app",
+    "apiKey": "AIzaSyByMKP6-DuRF1M-vSuwC3B1WQ5opdgMrxo",
+    "authDomain": "meetaapweb-staging.firebaseapp.com",
+    "projectId": "meetaapweb-staging",
+    "storageBucket": "meetaapweb-staging.appspot.com",
+    "messagingSenderId": "250788702010",
+    "appId": "1:250788702010:web:965f8bcf42c0c7fcf39203",
+    "stripeKey": "sk_test_51IbUQTSJOhf2FXpTkpwG1dGnwhvxwnrZxnAyx04iutYiP8WAdOutXyuWsJjwxtB1xwxpTyKW7BufIhMni6CXa83s00glTl2VYT",
+    "cportal": "stripeFunctions-createPortalLink"
+  }
+}

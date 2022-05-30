@@ -81,7 +81,7 @@ function Register() {
 
   const smUp = useResponsive('up', 'sm');
   const mdUp = useResponsive('up', 'md');
-  console.log(user);
+ 
   const router = useRouter();
   return (
     <Page title="Register">

@@ -92,17 +92,17 @@ function RefundPolicy() {
                     <Iconify icon={'eva:arrow-back-fill'} />
                   </IconButtonAnimate>
                   &nbsp;&nbsp;&nbsp;&nbsp; */}
-                <Typography variant="h2" align="center" gutterBottom sx={{ fontSize: { xs: '18px', md: '24px' } }}>
+                <Typography variant="h3" align="center" gutterBottom>
                   aapoon meet Refund policy
                 </Typography>
 
                 {/* <Typography variant="h6" gutterBottom style={{ fontStyle: 'italic' }}>
-                  EFFECTIVE: August 09, 2021
+                  EFFECTIVE: August 09, 2022
                 </Typography> */}
               </Box>
 
               <Box sx={{ mb: 2 }}>
-                <Typography sx={{ fontSize: { xs: '12px', md: '14px' } }}>
+                <Typography variant="body1">
                   Since the meetaap.in offers non-tangible products/Goods/Services, we do not provide refunds after the
                   subscription is purchased, which you acknowledge prior to purchasing any subscription on the Website.
                   <br />
@@ -116,7 +116,7 @@ function RefundPolicy() {
                   <Iconify icon={'ci:dot-02-s'} />
                 </Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
+                <Typography variant="body1">
                   There is no refund if a customer cancels or doesn’t use the product or service during the active
                   subscription period.
                 </Typography>
@@ -126,7 +126,7 @@ function RefundPolicy() {
                   <Iconify icon={'ci:dot-02-s'} />
                 </Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
+                <Typography variant="body1">
                   aapoon meet will issue a refund if a duplicate payment for the same service is charged due to a
                   technical error or mistake.
                 </Typography>
@@ -136,7 +136,7 @@ function RefundPolicy() {
                   <Iconify icon={'ci:dot-02-s'} />
                 </Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
+                <Typography variant="body1">
                   aapoon meet will issue a refund if a duplicate payment for the same service is charged due to a
                   technical error or mistake.
                 </Typography>
@@ -146,7 +146,7 @@ function RefundPolicy() {
                   <Iconify icon={'ci:dot-02-s'} />
                 </Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
+                <Typography variant="body1">
                   A refund request must be made in writing using the registered email Id of the user.
                 </Typography>
               </Box>
@@ -155,7 +155,7 @@ function RefundPolicy() {
                   <Iconify icon={'ci:dot-02-s'} />
                 </Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
+                <Typography variant="body1">
                   We reserve all the rights to issue a refund, and the decision will be made solely by us in all
                   circumstances.
                 </Typography>
@@ -165,17 +165,17 @@ function RefundPolicy() {
                   <Iconify icon={'ci:dot-02-s'} />
                 </Typography>
                 &nbsp;&nbsp;&nbsp;&nbsp;
-                <Typography variant="subtitle1" sx={{ fontSize: { xs: '12px', md: '16px' } }}>
+                <Typography variant="body1">
                   Refunds are subject to verification of information provided, and it may take up to 30 days to process
                   it.
                 </Typography>
               </Box>
               <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle1" gutterBottom>
+                <Typography variant="body1" gutterBottom>
                   Contacting us
                 </Typography>
               </Box>
-              <Typography sx={{ fontSize: { xs: '12px', md: '14px' } }}>
+              <Typography variant="body1">
                 You may notify aapoon meet of any issues by sending an Email to &nbsp;
                 <a href="mailto:support@meetapp.in">support@meetapp.in</a>
               </Typography>

@@ -141,6 +141,7 @@ MenuDesktopItem.propTypes = {
 
 function MenuDesktopItem({ item, isHome, isOpen, isOffset, onOpen, onClose, push, user }) {
   const { title, path, children } = item;
+  const { pathname } = useRouter();
   const anchorRef = useRef(null);
   if (children) {
     return (
@@ -197,11 +198,17 @@ function MenuDesktopItem({ item, isHome, isOpen, isOffset, onOpen, onClose, push
       end={path === '/'}
       onClick={() => push(item.path)}
       style={{ cursor: 'pointer' }}
+      className={pathname == path ? 'active' : ''}
       sx={{
         ...(isHome && { color: 'common.white' }),
         ...(isOffset && { color: 'text.primary' }),
-        '&.active': {
-          color: 'primary.main',
+        '&.active:after': {
+          content: '""',
+          display: 'flex',
+          justifyContent: 'center',
+          width: '30px',
+          borderBottom: '4px solid #005480',
+          borderRadius: '4px',
         },
       }}
     >

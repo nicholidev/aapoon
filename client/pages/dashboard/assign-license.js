@@ -9,6 +9,7 @@ import { styled } from '@mui/material/styles';
 import { Box, Card, Link, Container, Typography, Tooltip, Paper } from '@mui/material';
 // hooks
 import useResponsive from '../../hooks/useResponsive';
+import { useState } from 'react';
 // routes
 import DashboardHeader from '../../layouts/dashboard/header/index';
 // components
@@ -24,6 +25,7 @@ import withAuth from '../../HOC/withAuth';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import { IconButtonAnimate } from '../../components/animate';
 import Iconify from '../../components/Iconify';
+import useAuth from '../../hooks/useAuth';
 import { useRouter } from 'next/router';
 import FormAssignLicense from '../../sections/@dashboard/license/FormAssignLicense';
 const RootStyle = styled('div')(({ theme }) => ({}));
@@ -58,7 +60,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
   maxWidth: 880,
   margin: 'auto',
   display: 'flex',
-  minHeight: '100vh',
+  minHeight: '50vh',
   flexDirection: 'column',
 
   padding: theme.spacing(8, 2),
@@ -70,9 +72,12 @@ function AssignMeeting() {
   const smUp = useResponsive('up', 'sm');
   const mdUp = useResponsive('up', 'md');
   const router = useRouter();
-
+  const [showLinksentModal, setLinkSentModal] = useState(false);
+  const [email, setEmail] = useState('');
+  const { user } = useAuth();
+  let noLicence = user.activeLicenses.count - user.activeLicenses.assigned - 1 <= 0;
   return (
-    <Page title="Schedule Meeting">
+    <Page title="Assign license">
       <GlobalStyles
         styles={{
           body: { backgroundColor: '#F1F1F1' },
@@ -95,8 +100,74 @@ function AssignMeeting() {
                   </Typography>
                 </Box>
               </Box>
-
-              <FormAssignLicense />
+              {showLinksentModal ? (
+                <Box
+                  sx={{
+                    width: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <Paper
+                    sx={{
+                      elevation: 0,
+                      padding: 4,
+                      justifyContent: 'center',
+                      display: 'flex',
+                      alignItems: 'center',
+                      flexDirection: 'column',
+                    }}
+                    elevation={0}
+                  >
+                    <Typography variant="h4" align="center" gutterBottom>
+                      Link sent
+                    </Typography>
+                    <br />
+                    <img src="/images/help/check.png" width="100" />
+                    <br />
+                    <br />
+                    <Typography sx={{ maxWidth: 420, lineHeight: 2, width: '100%' }} gutterBottom align={'center'}>
+                      You have assigned a license to {email}, <b>A link has been sent to the user to accept and join</b>
+                    </Typography>
+                  </Paper>
+                </Box>
+              ) : user.id&&noLicence ? (
+                <Box
+                  sx={{
+                    width: '100%',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                  }}
+                >
+                  <Paper
+                    sx={{
+                      elevation: 0,
+                      padding: 4,
+                      justifyContent: 'center',
+                      display: 'flex',
+                      alignItems: 'center',
+                      flexDirection: 'column',
+                    }}
+                    elevation={0}
+                  >
+                    <Iconify icon={'charm:info'} style={{ fontSize: 150 }} />
+                    <br />
+                    <Typography variant="h4" align="center" gutterBottom>
+                      Insufficient licenses
+                    </Typography>
+                    <br />
+                    <Typography sx={{ maxWidth: 480, lineHeight: 2, width: '100%' }} gutterBottom align={'left'}>
+                      You have {user.activeLicenses.count} licenses , and all are assigned
+                    </Typography>
+                  </Paper>
+                </Box>
+              ) : (
+                <FormAssignLicense setLinkSentModal={setLinkSentModal} setEmail={setEmail} />
+              )}
             </ContentStyle>
           </Paper>
         </Container>

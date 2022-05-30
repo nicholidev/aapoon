@@ -10,7 +10,7 @@ export const addHelp = (data) => {
   return new Promise((resolve, reject) => {
     if (data.uploadFile) {
       var storageRef = firebase.storage().ref();
-      var busRef = storageRef.child(`help/${data.email}/${data.uploadFile}`);
+      var busRef = storageRef.child(`help/${data.email}/${data.uploadFile.name}`);
 
       busRef
         .put(data.uploadFile)
@@ -41,6 +41,7 @@ export const addHelp = (data) => {
           resolve(ref);
         })
         .catch((err) => {
+          console.log(err);
           reject(err);
         });
     }

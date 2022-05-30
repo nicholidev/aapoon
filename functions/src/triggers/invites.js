@@ -32,7 +32,7 @@ exports.sendInviteEmail = functions.firestore
 
     let mail = await sendEmail(
       inviteByDetails.email,
-      "Welcome to aapoon Meet",
+      "Invitee joined",
       `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html
           xmlns="http://www.w3.org/1999/xhtml"
@@ -605,7 +605,7 @@ exports.sendInviteEmail = functions.firestore
                                             </p>
                                             <br /><br /><span style="font-size: 18px"
                                               >
-                                              <br /><br />Regards,<br />Aapoon
+                                              <br /><br />Regards,<br />aapoon
                                               Support</span
                                             >
                                             <p
@@ -682,7 +682,7 @@ exports.sendInviteEmail = functions.firestore
                                                 font-size: 14px;
                                               "
                                             >
-                                              © 2021, Aapoon Meet. All Right’s Reserved
+                                              © 2022, aapoon Meet. All Right’s Reserved
                                             </p>
                                           </td>
                                         </tr>

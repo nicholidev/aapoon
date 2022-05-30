@@ -14,6 +14,7 @@ import {
   ListItemIcon,
   ListItemText,
   styled,
+  Box,
   Typography,
 } from '@mui/material';
 // layouts
@@ -23,6 +24,7 @@ import useSettings from '../../hooks/useSettings';
 // components
 import Page from '../../components/Page';
 import GlobalStyles from '@mui/material/GlobalStyles';
+import { startOfWeek, endOfWeek } from 'date-fns';
 // ----------------------------------------------------------------------
 import withAuth from '../../HOC/withAuth';
 import Iconify from '../../components/Iconify';
@@ -33,9 +35,14 @@ import StopCircleIcon from '@mui/icons-material/StopCircle';
 import AppNewInvoice from '../../sections/@dashboard/general/app/AppNewInvoice';
 import InviteData from '../../components/invite/InviteData';
 import InviteModal from '../../components/invite/InviteModal';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { getStats } from '../../api/meeting';
 import RecordingData from '../../components/recording/RecordingData';
-
+import useAuth from '../../hooks/useAuth';
+import DashboardSidebar from '../../components/dashboard/DashboardSidebar';
+import DashboardInfoHeader from '../../components/dashboard/DashboardInfoHeader';
+import RecordingInfoHeader from '../../components/recording/RecordingInfoHeader';
+import Image from '../../components/Image';
 const Sidebar = styled('header')(({ theme }) => ({
   width: '320px',
   height: '100%',
@@ -50,10 +57,7 @@ const Sidebar = styled('header')(({ theme }) => ({
 const Content = styled('div')(({ theme }) => ({
   width: 'calc(100% - 320px)',
   height: '100%',
-  padding: theme.spacing(1),
-  paddingTop: theme.spacing(4),
-  paddingLeft: theme.spacing(2),
-  marginTop: theme.spacing(6),
+  paddingTop: theme.spacing(6),
   [theme.breakpoints.down('md')]: {
     width: '100%',
     paddingLeft: 0,
@@ -62,8 +66,7 @@ const Content = styled('div')(({ theme }) => ({
 }));
 
 const SideSection = styled(Card)(({ theme }) => ({
-  paddingTop: 16,
-  paddingBottom: 16,
+  padding: '16px 0',
   width: '100%',
   marginTop: theme.spacing(4),
   display: 'flex',
@@ -97,23 +100,14 @@ const InfoContainer = styled(Grid)(({ theme }) => ({
   },
 }));
 
-const DataSection = styled(Card)(({ theme }) => ({
-  marginTop: theme.spacing(4),
-  margin: theme.spacing(6),
-  height: 600,
+const DataSection = styled('div')(({ theme }) => ({
+  margin: theme.spacing(3, 2, 2),
+  backgroundColor: '#fff',
+  borderRadius: '10px',
+
   [theme.breakpoints.down('md')]: {
     marginLeft: 0,
     marginRight: 0,
-  },
-}));
-
-const DataHead = styled('div')(({ theme }) => ({
-  display: 'flex',
-  width: '100%',
-  padding: theme.spacing(3),
-  justifyContent: 'space-between',
-  [theme.breakpoints.down('md')]: {
-    padding: theme.spacing(2),
   },
 }));
 
@@ -141,84 +135,45 @@ function RecordingsPage() {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [fetch, setFetch] = useState(false);
   const [current, setCurrent] = useState('dashboard');
+  const [stats, setStats] = useState({});
+  const [isPremiumUser, setIsPremiumUser] = useState(false);
+  const { user } = useAuth();
+  useEffect(() => {
+    if (user.id)
+      getStats(startOfWeek(new Date()), endOfWeek(new Date()), new Date(), user.id).then((data) => setStats(data));
+  }, [user?.activeLicenses?.count]);
   return (
-    <Page title="Dashboard">
+    <Page title="Dashboard" sx={{ pb: 2 }}>
       <GlobalStyles
         styles={{
           body: { backgroundColor: '#F1F1F1' },
         }}
       />
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex' }}>
-        <Sidebar>
-          <SideSection>
-            <List sx={{ width: '100%' }}>
-              <Link href="/dashboard/one" passHref={true}>
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <Iconify icon={'lucide:layout-dashboard'} width={24} height={24} />
-                    </ListItemIcon>
-                    <ListItemText primary={<h4>Dashboard</h4>} />
-                  </ListItemButton>
-                </ListItem>
-              </Link>
-              <Link href="/dashboard/calendar" passHref={true}>
-                <ListItem disablePadding>
-                  <ListItemButton>
-                    <ListItemIcon>
-                      <Iconify icon={'uil:calender'} width={24} height={24} />
-                    </ListItemIcon>
-                    <ListItemText primary={<h4>Calendar</h4>} />
-                  </ListItemButton>
-                </ListItem>
-              </Link>
-              <ListItem disablePadding selected={true}>
-                <ListItemButton>
-                  <ListItemIcon sx={{ pl: '3px' }}>
-                    <Iconify icon={'ant-design:video-camera-add-outlined'} width={24} height={24} />
-                  </ListItemIcon>
-                  <ListItemText primary={<h4>Recordings</h4>} />
-                </ListItemButton>
-              </ListItem>
-            </List>
-          </SideSection>
-          {/* <SideSection /> */}
-        </Sidebar>
+        <DashboardSidebar currentPage="recordings" />
         <Content>
-          <InfoContainer container spacing={3}>
-            <Grid xs={12} sm={6} lg={4}>
-              <InfoCard>
-                <InfoHeading>Total number of Licences</InfoHeading>
-                <InfoNumbers>
-                  <h3>34</h3>
-                </InfoNumbers>
-                <PersonIcon style={infoIconStyle} />
-              </InfoCard>
-            </Grid>
-            <Grid xs={12} sm={6} lg={4}>
-              <InfoCard>
-                <InfoHeading>Assigned Licences</InfoHeading>
-                <InfoNumbers>
-                  <h3>12</h3>
-                </InfoNumbers>
-                <CheckCircleIcon style={infoIconStyle} />
-              </InfoCard>
-            </Grid>
-            <Grid xs={12} sm={6} lg={4}>
-              <InfoCard>
-                <InfoHeading>Remaining Licenses</InfoHeading>
-                <InfoNumbers>
-                  <h3>10</h3>
-                </InfoNumbers>
-                <StopCircleIcon style={infoIconStyle} />
-              </InfoCard>
-            </Grid>
-          </InfoContainer>
+          <RecordingInfoHeader />
           <DataSection>
-            <DataHead>
-              <h4 style={{ display: 'inline' }}>Recordings</h4>
-            </DataHead>
-            <RecordingData fetch={fetch} />
+            {isPremiumUser ? (
+              <>
+                <RecordingData fetch={fetch} />
+              </>
+            ) : (
+              <Box
+                display={'flex'}
+                flexDirection={'column'}
+                justifyContent={'center'}
+                alignItems={'center'}
+                width={'100%'}
+                height={'calc(100vh - 160px)'}
+              >
+                <Image src={'/images/recording/Frame.svg'} style={{ maxHeight: 400, width: 'auto' }} />
+                <Typography align="center" style={{ fontSize: 24, marginTop: 24 }}>
+                  Are you interested in recording your meetings?
+                </Typography>
+                <Typography variant={'h4'}>Upgrade to Premium!</Typography>
+              </Box>
+            )}
           </DataSection>
         </Content>
       </Container>

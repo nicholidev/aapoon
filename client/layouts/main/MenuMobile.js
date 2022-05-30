@@ -136,6 +136,7 @@ MenuMobileItem.propTypes = {
 
 function MenuMobileItem({ item, isOpen, onOpen, id, handleDrawerClose }) {
   const { title, path, icon, children } = item;
+  const { pathname } = useRouter();
 
   if (children) {
     return (
@@ -186,6 +187,7 @@ function MenuMobileItem({ item, isOpen, onOpen, id, handleDrawerClose }) {
       to={path}
       component={RouterLink}
       end={path === '/'}
+      className={pathname == path ? 'active' : ''}
       sx={{
         '&.active': {
           color: 'primary.main',

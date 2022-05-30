@@ -50,7 +50,7 @@ export default function ProductDetailsReviewForm({ onClose, ...other }) {
       onClose();
       resetForm();
       setSubmitting(false);
-      enqueueSnackbar('Verify success', { variant: 'success' });
+      enqueueSnackbar('Verified Successfully', { variant: 'success' });
     },
   });
 

@@ -22,6 +22,7 @@ import {
   MenuItem,
   Badge,
   Box,
+  DialogTitle,
   Dialog,
   FormHelperText,
 } from '@mui/material';
@@ -39,7 +40,7 @@ import { IconButtonAnimate } from '../../components/animate';
 import PhoneInput from 'react-phone-number-input/input';
 import CustomPhone from '../../components/Phonenumber';
 import InputLabel from '@mui/material/InputLabel';
-
+import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import { instantMeeting } from '../../api/meeting';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../utils/errorMessage';
@@ -88,13 +89,14 @@ function UpdateUserProfile(props) {
       firstName: user?.displayName?.split(' ')[0],
       lastName: user?.displayName?.split(' ')?.[1],
       profilePic: '',
+      picuri:user.profilePic
     },
     validationSchema: RegisterSchema,
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
       setSubmitting(true);
       try {
         await updateProfile(values);
-        enqueueSnackbar('User details updates', {
+        enqueueSnackbar('User details updated', {
           variant: 'success',
           action: (key) => (
             <IconButtonAnimate size="small" onClick={() => closeSnackbar(key)}>
@@ -131,11 +133,11 @@ function UpdateUserProfile(props) {
   return (
     <div>
       <Dialog open={open} maxWidth={'xs'} fullWidth onClose={() => setOpen(false)}>
+      <DialogTitle id="alert-dialog-title" align="center" sx={{display: 'flex',justifyContent:"space-between",alignItems: 'center'}}>
+           <span></span>   {`Update Profile`} <IconButtonAnimate onClick={()=>setOpen(false)}><CancelOutlinedIcon/></IconButtonAnimate>
+            </DialogTitle>
         <div style={{ padding: '40px' }}>
-          <Typography variant="h4" align="center" gutterBottom>
-            Update Profile
-          </Typography>
-          <br />
+        
           <FormikProvider value={formik}>
             <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
               <Stack spacing={2}>
@@ -148,7 +150,7 @@ function UpdateUserProfile(props) {
                       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                       badgeContent={
                         <FileUploader
-                          handleChange={(file) => setFieldValue('profilePic', file)}
+                          handleChange={(file) => {setFieldValue('profilePic', file);setFieldValue("picuri", URL.createObjectURL(file))}}
                           name="file"
                           types={['JPG', 'PNG', 'JPEG']}
                         >
@@ -160,7 +162,7 @@ function UpdateUserProfile(props) {
                     >
                       <AvatarContainer>
                         <Avatar
-                          src={values.profilePic ? URL.createObjectURL(values['profilePic']) : user.profilePic}
+                          src={values.picuri }
                           alt="Rayan Moran"
                           sx={{ width: '100%', height: '100%' }}
                         />
