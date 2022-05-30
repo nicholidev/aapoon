@@ -179,7 +179,7 @@ const [error,setError]=useState("")
   }
 
   let activeSub = user.subscription?.find((i) => i.status == 'active');
-  console.log(user);
+
   return (
     <Page title="Dashboard" sx={{ width: '100vw' }}>
       <GlobalStyles

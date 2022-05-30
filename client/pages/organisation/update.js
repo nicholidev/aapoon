@@ -79,12 +79,9 @@ const Spacer = styled('div')(({ theme }) => ({
 function Register() {
   const { method, user } = useAuth();
 
-  console.log(user);
-
   const router = useRouter();
   const smUp = useResponsive('up', 'sm');
   const mdUp = useResponsive('up', 'md');
-  console.log(user);
 
   return (
     <Page title="Register">

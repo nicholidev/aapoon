@@ -24,7 +24,6 @@ export const getMeetingEvents = (start, end, user) => {
     const startTme = firebase.firestore.Timestamp.fromDate(start);
     const endDate = firebase.firestore.Timestamp.fromDate(end);
     const userRef = firebase.firestore().collection('users').doc(user);
-    console.log(start, end, user);
     firebase
       .firestore()
       .collection('meeting')
@@ -142,7 +141,6 @@ export const getStats = (start, end, curr, user) => {
     const endDate = firebase.firestore.Timestamp.fromDate(end);
     const todayDate = firebase.firestore.Timestamp.fromDate(new Date());
     const userRef = firebase.firestore().collection('users').doc(user);
-    console.log(startTme, endDate);
     let thisWeek = await firebase
       .firestore()
       .collection('meeting')
