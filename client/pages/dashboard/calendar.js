@@ -122,10 +122,8 @@ function CalendarPage() {
   }, [isDesktop, user]);
   useEffect(() => {
     if (user.id) {
-      console.log('event exexcuted', date);
       getMeetingEvents(startOfMonth(date), endOfMonth(date), user.id).then((data) => {
         setEvents(data);
-        console.log('event', data);
       });
     }
   }, [user, date]);
@@ -167,7 +165,6 @@ function CalendarPage() {
   };
 
   const handleSelectRange = (arg) => {
-    console.log(arg.event.start);
     const calendarEl = calendarRef.current;
     if (calendarEl) {
       const calendarApi = calendarEl.getApi();
@@ -177,7 +174,6 @@ function CalendarPage() {
 
   const [meetingOpen, setMeetingOpen] = useState({ isOpen: false });
   const handleSelectEvent = (arg) => {
-    console.log(arg.event);
     setMeetingOpen({
       isOpen: true,
       data: arg.event,

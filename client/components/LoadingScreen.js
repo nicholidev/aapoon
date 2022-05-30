@@ -37,7 +37,6 @@ LoadingScreen.propTypes = {
 
 export default function LoadingScreen({ isDashboard, children, load, ...other }) {
   const { loading } = useAuth();
-  console.log(loading);
   return (
     <>
       {(loading || load) && (

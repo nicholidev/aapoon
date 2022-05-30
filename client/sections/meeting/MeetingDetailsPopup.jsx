@@ -78,7 +78,7 @@ function MeetingDetailsPopup(props) {
     };
     addTocalender(event, type, false);
   };
-  console.log(data?.extendedProps);
+
   return (
     <div>
       <Dialog

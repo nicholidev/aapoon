@@ -243,8 +243,6 @@ function AuthProvider({ children }) {
             docs.push({ ...data });
           }
 
-          console.log(docs);
-
           dispatch({
             type: 'UPDATE_SUB',
             //payload: {},
