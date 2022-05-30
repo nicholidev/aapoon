@@ -41,6 +41,7 @@ import NumberFormatCustom from '../../../components/NumberInput';
 import { acceptInvitation, getCountry } from '../../../api/user';
 import MuiPhoneNumber from 'material-ui-phone-number';
 export default function RegisterForm(query) {
+  const router = useRouter();
   const { register, user } = useAuth();
   const [numf, setnumf] = useState('12');
   const [open, setOpen] = useState(user.email && user.phoneNumber ? false : true);
@@ -69,7 +70,7 @@ export default function RegisterForm(query) {
     numberOfEmployees: Yup.number(),
     professionType: Yup.string(),
   });
-const {push}=useRouter();
+  const {push}=useRouter();
   const formik = useFormik({
     initialValues: {
       firstName:query?.query?.firstName ? query?.query?.firstName: user.firstName,
@@ -100,7 +101,7 @@ const {push}=useRouter();
         }
 
         if(user.accountType=="Business"){
-          window?.location="/dashboard/one";
+          router.push("/dashboard/one");
         }
       } catch (error) {
         console.log(error);

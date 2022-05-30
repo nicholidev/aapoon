@@ -6,7 +6,6 @@ import * as Yup from 'yup';
 import { useState, useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import { useFormik, Form, FormikProvider } from 'formik';
-
 //dialogues
 import Autocomplete from '../register/Dialogue';
 import {countryCodes} from "../register/counrtyCode"
@@ -27,7 +26,9 @@ import NumberFormatCustom from '../../../components/NumberInput';
 import ErrorMessages from '../../../utils/errorMessage';
 import { acceptInvitation, getCountry } from '../../../api/user';
 import {sendOtp} from "../../../api/meeting"
+import {useRouter} from "next/router";
 export default function RegisterForm(query) {
+  const router = useRouter();
   const { register, user } = useAuth();
   const [open, setOpen] = useState(user.email && user.phoneNumber ? false : true);
   const [countryCode, setCountryCode] = useState('US');
@@ -76,7 +77,7 @@ export default function RegisterForm(query) {
         query.setMobile(values.countryCode+values.phone)
         query.setName(values.firstName+" "+values.lastName)
         if(user.accountType=="Business"){
-          window?.location="/dashboard/one";
+          router.push("/dashboard/one")
         }
       } catch (error) {
         console.log(error);

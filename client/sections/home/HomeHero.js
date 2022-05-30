@@ -7,14 +7,12 @@ import { Link as RouterLink } from 'next/link';
 import { useRouter } from 'next/router';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Button, Box, Link, Container, Typography, Stack, Divider, Grid } from '@mui/material';
+import { Button, Container, Typography, Stack, Divider, Grid } from '@mui/material';
 // routes
 import InstantMeetingPopup from '../../sections/meeting/InstantMeetingPopup';
 // components
-import Image from '../../components/Image';
 import Iconify from '../../components/Iconify';
-import TextIconLabel from '../../components/TextIconLabel';
-import { MotionContainer, varFade } from '../../components/animate';
+import { varFade } from '../../components/animate';
 import useAuth from '../../hooks/useAuth';
 // ----------------------------------------------------------------------
 
