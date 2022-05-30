@@ -107,7 +107,7 @@ export default function RegisterForm(props) {
           acceptInvitation({ email: user.email, token: localStorage.getItem('inviteToken') });
         localStorage.setItem('isAuthenticated',true)
         
-        window?.location="/dashboard/one";
+        router.push("/dashboard/one");
         if (isMountedRef.current) {
           setSubmitting(false);
         }
