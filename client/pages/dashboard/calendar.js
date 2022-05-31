@@ -49,6 +49,7 @@ import useAuth from '../../hooks/useAuth';
 import InstantMeetingPopup from '../../sections/meeting/InstantMeetingPopup';
 import MeetingDetailsPopup from '../../sections/meeting/MeetingDetailsPopup';
 import DashboardSidebar from '../../components/dashboard/DashboardSidebar';
+
 const Sidebar = styled('header')(({ theme }) => ({
   width: '320px',
   height: '100%',
@@ -123,6 +124,7 @@ function CalendarPage() {
   useEffect(() => {
     if (user.id) {
       getMeetingEvents(startOfMonth(date), endOfMonth(date), user.id).then((data) => {
+        console.log(data);
         setEvents(data);
       });
     }
