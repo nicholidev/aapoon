@@ -12,9 +12,9 @@ const config = {
     inviteExpiry: 604800000 , //milliseconds
 
     smtpHost: "email-smtp.us-west-2.amazonaws.com",
-    smtpPort: 465,
-    smtpUsername: "AKIA4YYA7W7DQGJXRHNA",
-    smtpPassword: "BCMLt1ru17yr5vQQIC9yc+RIFdIPEsLR8GcdS1L3qb5l",
+    smtpPort: 587,
+    smtpUsername: "AKIA4YYA7W7D5LYY3KOO",
+    smtpPassword: "BLFYyHFOd/TFhgfL/o1ZllymIwLyQkax8X6GfXuoHhlz",
 }
 
 module.exports = config;
