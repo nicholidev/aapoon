@@ -47,7 +47,7 @@ export default function InviteModal(props) {
       }
     },
   });
-  console.log(user.id);
+
   const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
 
   return (
