@@ -191,6 +191,7 @@ const sendEmailInvite = async (req, res) => {
       if (!invite) {
         return res.status(406).json({ message: "Failed to send Invite" });
       }
+      
       let mail = await sendEmail(
         email,
         "Invitation for aapoon Meet",

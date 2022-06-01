@@ -12,7 +12,7 @@ const config = {
     inviteExpiry: 604800000 , //milliseconds
 
     smtpHost: "email-smtp.us-west-2.amazonaws.com",
-    smtpPort: 587,
+    smtpPort: 465,
     smtpUsername: "AKIA4YYA7W7D5LYY3KOO",
     smtpPassword: "BLFYyHFOd/TFhgfL/o1ZllymIwLyQkax8X6GfXuoHhlz",
 }
