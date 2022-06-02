@@ -22,5 +22,16 @@
     "appId": "1:250788702010:web:965f8bcf42c0c7fcf39203",
     "stripeKey": "sk_test_51IbUQTSJOhf2FXpTkpwG1dGnwhvxwnrZxnAyx04iutYiP8WAdOutXyuWsJjwxtB1xwxpTyKW7BufIhMni6CXa83s00glTl2VYT",
     "cportal": "stripeFunctions-createPortalLink"
+  },
+  "production": {
+    "functionUrl": "https://us-central1-meetaapweb-staging.cloudfunctions.net/app",
+    "apiKey": "AIzaSyByMKP6-DuRF1M-vSuwC3B1WQ5opdgMrxo",
+    "authDomain": "meetaapweb-staging.firebaseapp.com",
+    "projectId": "meetaapweb-staging",
+    "storageBucket": "meetaapweb-staging.appspot.com",
+    "messagingSenderId": "250788702010",
+    "appId": "1:250788702010:web:965f8bcf42c0c7fcf39203",
+    "stripeKey": "sk_test_51IbUQTSJOhf2FXpTkpwG1dGnwhvxwnrZxnAyx04iutYiP8WAdOutXyuWsJjwxtB1xwxpTyKW7BufIhMni6CXa83s00glTl2VYT",
+    "cportal": "stripeFunctions-createPortalLink"
   }
 }

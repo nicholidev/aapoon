@@ -23,3 +23,7 @@ firebase-debug.log
 functions/.runtimeconfig.json
 .eslintcache
 package-lock.json
+client/.env
+client/.env.*
+functions/.env
+functions/.env.*
