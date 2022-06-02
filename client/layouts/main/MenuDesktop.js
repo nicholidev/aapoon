@@ -195,10 +195,10 @@ function MenuDesktopItem({ item, isHome, isOpen, isOffset, onOpen, onClose, push
   return (
     <LinkStyle
       to={path}
-      end={path === '/'}
+      end={(path === '/').toString()}
       onClick={() => push(item.path)}
       style={{ cursor: 'pointer' }}
-      className={pathname == path ? 'active' : ''}
+      className={pathname === path ? 'active' : ''}
       sx={{
         ...(isHome && { color: 'common.white' }),
         ...(isOffset && { color: 'text.primary' }),

@@ -186,8 +186,8 @@ function MenuMobileItem({ item, isOpen, onOpen, id, handleDrawerClose }) {
       onClick={onOpen}
       to={path}
       component={RouterLink}
-      end={path === '/'}
-      className={pathname == path ? 'active' : ''}
+      end={(path === '/').toString()}
+      className={pathname === path ? 'active' : ''}
       sx={{
         '&.active': {
           color: 'primary.main',

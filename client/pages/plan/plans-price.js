@@ -2,15 +2,13 @@
  Copyright ©. All Rights Reserved. Confidential and proprietary.
  XYZ. Contact address: XYZ@xyz.pa .
  */
-import Link from 'next/link';
 import {
+  ListItemIcon,
+  ListItemText,
   Button,
-  Card,
   Container,
   Grid,
   Box,
-  ListItemIcon,
-  ListItemText,
   styled,
   Typography,
   Tabs,
@@ -25,34 +23,12 @@ import Page from '../../components/Page';
 import Paper from '@mui/material/Paper';
 import GlobalStyles from '@mui/material/GlobalStyles';
 // ----------------------------------------------------------------------
-
 import Iconify from '../../components/Iconify';
-
 import { useState, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth';
 import PlansComparison from '../../components/plan/PlansComparison';
-import { getAllProducts, getCheckoutSession} from '../../api/payments';
-import { useRouter } from 'next/router';
-
-const Sidebar = styled('header')(({ theme }) => ({
-  width: '240px',
-  height: '100%',
-  padding: theme.spacing(1),
-  paddingTop: theme.spacing(2),
-  paddingLeft: theme.spacing(4),
-  [theme.breakpoints.down('md')]: {
-    display: 'none',
-  },
-}));
-const CustomButton = styled(Button)(({ theme }) => ({
-  color: theme.palette.primary.main,
-  backgroundColor: '#FCEEEA',
-  borderRadius: '50px',
-  '&:hover': {
-    // backgroundColor: '#fff',
-    color: '#fff',
-  },
-}));
+import { getAllProducts, getCheckoutSession } from '../../api/payments';
+import {useRouter} from "next/router";
 
 const Content = styled('div')(({ theme }) => ({
   width: '100%',
@@ -81,33 +57,6 @@ const PremiumCardRecurring = styled(Paper)(({ theme }) => ({
   boxShadow: '0px 42px 34px rgba(34, 80, 130, 0.17)',
 }));
 
-const InfoCard = styled(Card)(({ theme }) => ({
-  height: 114,
-  width: 259,
-  maxWidth: '100%',
-  paddingTop: 16,
-  position: 'relative',
-  margin: 'auto',
-  [theme.breakpoints.down('md')]: {
-    marginBottom: theme.spacing(4),
-  },
-  [theme.breakpoints.down('sm')]: {
-    width: '100%',
-  },
-}));
-
-const InfoContainer = styled(Grid)(({ theme }) => ({
-  display: 'flex',
-  paddingLeft: theme.spacing(8),
-  paddingRight: theme.spacing(8),
-  justifyContent: 'space-between',
-  [theme.breakpoints.down('md')]: {
-    justifyContent: 'center',
-    paddingLeft: theme.spacing(4),
-    paddingRight: theme.spacing(4),
-  },
-}));
-
 const DataSection = styled('div')(({ theme }) => ({
   marginTop: theme.spacing(4),
   height: 'auto',
@@ -117,16 +66,6 @@ const DataSection = styled('div')(({ theme }) => ({
   borderRadius: '26px',
   [theme.breakpoints.down('md')]: {
     padding: '0 20px',
-  },
-}));
-
-const DataHead = styled('div')(({ theme }) => ({
-  display: 'flex',
-  width: '100%',
-  padding: theme.spacing(3),
-  justifyContent: 'space-between',
-  [theme.breakpoints.down('md')]: {
-    padding: theme.spacing(2),
   },
 }));
 
@@ -148,7 +87,7 @@ const PlanDiv = styled('div')(({ theme }) => ({
   padding: theme.spacing(1, 3, 0, 3),
 }));
 
-const IconContainer = styled('div')(({ theme }) => ({
+const IconContainer = styled('div')(() => ({
   display: 'flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -158,27 +97,19 @@ const IconContainer = styled('div')(({ theme }) => ({
   backgroundColor: '#EDECF9',
 }));
 
-const IconContainerPlatinum = styled('div')(({ theme }) => ({
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  width: '20px',
-  height: '20px',
-  borderRadius: '20px',
-  backgroundColor: '#38618E',
-}));
-
 function PlanPricePage() {
+  const router = useRouter();
   const { themeStretch } = useSettings();
   const [current, setCurrent] = useState('month');
   const [planData, setPlanData] = useState([]);
   const [subscription, setSubscription] = useState([]);
   const [currency, setcurrency] = useState('inr');
-  const { user, setLoading, locale } = useAuth();
-  const router = useRouter();
+  const { user, locale, setLoading } = useAuth();
+  const [price, setPrice] = useState({});
+  const [plan, setPlan] = useState({});
 
-  const handleTabChange = (event, newValue) => {
-    console.log(newValue);
+  const handleTabChange = (event, newValue) =>
+  {
     if (newValue === 0) {
       setCurrent('month');
     } else {
@@ -186,66 +117,68 @@ function PlanPricePage() {
     }
   };
 
-  useEffect(() => {
-    setLoading(true);
-
-    let ctry=user?.phoneNumber?user?.phoneNumber?.includes("+91")?"IN":"US":currency==="inr"?"IN":"US"
-    getAllProducts(ctry)
-      .then((data) => {
-        setPlanData(data);
-      
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-      });
-  }, [currency]);
-
-  useEffect(() => {
-    setSubscription(user.subscription);
-    console.log('setSubscription', user.subscription);
-  }, [user?.subscription]);
-
-  useEffect(() => {
-    if(user.phoneNumber){
-      setcurrency(user?.phoneNumber?.includes("+91")?"inr":"usd");
-    }
-    else
-    setcurrency(locale?.currency?.toLowerCase());
-  }, [locale?.currency,user]);
-
-  const getPlanDetails = (name) => {
-    return planData.find((i) => i.name === name);
-  };
-
-  const getPrice = (name) => {
-    return planData
-      .find((i) => i.name === name)
-      ?.prices.find((i) => i.currency === (currency || 'usd') && i.interval === current);
-  };
-
-  const getFeatures = (name) => {
-    let data = planData.find((i) => i.name === name);
-    if (!data) return [];
-    else return Object.values(data.metadata);
-  };
-
-  const startCheckoutSession = (id) => {
-    if (!user.id) {
+  const startCheckoutSession = (id) =>
+  {
+    if (!user.id)
+    {
       return router.push('/auth/Login?return=' + window.location.href);
     }
 
     setLoading(true);
-    getCheckoutSession(id,currency==="inr"?true:false)
+    getCheckoutSession(id, currency==="inr" )
       .then((session) => {
-        setLoading(false);
+        console.log(session, 'SESSION')
       })
       .catch((error) => {
+        console.log(error)
+      })
+      .finally(() => {
         setLoading(false);
       });
   };
 
-  console.log(subscription)
+  useEffect(() =>
+  {
+    setSubscription(user.subscription);
+  }, [user?.subscription]);
+
+  useEffect(() =>
+  {
+    let country = 'IN'
+    let crc = 'inr'
+    if(!!user?.phoneNumber) {
+      if (!user.phoneNumber.includes('+91')) {
+        country = 'US'
+        crc = 'usd'
+      }
+    } else {
+      if( locale?.currency?.toLowerCase() === 'usd') {
+        country = 'US'
+        crc = 'usd'
+      }
+    }
+
+    setcurrency(crc)
+    getAllProducts(country)
+      .then((data) => {
+        setPlanData(data);
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }, [user, locale])
+
+  useEffect(() =>
+  {
+    if (planData.length > 0) {
+      const pl = planData.find((i) => i.name.includes('Premium')) || null
+      console.log(pl, 'PL')
+      if (!!pl) {
+        setPlan(pl)
+        setPrice(pl.prices.find((i) => i.interval === current && i.currency === currency))
+      }
+    }
+  }, [planData, current])
 
   return (
     <Page title="Plan and pricing">
@@ -333,7 +266,7 @@ function PlanPricePage() {
                   </Box>
                 </PlanDiv>
               </Grid>
-             
+
               <Grid
                 item
                 xs={12}
@@ -345,20 +278,30 @@ function PlanPricePage() {
               >
                 <PremiumCardRecurring elevation={3} style={{ position: 'absolute', top: 0, zIndex: 3400 }}>
                   <Box>
-                    <Typography variant="h3" color="common.white" sx={{ display: 'flex' }}>
-                    {getPrice('Premium')?.currency==="usd"?"$":"₹"} {getPrice('Premium') ? getPrice('Premium').unit_amount / 100 : '600'}&nbsp;
-                      <Typography variant="subtitle2" color="common.white" sx={{ mt: 2 }}>
+                    <Typography
+                      variant="h3"
+                      color="common.white"
+                      sx={{ display: 'flex' }}
+                    >
+                      { currency === "usd" ? "$" : "₹" } {price?.unit_amount / 100 || '0.00'}&nbsp;
+                      <span
+                        style={{
+                          fontSize: '0.875rem',
+                          display: 'inline-flex',
+                          alignItems: 'center'
+                        }}
+                      >
                         /User/{current}
-                      </Typography>
+                      </span>
                     </Typography>
                     <Typography variant="h4" color="common.white">
-                      Premium
+                      {plan.name || 'Premium'}
                     </Typography>
                     <Typography variant="subtitle2" color="common.white" sx={{ mt: 1 }}>
-                      {getPlanDetails('Premium') ? getPlanDetails('Premium').description : 'For Small Teams (1-100)'}
+                      {plan.description || 'For Small Teams (1-100)'}
                     </Typography>
                     <br />
-                    {getFeatures('Premium').map((i, index) => {
+                    {Object.values(price?.metadata || {}).map((i, index) => {
                       return (
                         <Box display={'flex'} sx={{ mb: 1 }} key={`features-${index}`}>
                           <ListItemIcon>
@@ -376,11 +319,11 @@ function PlanPricePage() {
                     })}
                   </Box>
                   <Button
-                    onClick={() => startCheckoutSession(getPrice('Premium').id)}
-                    disabled={subscription?.find((i) => i.product?.name === 'Premium') ? true : false}
+                    onClick={() => startCheckoutSession(price.id)}
+                    disabled={subscription?.find((i) => i.product?.name === 'Premium')}
                     variant="contained"
                     size="large"
-                    sx={{ mt: 8, borderRadius: '50px', mb: 4 }}
+                    sx={{ mt: 4, borderRadius: '50px', mb: 4 }}
                   >
                     {subscription?.find((i) => i.product?.name === 'Premium') ? 'Current Plan' : 'Choose plan'}
                   </Button>
@@ -406,11 +349,11 @@ function PlanPricePage() {
                       <Iconify icon={'mdi:crown-circle'} width="30px" height="30px" color="#FFAF52" />
                     </Box>
                   </Box>
-                  <Typography variant="h4" color="initial" gutterBottom>
+                  <Typography variant="h4" color="initial">
                     Platinum
-                    <Typography variant="subtitle2" color="initial">
-                      (For Large Teams)
-                    </Typography>
+                  </Typography>
+                  <Typography variant="subtitle2" color="initial" gutterBottom>
+                    (For Large Teams)
                   </Typography>
                   <br />
                   <Box display={'flex'} sx={{ mb: 1 }}>
@@ -494,11 +437,11 @@ function PlanPricePage() {
                       <Iconify icon={'ri:group-2-fill'} width="30px" height="30px" color="#925FFF" />
                     </Box>
                   </Box>
-                  <Typography variant="h4" color="initial" gutterBottom>
+                  <Typography variant="h4" color="initial">
                     Corporate Plan
-                    <Typography variant="subtitle2" color="initial">
-                      (On minimum 10 Licenses)
-                    </Typography>
+                  </Typography>
+                  <Typography variant="subtitle2" color="initial" gutterBottom>
+                    (On minimum 10 Licenses)
                   </Typography>
                   <br />
                   <Box display={'flex'} sx={{ mb: 1 }}>
@@ -586,11 +529,11 @@ function PlanPricePage() {
                       <Iconify icon={'mdi:check-decagram'} width="30px" height="30px" color="#FB5F38" />
                     </Box>
                   </Box>
-                  <Typography variant="h4" color="initial" gutterBottom>
+                  <Typography variant="h4" color="initial">
                     Webinar Plan
-                    <Typography variant="subtitle2" color="initial">
-                      (Add On)
-                    </Typography>
+                  </Typography>
+                  <Typography variant="subtitle2" color="initial" gutterBottom>
+                    (Add On)
                   </Typography>
                   <br />
                   <Box display={'flex'} sx={{ mb: 1 }}>
@@ -644,7 +587,6 @@ function PlanPricePage() {
                   <br />
                 </PlanDiv>
               </Grid>
-
               <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
                 <Grid item xs={1}></Grid>
               </Box>
