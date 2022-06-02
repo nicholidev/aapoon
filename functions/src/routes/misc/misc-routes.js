@@ -15,11 +15,7 @@ const {
 const isAuthenticated = require("./../../auth/authenticated");
 
 const routesConfig = (app) => {
-  app.get(
-    "/misc/checkPhone/:phone/:email",
-
-    checkPhoneExistance
-  );
+  app.get("/misc/checkPhone/:phone/:email", checkPhoneExistance);
   app.post("/misc/send-otp", sendOTP);
   app.post("/misc/verify-otp", verifyOTP);
   app.post("/misc/send-invite", isAuthenticated, sendEmailInvite);

@@ -44,14 +44,13 @@ const reducer = (state, action) => {
       loading: action.payload,
     };
   }
-
   if (action.type === 'UPDATE') {
     return {
       ...state,
       ...action.payload,
     };
   }
-  if (action.type == 'UPDATE_LOCALE') {
+  if (action.type === 'UPDATE_LOCALE') {
     return {
       ...state,
       locale: action.payload.locale,
@@ -63,7 +62,6 @@ const reducer = (state, action) => {
       user: { ...state.user, ...action.payload },
     };
   }
-
   return state;
 };
 
@@ -101,7 +99,7 @@ function AuthProvider({ children }) {
           .then((doc) => {
             if (doc.exists) {
               setProfile(doc.data());
-              if (doc.data().accountType == 'Business' && !doc.data().businessDetails && user.phoneNumber) {
+              if (doc.data().accountType === 'Business' && !doc.data().businessDetails && user.phoneNumber) {
                 dispatch({
                   type: 'UPDATE',
                   payload: { user: { uid: user.uid } },
@@ -130,6 +128,7 @@ function AuthProvider({ children }) {
             dispatch({ type: 'TOGGLE_LOADING', payload: false });
           })
           .catch((error) => {
+            console.log(error, 'ERROR')
             dispatch({ type: 'TOGGLE_LOADING', payload: false });
           });
 
@@ -161,9 +160,8 @@ function AuthProvider({ children }) {
 
   useEffect(() => {
     dispatch({ type: 'TOGGLE_LOADING', payload: true });
-    let unsub;
     if (state.user?.uid) {
-      unsub = firebase
+      firebase
         .firestore()
         .collection('customers')
         .doc(state.user.uid)
@@ -195,7 +193,6 @@ function AuthProvider({ children }) {
           dispatch({ type: 'TOGGLE_LOADING', payload: false });
           dispatch({
             type: 'UPDATE_SUB',
-            //payload: {},
             payload: {
               activeLicenses: { count: snapshot.data()?.count || 0, assigned: snapshot.data()?.assigned || 0 },
             },
@@ -275,7 +272,8 @@ function AuthProvider({ children }) {
 
   const deleteAccount = () => {
     dispatch({ type: 'TOGGLE_LOADING', payload: true });
-    firebase.auth().currentUser.delete().then(res=>{
+    firebase.auth().currentUser.delete().then((res) => {
+      console.log(res, 'DELETE ACCOUNT')
       dispatch({
         type: 'UPDATE',
         payload: {
@@ -306,10 +304,11 @@ function AuthProvider({ children }) {
   };
 
   const registerBusiness = (data) => {
+    console.log(data, 'REGISTER BUSINESS');
     return new Promise((resolve, reject) => {
       if (data.logo) {
-        var storageRef = firebase.storage().ref();
-        var busRef = storageRef.child(`account/${state.user.uid}/business/logo/${data.logo.name}`);
+        const storageRef = firebase.storage().ref();
+        const busRef = storageRef.child(`account/${state.user.uid}/business/logo/${data.logo.name}`);
 
         busRef
           .put(data.logo)
@@ -323,6 +322,7 @@ function AuthProvider({ children }) {
                 businessDetails: { ...data, logo: downloadURL },
               })
               .then((response) => {
+                console.log(response, 'REGISTER BUSINESS')
                 dispatch({
                   type: 'UPDATE',
                   payload: { user: { ...state.user, businessDetails: { ...data, logo: downloadURL } } },
@@ -341,6 +341,7 @@ function AuthProvider({ children }) {
             businessDetails: { ...data ,logo:state.user?.businessDetails?.logo||"" },
           })
           .then((response) => {
+            console.log(response, 'REGISTER BUSINESS');
             resolve('success');
 
             dispatch({
@@ -356,8 +357,8 @@ function AuthProvider({ children }) {
   const updateProfile = (data) => {
     return new Promise((resolve, reject) => {
       if (data.profilePic) {
-        var storageRef = firebase.storage().ref();
-        var busRef = storageRef.child(`account/${state.user.uid}/user/profilePic/${data.profilePic.name}`);
+        const storageRef = firebase.storage().ref();
+        const busRef = storageRef.child(`account/${state.user.uid}/user/profilePic/${data.profilePic.name}`);
         busRef
           .put(data.profilePic)
           .then(async (snapshot) => {
@@ -371,6 +372,7 @@ function AuthProvider({ children }) {
                 displayName: data.firstName + ' ' + data.lastName,
               })
               .then((response) => {
+                console.log(response, 'UPDATE PROFILE')
                 resolve('success');
               });
 
@@ -395,6 +397,7 @@ function AuthProvider({ children }) {
             displayName: data.firstName + ' ' + data.lastName,
           })
           .then((response) => {
+            console.log(response, 'UPDATE PROFILE')
             resolve('success');
             firebase.auth().currentUser.updateProfile({
               displayName: data.firstName + ' ' + data.lastName,
@@ -411,7 +414,7 @@ function AuthProvider({ children }) {
   };
 
   const register = (email, password, firstName, lastName, phoneNumber, allValues) => {
-    console.log(allValues.countryCode+phoneNumber)
+    console.log(allValues, 'REGISTER')
     return new Promise((resolve, reject) => {
       phoneExists(phoneNumber, email)
         .then((res) => {
@@ -419,7 +422,7 @@ function AuthProvider({ children }) {
         })
         .catch(async (err) => {
           if (err.response && err.response.data.code) {
-            var appVerifier = state.appVerifier
+            const appVerifier = state.appVerifier
               ? state.appVerifier
               : await new firebase.auth.RecaptchaVerifier('captcha-container', {
                   size: 'invisible',
@@ -453,7 +456,6 @@ function AuthProvider({ children }) {
   };
 
   const logout = async () => {
-   
     await firebase.auth().signOut();
     dispatch({
       type: 'UPDATE',
@@ -474,32 +476,34 @@ function AuthProvider({ children }) {
 
   const sendMobileVerificationCode = async () => {
     try {
-      var appVerifier = state.appVerifier
+      const appVerifier = state.appVerifier
         ? state.appVerifier
         : await new firebase.auth.RecaptchaVerifier('captcha-container', {
             size: 'invisible',
           });
 
       let confirmation = await firebase.auth().signInWithPhoneNumber(state.user.phoneNumber, state.appVerifier);
+
       dispatch({
         type: 'UPDATE',
         payload: { confirmation: confirmation, appVerifier },
       });
     } catch (error) {}
   };
+
   const verifyMobileLinkCode = (code) => {
     return new Promise((resolve, reject) => {
       dispatch({ type: 'TOGGLE_LOADING', payload: true });
       state.confirmation
         .confirm(code)
         .then((item) => {
-          var credential = firebase.auth.EmailAuthProvider.credential(state.user.email, state.user.password);
+          const credential = firebase.auth.EmailAuthProvider.credential(state.user.email, state.user.password);
           item.user
             .linkWithCredential(credential)
             .then((usercred) => {
               if (localStorage.getItem('inviteToken'))
                 acceptInvitation({ email: state.user.email, token: localStorage.getItem('inviteToken') });
-              var user = usercred.user;
+              const user = usercred.user;
 
               user.updateProfile({ displayName: state.user.firstName + ' ' + state.user.lastName });
 
@@ -520,6 +524,7 @@ function AuthProvider({ children }) {
                   },
                 })
                 .then((result) => {
+                  console.log(result, 'VERIFY MOBILE CODE');
                   dispatch({ type: 'TOGGLE_LOADING', payload: false });
                   resolve(user);
                 })
@@ -563,8 +568,6 @@ function AuthProvider({ children }) {
   const setLoading = (payload) => {
     dispatch({ type: 'TOGGLE_LOADING', payload: payload });
   };
-
-  const auth = { ...state.user };
 
   return (
     <AuthContext.Provider
