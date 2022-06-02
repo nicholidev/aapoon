@@ -9,7 +9,6 @@ import NumberFormat from 'react-number-format';
 
 const NumberFormatCustom = React.forwardRef(function NumberFormatCustom(props, ref) {
   const { onChange, ...other } = props;
-  console.log(props);
 
   return (
     <NumberFormat

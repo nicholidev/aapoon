@@ -2,22 +2,14 @@
  Copyright ©. All Rights Reserved. Confidential and proprietary.
  XYZ. Contact address: XYZ@xyz.pa .
  */
-import Link from 'next/link';
 import {
   Button,
   Card,
   Container,
   Grid,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   styled,
   Box,
   Typography,
-  Divider,
-  TextField,
 } from '@mui/material';
 // layouts
 import DashboardLayout from '../../layouts/dashboard';
@@ -32,23 +24,12 @@ import GlobalStyles from '@mui/material/GlobalStyles';
 // ----------------------------------------------------------------------
 import withAuth from '../../HOC/withAuth';
 import Iconify from '../../components/Iconify';
-import PersonIcon from '@mui/icons-material/Person';
 import { useRouter } from 'next/router';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import StarIcon from '@mui/icons-material/Star';
-
-import StopCircleIcon from '@mui/icons-material/StopCircle';
-import AppNewInvoice from '../../sections/@dashboard/general/app/AppNewInvoice';
 import InviteData from '../../components/invite/Invite2';
 import LicenceData from '../../components/licence';
 import InviteModal from '../../components/invite/InviteModal';
 import { useState } from 'react';
 import useAuth from '../../hooks/useAuth';
-import BottomNavigation from '../../components/BottomNavigation';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import StaticDatePicker from '@mui/lab/StaticDatePicker';
-import RenewPlanPrompt from '../../components/plan/RenewPlanPrompt';
 import DashboardSidebar from '../../components/dashboard/DashboardSidebar';
 import DashboardInfoHeader from '../../components/dashboard/DashboardInfoHeader';
 import CreateMeetingButton from "../../components/dashboard/CreateMeetingButton"
@@ -158,86 +139,89 @@ function PageOne() {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [fetch, setFetch] = useState(false);
   const [stats, setStats] = useState({});
-  const [current, setCurrent] = useState('dashboard');
   const { user } = useAuth();
   const { push } = useRouter();
-  const [dateValue, setDateValue] = useState(new Date());
   useEffect(() => {
-    if (user.id)
-      getStats(startOfWeek(new Date()), endOfWeek(new Date()), new Date(), user.id).then((data) => setStats(data));
+    if (user.id) {
+      getStats(
+        startOfWeek(new Date()),
+        endOfWeek(new Date()),
+        new Date(),
+        user.id
+      ).then((data) => setStats(data));
+    }
   }, [user.id]);
+
   return (
-    <>
-      <Page title="Dashboard" sx={{pb:2}}>
-        <GlobalStyles
-          styles={{
-            body: { backgroundColor: '#F1F1F1' },
-          }}
-        />
-        <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex' }}>
-          <DashboardSidebar currentPage="dashboard" />
-          <Content>
-           <center><CreateMeetingButton/></center> 
-            <DashboardInfoHeader />
-            {user?.activeLicenses?.count > 1 ? (
-              <DataSection>
-                <DataHead>
+    <Page title="Dashboard" sx={{pb:2}}>
+      <GlobalStyles
+        styles={{
+          body: { backgroundColor: '#F1F1F1' },
+        }}
+      />
+      <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex' }}>
+        <DashboardSidebar currentPage="dashboard" />
+        <Content>
+          <center>
+            <CreateMeetingButton/>
+          </center>
+          <DashboardInfoHeader />
+          {user?.activeLicenses?.count > 1 ? (
+            <DataSection>
+              <DataHead>
                 <Typography variant="h5" style={{ display: 'inline' }}>License assigned</Typography>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => push('/dashboard/assign-license')}
-                    startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
-                  >
-                    {' '}
-                    Assign license
-                  </Button>
-                </DataHead>
-                <Box sx={{ p: {xs:2,md:4},pb:{xs:6,md:1}, pt: 0 ,maxWidth:"90vw"}}>
-                  <LicenceData fetch={fetch} />
-                </Box>
-                <InviteModal
-                  open={inviteOpen}
-                  handleClose={() => {
-                    setInviteOpen(false);
-                    setFetch(!fetch);
-                  }}
-                />
-                {/* <AppNewInvoice/> */}
-              </DataSection>
-            ) : (
-              <DataSection>
-                <DataHead>
-                  <Typography variant="h5" style={{ display: 'inline' }}>
-                    Recent Invites
-                  </Typography>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    onClick={() => setInviteOpen(true)}
-                    startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
-                  >
-                    {' '}
-                    Invite User
-                  </Button>
-                </DataHead>
-                <Box sx={{ p: {xs:2,md:4},pb:{xs:6,md:1}, pt: 0 ,maxWidth:"90vw"}}>
-                  <InviteData fetch={fetch} />
-                </Box>
-                <InviteModal
-                  open={inviteOpen}
-                  handleClose={() => {
-                    setInviteOpen(false);
-                    setFetch(!fetch);
-                  }}
-                />
-                {/* <AppNewInvoice/> */}
-              </DataSection>
-            )}
-          </Content>
-        </Container>
-      </Page>
-    </>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => push('/dashboard/assign-license')}
+                  startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
+                >
+                  {' '}
+                  Assign license
+                </Button>
+              </DataHead>
+              <Box sx={{ p: {xs:2,md:4},pb:{xs:6,md:1}, pt: 0 ,maxWidth:"90vw"}}>
+                <LicenceData fetch={fetch} />
+              </Box>
+              <InviteModal
+                open={inviteOpen}
+                handleClose={() => {
+                  setInviteOpen(false);
+                  setFetch(!fetch);
+                }}
+              />
+            </DataSection>
+          ) : (
+            <DataSection>
+              <DataHead>
+                <Typography variant="h5" style={{ display: 'inline' }}>
+                  Recent Invites
+                </Typography>
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => setInviteOpen(true)}
+                  startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
+                >
+                  {' '}
+                  Invite User
+                </Button>
+              </DataHead>
+              <Box sx={{ p: {xs:2,md:4},pb:{xs:6,md:1}, pt: 0 ,maxWidth:"90vw"}}>
+                <InviteData fetch={fetch} />
+              </Box>
+              <InviteModal
+                open={inviteOpen}
+                handleClose={() => {
+                  setInviteOpen(false);
+                  setFetch(!fetch);
+                }}
+              />
+            </DataSection>
+          )}
+        </Content>
+      </Container>
+    </Page>
   );
 }
 

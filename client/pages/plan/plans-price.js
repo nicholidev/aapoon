@@ -9,16 +9,10 @@ import {
   Container,
   Grid,
   Box,
-  List,
-  ListItem,
-  ListItemButton,
   ListItemIcon,
   ListItemText,
   styled,
   Typography,
-  Select,
-  MenuItem,
-  AppBar,
   Tabs,
   Tab,
 } from '@mui/material';
@@ -37,7 +31,7 @@ import Iconify from '../../components/Iconify';
 import { useState, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth';
 import PlansComparison from '../../components/plan/PlansComparison';
-import { getAllProducts, getCheckoutSession, openCustomerPortal } from '../../api/payments';
+import { getAllProducts, getCheckoutSession} from '../../api/payments';
 import { useRouter } from 'next/router';
 
 const Sidebar = styled('header')(({ theme }) => ({
@@ -176,8 +170,6 @@ const IconContainerPlatinum = styled('div')(({ theme }) => ({
 
 function PlanPricePage() {
   const { themeStretch } = useSettings();
-  const [inviteOpen, setInviteOpen] = useState(false);
-  const [fetch, setFetch] = useState(false);
   const [current, setCurrent] = useState('month');
   const [planData, setPlanData] = useState([]);
   const [subscription, setSubscription] = useState([]);
@@ -187,7 +179,7 @@ function PlanPricePage() {
 
   const handleTabChange = (event, newValue) => {
     console.log(newValue);
-    if (newValue == 0) {
+    if (newValue === 0) {
       setCurrent('month');
     } else {
       setCurrent('year');
@@ -197,7 +189,7 @@ function PlanPricePage() {
   useEffect(() => {
     setLoading(true);
 
-    let ctry=user?.phoneNumber?user?.phoneNumber?.includes("+91")?"IN":"US":currency=="inr"?"IN":"US"
+    let ctry=user?.phoneNumber?user?.phoneNumber?.includes("+91")?"IN":"US":currency==="inr"?"IN":"US"
     getAllProducts(ctry)
       .then((data) => {
         setPlanData(data);
@@ -208,6 +200,7 @@ function PlanPricePage() {
         setLoading(false);
       });
   }, [currency]);
+
   useEffect(() => {
     setSubscription(user.subscription);
     console.log('setSubscription', user.subscription);
@@ -222,27 +215,28 @@ function PlanPricePage() {
   }, [locale?.currency,user]);
 
   const getPlanDetails = (name) => {
-    return planData.find((i) => i.name == name);
+    return planData.find((i) => i.name === name);
   };
 
   const getPrice = (name) => {
     return planData
-      .find((i) => i.name == name)
-      ?.prices.find((i) => i.currency == (currency || 'usd') && i.interval == current);
+      .find((i) => i.name === name)
+      ?.prices.find((i) => i.currency === (currency || 'usd') && i.interval === current);
   };
 
   const getFeatures = (name) => {
-    let data = planData.find((i) => i.name == name);
+    let data = planData.find((i) => i.name === name);
     if (!data) return [];
     else return Object.values(data.metadata);
   };
+
   const startCheckoutSession = (id) => {
     if (!user.id) {
       return router.push('/auth/Login?return=' + window.location.href);
     }
 
     setLoading(true);
-    getCheckoutSession(id,currency=="inr"?true:false)
+    getCheckoutSession(id,currency==="inr"?true:false)
       .then((session) => {
         setLoading(false);
       })
@@ -250,7 +244,9 @@ function PlanPricePage() {
         setLoading(false);
       });
   };
-  console.log(locale);
+
+  console.log(subscription)
+
   return (
     <Page title="Plan and pricing">
       <GlobalStyles
@@ -264,28 +260,8 @@ function PlanPricePage() {
             aapoon meet Plans & Pricing
           </Typography>
           <br />
-
-          {/* <Box display="flex" justifyContent={'flex-end'}>
-            <Select
-              value={currency}
-              size="small"
-              sx={{ backgroundColor: 'common.white' }}
-              onChange={(e) => setcurrency(e.target.value)}
-            >
-              <MenuItem value={'inr'}>
-                <Typography variant="subtitle1" color="initial">
-                  ₹ India
-                </Typography>
-              </MenuItem>
-              <MenuItem value={'usd'}>
-                <Typography variant="subtitle1" color="initial">
-                  $ USA
-                </Typography>
-              </MenuItem>
-            </Select>
-          </Box> */}
           <TabContainer>
-            <Tabs variant="standard" value={current == 'month' ? 0 : 1} onChange={handleTabChange} aria-label="">
+            <Tabs variant="standard" value={current === 'month' ? 0 : 1} onChange={handleTabChange} aria-label="">
               <Tab
                 label="MONTHLY"
                 style={{
@@ -304,35 +280,6 @@ function PlanPricePage() {
           <br />
           <br />
           <br />
-          {/* <InfoContainer container spacing={4}>
-            <Grid xs={12} sm={6} md={4}>
-              <InfoCard>
-                <InfoHeading>appoon meet Pricing Plans </InfoHeading>
-                <InfoNumbers>
-                  <h3>34</h3>
-                </InfoNumbers>
-                <PersonIcon style={infoIconStyle} />
-              </InfoCard>
-            </Grid>
-            <Grid xs={12} sm={6} md={4}>
-               <InfoCard>
-                 <InfoHeading>Upcoming Meetings this week</InfoHeading>
-                 <InfoNumbers>
-                   <h3>12</h3>
-                 </InfoNumbers>
-                 <CheckCircleIcon style={infoIconStyle} />
-               </InfoCard>
-             </Grid>
-             <Grid xs={12} sm={6} md={4}>
-               <InfoCard>
-                 <InfoHeading>Meetings attended this week</InfoHeading>
-                 <InfoNumbers>
-                   <h3>10</h3>
-                 </InfoNumbers>
-                 <StarIcon style={infoIconStyle} />
-               </InfoCard>
-             </Grid>
-          </InfoContainer> */}
           <DataSection style={{ overflow: 'visible' }}>
             <Grid container spacing={1} justifyContent={'space-around'} style={{ width: '100%' }}>
               <Grid item xs={12} sm={6} md={5} lg={3}>
@@ -342,9 +289,6 @@ function PlanPricePage() {
                       Free
                     </Typography>
                     <br />
-                    {/* <Typography variant="h4" color="initial">
-                      Basic
-                    </Typography> */}
                     <Typography variant="subtitle2" color="GrayText" sx={{ mt: 1 }}>
                       For Personal
                     </Typography>
@@ -387,9 +331,6 @@ function PlanPricePage() {
                       </ListItemText>
                     </Box>
                   </Box>
-                  {/* <CustomButton variant="contained" size="large" sx={{ mt: 8, mb: 4 }}>
-                    Choose plan
-                  </CustomButton> */}
                 </PlanDiv>
               </Grid>
              
@@ -402,35 +343,10 @@ function PlanPricePage() {
                 style={{ minHeight: '480px', position: 'relative', zIndex: 23 }}
                 sx={{ marginTop: { xs: 10, lg: 0 } }}
               >
-                {/* <div
-                  style={{
-                    position: 'relative',
-                    display: 'flex',
-                    justifyContent: 'center',
-                    width: '100%',
-                  }}
-                >
-                  <Box
-                    sx={{
-                      position: 'absolute',
-                      top: -43,
-                      right: 30,
-                      display: 'flex',
-                      backgroundColor: '#fff',
-                      padding: '5px 20px',
-                      borderRadius: '25px',
-                      boxShadow: '0px 0px 3px rgba(0, 0, 0, 0.25)',
-                    }}
-                  >
-                    <Typography variant="subtitle2" color="primary">
-                      Recurring
-                    </Typography>
-                  </Box>
-                </div> */}
                 <PremiumCardRecurring elevation={3} style={{ position: 'absolute', top: 0, zIndex: 3400 }}>
                   <Box>
                     <Typography variant="h3" color="common.white" sx={{ display: 'flex' }}>
-                    {getPrice('Premium')?.currency=="usd"?"$":"₹"} {getPrice('Premium') ? getPrice('Premium').unit_amount / 100 : '600'}&nbsp;
+                    {getPrice('Premium')?.currency==="usd"?"$":"₹"} {getPrice('Premium') ? getPrice('Premium').unit_amount / 100 : '600'}&nbsp;
                       <Typography variant="subtitle2" color="common.white" sx={{ mt: 2 }}>
                         /User/{current}
                       </Typography>
@@ -441,11 +357,10 @@ function PlanPricePage() {
                     <Typography variant="subtitle2" color="common.white" sx={{ mt: 1 }}>
                       {getPlanDetails('Premium') ? getPlanDetails('Premium').description : 'For Small Teams (1-100)'}
                     </Typography>
-
                     <br />
-                    {getFeatures('Premium').map((i) => {
+                    {getFeatures('Premium').map((i, index) => {
                       return (
-                        <Box display={'flex'} sx={{ mb: 1 }}>
+                        <Box display={'flex'} sx={{ mb: 1 }} key={`features-${index}`}>
                           <ListItemIcon>
                             <IconContainer style={{ backgroundColor: '#38618E' }}>
                               <Iconify icon={'bi:check-lg'} color="common.white" />
@@ -462,12 +377,12 @@ function PlanPricePage() {
                   </Box>
                   <Button
                     onClick={() => startCheckoutSession(getPrice('Premium').id)}
-                    disabled={subscription?.find((i) => i.product?.name == 'Premium') ? true : false}
+                    disabled={subscription?.find((i) => i.product?.name === 'Premium') ? true : false}
                     variant="contained"
                     size="large"
                     sx={{ mt: 8, borderRadius: '50px', mb: 4 }}
                   >
-                    {subscription?.find((i) => i.product?.name == 'Premium') ? 'Current Plan' : 'Choose plan'}
+                    {subscription?.find((i) => i.product?.name === 'Premium') ? 'Current Plan' : 'Choose plan'}
                   </Button>
                 </PremiumCardRecurring>
               </Grid>
@@ -497,12 +412,6 @@ function PlanPricePage() {
                       (For Large Teams)
                     </Typography>
                   </Typography>
-                  {/* <Typography variant="h4" color="initial">
-                    At ₹1150&nbsp;
-                    <Typography component={'span'} variant="subtitle2" color="GrayText">
-                      /User/month
-                    </Typography>
-                  </Typography> */}
                   <br />
                   <Box display={'flex'} sx={{ mb: 1 }}>
                     <ListItemIcon>
@@ -591,9 +500,6 @@ function PlanPricePage() {
                       (On minimum 10 Licenses)
                     </Typography>
                   </Typography>
-                  {/* <Typography variant="h4" color="initial">
-                    At ₹50,000 /year
-                  </Typography> */}
                   <br />
                   <Box display={'flex'} sx={{ mb: 1 }}>
                     <ListItemIcon>
@@ -686,9 +592,6 @@ function PlanPricePage() {
                       (Add On)
                     </Typography>
                   </Typography>
-                  {/* <Typography variant="h4" color="initial">
-                    At ₹5203 /month
-                  </Typography> */}
                   <br />
                   <Box display={'flex'} sx={{ mb: 1 }}>
                     <ListItemIcon>
@@ -739,8 +642,6 @@ function PlanPricePage() {
                     </ListItemText>
                   </Box>
                   <br />
-
-                 
                 </PlanDiv>
               </Grid>
 
@@ -748,36 +649,6 @@ function PlanPricePage() {
                 <Grid item xs={1}></Grid>
               </Box>
             </Grid>
-
-            {/* <Grid container spacing={1} justifyContent={'space-around'} sx={{ display: { xs: 'none', sm: 'flex' } }}>
-              <Grid item xs={12} sm={6} md={5} lg={4} xl={4}>
-                <PlanDiv>
-                  <Box sx={{ margin: { xs: 0, xl: '0 100px 0 0' } }}>
-                    <CustomButton fullWidth variant="contained" size="large">
-                      Choose plan
-                    </CustomButton>
-                  </Box>
-                </PlanDiv>
-              </Grid>
-              <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
-                <Grid item xs={1}></Grid>
-              </Box>
-              <Grid item xs={12} sm={6} md={5} lg={4} xl={4}>
-                <PlanDiv>
-                  <Box sx={{ margin: { xs: 0, xl: '0 100px 0 0' } }}>
-                    <CustomButton fullWidth variant="contained" size="large">
-                      Choose plan
-                    </CustomButton>
-                  </Box>
-                </PlanDiv>
-              </Grid>
-              <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
-                <Grid item xs={1}></Grid>
-              </Box>
-            </Grid>
-            <br />
-            <br />
-            <br /> */}
             <br />
             <br />
             <Grid container spacing={1} justifyContent={'space-around'}>

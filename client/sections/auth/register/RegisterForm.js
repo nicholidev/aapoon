@@ -20,30 +20,36 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import Autocomplete from './Dialogue';
 import {countryCodes} from "./counrtyCode"
-import FormLabel from '@mui/material/FormLabel';
 // @mui
-import { Stack, TextField, IconButton, InputAdornment, Alert, Button, Select, MenuItem ,Box,Divider} from '@mui/material';
+import {
+  TextField,
+  Alert,
+  Stack,
+  IconButton,
+  InputAdornment,
+  Button,
+  Select,
+  MenuItem,
+  Box,
+  Divider
+} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import NumberFormat from 'react-number-format';
 // hooks
 import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
 import Iconify from '../../../components/Iconify';
 import { IconButtonAnimate } from '../../../components/animate';
-import PhoneInput from 'react-phone-number-input';
-import CustomPhone from '../../../components/Phonenumber';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 import Flag from '../../../components/Flag';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../../utils/errorMessage';
 import NumberFormatCustom from '../../../components/NumberInput';
 import { acceptInvitation, getCountry } from '../../../api/user';
-import MuiPhoneNumber from 'material-ui-phone-number';
+
 export default function RegisterForm(query) {
   const router = useRouter();
   const { register, user } = useAuth();
-  const [numf, setnumf] = useState('12');
   const [open, setOpen] = useState(user.email && user.phoneNumber ? false : true);
   const [countryCode, setCountryCode] = useState('US');
   const isMountedRef = useIsMountedRef();
@@ -78,14 +84,26 @@ export default function RegisterForm(query) {
       email: query?.query?.email ? query?.query?.email : user.email,
       password: user.password,
       phone: user.phoneNumber,
-      countryCode:user.countryCode||countryCodes.find(i=>i.code==countryCode)?.value,
+      countryCode:user.countryCode||countryCodes.find(i=>i.code===countryCode)?.value,
       accountType: user.accountType || 'Business',
     },
+
     validationSchema: RegisterSchema,
+
     onSubmit: async (values, { setErrors, setSubmitting }) => {
+
       setSubmitting(true);
+
       try {
-        await register(values.email, values.password, values.firstName, values.lastName, values.phone, values);
+        await register(
+          values.email,
+          values.password,
+          values.firstName,
+          values.lastName,
+          values.phone,
+          values
+        );
+
         enqueueSnackbar('Registered Successfully', {
           variant: 'success',
           action: (key) => (
@@ -94,15 +112,19 @@ export default function RegisterForm(query) {
             </IconButtonAnimate>
           ),
         });
-        if (localStorage.getItem('inviteToken'))
+
+        if (localStorage.getItem('inviteToken')) {
           acceptInvitation({ email: values.email, token: localStorage.getItem('inviteToken') });
+        }
+
         if (isMountedRef.current) {
           setSubmitting(false);
         }
 
-        if(user.accountType=="Business"){
+        if(user.accountType==="Business"){
           router.push("/dashboard/one");
         }
+
       } catch (error) {
         console.log(error);
         setErrors({ afterSubmit: ErrorMessages[error.code] });
@@ -122,23 +144,32 @@ export default function RegisterForm(query) {
     setOpen(false);
   };
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, values } = formik;
+  const {
+    errors,
+    touched,
+    handleSubmit,
+    isSubmitting,
+    getFieldProps,
+    setFieldValue,
+    values
+  } = formik;
+
   useEffect(() => {
     if (query?.query?.email) {
       setFieldValue('email', query?.query?.email);
       localStorage.setItem('inviteToken', query?.query?.token);
     }
-    getCountry().then((res) => {
-      setCountryCode(res.data.country_code);
-      setFieldValue("countryCode",countryCodes.find(i=>i.code==res.data.country_code)?.value)
-    });
+    getCountry()
+      .then((res) => {
+        setCountryCode(res.data.country_code);
+        setFieldValue("countryCode",countryCodes.find(i=>i.code===res.data.country_code)?.value)
+      });
   }, [query?.query?.email]);
 
-  console.log(values);
-const setccd =(e)=>{
- setCountryCode(e.target.value);
- setFieldValue("countryCode",countryCodes.find(i=>i.code==e.target.value)?.value)
-}
+  const setccd =(e)=>{
+   setCountryCode(e.target.value);
+   setFieldValue("countryCode", countryCodes.find(i=>i.code===e.target.value)?.value)
+  }
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -172,66 +203,45 @@ const setccd =(e)=>{
             error={Boolean(touched.email && errors.email)}
             helperText={touched.email && errors.email}
           />
-
-          {/* <MuiPhoneNumber
-            defaultCountry={countryCode?.toLocaleLowerCase()}
-            variant="outlined"
-            {...getFieldProps('phone')}
-            onChange={(data) => {
-              setFieldValue('phone', data);
-            }}
-            label="Phone"
-            autoFormat={false}
-            error={Boolean(touched.phone && errors.phone)}
-            helperText={touched.phone && errors.phone}
-          /> */}
           <TextField
             placeholder="Enter phone number"
             countryCallingCodeEditable={false}
-            countrySelectComponent={(props=>{
-
-            
-            return( null)})}
+            countrySelectComponent={(()=>{return null})}
             InputProps={{
               inputComponent: NumberFormatCustom,
-              startAdornment: <Autocomplete  value={countryCode} countryCodes={countryCodes} setccd={setccd}   renderInput={(params) => <TextField {...params} label="Movie" />} >
-              <Box
-                       position="start"
-                       sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'text.secondary' }}
-                     >
-                      
-                       {countryCodes.find(i=>i.code==countryCode)?<Flag code={countryCodes.find(i=>i.code==countryCode).code}/>:""}&nbsp;&nbsp;
-                       <i style={{marginRight:4}}>{countryCodes.find(i=>i.code==countryCode)?.value}{' '}</i>
-                       <Divider
-                         orientation="vertical"
-                         flexItem
-                         sx={{ justifyContent: 'center', alignItems: 'center', mx: 1, borderWidth: '0.2px' }}
-                       />
-                     </Box>
-                   
-                       </Autocomplete>
+              startAdornment: (
+                <Autocomplete  value={countryCode} countryCodes={countryCodes} setccd={setccd}   renderInput={(params) => <TextField {...params} label="Movie" />} >
+                  <Box
+                    position="start"
+                    sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'text.secondary' }}
+                  >
+                    {countryCodes.find(i=>i.code===countryCode)?<Flag code={countryCodes.find(i=>i.code===countryCode).code}/>:""}&nbsp;&nbsp;
+                    <i style={{marginRight:4}}>{countryCodes.find(i=>i.code===countryCode)?.value}{' '}</i>
+                    <Divider
+                      orientation="vertical"
+                      flexItem
+                      sx={{ justifyContent: 'center', alignItems: 'center', mx: 1, borderWidth: '0.2px' }}
+                    />
+                  </Box>
+                </Autocomplete>
+              )
             }}
-          endorment={
-          <Autocomplete  value={countryCode} countryCodes={countryCodes} setccd={setccd}   renderInput={(params) => <TextField {...params} label="Movie" />} >
-   <Box
-            position="start"
-            sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'text.secondary' }}
-          >
-           
-            {countryCodes.find(i=>i.code==countryCode)?<Flag code={countryCodes.find(i=>i.code==countryCode).code}/>:""}&nbsp;&nbsp;
-            <i style={{marginRight:4}}>{countryCodes.find(i=>i.code==countryCode)?.value}{' '}</i>
-            <Divider
-              orientation="vertical"
-              flexItem
-              sx={{ justifyContent: 'center', alignItems: 'center', mx: 1, borderWidth: '0.2px' }}
-            />
-          </Box>
-        
+          endorment={(
+            <Autocomplete  value={countryCode} countryCodes={countryCodes} setccd={setccd}   renderInput={(params) => <TextField {...params} label="Movie" />} >
+              <Box
+                position="start"
+                sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'text.secondary' }}
+              >
+                {countryCodes.find(i=>i.code===countryCode)?<Flag code={countryCodes.find(i=>i.code===countryCode).code}/>:""}&nbsp;&nbsp;
+                <i style={{marginRight:4}}>{countryCodes.find(i=>i.code===countryCode)?.value}{' '}</i>
+                <Divider
+                  orientation="vertical"
+                  flexItem
+                  sx={{ justifyContent: 'center', alignItems: 'center', mx: 1, borderWidth: '0.2px' }}
+                />
+              </Box>
             </Autocomplete>
-        
-        
-        
-        }
+          )}
             defaultCountry={countryCode}
             inputComponent={NumberFormatCustom}
             {...getFieldProps('phone')}
@@ -251,8 +261,17 @@ const setccd =(e)=>{
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton edge="end" onClick={() => setShowPassword((prev) => !prev)}>
-                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                  <IconButton
+                    edge="end"
+                    onClick={() => setShowPassword((prev) => !prev)}
+                  >
+                    <Iconify
+                      icon={
+                        showPassword ?
+                          'eva:eye-fill' :
+                          'eva:eye-off-fill'
+                      }
+                    />
                   </IconButton>
                 </InputAdornment>
               ),
@@ -269,27 +288,73 @@ const setccd =(e)=>{
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >
-            <DialogTitle id="alert-dialog-title" align="center" sx={{display: 'flex',justifyContent:"space-between",alignItems: 'center'}}>
-           <span></span>   {`Select your ${values.accountType == 'Business' ? 'business' : 'profession'}`} <IconButtonAnimate onClick={()=>push("/")}><CancelOutlinedIcon/></IconButtonAnimate>
+            <DialogTitle
+              id="alert-dialog-title"
+              align="center"
+              sx={{
+                display: 'flex',
+                justifyContent:"space-between",
+                alignItems: 'center'
+              }}
+            >
+              {"  "}
+              {`Select your ${values.accountType === 'Business' ? 'business' : 'profession'}`}
+              {" "}
+              <IconButtonAnimate onClick={()=>push("/")}>
+                <CancelOutlinedIcon/>
+              </IconButtonAnimate>
             </DialogTitle>
-            <DialogContent sx={{ mt: 4, padding: 5, pb: 1 }}>
+            <DialogContent
+              sx={{
+                mt: 4,
+                padding: 5,
+                pb: 1
+              }}
+            >
               <DialogContentText id="alert-dialog-description">
-                <Stack direction="column" spacing={3}>
-                  <FormControl component="fieldset">
-                    <RadioGroup row aria-label="type" name="row-radio-buttons-group" {...getFieldProps('accountType')}>
-                      <FormControlLabel value="Business" control={<Radio />} label="Business" sx={{ mr: 4 }} />
-                      <FormControlLabel value="Professional" control={<Radio />} label="Professional" />
+                <Stack
+                  direction="column"
+                  spacing={3}
+                >
+                  <FormControl
+                    component="fieldset"
+                  >
+                    <RadioGroup
+                      row
+                      aria-label="type"
+                      name="row-radio-buttons-group"
+                      {...getFieldProps('accountType')}
+                    >
+                      <FormControlLabel
+                        value="Business"
+                        control={<Radio />}
+                        label="Business"
+                        sx={{ mr: 4 }}
+                      />
+                      <FormControlLabel
+                        value="Professional"
+                        control={<Radio />}
+                        label="Professional"
+                      />
                     </RadioGroup>
                   </FormControl>
 
-                  {values.accountType == 'Business' && (
+                  {values.accountType === 'Business' && (
                     <>
                       {' '}
-                      <FormControl sx={{ m: 1, minWidth: 80 }}>
-                        <Select placeholder="Enter" fullWidth defaultValue={10} {...getFieldProps('businessType')}>
-                          <MenuItem value={10} disabled>
-                            Select Business
-                          </MenuItem>
+                      <FormControl
+                        sx={{
+                          m: 1,
+                          minWidth: 80
+                        }}
+                      >
+                        <Select
+                          placeholder="Enter"
+                          fullWidth
+                          defaultValue={10}
+                          {...getFieldProps('businessType')}
+                        >
+                          <MenuItem value={10} disabled>Select Business</MenuItem>
                           <MenuItem value={'Automotive '}>Automotive</MenuItem>
                           <MenuItem value={'Business Support & Supplies '}>Business Support & Supplies </MenuItem>
                           <MenuItem value={'Education'}>Education </MenuItem>
@@ -299,26 +364,20 @@ const setccd =(e)=>{
                           <MenuItem value={'Other'}>Other </MenuItem>
                         </Select>
                       </FormControl>
-                      {/* <TextField
-                        placeholder="Enter number of employees"
-                        name="numberOfEmployees"
-                        InputProps={{
-                          inputComponent: NumberFormatCustom,
-                        }}
-                        inputComponent={NumberFormatCustom}
-                        {...getFieldProps('numberOfEmployees')}
-                      /> */}
                     </>
                   )}
 
-                  {values.accountType == 'Professional' && (
+                  {values.accountType === 'Professional' && (
                     <>
                       {' '}
                       <FormControl sx={{ m: 1, minWidth: 80 }}>
-                        <Select placeholder="Enter" fullWidth defaultValue={10} {...getFieldProps('professionType')}>
-                          <MenuItem value={10} disabled>
-                            Select Profession
-                          </MenuItem>
+                        <Select
+                          placeholder="Enter"
+                          fullWidth
+                          defaultValue={10}
+                          {...getFieldProps('professionType')}
+                        >
+                          <MenuItem value={10} disabled>Select Profession</MenuItem>
                           <MenuItem value={'Lawyer'}>Lawyer</MenuItem>
                           <MenuItem value={'Accountant'}>Accountant</MenuItem>
                           <MenuItem value={'Technician'}>Technician</MenuItem>
@@ -341,8 +400,8 @@ const setccd =(e)=>{
                 onClick={handleClose}
                 variant="contained"
                 disabled={
-                  (values.accountType == 'Business' && (!values.businessType )) ||
-                  (values.accountType == 'Professional' && !values.professionType)
+                  (values.accountType === 'Business' && (!values.businessType )) ||
+                  (values.accountType === 'Professional' && !values.professionType)
                 }
               >
                 Next
@@ -350,7 +409,13 @@ const setccd =(e)=>{
             </DialogActions>
           </Dialog>
 
-          <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
+          <LoadingButton
+            fullWidth
+            size="large"
+            type="submit"
+            variant="contained"
+            loading={isSubmitting}
+          >
             Register
           </LoadingButton>
         </Stack>

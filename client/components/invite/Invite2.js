@@ -62,7 +62,6 @@ export default function InviteData(props) {
     error,
   } = useCollection(`invites`, {
     where: ['invitedBy', '==', user.id],
-
     listen: true,
     parseDates: ['createdAt'],
   });
@@ -117,7 +116,7 @@ export default function InviteData(props) {
   const filteredUsers = userList;
 
   const isNotFound = !userList?.length && Boolean(filterName);
-
+  console.log(filteredUsers)
   return (
     <>
       <Scrollbar>
@@ -132,7 +131,6 @@ export default function InviteData(props) {
                 <TableCell sx={{ backgroundColor: '#F5F5F5', p: '12px' }}>Email Id</TableCell>
                 <TableCell sx={{ backgroundColor: '#F5F5F5', p: '12px' }}>Invited Date</TableCell>
                 <TableCell sx={{ backgroundColor: '#F5F5F5', p: '12px' }}>Status</TableCell>
-
                 <TableCell />
               </TableRow>
             </TableHead>
