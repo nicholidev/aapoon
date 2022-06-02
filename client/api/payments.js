@@ -16,7 +16,7 @@ export const getAllProducts = async (country) => {
       .where('account',"==",country)
       .get()
       .then(async (querySnapshot) => {
-        var allProducts = [];
+        const allProducts = [];
 
         for (const doc of querySnapshot.docs) {
           let productItem = await doc.data();
@@ -28,9 +28,9 @@ export const getAllProducts = async (country) => {
           });
           productItem.prices = prices;
 
-          allProducts.push(productItem);
+          allProducts.push(productItem, 'ALL PRODUCT');
         }
-
+        console.log(allProducts)
         resolve(allProducts);
       })
       .catch((err) => {
@@ -39,7 +39,7 @@ export const getAllProducts = async (country) => {
   });
 };
 
-export const getCheckoutSession = async (price,taxed=false) => {
+export const getCheckoutSession = async (price, taxed=false) => {
   return new Promise(async (resolve, reject) => {
     const docRef = await firebase
       .firestore()
@@ -50,7 +50,6 @@ export const getCheckoutSession = async (price,taxed=false) => {
         line_items: [{ price: price, adjustable_quantity: { enabled: true, maximum: 999 }, quantity: 1 }],
         allow_promotion_codes: true,
         tax_rates: taxed?['txr_1KUVrASJOhf2FXpTqycP9RXN']:false,
-
         tax_id_collection: true,
         success_url: window.location.origin + '/msg/success',
         cancel_url: window.location.origin + '/plan/plans-price',

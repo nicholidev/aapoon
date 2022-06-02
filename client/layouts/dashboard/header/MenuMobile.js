@@ -150,7 +150,7 @@ function MenuMobileItem({ item, isOpen, onOpen }) {
     <ListItemStyle
       to={path}
       component={RouterLink}
-      end={path === '/'}
+      end={(path === '/').toString()}
       sx={{
         '&.active': {
           color: 'primary.main',
