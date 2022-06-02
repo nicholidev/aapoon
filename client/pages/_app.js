@@ -65,7 +65,7 @@ export default function MyApp(props) {
   const getLayout = Component.getLayout ?? ((page) => page);
   useEffect(() => {
     window.addEventListener('orientationchange', (event) => {
-      if (event.target.screen.orientation.angle == 90 || event.target.screen.orientation.angle == 270) {
+      if (event.target.screen.orientation.angle === 90 || event.target.screen.orientation.angle === 270) {
         setLandScape(true);
       } else {
         setLandScape(false);
