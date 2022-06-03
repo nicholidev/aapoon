@@ -21,6 +21,7 @@
     "messagingSenderId": "250788702010",
     "appId": "1:250788702010:web:965f8bcf42c0c7fcf39203",
     "stripeKey": "sk_test_51IbUQTSJOhf2FXpTtyDPI7LKEmY2Sz3xIPwqiMuVPF6xl7T0gpWBc2PTJRe1diMSXUW7Ycq0Yt3rvM4D29Fict4e00yLxSvVUr",
+    "stripeWebhookSec":"whsec_9bqpm4DPuZyRNKb1zwGM6noAAmoeo4BP",
     "cportal": "stripeFunctions-createPortalLink"
   },
   "production": {

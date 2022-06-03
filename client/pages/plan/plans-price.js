@@ -124,7 +124,7 @@ function PlanPricePage() {
       return router.push('/auth/Login?return=' + window.location.href);
     }
 
-    // setLoading(true);
+    setLoading(true);
     getCheckoutSession(id, currency==="inr" )
       .then((session) => {
         console.log(session, 'SESSION')
