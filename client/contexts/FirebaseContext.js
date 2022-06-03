@@ -308,7 +308,7 @@ function AuthProvider({ children }) {
       if (data.logo) {
         const storageRef = firebase.storage().ref();
         const busRef = storageRef.child(`account/${state.user.uid}/business/logo/${data.logo.name}`);
-
+        console.log(data.logo)
         busRef
           .put(data.logo)
           .then(async (snapshot) => {

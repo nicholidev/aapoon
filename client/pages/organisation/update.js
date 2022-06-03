@@ -105,9 +105,9 @@ function Register() {
                 <Typography variant="h4">Business Profile</Typography>
               </Box>
 
-              <RegisterForm isUpdate={user.businessDetails?.businessName ? true : false} updateMode={true} />
+              <RegisterForm isUpdate={!!user.businessDetails?.businessName} updateMode={true} />
             </ContentStyle>
-            <Spacer></Spacer>
+            <Spacer/>
           </Paper>
         </Container>
       </RootStyle>
