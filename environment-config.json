@@ -20,7 +20,20 @@
     "storageBucket": "meetaapweb-staging.appspot.com",
     "messagingSenderId": "250788702010",
     "appId": "1:250788702010:web:965f8bcf42c0c7fcf39203",
-    "stripeKey": "sk_test_51IbUQTSJOhf2FXpTkpwG1dGnwhvxwnrZxnAyx04iutYiP8WAdOutXyuWsJjwxtB1xwxpTyKW7BufIhMni6CXa83s00glTl2VYT",
+    "stripeKey": "sk_test_51IbUQTSJOhf2FXpTtyDPI7LKEmY2Sz3xIPwqiMuVPF6xl7T0gpWBc2PTJRe1diMSXUW7Ycq0Yt3rvM4D29Fict4e00yLxSvVUr",
+    "stripeWebhookSec":"whsec_9bqpm4DPuZyRNKb1zwGM6noAAmoeo4BP",
+    "cportal": "stripeFunctions-createPortalLink"
+  },
+  "production": {
+    "functionUrl": "https://us-central1-meetaap-production.cloudfunctions.net/app",
+    "apiKey": "AIzaSyAC7fUIT_ib7fB-A5cXX9AktmWyq5S96IY",
+    "authDomain": "meetaap-production.firebaseapp.com",
+    "projectId": "meetaap-production",
+    "storageBucket": "meetaap-production.appspot.com",
+    "messagingSenderId": "1064241590392",
+    "appId": "1:1064241590392:web:2f4066eb545c5bfb29fd8d",
+    "stripeKey": "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",
+    "stripeWebhookSec":"whsec_F1pcKQETHsY2DI6O3mrpMVZCbSVFpygh",
     "cportal": "stripeFunctions-createPortalLink"
   }
 }

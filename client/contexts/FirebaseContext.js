@@ -178,7 +178,6 @@ function AuthProvider({ children }) {
 
           dispatch({
             type: 'UPDATE_SUB',
-            //payload: {},
             payload: { subscription: docs },
           });
         });
@@ -300,7 +299,7 @@ function AuthProvider({ children }) {
   };
 
   const resendEmailVerification = () => {
-    //return state.user.sendEmailVerification();
+    return state.user.sendEmailVerification();
   };
 
   const registerBusiness = (data) => {
@@ -309,7 +308,7 @@ function AuthProvider({ children }) {
       if (data.logo) {
         const storageRef = firebase.storage().ref();
         const busRef = storageRef.child(`account/${state.user.uid}/business/logo/${data.logo.name}`);
-
+        console.log(data.logo)
         busRef
           .put(data.logo)
           .then(async (snapshot) => {
@@ -443,7 +442,7 @@ function AuthProvider({ children }) {
                   payload: {
                     confirmation: confirmationResult,
                     appVerifier,
-                    user: { ...allValues, phoneNumber: allValues.countryCode+phoneNumber,number: phoneNumber},
+                    user: { ...allValues, phoneNumber: allValues.countryCode + phoneNumber, number: phoneNumber},
                   },
                 });
               })

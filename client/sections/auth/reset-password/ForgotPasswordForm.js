@@ -62,13 +62,13 @@ export default function ForgotPasswordForm({ onSent, onGetEmail }) {
             fullWidth
             {...getFieldProps('email')}
             type="email"
-            label="Email address"
+            label="Work Email"
             error={Boolean(touched.email && errors.email)}
             helperText={touched.email && errors.email}
           />
 
           <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
-            Reset Password
+            Send Reset Link
           </LoadingButton>
         </Stack>
       </Form>

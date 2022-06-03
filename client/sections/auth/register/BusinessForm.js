@@ -3,7 +3,8 @@
  XYZ. Contact address: XYZ@xyz.pa .
  */
 import * as Yup from 'yup';
-import { useEffect} from 'react';
+import {useEffect, useState} from 'react';
+import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack';
 import { useFormik, Form, FormikProvider } from 'formik';
 // @mui
@@ -25,20 +26,19 @@ import useAuth from '../../../hooks/useAuth';
 import useIsMountedRef from '../../../hooks/useIsMountedRef';
 // components
 import Iconify from '../../../components/Iconify';
-
 import { IconButtonAnimate } from '../../../components/animate';
 import Image from '../../../components/Image'
 import { FileUploader } from 'react-drag-drop-files';
 import { acceptInvitation} from '../../../api/user';
-import { useRouter } from 'next/router'
+import 'react-image-crop/dist/ReactCrop.css';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../../utils/errorMessage';
+import CropImage from "../../../components/upload/CropImage";
+
 export default function RegisterForm(props) {
-  const { registerBusiness,user ,deleteAccount} = useAuth();
+  const { registerBusiness, user ,deleteAccount} = useAuth();
   const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  // const [showPassword, setShowPassword] = useState(false);
-  // const rePhoneNumber = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
   const RegisterSchema = Yup.object().shape({
     businessName: Yup.string().min(2, 'Too Short!').required('Business name required'),
     businessWeb: Yup.string()
@@ -52,16 +52,16 @@ export default function RegisterForm(props) {
     pincode: Yup.number('Please enter valid code').required('pincode is required'),
     logo: Yup.mixed()
 
-      .test('fileSize', 'Please upload JPEG or PNG format with maximum size of 240 KB', (value) => {
-        return value && value.size <= 240000||!value;
+      .test('fileSize', 'Please upload JPEG or PNG format with maximum size of 480 KB', (value) => {
+        return value && value.size <= 480000||!value;
       })
       .test('type', 'Only the following formats are accepted: .jpeg, .jpg, .png', (value) => {
         return (
           value &&
-          (value.type === 'image/jpeg' ||
-
-            value.type === 'image/png'
-
+          (
+            value.type === 'image/jpeg' ||
+            value.type === 'image/png' ||
+            value.type === 'image/jpg'
            )||!value
         );
       }),
@@ -113,8 +113,10 @@ export default function RegisterForm(props) {
     },
   });
 
+
   useEffect(()=>{
     if(props.isUpdate){
+      setUrl(user.businessDetails?.logo)
       formik.setValues({
         businessName: user.businessDetails?.businessName,
         businessWeb: user.businessDetails?.businessWeb,
@@ -131,8 +133,16 @@ export default function RegisterForm(props) {
 
   const router = useRouter()
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, values } = formik;
+  const [cropOpen, setCropOpen] = useState(false);
+  const [avatar, setAvatar] = useState();
+  const [file, setFile] = useState(null);
+  const [url, setUrl] = useState(user.businessDetails?.logo);
 
-  console.log(values.logo, '<=====LOGO OF VALUES')
+  const handleUpload = (f) => {
+    setFile(f);
+    setAvatar(URL.createObjectURL(f))
+    setCropOpen(true)
+  }
 
   return (
     <FormikProvider value={formik}>
@@ -225,9 +235,10 @@ export default function RegisterForm(props) {
                 <Typography sx={{ fontWeight: 500 ,display: 'flex'}}>Upload Company Logo <Typography style={{color: '#E25630'}} sx={{ fontWeight: 500,color:"primary" ,ml:1 }} color="primary"> (optional)</Typography></Typography>
 
                 <FileUploader
-                  handleChange={(file) => setFieldValue('logo', file)}
+                  handleChange={handleUpload}
                   name="file"
                   types={['jpg', 'png', 'jpeg']}
+                  src=""
                 >
                   <Box
                     width="100%"
@@ -237,22 +248,9 @@ export default function RegisterForm(props) {
                     alignItems="center"
                     justifyContent="center"
                   >
-                    {(!user.businessDetails?.logo||values.logo)&&<Iconify icon="clarity:upload-cloud-line" sx={{ fontSize: 60, color: '#225082' }} />}
-                    {values.logo ?
-                      <Typography align="center" sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center' }}>
-                        {
-                          values.logo.name.length <= 25 ?
-                            values.logo.name:
-                            `${values.logo.name.split(".")[0].substring(0, 10)}
-                             ...
-                             ${values.logo.name.split(".")[0].substring(values.logo.name.split(".")[0].length - 5, values.logo.name.split(".")[0].length)}
-                             .${values.logo.name.split(".")[1]}
-                            `
-                        }
-                      </Typography> :
-                      ( user.businessDetails?.logo && <Image style={{width:80}} src={user.businessDetails?.logo}/> )
-                    }
-                    <Typography align="center" sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center' }}>
+                    {(!(user.businessDetails?.logo||url))&&<Iconify icon="clarity:upload-cloud-line" sx={{ fontSize: 60, color: '#225082' }} />}
+                    {user.businessDetails?.logo && <Image alt="" style={{width:120}} src={url}/>}
+                    <Typography align="center" sx={{ fontWeight: 500, marginTop: '10px', display: 'flex', justifyContent: 'center' }}>
                         Drag & Drop or &nbsp;
                         <Typography align="center" color="primary" sx={{ fontWeight: 500 }}>
                           Browse{' '}
@@ -260,11 +258,20 @@ export default function RegisterForm(props) {
                     </Typography>
                   </Box>
                 </FileUploader>
+                <CropImage
+                  open={cropOpen}
+                  setOpen={setCropOpen}
+                  file={file}
+                  avatar={avatar}
+                  setUrl={setUrl}
+                  setFieldValue={setFieldValue}
+                />
                 <Typography variant="caption">Format accepted - PNG, JPEG</Typography>
                 <Typography variant="caption">Maximum size of 240KB</Typography>
                 <FormHelperText error={Boolean(touched.logo && errors.logo)}>
                   {touched.logo && errors.logo}
                 </FormHelperText>
+
               </Stack>
             </Grid>
           </Grid>

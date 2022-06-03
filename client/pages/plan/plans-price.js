@@ -103,7 +103,7 @@ function PlanPricePage() {
   const [current, setCurrent] = useState('month');
   const [planData, setPlanData] = useState([]);
   const [subscription, setSubscription] = useState([]);
-  const [currency, setcurrency] = useState('inr');
+  const [currency, setCurrency] = useState('inr');
   const { user, locale, setLoading } = useAuth();
   const [price, setPrice] = useState({});
   const [plan, setPlan] = useState({});
@@ -146,7 +146,7 @@ function PlanPricePage() {
   {
     let country = 'IN'
     let crc = 'inr'
-    if(!!user?.phoneNumber) {
+    if(user?.phoneNumber) {
       if (!user.phoneNumber.includes('+91')) {
         country = 'US'
         crc = 'usd'
@@ -158,7 +158,7 @@ function PlanPricePage() {
       }
     }
 
-    setcurrency(crc)
+    setCurrency(crc)
     getAllProducts(country)
       .then((data) => {
         setPlanData(data);
@@ -171,14 +171,13 @@ function PlanPricePage() {
   useEffect(() =>
   {
     if (planData.length > 0) {
-      const pl = planData.find((i) => i.name.includes('Premium')) || null
-      console.log(pl, 'PL')
-      if (!!pl) {
+      const pl = planData.find((i) => i.name.includes('Premium'))
+      if (pl) {
         setPlan(pl)
         setPrice(pl.prices.find((i) => i.interval === current && i.currency === currency))
       }
     }
-  }, [planData, current])
+  }, [planData, current, currency])
 
   return (
     <Page title="Plan and pricing">
@@ -194,7 +193,7 @@ function PlanPricePage() {
           </Typography>
           <br />
           <TabContainer>
-            <Tabs variant="standard" value={current === 'month' ? 0 : 1} onChange={handleTabChange} aria-label="">
+            <Tabs variant="standard" value={current === 'month' ? 0 : 1} onChange={(event, newValue)=>{handleTabChange(event, newValue)}} aria-label="">
               <Tab
                 label="MONTHLY"
                 style={{
@@ -301,8 +300,7 @@ function PlanPricePage() {
                       {plan.description || 'For Small Teams (1-100)'}
                     </Typography>
                     <br />
-                    {Object.values(price?.metadata || {}).map((i, index) => {
-                      return (
+                    {Object.values(price?.metadata || {}).map((i, index) => (
                         <Box display={'flex'} sx={{ mb: 1 }} key={`features-${index}`}>
                           <ListItemIcon>
                             <IconContainer style={{ backgroundColor: '#38618E' }}>
@@ -315,8 +313,7 @@ function PlanPricePage() {
                             </Typography>
                           </ListItemText>
                         </Box>
-                      );
-                    })}
+                      ))}
                   </Box>
                   <Button
                     onClick={() => startCheckoutSession(price.id)}
@@ -519,7 +516,7 @@ function PlanPricePage() {
                 </PlanDiv>
               </Grid>
               <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
-                <Grid item xs={1}></Grid>
+                <Grid item xs={1} />
               </Box>
               <Grid item xs={12} sm={6} md={5} lg={4} xl={4}>
                 {' '}
@@ -588,7 +585,7 @@ function PlanPricePage() {
                 </PlanDiv>
               </Grid>
               <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
-                <Grid item xs={1}></Grid>
+                <Grid item xs={1} />
               </Box>
             </Grid>
             <br />

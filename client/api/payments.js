@@ -30,7 +30,6 @@ export const getAllProducts = async (country) => {
 
           allProducts.push(productItem, 'ALL PRODUCT');
         }
-        console.log(allProducts)
         resolve(allProducts);
       })
       .catch((err) => {
@@ -54,10 +53,12 @@ export const getCheckoutSession = async (price, taxed=false) => {
         success_url: window.location.origin + '/msg/success',
         cancel_url: window.location.origin + '/plan/plans-price',
       });
+
+    console.log((await docRef.get()).data())
     // Wait for the CheckoutSession to get attached by the extension
     docRef.onSnapshot((snap) => {
       const { error, url } = snap.data();
-    
+
       if (url) {
         console.log(url);
         resolve(url);

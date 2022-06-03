@@ -1,6 +1,6 @@
 {
   "projects": {
-    "production": "",
+    "production": "meetaapweb-production",
     "dev": "meetaap-55e58",
     "staging": "meetaapweb-staging"
   },
