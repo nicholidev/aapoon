@@ -50,7 +50,7 @@ import { acceptInvitation, getCountry } from '../../../api/user';
 export default function RegisterForm(query) {
   const router = useRouter();
   const { register, user } = useAuth();
-  const [open, setOpen] = useState(user.email && user.phoneNumber ? false : true);
+  const [open, setOpen] = useState(!(user.email && user.phoneNumber));
   const [countryCode, setCountryCode] = useState('US');
   const isMountedRef = useIsMountedRef();
  

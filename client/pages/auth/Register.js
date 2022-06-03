@@ -2,11 +2,10 @@
  Copyright ©. All Rights Reserved. Confidential and proprietary.
  XYZ. Contact address: XYZ@xyz.pa .
  */
-import { capitalCase } from 'change-case';
 import RouterLink from 'next/link';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Card, Link, Container, Typography, Tooltip } from '@mui/material';
+import { Box, Card, Link, Container, Typography} from '@mui/material';
 // hooks
 import useAuth from '../../hooks/useAuth';
 import useResponsive from '../../hooks/useResponsive';
@@ -18,7 +17,6 @@ import Logo from '../../components/Logo';
 import Image from '../../components/Image';
 // sections
 import { RegisterForm } from '../../sections/auth/register';
-import AuthFirebaseSocials from '../../sections/auth/AuthFirebaseSocial';
 import Divider from '@mui/material/Divider';
 
 import withoutAut from '../../HOC/withOutAuth';
@@ -78,7 +76,7 @@ function Register() {
   return (
     <Page title="Register">
       <RootStyle>
-        <HeaderStyle></HeaderStyle>
+        <HeaderStyle/>
 
         {mdUp && (
           <SectionStyle>
@@ -101,7 +99,7 @@ function Register() {
             </Box>
 
             <RegisterForm query={query} />
-            <div id="captcha-container"></div>
+            <div id="captcha-container" />
             <Typography variant="caption" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
               By clicking on Complete Signup, you agree to our &nbsp;
               <Link underline="always" color="text.primary" href="/about/terms-of-service">

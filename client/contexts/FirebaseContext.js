@@ -178,7 +178,6 @@ function AuthProvider({ children }) {
 
           dispatch({
             type: 'UPDATE_SUB',
-            //payload: {},
             payload: { subscription: docs },
           });
         });
@@ -300,7 +299,7 @@ function AuthProvider({ children }) {
   };
 
   const resendEmailVerification = () => {
-    //return state.user.sendEmailVerification();
+    return state.user.sendEmailVerification();
   };
 
   const registerBusiness = (data) => {
@@ -443,7 +442,7 @@ function AuthProvider({ children }) {
                   payload: {
                     confirmation: confirmationResult,
                     appVerifier,
-                    user: { ...allValues, phoneNumber: allValues.countryCode+phoneNumber,number: phoneNumber},
+                    user: { ...allValues, phoneNumber: allValues.countryCode + phoneNumber, number: phoneNumber},
                   },
                 });
               })
