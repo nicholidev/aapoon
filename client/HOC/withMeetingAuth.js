@@ -10,7 +10,6 @@ import RegisterForm from '../sections/auth/meeting/RegisterForm';
 import VerifyCode from '../sections/auth/meeting/verifyCode';
 import PasswordForm from '../sections/auth/meeting/PasswordForm';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import Logo from '../components/Logo';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
@@ -47,13 +46,13 @@ const withMeetingAuth = (WrappedComponent) => {
       const [name, setName] = useState('');
       const [domain,setDomain]=useState("")
       const [authMeeting, setAuthMeeting] = useState({
-        isAuth: localStorage.getItem('mid') == query.meetingid,
+        isAuth: localStorage.getItem('mid') === query.meetingid,
         id: localStorage.getItem('mid'),
         jwt: localStorage.getItem('mjwt'),
       });
       const theme = useTheme();
       const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-      console.log(authMeeting, localStorage.getItem('mjwt'));
+      // console.log(authMeeting, localStorage.getItem('mjwt'));
       useEffect(() => {
         setLoading(true);
         if (query.meetingid) {
@@ -90,7 +89,7 @@ const withMeetingAuth = (WrappedComponent) => {
           });
         } else {
           setAuthMeeting({
-            isAuth: localStorage.getItem('mid') == query.meetingid,
+            isAuth: localStorage.getItem('mid') === query.meetingid,
             id: localStorage.getItem('mid'),
             jwt: localStorage.getItem('mjwt'),
           });
@@ -106,7 +105,7 @@ const withMeetingAuth = (WrappedComponent) => {
           });
         } else {
           setAuthMeeting({
-            isAuth: localStorage.getItem('mid') == query.meetingid,
+            isAuth: localStorage.getItem('mid') === query.meetingid,
             id: localStorage.getItem('mid'),
             jwt: localStorage.getItem('mjwt'),
           });
@@ -115,12 +114,12 @@ const withMeetingAuth = (WrappedComponent) => {
 
       useEffect(() => {
         setRequirePass(false);
-        console.log(authMeeting.jwt);
+        // console.log(authMeeting.jwt);
       }, [authMeeting.jwt]);
 
-      console.log(meetData);
-      console.log(authMeeting);
-      if (error == 'invalid-meeting') {
+      // console.log(meetData);
+      // console.log(authMeeting);
+      if (error === 'invalid-meeting') {
         // router.replace('/');
 
         return (
@@ -186,7 +185,7 @@ const withMeetingAuth = (WrappedComponent) => {
                   />
                 )}
                 {/* <VerifyCode /> */}
-                <div id="captcha-container"></div>
+                <div id="captcha-container"/>
                 <Typography variant="caption" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
                   By clicking on Join meeting, you agree to our &nbsp;
                   <Link underline="always" color="text.primary" href="/about/terms-of-service">
@@ -232,12 +231,12 @@ const withMeetingAuth = (WrappedComponent) => {
 
               <PasswordForm query={query} id={query.meetingid} setAuthMeeting={setAuthMeeting} />
               {/* <VerifyCode /> */}
-              <div id="captcha-container"></div>
+              <div id="captcha-container"/>
             </ContentStyle>
           </Dialog>
         );
       }
-      if (authMeeting.isAuth == true && authMeeting.jwt) return <WrappedComponent {...props} domain={domain} token={authMeeting.jwt} />;
+      if (authMeeting.isAuth === true && authMeeting.jwt) return <WrappedComponent {...props} domain={domain} token={authMeeting.jwt} />;
       else
         return (
           <Box height={'100vh'} display="flex" justifyContent="center" alignItems="center">

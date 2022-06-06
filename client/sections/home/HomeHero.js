@@ -14,6 +14,7 @@ import InstantMeetingPopup from '../../sections/meeting/InstantMeetingPopup';
 import Iconify from '../../components/Iconify';
 import { varFade } from '../../components/animate';
 import useAuth from '../../hooks/useAuth';
+import {Fragment, useState} from "react";
 // ----------------------------------------------------------------------
 
 const RootStyle = styled(m.div)(({ theme }) => ({
@@ -80,6 +81,7 @@ const HeroImgStyle = styled(m.img)(({ theme }) => ({
 export default function HomeHero() {
   const { user } = useAuth();
   const { push } = useRouter();
+  const [popOpen, setPopOpen] = useState(false);
   return (
     <RootStyle>
       <Grid container>
@@ -121,15 +123,26 @@ export default function HomeHero() {
                     Instant meeting
                   </Button>
                 ) : (
-                  <InstantMeetingPopup sx={{ ml: { xs: 0, sm: 2 }, mt: { xs: 2, sm: 0 }, width: 200 }}>
-                    <Button
-                      size="large"
-                      variant="outlined"
-                      startIcon={<Iconify icon={'ph:browser'} width={20} height={20} />}
+                  <Fragment>
+                    <InstantMeetingPopup
+                      open={popOpen}
+                      setOpen={setPopOpen}
                     >
-                      Instant meeting
-                    </Button>
-                  </InstantMeetingPopup>
+                      <Button
+                        size="large"
+                        variant="outlined"
+                        startIcon={<Iconify icon={'ph:browser'} width={20} height={20} />}
+                        onClick={()=>{setPopOpen(true)}}
+                        sx={{
+                          ml: { xs: 0, sm: 2 },
+                          mt: { xs: 2, sm: 0 },
+                          width: 200
+                        }}
+                      >
+                        Instant meeting
+                      </Button>
+                    </InstantMeetingPopup>
+                  </Fragment>
                 )}
               </m.div>
 

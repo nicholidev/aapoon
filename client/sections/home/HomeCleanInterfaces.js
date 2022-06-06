@@ -3,17 +3,11 @@
  XYZ. Contact address: XYZ@xyz.pa .
  */
 // @mui
-import { alpha, styled } from '@mui/material/styles';
-import { Box, Container, Typography, useTheme, Grid } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { Box, Container, Typography, Grid } from '@mui/material';
 // components
 import Image from '../../components/Image';
 import { MotionInView, varFade } from '../../components/animate';
-
-// ----------------------------------------------------------------------
-
-const IMG = [...Array(10)].map(
-  (_, index) => `https://minimal-assets-api.vercel.app/assets/images/home/clean-${index + 1}.png`
-);
 
 const RootStyle = styled('div')(({ theme }) => ({
   paddingTop: theme.spacing(15),
@@ -35,8 +29,6 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 export default function HomeCleanInterfaces() {
-  const theme = useTheme();
-  const isLight = theme.palette.mode === 'light';
 
   return (
     <RootStyle>
@@ -66,7 +58,7 @@ export default function HomeCleanInterfaces() {
                 justifyContent: 'center',
               }}
             >
-              <Image src={'/images/home/brand.png'} sx={{ borderRadius: 4 }} />
+              <Image alt="" src={'/images/home/brand.png'} sx={{ borderRadius: 4 }} />
             </Box>
           </Grid>
         </Grid>

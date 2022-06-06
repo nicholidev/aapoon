@@ -69,8 +69,6 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 
 function ScheduleMeeting() {
-  const smUp = useResponsive('up', 'sm');
-  const mdUp = useResponsive('up', 'md');
   const router = useRouter();
 
   const { method, user } = useAuth();
@@ -100,7 +98,7 @@ function ScheduleMeeting() {
                 </Box>
               </Box>
 
-              <FormUserMeeting isCustomerAdmin={user.accountType ? true : false} />
+              <FormUserMeeting isCustomerAdmin={!!user.accountType} />
             </ContentStyle>
           </Paper>
         </Container>

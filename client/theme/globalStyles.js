@@ -61,6 +61,12 @@ export default function GlobalStyles() {
           },
         },
         img: { display: 'block', maxWidth: '100%' },
+        '#jitsiMeeting-5': {height: '100%'},
+        '.jitsi-wrap': {
+          iframe: {
+            marginBottom: '-100px'
+          }
+        }
       }}
     />
   );
