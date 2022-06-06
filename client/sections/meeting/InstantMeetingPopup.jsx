@@ -2,54 +2,35 @@
  Copyright ©. All Rights Reserved. Confidential and proprietary.
  XYZ. Contact address: XYZ@xyz.pa .
  */
+import {useState} from "react";
+import { useRouter } from 'next/router';
 import * as Yup from 'yup';
-import { useState } from 'react';
 import { useSnackbar } from 'notistack';
 import { useFormik, Form, FormikProvider } from 'formik';
 // @mui
 import {
-  Stack,
+  Dialog,
   TextField,
-  IconButton,
-  InputAdornment,
   Alert,
+  Stack,
   Typography,
-  Grid,
-  Select,
-  MenuItem,
   ButtonBase,
   Box,
-  Dialog,
   DialogTitle,
-  FormHelperText,
+
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DateTimePicker from '@mui/lab/DateTimePicker';
-// hooks
-import useAuth from '../../hooks/useAuth';
-import useIsMountedRef from '../../hooks/useIsMountedRef';
 // components
 import Iconify from '../../components/Iconify';
 
 import { IconButtonAnimate } from '../../components/animate';
-import PhoneInput from 'react-phone-number-input/input';
-import CustomPhone from '../../components/Phonenumber';
-import InputLabel from '@mui/material/InputLabel';
-import { FileUploader } from 'react-drag-drop-files';
 import { instantMeeting } from '../../api/meeting';
 // ----------------------------------------------------------------------
-import ErrorMessages from '../../utils/errorMessage';
-import { useRouter } from 'next/router';
-import withMeetingAuth from '../../HOC/withMeetingAuth';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
 function InstantMeetingPopup(props) {
+  const [open, setOpen] = useState(false)
   const router = useRouter();
-  const { registerBusiness, user } = useAuth();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
-  const [open, setOpen] = useState(false);
-  const rePhoneNumber = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 
   const RegisterSchema = Yup.object().shape({
     meetingDescription: Yup.string().min(5, 'description is too Short!'),
@@ -60,7 +41,7 @@ function InstantMeetingPopup(props) {
       meetingDescription: '',
     },
     validationSchema: RegisterSchema,
-    onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
       setSubmitting(true);
 
       try {
@@ -93,18 +74,18 @@ function InstantMeetingPopup(props) {
     },
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, values } = formik;
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps} = formik;
 
   return (
     <>
       <Dialog open={open} maxWidth={'xs'} fullWidth onClose={() => setOpen(false)}>
-      <DialogTitle id="alert-dialog-title" align="center" sx={{display: 'flex',justifyContent:"space-between",alignItems: 'center'}}>
-           <span>&nbsp; &nbsp; &nbsp; &nbsp;</span>  <Typography variant="h4" align="center" gutterBottom>
-            Instant Meeting
-          </Typography> <IconButtonAnimate onClick={()=>setOpen(false)}><CancelOutlinedIcon/></IconButtonAnimate>
-            </DialogTitle>
+        <DialogTitle id="alert-dialog-title" align="center" sx={{display: 'flex',justifyContent:"space-between",alignItems: 'center'}}>
+            <span>&nbsp; &nbsp; &nbsp; &nbsp;</span>
+            <Typography variant="span" align="center" gutterBottom>
+              Instant Meeting
+            </Typography> <IconButtonAnimate onClick={()=>setOpen(false)}><CancelOutlinedIcon/></IconButtonAnimate>
+        </DialogTitle>
         <div style={{ padding: '40px' ,paddingTop:24}}>
-         
           <br />
           <FormikProvider value={formik}>
             <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -142,9 +123,9 @@ function InstantMeetingPopup(props) {
       {props.noButton ? (
         <div onClick={() => setOpen(true)}>{props.children}</div>
       ) : (
-        <Box component={ButtonBase} sx={props.sx} onClick={() => setOpen(true)}>
+        <div style={{display: 'inline-block'}} onClick={() => setOpen(true)}>
           {props.children}
-        </Box>
+        </div>
       )}
     </>
   );

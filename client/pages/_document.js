@@ -6,12 +6,11 @@ import * as React from 'react';
 // next
 import Document, { Html, Head, Main, NextScript } from 'next/document';
 // emotion
-import { CacheProvider } from '@emotion/react';
-import createCache from '@emotion/cache';
 import createEmotionServer from '@emotion/server/create-instance';
 
 import createEmotionCache from '../src/createEmotionCache';
 import palette from '../theme/palette';
+import Script from "next/script";
 
 // ----------------------------------------------------------------------
 
@@ -26,7 +25,6 @@ export default class MyDocument extends Document {
           <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png" />
 
           <meta name="theme-color" content={palette.light.primary.main} />
-          <script src="https://meetaap.io/external_api.js"></script>
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link
             href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap"
@@ -36,10 +34,11 @@ export default class MyDocument extends Document {
           <meta name="description" content="aapoon meet" />
           <meta name="keywords" content="react,material,kit,application,dashboard,admin,template" />
           <meta name="author" content="aapoon Meet" />
+          <Script src={"https://meetaap.io/external_api.js"} />
         </Head>
 
         <body>
-          <div id="captcha-container"></div>
+          <div id="captcha-container"/>
           <Main />
           <NextScript />
         </body>

@@ -12,6 +12,7 @@ const withTM = require('next-transpile-modules')([
   '@fullcalendar/timegrid',
   '@fullcalendar/list',
   '@fullcalendar/timeline',
+  '@jitsi/react-sdk',
 ]);
 
 module.exports = withTM({
