@@ -116,7 +116,7 @@ export default function InviteData(props) {
   const filteredUsers = userList;
 
   const isNotFound = !userList?.length && Boolean(filterName);
-  console.log(filteredUsers)
+
   return (
     <>
       <Scrollbar>

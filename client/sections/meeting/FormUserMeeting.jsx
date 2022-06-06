@@ -8,24 +8,17 @@ import { useSnackbar } from 'notistack';
 import { useFormik, Form, FormikProvider } from 'formik';
 // @mui
 import {
-  Stack,
   TextField,
-  IconButton,
-  InputAdornment,
   Alert,
+  Checkbox,
+  Stack,
   Typography,
   Grid,
   Select,
   MenuItem,
   Box,
   ButtonBase,
-  FormHelperText,
-  Radio,
-  ListItem,
   Button,
-  ListItemText,
-  withStyles,
-  Checkbox,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -34,41 +27,35 @@ import DatePicker from '@mui/lab/DatePicker';
 import MobileTimePicker from '@mui/lab/MobileTimePicker';
 // hooks
 import useAuth from '../../hooks/useAuth';
-import useIsMountedRef from '../../hooks/useIsMountedRef';
 // components
 import Iconify from '../../components/Iconify';
-const { listTimeZones, findTimeZone, getZonedTime, getUnixTime } = require('timezone-support');
+const { listTimeZones, findTimeZone, getUnixTime } = require('timezone-support');
 import { IconButtonAnimate } from '../../components/animate';
-import PhoneInput from 'react-phone-number-input/input';
-import CustomPhone from '../../components/Phonenumber';
-import InputLabel from '@mui/material/InputLabel';
-import { FileUploader } from 'react-drag-drop-files';
-import { acceptInvitation, getCountry } from '../../api/user';
+import { getCountry } from '../../api/user';
 import { scheduleMeeting } from '../../api/meeting';
 import { useRouter } from 'next/router';
 import moment from 'moment';
 import { differenceInDays } from 'date-fns';
 import { addTocalender } from '../../utils/addToCalender/AddToCalander';
 // ----------------------------------------------------------------------
-import ErrorMessages from '../../utils/errorMessage';
 
 export default function FormUserMeeting(props) {
-  const { registerBusiness, user } = useAuth();
+  const { user } = useAuth();
 
   const { isCustomerAdmin } = props;
   const router = useRouter();
   const timeZones = listTimeZones();
-  const isMountedRef = useIsMountedRef();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
   const [isSubmitted, setSubmitted] = useState(false);
   const [data, setData] = useState({});
-  const [showPassword, setShowPassword] = useState(false);
-  const rePhoneNumber = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
+  const [meetingType, setMeetingType] = useState('oneTime');
+  const [waitInLobby, setWaitInLobby] = useState(true);
+
   const RegisterSchema = Yup.object().shape({
     meetingTopic: Yup.string().min(2, 'Too Short!').required('Meeting topic required'),
     meetingDescription: Yup.string().min(2, 'Too Short!'),
     timeZone: Yup.string().required('TimeZone is required'),
-
     estimatedDuration: Yup.string().required('Duration is required'),
     password: Yup.string(),
     meetingDateTime: Yup.date().required('Please enter valid date'),
@@ -88,7 +75,7 @@ export default function FormUserMeeting(props) {
       timeZone: '',
     },
     validationSchema: RegisterSchema,
-    onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
+    onSubmit: async (values, { setSubmitting, resetForm }) => {
       console.log('submitting');
       const tz = findTimeZone(values.timeZone);
 
@@ -128,8 +115,6 @@ export default function FormUserMeeting(props) {
         setSubmitted(true);
         setData(meetingData.data);
         resetForm();
-        // window.open('https://meet.aapoon.com/' + meetingData.data.id);
-        // router.replace(`/dashboard/calendar`);
       } catch (error) {
         console.error(error);
         enqueueSnackbar('Error in scheduling meeting , Please try again', {
@@ -141,36 +126,11 @@ export default function FormUserMeeting(props) {
           ),
         });
       }
-      // try {
-      //   await registerBusiness(values);
-      //   enqueueSnackbar('Business details updated', {
-      //     variant: 'success',
-      //     action: (key) => (
-      //       <IconButtonAnimate size="small" onClick={() => closeSnackbar(key)}>
-      //         <Iconify icon={'eva:close-fill'} />
-      //       </IconButtonAnimate>
-      //     ),
-      //   });
-
-      //   if (localStorage.getItem('inviteToken'))
-      //     acceptInvitation({ email: user.email, token: localStorage.getItem('inviteToken') });
-      //   localStorage.setItem('isAuthenticated', true)
-
-      //   window?.location = "/dashboard/one";
-      //   if (isMountedRef.current) {
-      //     setSubmitting(false);
-      //   }
-      // } catch (error) {
-      //   console.log(error);
-      //   if (isMountedRef.current) {
-      //     setErrors({ afterSubmit: ErrorMessages[error.code] });
-      //     setSubmitting(false);
-      //   }
-      // }
     },
   });
 
-  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, values } = formik;
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue } = formik;
+
   useEffect(() => {
     getCountry().then((res) => {
       setFieldValue('timeZone', res.data.timezone);
@@ -201,19 +161,15 @@ export default function FormUserMeeting(props) {
       description: data?.description,
       startTime: new Date(data.scheduledAt._seconds * 1000),
       endTime: new Date(data.endAt._seconds * 1000),
-      password: data?.password,
-      description: data?.description,
       recur: data?.reccurring ? `RRULE:FREQ=DAILY;COUNT=${recudays + 1}` : '',
     };
     addTocalender(event, type, false);
   };
 
-  const [meetingType, setMeetingType] = useState('oneTime');
-  const [waitInLobby, setWaitInLobby] = useState(true);
 
   const handleMeetingType = (event) => {
     setMeetingType(event.target.value);
-    if (event.target.value == 'recurring') {
+    if (event.target.value === 'recurring') {
       formik.setValues({ ...formik.values, meetingEndDate: new Date(), reccurring: true });
       RegisterSchema.fields.meetingEndDate.required('Please enter valid date');
     } else {
@@ -228,8 +184,6 @@ export default function FormUserMeeting(props) {
     setWaitInLobby(event.target.checked);
     formik.setValues({ ...formik.values, lobby: event.target.checked });
   };
-
-  console.log(data);
 
   return (
     <div>
@@ -404,6 +358,7 @@ export default function FormUserMeeting(props) {
                     style={{ color: '#E25630' }}
                     sx={{ fontWeight: 500, color: 'primary', ml: 1 }}
                     color="primary"
+                    variant={'span'}
                   >
                     {' '}
                     (optional)
@@ -464,83 +419,82 @@ export default function FormUserMeeting(props) {
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1} sx={{ marginLeft: { sm: '20px', xs: 0 } }}>
                     <Typography sx={{ fontWeight: 500 }}> Estimated Duration * </Typography>
-                   
-                      {user?.activeLicenses?.count || user?.assignedToMe?.length?
-                       <Select
-                       {...getFieldProps('estimatedDuration')}
-                       error={Boolean(touched.estimatedDuration && errors.estimatedDuration)}
-                       helperText={touched.estimatedDuration && errors.estimatedDuration}
-                     >
-                        <MenuItem value={'15'}>15 Minutes</MenuItem>
-                      <MenuItem value={'30'}>30 Minutes</MenuItem>
-                      <MenuItem value={'45'}>45 Minutes</MenuItem>
-                      <MenuItem value={'60'}>1 hour</MenuItem>
-                      <MenuItem value={'90'}>1.5 hours</MenuItem>
-                      <MenuItem value={'120'}>2 hours</MenuItem>
-                      <MenuItem value={'150'}>2.5 hours</MenuItem>
-                      <MenuItem value={'180'}>3 hours</MenuItem>
-                      <MenuItem value={'210'}>3.5 hours </MenuItem>
-                      <MenuItem value={'240'}>4 hours</MenuItem>
-                      <MenuItem value={'270'}>4.5 hours</MenuItem>
-                      <MenuItem value={'300'}>5 hours</MenuItem>
-                      <MenuItem value={'330'}>5.5 hours</MenuItem>
-                      <MenuItem value={'360'}>6 hours</MenuItem>
-                      <MenuItem value={'390'}>6.5 hours </MenuItem>
-                      <MenuItem value={'420'}>7 hours</MenuItem>
-                      <MenuItem value={'450'}>7.5 hours</MenuItem>
-                      <MenuItem value={'480'}>8 hours</MenuItem>
-                      <MenuItem value={'510'}>8.5 hours</MenuItem>
-                      <MenuItem value={'540'}>9 hours</MenuItem>
-                      <MenuItem value={'570'}>9.5 hours </MenuItem>
-                      <MenuItem value={'600'}>10 hours</MenuItem>
-                      <MenuItem value={'630'}>10.5 hours</MenuItem>
-                      <MenuItem value={'660'}>11 hours</MenuItem>
-                      <MenuItem value={'690'}>11.5 hours</MenuItem>
-                      <MenuItem value={'720'}>12 hours</MenuItem>
-                      <MenuItem value={'750'}>12.5 hours</MenuItem>
-                      <MenuItem value={'780'}>13 hours</MenuItem>
-                      <MenuItem value={'810'}>13.5 hours</MenuItem>
-                      <MenuItem value={'840'}>14 hours</MenuItem>
-                      <MenuItem value={'870'}>14.5 hours</MenuItem>
-                      <MenuItem value={'900'}>15 hours</MenuItem>
-                      <MenuItem value={'930'}>15.5 hours</MenuItem>
-                      <MenuItem value={'960'}>16 hours</MenuItem>
-                      <MenuItem value={'990'}>16.5 hours</MenuItem>
-                      <MenuItem value={'1020'}>17 hours</MenuItem>
-                      <MenuItem value={'1050'}>17.5 hours</MenuItem>
-                      <MenuItem value={'1080'}>18 hours</MenuItem>
-                      <MenuItem value={'1110'}>18.5 hours</MenuItem>
-                      <MenuItem value={'1140'}>19 hours</MenuItem>
-                      <MenuItem value={'1170'}>19.5 hours</MenuItem>
-                      <MenuItem value={'1200'}>20 hours</MenuItem>
-                      <MenuItem value={'1230'}>20.5 hours</MenuItem>
-                      <MenuItem value={'1260'}>21 hours</MenuItem>
-                      <MenuItem value={'1290'}>21.5 hours</MenuItem>
-                      <MenuItem value={'1320'}>22 hours</MenuItem>
-                      <MenuItem value={'1350'}>22.5 hours</MenuItem>
-                      <MenuItem value={'1380'}>23 hours</MenuItem>
-                      <MenuItem value={'1410'}>23.5 hours</MenuItem>
-                      <MenuItem value={'1440'}>24 hours</MenuItem>
 
-                     
-                      </Select>:   <Select
-                       {...getFieldProps('estimatedDuration')}
-                       error={Boolean(touched.estimatedDuration && errors.estimatedDuration)}
-                       helperText={touched.estimatedDuration && errors.estimatedDuration}
-                     >
-                      <MenuItem value={'15'}>15 Minutes</MenuItem>
-                      <MenuItem value={'30'}>30 Minutes</MenuItem>
-                      <MenuItem value={'45'}>45 Minutes</MenuItem>
-                      <MenuItem value={'55'}>55 Minutes</MenuItem>
-                      </Select>}
-                      
-                    
+                      { user?.activeLicenses?.count || user?.assignedToMe?.length ? (
+                        <Select
+                          {...getFieldProps('estimatedDuration')}
+                          error={Boolean(touched.estimatedDuration && errors.estimatedDuration)}
+                          helperText={touched.estimatedDuration && errors.estimatedDuration}
+                        >
+                          <MenuItem key={15} value={'15'}>15 Minutes</MenuItem>
+                          <MenuItem key={30} value={'30'}>30 Minutes</MenuItem>
+                          <MenuItem key={45} value={'45'}>45 Minutes</MenuItem>
+                          <MenuItem key={60} value={'60'}>1 hour</MenuItem>
+                          <MenuItem key={90} value={'90'}>1.5 hours</MenuItem>
+                          <MenuItem key={120} value={'120'}>2 hours</MenuItem>
+                          <MenuItem key={150} value={'150'}>2.5 hours</MenuItem>
+                          <MenuItem key={180} value={'180'}>3 hours</MenuItem>
+                          <MenuItem key={210} value={'210'}>3.5 hours </MenuItem>
+                          <MenuItem key={240} value={'240'}>4 hours</MenuItem>
+                          <MenuItem key={270} value={'270'}>4.5 hours</MenuItem>
+                          <MenuItem key={300} value={'300'}>5 hours</MenuItem>
+                          <MenuItem key={330} value={'330'}>5.5 hours</MenuItem>
+                          <MenuItem key={360} value={'360'}>6 hours</MenuItem>
+                          <MenuItem key={390} value={'390'}>6.5 hours </MenuItem>
+                          <MenuItem key={420} value={'420'}>7 hours</MenuItem>
+                          <MenuItem key={450} value={'450'}>7.5 hours</MenuItem>
+                          <MenuItem key={480} value={'480'}>8 hours</MenuItem>
+                          <MenuItem key={510} value={'510'}>8.5 hours</MenuItem>
+                          <MenuItem key={540} value={'540'}>9 hours</MenuItem>
+                          <MenuItem key={570} value={'570'}>9.5 hours </MenuItem>
+                          <MenuItem key={600} value={'600'}>10 hours</MenuItem>
+                          <MenuItem key={630} value={'630'}>10.5 hours</MenuItem>
+                          <MenuItem key={660} value={'660'}>11 hours</MenuItem>
+                          <MenuItem key={690} value={'690'}>11.5 hours</MenuItem>
+                          <MenuItem key={720} value={'720'}>12 hours</MenuItem>
+                          <MenuItem key={750} value={'750'}>12.5 hours</MenuItem>
+                          <MenuItem key={780} value={'780'}>13 hours</MenuItem>
+                          <MenuItem key={810} value={'810'}>13.5 hours</MenuItem>
+                          <MenuItem key={840} value={'840'}>14 hours</MenuItem>
+                          <MenuItem key={870} value={'870'}>14.5 hours</MenuItem>
+                          <MenuItem key={900} value={'900'}>15 hours</MenuItem>
+                          <MenuItem key={930} value={'930'}>15.5 hours</MenuItem>
+                          <MenuItem key={960} value={'960'}>16 hours</MenuItem>
+                          <MenuItem key={990} value={'990'}>16.5 hours</MenuItem>
+                          <MenuItem key={1020} value={'1020'}>17 hours</MenuItem>
+                          <MenuItem key={1050} value={'1050'}>17.5 hours</MenuItem>
+                          <MenuItem key={1080} value={'1080'}>18 hours</MenuItem>
+                          <MenuItem key={1110} value={'1110'}>18.5 hours</MenuItem>
+                          <MenuItem key={1140} value={'1140'}>19 hours</MenuItem>
+                          <MenuItem key={1170} value={'1170'}>19.5 hours</MenuItem>
+                          <MenuItem key={1200} value={'1200'}>20 hours</MenuItem>
+                          <MenuItem key={1230} value={'1230'}>20.5 hours</MenuItem>
+                          <MenuItem key={1260} value={'1260'}>21 hours</MenuItem>
+                          <MenuItem key={1290} value={'1290'}>21.5 hours</MenuItem>
+                          <MenuItem key={1320} value={'1320'}>22 hours</MenuItem>
+                          <MenuItem key={1350} value={'1350'}>22.5 hours</MenuItem>
+                          <MenuItem key={1380} value={'1380'}>23 hours</MenuItem>
+                          <MenuItem key={1410} value={'1410'}>23.5 hours</MenuItem>
+                          <MenuItem key={1440} value={'1440'}>24 hours</MenuItem>
+                        </Select>
+                      ) : (
+                        <Select
+                          {...getFieldProps('estimatedDuration')}
+                          error={Boolean(touched.estimatedDuration && errors.estimatedDuration)}
+                          helperText={touched.estimatedDuration && errors.estimatedDuration}
+                        >
+                          <MenuItem key={`mt-15`} value={'15'}>15 Minutes</MenuItem>
+                          <MenuItem key={`mt-30`} value={'30'}>30 Minutes</MenuItem>
+                          <MenuItem key={`mt-45`} value={'45'}>45 Minutes</MenuItem>
+                          <MenuItem key={`mt-55`} value={'55'}>55 Minutes</MenuItem>
+                        </Select>
+                      )}
                   </Stack>
                 </Grid>
                 <Grid item xs={12} sm={6}>
                   <Stack spacing={1} sx={{ marginRight: { sm: '20px', xs: 0 } }}>
                     <Typography sx={{ fontWeight: 500 }}>
-                      {meetingType == 'recurring' ? 'Meeting Start date *' : 'Meeting Date *'}{' '}
+                      {meetingType === 'recurring' ? 'Meeting Start date *' : 'Meeting Date *'}{' '}
                     </Typography>
                     <Stack spacing={1} direction="row">
                       <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -564,7 +518,7 @@ export default function FormUserMeeting(props) {
                     </Stack>
                   </Stack>
                 </Grid>
-                {meetingType == 'recurring' && (
+                {meetingType === 'recurring' && (
                   <Grid item xs={12} sm={6}>
                     <Stack spacing={1} sx={{ marginLeft: { sm: '20px', xs: 0 } }}>
                       <Typography sx={{ fontWeight: 500 }}>Meeting End date *</Typography>
@@ -594,7 +548,7 @@ export default function FormUserMeeting(props) {
                 <Grid item xs={12} sm={6}>
                   <Stack
                     spacing={1}
-                    sx={{ margin: { sm: meetingType == 'recurring' ? '0 20px 0 0' : '0 0 0 20px', xs: 0 } }}
+                    sx={{ margin: { sm: meetingType === 'recurring' ? '0 20px 0 0' : '0 0 0 20px', xs: 0 } }}
                   >
                     <Typography sx={{ fontWeight: 500 }}>Time Zone * </Typography>
                     <Select
@@ -604,8 +558,8 @@ export default function FormUserMeeting(props) {
                       error={Boolean(touched.timeZone && errors.timeZone)}
                       helperText={touched.timeZone && errors.timeZone}
                     >
-                      {timeZones.map((item) => (
-                        <MenuItem value={item}>{item}</MenuItem>
+                      {timeZones.map((item, index) => (
+                        <MenuItem value={item} key={`timezone-${index}`}>{item}</MenuItem>
                       ))}
                     </Select>
                   </Stack>
@@ -613,7 +567,7 @@ export default function FormUserMeeting(props) {
                 <Grid item xs={12} sm={6}>
                   <Stack
                     spacing={1}
-                    sx={{ margin: { sm: meetingType == 'recurring' ? '0  0 0 20px' : '0 20px 0 0', xs: 0 } }}
+                    sx={{ margin: { sm: meetingType === 'recurring' ? '0  0 0 20px' : '0 20px 0 0', xs: 0 } }}
                   >
                     <Typography sx={{ fontWeight: 500 }}> Meeting Password </Typography>
                     <Stack spacing={1} direction="row">
@@ -633,7 +587,7 @@ export default function FormUserMeeting(props) {
                     <Stack
                       spacing={1}
                       direction="row"
-                      sx={{ margin: { sm: meetingType == 'recurring' ? '40px 20px 0 0' : '40px 0 0 20px', xs: 0 } }}
+                      sx={{ margin: { sm: meetingType === 'recurring' ? '40px 20px 0 0' : '40px 0 0 20px', xs: 0 } }}
                     >
                       <Checkbox
                         icon={<Iconify icon="akar-icons:square" width="30px" height="30px" />}

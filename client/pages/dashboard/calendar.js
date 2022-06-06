@@ -124,7 +124,6 @@ function CalendarPage() {
   useEffect(() => {
     if (user.id) {
       getMeetingEvents(startOfMonth(date), endOfMonth(date), user.id).then((data) => {
-        console.log(data);
         setEvents(data);
       });
     }
@@ -198,9 +197,7 @@ function CalendarPage() {
         <DashboardSidebar currentPage="calendar" />
         <Content>
           <DataSection>
-            <DataHead>
-          
-            </DataHead>
+            <DataHead />
             {/* <InviteData fetch={fetch} />
             <InviteModal
               open={inviteOpen}
