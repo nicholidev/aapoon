@@ -181,6 +181,8 @@ function CalendarPage() {
     });
   };
 
+  console.log(events)
+
   return (
     <Page title="Calendar">
       <GlobalStyles
@@ -235,12 +237,14 @@ function CalendarPage() {
                   meridiem: 'short',
                 }}
                 eventDisplay="block"
+                eventMinHeight={55}
                 headerToolbar={false}
                 allDayMaintainDuration
                 eventResizableFromStart
                 select={handleSelectRange}
                 // eventDrop={handleDropEvent}
                 eventClick={handleSelectEvent}
+                event
                 // eventResize={handleResizeEvent}
                 height={isDesktop ? 720 : 'auto'}
                 plugins={[listPlugin, dayGridPlugin, interactionPlugin, timeGridPlugin, timelinePlugin]}
