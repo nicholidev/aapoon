@@ -181,8 +181,6 @@ function CalendarPage() {
     });
   };
 
-  console.log(events)
-
   return (
     <Page title="Calendar">
       <GlobalStyles
