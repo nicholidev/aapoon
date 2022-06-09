@@ -140,16 +140,16 @@ let assigned=(await admin.firestore()
           },
         },
 
-       
-        "aud": "8B23A4BA85DE85D2922703F319496934",
-        "iss": "8B23A4BA85DE85D2922703F319496934",
-        "sub": "meetaap.io",
+        alg: "HS512",
+        aud: "aapoon",
+        iss: "518B837725AC1959C4878BDF15362AFD8B",
+        sub: "meetaap.io",
         exp:new Date().getTime()+1000000,
-      nbf:300,
+        nbf:300,
         room: req.body.id,
-       
+        secret: "8B23A4BA85DE85D2922703F319496934"
       },
-      "518B837725AC1959C4878BDF15362AFD8B"
+      "8B23A4BA85DE85D2922703F319496934"
     );
 
     return res.status(200).send({
