@@ -205,12 +205,13 @@ const sendEmailInvite = async (req, res) => {
           </td></tr></table></td></tr></table></td></tr><tr><td align="left" style="padding:0;Margin:0"><table cellpadding="0" cellspacing="0" width="100%" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px"><tr><td align="center" valign="top" style="padding:0;Margin:0;width:800px"><table cellpadding="0" cellspacing="0" width="100%" bgcolor="#E9E7F4" style="mso-table-lspace:0pt;mso-table-rspace:0pt;border-collapse:collapse;border-spacing:0px;background-color:#e9e7f4" role="presentation"><tr><td align="center" style="padding:20px;Margin:0"><p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial, 'helvetica neue', helvetica, sans-serif;line-height:21px;color:#333333;font-size:14px">© 2022, aapoon Meet. All Right’s Reserved</p></td></tr></table></td></tr></table></td></tr></table></td></tr></table></td>
           </tr></table></div></body></html>`
       );
-      if (mail)
+      if (!mail)
         return res.json({
           message: "Invite is Sent",
           link: `${req.headers.origin}?email=${email}&token=${token}`,
         });
-      else return res.status(500).json({ message: "Failed to send invite" });
+      else return res.status(500).json(mail);
+      {/* else return res.status(500).json({ message: "Failed to send invite" }); */}
     });
 };
 

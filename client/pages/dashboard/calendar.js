@@ -235,6 +235,7 @@ function CalendarPage() {
                   meridiem: 'short',
                 }}
                 eventDisplay="block"
+                eventMinHeight={55}
                 headerToolbar={false}
                 allDayMaintainDuration
                 eventResizableFromStart
