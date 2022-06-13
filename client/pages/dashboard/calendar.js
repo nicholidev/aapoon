@@ -242,7 +242,6 @@ function CalendarPage() {
                 select={handleSelectRange}
                 // eventDrop={handleDropEvent}
                 eventClick={handleSelectEvent}
-                event
                 // eventResize={handleResizeEvent}
                 height={isDesktop ? 720 : 'auto'}
                 plugins={[listPlugin, dayGridPlugin, interactionPlugin, timeGridPlugin, timelinePlugin]}

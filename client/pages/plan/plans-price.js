@@ -24,7 +24,7 @@ import Paper from '@mui/material/Paper';
 import GlobalStyles from '@mui/material/GlobalStyles';
 // ----------------------------------------------------------------------
 import Iconify from '../../components/Iconify';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import useAuth from '../../hooks/useAuth';
 import PlansComparison from '../../components/plan/PlansComparison';
 import { getAllProducts, getCheckoutSession } from '../../api/payments';
