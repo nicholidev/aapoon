@@ -317,12 +317,12 @@ function PlanPricePage() {
                   </Box>
                   <Button
                     onClick={() => startCheckoutSession(price.id)}
-                    disabled={subscription?.find((i) => i.product?.name === 'Premium')}
+                    disabled={subscription?.filter((i) => i.items[0].price.id === price.id).length > 0}
                     variant="contained"
                     size="large"
                     sx={{ mt: 4, borderRadius: '50px', mb: 4 }}
                   >
-                    {subscription?.find((i) => i.product?.name === 'Premium') ? 'Current Plan' : 'Choose plan'}
+                    {subscription?.filter((i) => i.items[0].price.id === price.id).length > 0 ? 'Current Plan' : 'Choose plan'}
                   </Button>
                 </PremiumCardRecurring>
               </Grid>

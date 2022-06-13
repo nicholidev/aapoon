@@ -75,6 +75,7 @@ export default function RegisterForm(query) {
     businessType: Yup.string(),
     numberOfEmployees: Yup.number(),
     professionType: Yup.string(),
+    other: Yup.string(),
   });
   const {push}=useRouter();
   const formik = useFormik({
@@ -86,13 +87,20 @@ export default function RegisterForm(query) {
       phone: user.phoneNumber,
       countryCode:user.countryCode||countryCodes.find(i=>i.code===countryCode)?.value,
       accountType: user.accountType || 'Business',
+      other: ""
     },
 
     validationSchema: RegisterSchema,
 
     onSubmit: async (values, { setErrors, setSubmitting }) => {
-
+     
       setSubmitting(true);
+      
+      if (values.accountType === 'Business' && values.businessType === 'Other') {
+        values.businessType = values.other
+      } else if (values.accountType === 'Professional' && values.professionType === 'Other') {
+        values.professionType = values.other
+      }
 
       try {
         await register(
@@ -170,6 +178,10 @@ export default function RegisterForm(query) {
    setCountryCode(e.target.value);
    setFieldValue("countryCode", countryCodes.find(i=>i.code===e.target.value)?.value)
   }
+
+
+  console.log(formik.values)
+
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
@@ -390,6 +402,27 @@ export default function RegisterForm(query) {
                       </FormControl>
                     </>
                   )}
+
+                  {
+                    ((formik.values.businessType === 'Other' && formik.values.accountType === 'Business') || 
+                      (formik.values.professionType === 'Other' && formik.values.accountType === 'Professional')
+                    ) && (
+                      <FormControl
+                        sx={{
+                          m: 1,
+                          minWidth: 80
+                        }}
+                      >
+                        <TextField
+                          fullWidth
+                          label={formik.values.accountType}
+                          {...getFieldProps('other')}
+                          error={Boolean(touched.firstName && errors.firstName)}
+                          helperText={touched.firstName && errors.firstName}
+                        />
+                      </FormControl>
+                    )
+                  }
                 </Stack>
               </DialogContentText>
             </DialogContent>

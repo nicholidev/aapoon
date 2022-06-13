@@ -152,6 +152,8 @@ function PageOne() {
     }
   }, [user.id]);
 
+  console.log(Math.ceil((user.subscription?.[0]?.current_period_end?.seconds || 0 ) / (1000 * 3600 * 24)));
+
   return (
     <Page title="Dashboard" sx={{pb:2}}>
       <GlobalStyles
@@ -169,7 +171,10 @@ function PageOne() {
           {user?.activeLicenses?.count > 1 ? (
             <DataSection>
               <DataHead>
-                <Typography variant="h5" style={{ display: 'inline' }}>License assigned</Typography>
+                <div>
+                  <Typography variant="h5">License assigned</Typography>
+                  <Typography variant="subtitle2">Expire in {Math.ceil((user.subscription?.[0]?.current_period_end?.seconds || 0 ) / (1000 * 3600 * 24))} days</Typography>
+                </div>
                 <Button
                   variant="outlined"
                   color="primary"
@@ -184,7 +189,7 @@ function PageOne() {
                 <LicenceData fetch={fetch} />
               </Box>
               <InviteModal
-                open={inviteOpen}
+                open={inviteOpen} 
                 handleClose={() => {
                   setInviteOpen(false);
                   setFetch(!fetch);

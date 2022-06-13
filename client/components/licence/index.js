@@ -88,12 +88,12 @@ export default function InviteData(props) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredUsers?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+            {filteredUsers?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, key) => {
               const { id, displayName, email, profilePic, status, avatarUrl, isVerified } = row;
               const isItemSelected = selected.indexOf(name) !== -1;
 
               return (
-                <TableRow key={row.token}>
+                <TableRow key={`license_${key}`}>
                   <TableCell>
                     {' '}
                     <ListItem>

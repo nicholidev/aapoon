@@ -27,9 +27,9 @@ exports.sendEmail = async function (emails, subject, html) {
       subject: subject,
       html: html,
     });
-    return true;
+    return false;
   } catch (error) {
     console.error("Error in mailer", error);
-    return false;
+    return error;
   }
 };
