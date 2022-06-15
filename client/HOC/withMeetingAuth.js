@@ -46,6 +46,10 @@ const withMeetingAuth = (WrappedComponent) => {
       const [name, setName] = useState('');
       const [domain,setDomain]=useState("meetaap.in")
       const [authMeeting, setAuthMeeting] = useState({
+
+
+
+        
         isAuth: localStorage.getItem('mid') === query.meetingid,
         id: localStorage.getItem('mid'),
         jwt: localStorage.getItem('mjwt'),
@@ -116,6 +120,18 @@ const withMeetingAuth = (WrappedComponent) => {
         setRequirePass(false);
         // console.log(authMeeting.jwt);
       }, [authMeeting.jwt]);
+
+      useEffect(() => {
+       
+        if(!!meetData.endAt?.['_seconds'] && meetData.endAt?.['_seconds'] < (new Date().valueOf() / 1000)) {
+          console.log('====================================================================')
+          console.log(meetData.endAt?.['_seconds'] < (new Date().valueOf() / 1000))
+          setError('invalid-meeting')
+          router.back()
+          console.log('====================================================================')
+        }
+      }, [meetData])
+
 
       // console.log(meetData);
       // console.log(authMeeting);

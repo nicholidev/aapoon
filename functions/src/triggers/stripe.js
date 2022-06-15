@@ -27,15 +27,17 @@ const stripe = new Stripe(config.stripeSecretKey, {
 
 
 const getStripeSecret=(mobile)=>{
-  const asYouType = new AsYouType()
-  asYouType.input(mobile)
-  let country=asYouType.getNumber().country
-  if(process.env["STRIPE_"+country])
+  // const asYouType = new AsYouType()
+  // asYouType.input(mobile)
+  // let country=asYouType.getNumber().country
+  // if(process.env["STRIPE_"+country])
+  if(mobile.includes('+91'))
   {
-    return process.env["STRIPE_"+country]
+    return process.env.STRIPE_IN
   }
-  else
-  return process.env["STRIPE_US"]
+  else {
+    return process.env.STRIPE_US
+  }
 
 }
 
@@ -155,7 +157,7 @@ exports.createCheckoutSession = functions.firestore
           version: "0.2.4",
         },
       });
-
+      
       if (!customerRecord?.stripeId) {
         const { email, phoneNumber } = await admin
           .auth()
@@ -166,7 +168,9 @@ exports.createCheckoutSession = functions.firestore
           phone: phoneNumber,
         });
       }
+     
       const customer = customerRecord.stripeId;
+     
       if (client === "web") {
         // Get shipping countries
         const shippingCountries = collect_shipping_address
@@ -200,16 +204,18 @@ exports.createCheckoutSession = functions.firestore
           cancel_url,
           locale,
         };
+
         if (payment_method_types) {
           sessionCreateParams.payment_method_types = payment_method_types;
         }
+
         if (mode === "subscription") {
           sessionCreateParams.subscription_data = {
             trial_from_plan,
             metadata,
           };
           if (!automatic_tax) {
-            sessionCreateParams.subscription_data.default_tax_rates = tax_rates;
+            sessionCreateParams.subscription_data.default_tax_rates = tax_rates.length > 0 ? tax_rates : undefined;
           }
         } else if (mode === "payment") {
           sessionCreateParams.payment_intent_data = {
@@ -217,6 +223,7 @@ exports.createCheckoutSession = functions.firestore
             ...(setup_future_usage && { setup_future_usage }),
           };
         }
+
         if (automatic_tax) {
           sessionCreateParams.automatic_tax = {
             enabled: true,
@@ -225,6 +232,7 @@ exports.createCheckoutSession = functions.firestore
           sessionCreateParams.customer_update.address = "auto";
           sessionCreateParams.customer_update.shipping = "auto";
         }
+
         if (tax_id_collection) {
           sessionCreateParams.tax_id_collection = {
             enabled: true,
@@ -233,17 +241,22 @@ exports.createCheckoutSession = functions.firestore
           sessionCreateParams.customer_update.address = "auto";
           sessionCreateParams.customer_update.shipping = "auto";
         }
+        
         if (promotion_code) {
           sessionCreateParams.discounts = [{ promotion_code }];
         } else {
           sessionCreateParams.allow_promotion_codes = allow_promotion_codes;
         }
-        if (client_reference_id)
+        
+        if (client_reference_id) {
           sessionCreateParams.client_reference_id = client_reference_id;
+        }
+
         const session = await stripe.checkout.sessions.create(
           sessionCreateParams,
           { idempotencyKey: context.params.id }
         );
+
         await snap.ref.set(
           {
             client,
