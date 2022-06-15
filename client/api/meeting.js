@@ -2,6 +2,7 @@
  Copyright ©. All Rights Reserved. Confidential and proprietary.
  XYZ. Contact address: XYZ@xyz.pa .
  */
+import { async } from '@firebase/util';
 import axios from 'axios';
 import firebase from 'firebase/compat/app';
 
@@ -134,6 +135,14 @@ export const getMeetingEvents = (start, end, user) => {
       });
   });
 };
+
+export const removeMeeting = async (id) => {
+  await firebase
+    .firestore()
+    .collection('meeting')
+    .doc(id)
+    .delete()
+}
 
 export const getStats = (start, end, curr, user) => {
   return new Promise(async (resolve, reject) => {

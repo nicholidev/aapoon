@@ -12,21 +12,11 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { getMeetingEvents } from '../../api/meeting';
 import { useSnackbar } from 'notistack';
 import { useState, useRef, useEffect } from 'react';
-import Link from 'next/link';
 // @mui
 import {
-  Button,
   Card,
   Container,
-  Grid,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   styled,
-  Typography,
-  DialogTitle,
 } from '@mui/material';
 // redux
 // routes
@@ -35,8 +25,6 @@ import useSettings from '../../hooks/useSettings';
 import useResponsive from '../../hooks/useResponsive';
 // components
 import Page from '../../components/Page';
-import Iconify from '../../components/Iconify';
-import { DialogAnimate } from '../../components/animate';
 // sections
 import { useRouter } from 'next/router';
 import GlobalStyles from '@mui/material/GlobalStyles';
@@ -46,7 +34,6 @@ import { startOfMonth, endOfMonth } from 'date-fns';
 // ----------------------------------------------------------------------
 import withAuth from '../../HOC/withAuth';
 import useAuth from '../../hooks/useAuth';
-import InstantMeetingPopup from '../../sections/meeting/InstantMeetingPopup';
 import MeetingDetailsPopup from '../../sections/meeting/MeetingDetailsPopup';
 import DashboardSidebar from '../../components/dashboard/DashboardSidebar';
 
@@ -192,7 +179,7 @@ function CalendarPage() {
         isOpen={meetingOpen.isOpen}
         data={meetingOpen.data}
         onClose={() => setMeetingOpen({ isOpen: false })}
-      ></MeetingDetailsPopup>
+      />
       <Container maxWidth={'xl'} sx={{ display: 'flex' }}>
         <DashboardSidebar currentPage="calendar" />
         <Content>

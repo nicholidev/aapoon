@@ -7,17 +7,29 @@ import { useSnackbar } from 'notistack';
 import { IconButtonAnimate } from '../../components/animate';
 import { differenceInDays } from 'date-fns';
 // @mui
-import { Stack, Typography, DialogContent, Box, Dialog, Button, Divider } from '@mui/material';
+import {
+  Stack,
+  Typography,
+  DialogContent,
+  Box,
+  Dialog,
+  Button,
+  Divider,
+  DialogActions,
+  DialogTitle,
+} from '@mui/material';
 import Iconify from '../../components/Iconify';
 import moment from 'moment';
 // components
 import { useRouter } from 'next/router';
 import { addTocalender } from '../../utils/addToCalender/AddToCalander';
+import {removeMeeting} from '../../api/meeting'
 
 function MeetingDetailsPopup(props) {
   const router = useRouter();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
+  const [confirm, setConfirm] = useState(false);
 
   const [data, setData] = useState({});
   useEffect(() => {
@@ -58,8 +70,15 @@ function MeetingDetailsPopup(props) {
     addTocalender(event, type, false);
   };
 
-  const removeMeetingHandler = () => {
-    console.log('REMOVE MEETING');
+  // Remove Meeting Process
+  const removeHandler = () => {
+    removeMeeting(props.data?.['_def'].publicId)
+    .then(() => {
+      setConfirm(false);
+      setOpen(false);
+      router.reload();
+    })
+    
   };
 
   return (
@@ -73,6 +92,23 @@ function MeetingDetailsPopup(props) {
           props.onClose();
         }}
       >
+        <Dialog open={confirm} maxWidth={'xs'}>
+          <DialogTitle id="alert-dialog-title">Are you sure remove this meeting?</DialogTitle>
+          <DialogContent style={{ paddingBottom: '10px' }}>
+          </DialogContent>
+          <DialogActions style={{ paddingTop: '10px' }}>
+            <Button
+              onClick={() => {
+                setConfirm(false);
+              }}
+            >
+              Cancel
+            </Button>
+            <Button variant="contained" onClick={removeHandler}>
+              Remove
+            </Button>
+          </DialogActions>
+        </Dialog>
         <DialogContent>
           <div style={{ padding: '40px' }}>
             <Stack spacing={1} justifyContent="center">
@@ -185,7 +221,12 @@ function MeetingDetailsPopup(props) {
 
               <Divider style={{ margin: '16px 0 8px' }} />
               <Box display={'flex'} style={{ marginTop: '16px' }}>
-                <Button variant="contained" onClick={removeMeetingHandler}>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    setConfirm(true);
+                  }}
+                >
                   Remove Meeting
                 </Button>
               </Box>
