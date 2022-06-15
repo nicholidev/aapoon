@@ -2,33 +2,12 @@
  Copyright ©. All Rights Reserved. Confidential and proprietary.
  XYZ. Contact address: XYZ@xyz.pa .
  */
-import * as Yup from 'yup';
 import { useEffect, useState } from 'react';
 import { useSnackbar } from 'notistack';
-import { useFormik, Form, FormikProvider } from 'formik';
 import { IconButtonAnimate } from '../../components/animate';
 import { differenceInDays } from 'date-fns';
 // @mui
-import {
-  Stack,
-  TextField,
-  IconButton,
-  InputAdornment,
-  Alert,
-  ButtonBase,
-  Typography,
-  DialogContent,
-  Grid,
-  Select,
-  MenuItem,
-  Box,
-  Dialog,
-  FormHelperText,
-  Button,
-  Divider,
-  Checkbox,
-} from '@mui/material';
-import { LoadingButton } from '@mui/lab';
+import { Stack, Typography, DialogContent, Box, Dialog, Button, Divider } from '@mui/material';
 import Iconify from '../../components/Iconify';
 import moment from 'moment';
 // components
@@ -77,6 +56,10 @@ function MeetingDetailsPopup(props) {
       recur: data?.extendedProps?.reccurring ? `RRULE:FREQ=DAILY;COUNT=${recudays + 1}` : '',
     };
     addTocalender(event, type, false);
+  };
+
+  const removeMeetingHandler = () => {
+    console.log('REMOVE MEETING');
   };
 
   return (
@@ -148,67 +131,12 @@ function MeetingDetailsPopup(props) {
                 </Button>
               </Box>
               <Divider style={{ margin: '16px 0 8px' }} />
-              {/* <Box
-              component={ButtonBase}
-              onClick={() => copyTocb(window.origin + '/meeting?meetingid=' + data?.id)}
-              sx={{
-                border: '1px solid #DDDDDD',
-                borderRadius: 1,
-                padding: 1,
-                pl: 2,
-                pr: 2,
-                backgroundColor: '#F9F9F9',
-                mb: 4,
-              }}
-              display="flex"
-              flexDirection="row"
-              alignItems="center"
-              justifyContent="space-between"
-            >
-              <Typography
-                variant="subtitle2"
-                align="center"
-                sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center' }}
-              >
-                {window.origin + '/meeting?meetingid=' + data?.id}
-              </Typography>
-              <Iconify icon="fluent:copy-20-filled" sx={{ fontSize: 24, ml: 2, color: 'text.secondary' }} />
-            </Box>
-            <br />
-            <Button variant="outlined" onClick={() => router.push(window.origin + '/meeting?meetingid=' + data?.id)}>
-              <Typography variant="h6">Join Now</Typography>
-            </Button> 
-            <br />*/}
-              <Typography variant="h6" sx={{ fontWeight: 600, display: 'flex' }}  gutterBottom>
+
+              <Typography variant="h6" sx={{ fontWeight: 600, display: 'flex' }} gutterBottom>
                 Add To Calander
               </Typography>
 
-              <Stack
-                spacing={2}
-                direction={'column'}
-                // direction={{ xs: 'column', sm: 'row', mt: 1 }}
-                // justifyContent="center"
-                // alignItems="center"
-              >
-                {/* <Box
-                component={ButtonBase}
-                onClick={() => addCalender('apple')}
-                width="160px"
-                sx={{ border: '1px solid #DDDDDD', borderRadius: 1, padding: 2, backgroundColor: '#F9F9F9' }}
-                display="flex"
-                flexDirection="column"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Iconify icon="ant-design:apple-filled" sx={{ fontSize: 40, color: '#000' }} />
-                <Typography
-                  variant="subtitle2"
-                  align="center"
-                  sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center', mt: 1 }}
-                >
-                  Apple calendar
-                </Typography>
-              </Box> */}
+              <Stack spacing={2} direction={'column'}>
                 <Box display={'flex'} alignItems="center" justifyContent="space-between">
                   <Box display={'flex'} alignItems="center">
                     <Iconify icon="ant-design:apple-filled" sx={{ fontSize: 24, color: '#000' }} />
@@ -253,58 +181,14 @@ function MeetingDetailsPopup(props) {
                     <Iconify icon="heroicons-outline:download" sx={{ fontSize: 24 }} />
                   </Button>
                 </Box>
-                <br />
-                {/* <Box display={'flex'} alignItems="center" justifyContent="space-between">
-                  <Box display={'flex'} alignItems="center">
-                    <Checkbox />
-                    <Typography variant="body2" color="text.secondary">
-                      Delete All recurring meetings
-                    </Typography>
-                  </Box>
-                  <Button variant="contained">Remove Meeting</Button>
-                </Box> */}
-                {/* <Box
-                component={ButtonBase}
-                onClick={() => addCalender('outlookcom')}
-                width="160px"
-                sx={{ border: '1px solid #DDDDDD', borderRadius: 1, padding: 2, backgroundColor: '#F9F9F9' }}
-                display="flex"
-                teamsize
-                flexDirection="column"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Iconify icon="vscode-icons:file-type-outlook" sx={{ fontSize: 40, color: '#225082' }} />
-
-                <Typography
-                  variant="subtitle2"
-                  align="center"
-                  sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center', mt: 1 }}
-                >
-                  Outlook calendar
-                </Typography>
-              </Box> */}
-                {/* <Box
-                component={ButtonBase}
-                width="160px"
-                sx={{ border: '1px solid #DDDDDD', borderRadius: 1, padding: 2, backgroundColor: '#F9F9F9' }}
-                display="flex"
-                onClick={() => addCalender('google')}
-                flexDirection="column"
-                alignItems="center"
-                justifyContent="center"
-              >
-                <Iconify icon="flat-color-icons:google" sx={{ fontSize: 40, color: '#225082' }} />
-
-                <Typography
-                  variant="subtitle2"
-                  align="center"
-                  sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center', mt: 1 }}
-                >
-                  Google calendar
-                </Typography>
-              </Box> */}
               </Stack>
+
+              <Divider style={{ margin: '16px 0 8px' }} />
+              <Box display={'flex'} style={{ marginTop: '16px' }}>
+                <Button variant="contained" onClick={removeMeetingHandler}>
+                  Remove Meeting
+                </Button>
+              </Box>
             </Stack>
           </div>
         </DialogContent>

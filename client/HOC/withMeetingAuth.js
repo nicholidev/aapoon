@@ -127,7 +127,7 @@ const withMeetingAuth = (WrappedComponent) => {
           console.log('====================================================================')
           console.log(meetData.endAt?.['_seconds'] < (new Date().valueOf() / 1000))
           setError('invalid-meeting')
-          router.back()
+          router.push('/')
           console.log('====================================================================')
         }
       }, [meetData])
