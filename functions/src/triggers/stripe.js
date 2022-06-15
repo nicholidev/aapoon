@@ -168,7 +168,9 @@ exports.createCheckoutSession = functions.firestore
           phone: phoneNumber,
         });
       }
+     
       const customer = customerRecord.stripeId;
+     
       if (client === "web") {
         // Get shipping countries
         const shippingCountries = collect_shipping_address
@@ -203,11 +205,10 @@ exports.createCheckoutSession = functions.firestore
           locale,
         };
 
-
-
         if (payment_method_types) {
           sessionCreateParams.payment_method_types = payment_method_types;
         }
+
         if (mode === "subscription") {
           sessionCreateParams.subscription_data = {
             trial_from_plan,
@@ -223,7 +224,6 @@ exports.createCheckoutSession = functions.firestore
           };
         }
 
-
         if (automatic_tax) {
           sessionCreateParams.automatic_tax = {
             enabled: true,
@@ -232,6 +232,7 @@ exports.createCheckoutSession = functions.firestore
           sessionCreateParams.customer_update.address = "auto";
           sessionCreateParams.customer_update.shipping = "auto";
         }
+
         if (tax_id_collection) {
           sessionCreateParams.tax_id_collection = {
             enabled: true,
@@ -241,16 +242,15 @@ exports.createCheckoutSession = functions.firestore
           sessionCreateParams.customer_update.shipping = "auto";
         }
         
-        
         if (promotion_code) {
           sessionCreateParams.discounts = [{ promotion_code }];
         } else {
           sessionCreateParams.allow_promotion_codes = allow_promotion_codes;
         }
+        
         if (client_reference_id) {
           sessionCreateParams.client_reference_id = client_reference_id;
         }
-          
 
         const session = await stripe.checkout.sessions.create(
           sessionCreateParams,
