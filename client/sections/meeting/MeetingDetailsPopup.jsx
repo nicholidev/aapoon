@@ -112,12 +112,12 @@ function MeetingDetailsPopup(props) {
         <DialogContent>
           <div style={{ padding: '40px' }}>
             <Stack spacing={1} justifyContent="center">
-              <Typography variant="h5" sx={{ textTransform: 'capitalize' }}>
+              <Typography variant="h5" sx={{ textTransform: 'capitalize' }} style={{overflowWrap: 'break-word'}}>
                 <Iconify icon="akar-icons:square-fill" color="success.main" />
                 &nbsp;&nbsp;
                 {data?.title}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" style={{overflowWrap: 'break-word'}}>
                 {data?.extendedProps?.description}
               </Typography>
               {data?.extendedProps?.password && (
@@ -150,7 +150,7 @@ function MeetingDetailsPopup(props) {
                 </Button>
               </Box>
               <Divider style={{ margin: '16px 0 8px' }} />
-              <Box display="flex">
+              <Box style={{overflowWrap: 'break-word'}}>
                 <Iconify icon="fluent:text-description-24-filled" width="24px" height="24px" color="text.secondary" />{' '}
                 &nbsp;&nbsp;
                 <Typography variant="body2">{data?.extendedProps?.description || 'N/A'}</Typography>
