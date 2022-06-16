@@ -303,6 +303,7 @@ function AuthProvider({ children }) {
   };
 
   const registerBusiness = (data) => {
+    console.log(data, '======================================================');
     console.log(data, 'REGISTER BUSINESS');
     return new Promise((resolve, reject) => {
       if (data.logo) {
@@ -331,13 +332,13 @@ function AuthProvider({ children }) {
           })
           .catch((err) => reject(err));
       } else {
-        delete data.logo;
+        data.update === 'false' && delete data.logo;
         firebase
           .firestore()
           .collection('users')
           .doc(state.user.uid)
           .update({
-            businessDetails: { ...data ,logo:state.user?.businessDetails?.logo||"" },
+            businessDetails: { ...data, logo: data.update === 'true' ? "" : (state.user?.businessDetails?.logo||"") },
           })
           .then((response) => {
             console.log(response, 'REGISTER BUSINESS');
@@ -345,7 +346,7 @@ function AuthProvider({ children }) {
 
             dispatch({
               type: 'UPDATE',
-              payload: { user: { ...state.user, businessDetails: { ...data,logo:state.user?.businessDetails?.logo ||""} } },
+              payload: { user: { ...state.user, businessDetails: { ...data, logo: data.update === 'true' ? "" : (state.user?.businessDetails?.logo||"") } } },
             });
           })
           .catch((err) => reject(err));
@@ -371,7 +372,6 @@ function AuthProvider({ children }) {
                 displayName: data.firstName + ' ' + data.lastName,
               })
               .then((response) => {
-                console.log(response, 'UPDATE PROFILE')
                 resolve('success');
               });
 
@@ -396,7 +396,6 @@ function AuthProvider({ children }) {
             displayName: data.firstName + ' ' + data.lastName,
           })
           .then((response) => {
-            console.log(response, 'UPDATE PROFILE')
             resolve('success');
             firebase.auth().currentUser.updateProfile({
               displayName: data.firstName + ' ' + data.lastName,
