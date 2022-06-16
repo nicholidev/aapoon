@@ -11,47 +11,64 @@ import {
   Stack,
   TextField,
   IconButton,
-  InputAdornment,
   Alert,
   Typography,
-  Grid,
   Avatar,
   Card,
-  Select,
   styled,
-  MenuItem,
   Badge,
-  Box,
   DialogTitle,
   Dialog,
-  FormHelperText,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DateTimePicker from '@mui/lab/DateTimePicker';
 // hooks
 import useAuth from '../../hooks/useAuth';
-import useIsMountedRef from '../../hooks/useIsMountedRef';
 // components
 import Iconify from '../../components/Iconify';
 import { FileUploader } from 'react-drag-drop-files';
 import { IconButtonAnimate } from '../../components/animate';
-import PhoneInput from 'react-phone-number-input/input';
-import CustomPhone from '../../components/Phonenumber';
-import InputLabel from '@mui/material/InputLabel';
 import CancelOutlinedIcon from '@mui/icons-material/CancelOutlined';
-import { instantMeeting } from '../../api/meeting';
 // ----------------------------------------------------------------------
 import ErrorMessages from '../../utils/errorMessage';
 import { useRouter } from 'next/router';
-import withMeetingAuth from '../../HOC/withMeetingAuth';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
+import CropImage from '../../components/upload/CropImage';
+
+
 function UpdateUserProfile(props) {
   const router = useRouter();
   const { user, updateProfile } = useAuth();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
+  const [cropOpen, setCropOpen] = useState(false);
+  const [avatar, setAvatar] = useState(user.profilePic);
+  const [file, setFile] = useState(null);
+  const [url, setUrl] = useState(user.businessDetails?.logo);
+
+  const handleUpload = (f) => {
+    setFile(f);
+    setAvatar(URL.createObjectURL(f));
+    setCropOpen(true);
+  };
+
+  const removeAvatarHandler = () => {
+    console.log('REMOVE AVATAR')
+    setAvatar(null)
+    setUrl(null);
+    formik.setValues({
+      ...formik.values,
+      logo: "",
+      update: 'true'
+    })
+  }
+
+  useEffect(() => {
+    if(!!user.profilePic) {
+      setAvatar(user.profilePic)
+    }
+  }, [user.profilePic])
+
+
   const AvatarContainer = styled(Card)(({ theme }) => ({
     width: 130,
     height: 130,
@@ -95,6 +112,7 @@ function UpdateUserProfile(props) {
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
       setSubmitting(true);
       try {
+        console.log(values)
         await updateProfile(values);
         enqueueSnackbar('User details updated', {
           variant: 'success',
@@ -126,10 +144,12 @@ function UpdateUserProfile(props) {
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, values } = formik;
+  
   useEffect(() => {
     setFieldValue('firstName', user?.displayName?.split(' ')[0]);
     setFieldValue('lastName', user?.displayName?.split(' ')[1]);
   }, [user]);
+
   return (
     <div>
       <Dialog open={open} maxWidth={'xs'} fullWidth onClose={() => setOpen(false)}>
@@ -150,7 +170,8 @@ function UpdateUserProfile(props) {
                       anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
                       badgeContent={
                         <FileUploader
-                          handleChange={(file) => {setFieldValue('profilePic', file);setFieldValue("picuri", URL.createObjectURL(file))}}
+                          // handleChange={(file) => {setFieldValue('profilePic', file);setFieldValue("picuri", URL.createObjectURL(file))}}
+                          handleChange={handleUpload}
                           name="file"
                           types={['JPG', 'PNG', 'JPEG']}
                         >
@@ -162,12 +183,21 @@ function UpdateUserProfile(props) {
                     >
                       <AvatarContainer>
                         <Avatar
-                          src={values.picuri }
+                          src={avatar}
                           alt="Rayan Moran"
                           sx={{ width: '100%', height: '100%' }}
                         />
                       </AvatarContainer>
                     </Badge>
+                    <CropImage
+                      open={cropOpen}
+                      setOpen={setCropOpen}
+                      file={file}
+                      avatar={avatar}
+                      setUrl={setUrl}
+                      setFieldValue={setFieldValue}
+                      fieldKey="profilePic"
+                    />
                   </center>
                 </Stack>
                 <Stack spacing={1}>

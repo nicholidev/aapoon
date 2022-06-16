@@ -142,15 +142,15 @@ const infoIconStyle = {
 };
 
 function ProfilePage() {
-  const { back ,push} = useRouter();
+  const { back, push } = useRouter();
   const { themeStretch } = useSettings();
   const [inviteOpen, setInviteOpen] = useState(false);
   const [fetch, setFetch] = useState(false);
   const [current, setCurrent] = useState('dashboard');
-  const { user, setLoading,deleteAccount,login } = useAuth();
+  const { user, setLoading, deleteAccount, login } = useAuth();
   const [open, setOpen] = useState(false);
-const [password,setPassword ]=useState("")
-const [error,setError]=useState("")
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -167,16 +167,16 @@ const [error,setError]=useState("")
     });
   };
 
-  const aggree=()=>{
-    login(user.email,password).then(result=>{
-      deleteAccount()
-      handleClose()
-    }).catch(err=>{
-      setError(ErrorMessages[err.code])
-    })
-   
-  
-  }
+  const aggree = () => {
+    login(user.email, password)
+      .then((result) => {
+        deleteAccount();
+        handleClose();
+      })
+      .catch((err) => {
+        setError(ErrorMessages[err.code]);
+      });
+  };
 
   let activeSub = user.subscription?.find((i) => i.status == 'active');
 
@@ -187,22 +187,28 @@ const [error,setError]=useState("")
           body: { backgroundColor: '#F1F1F1' },
         }}
       />
-       <Dialog
+      <Dialog
         open={open}
         onClose={handleClose}
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id="alert-dialog-title">
-          {"Are you sure?"}
-        </DialogTitle>
+        <DialogTitle id="alert-dialog-title">{'Are you sure?'}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description" sx={{mt:2}}>
-           This process is Irreversible , we will not be able to recover you Account
-<br/>
-<br/>
-
-        <center> <TextField type={"password"} error={error} helperText={error} label={"Enter password"} onChange={(e)=>setPassword(e.target.value)}/></center>  
+          <DialogContentText id="alert-dialog-description" sx={{ mt: 2 }}>
+            This process is Irreversible , we will not be able to recover you Account
+            <br />
+            <br />
+            <center>
+              {' '}
+              <TextField
+                type={'password'}
+                error={error}
+                helperText={error}
+                label={'Enter password'}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </center>
           </DialogContentText>
         </DialogContent>
         <DialogActions>
@@ -349,43 +355,48 @@ const [error,setError]=useState("")
                   <Divider orientation="vertical" variant="middle" flexItem />
                 </Stack>
                 <Grid item xs={12} sm={4} lg={2} xl={2}>
-                 { <Stack spacing={5}>
+                  {
                     <Stack spacing={5}>
-                      <ListItem disablePadding>
-                        <ListItemButton onClick={handleClickOpen}>
-                          <ListItemText
-                            secondary={
-                              <Typography variant="subtitle1" color="error">
-                                Close Account
-                              </Typography>
-                            }
-                          />
-                        </ListItemButton>
-                      </ListItem>
-                     { user?.activeLicenses?.count?<ListItem disablePadding>
-                        <ListItemButton onClick={()=>openPortal()}>
-                          <ListItemText
-                            primary={
-                              <Typography variant="subtitle1" color="success.main">
-                               Manage Billing
-                              </Typography>
-                            }
-                          />
-                        </ListItemButton>
-                      </ListItem>:!user?.assignedToMe?.length?
-                      <ListItem disablePadding>
-                      <ListItemButton onClick={()=>push("/plan/plans-price")}>
-                        <ListItemText
-                          primary={
-                            <Typography variant="subtitle1" color="success.main">
-                             Upgrade to premium
-                            </Typography>
-                          }
-                        />
-                      </ListItemButton>
-                    </ListItem>:
-                     ""}
-                      {/* <ListItem disablePadding>
+                      <Stack spacing={5}>
+                        <ListItem disablePadding>
+                          <ListItemButton onClick={handleClickOpen}>
+                            <ListItemText
+                              secondary={
+                                <Typography variant="subtitle1" color="error">
+                                  Close Account
+                                </Typography>
+                              }
+                            />
+                          </ListItemButton>
+                        </ListItem>
+                        {user?.activeLicenses?.count ? (
+                          <ListItem disablePadding>
+                            <ListItemButton onClick={() => openPortal()}>
+                              <ListItemText
+                                primary={
+                                  <Typography variant="subtitle1" color="success.main">
+                                    Manage Billing
+                                  </Typography>
+                                }
+                              />
+                            </ListItemButton>
+                          </ListItem>
+                        ) : !user?.assignedToMe?.length ? (
+                          <ListItem disablePadding>
+                            <ListItemButton onClick={() => push('/plan/plans-price')}>
+                              <ListItemText
+                                primary={
+                                  <Typography variant="subtitle1" color="success.main">
+                                    Upgrade to premium
+                                  </Typography>
+                                }
+                              />
+                            </ListItemButton>
+                          </ListItem>
+                        ) : (
+                          ''
+                        )}
+                        {/* <ListItem disablePadding>
                         <ListItemButton onClick={() => openPortal()}>
                           <ListItemText
                             primary={
@@ -396,9 +407,9 @@ const [error,setError]=useState("")
                           />
                         </ListItemButton>
                       </ListItem> */}
-                    </Stack>
+                      </Stack>
 
-                    {/* <Stack spacing={0}>
+                      {/* <Stack spacing={0}>
                       <ListItem disablePadding>
                         <ListItemButton>
                           <ListItemIcon>
@@ -414,7 +425,8 @@ const [error,setError]=useState("")
                         </ListItemButton>
                       </ListItem>
                     </Stack> */}
-                  </Stack>}
+                    </Stack>
+                  }
                 </Grid>
               </Grid>
             </DataHead>
@@ -422,11 +434,10 @@ const [error,setError]=useState("")
               <DataSection>
                 <DataHead sx={{ width: '100%', justifyContent: 'space-between', display: 'flex', px: 4, py: 3 }}>
                   <Typography variant="h5" style={{ display: 'inline' }}>
-                  Assigned license
+                    Assigned license
                   </Typography>
-                 
                 </DataHead>
-                <Box sx={{ p:{xs:0,md:4}, pt: 0, py: 0 }}>
+                <Box sx={{ p: { xs: 0, md: 4 }, pt: 0, py: 0 }}>
                   <LicenceData fetch={fetch} />
                 </Box>
                 <InviteModal
@@ -454,7 +465,7 @@ const [error,setError]=useState("")
                     Invite User
                   </Button> */}
                 </DataHead>
-                <Box sx={{ p:{xs:0,md:4}, pt: 0 }}>
+                <Box sx={{ p: { xs: 0, md: 4 }, pt: 0 }}>
                   <InviteData fetch={fetch} />
                 </Box>
                 <InviteModal
