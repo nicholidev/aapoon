@@ -56,7 +56,6 @@ const withMeetingAuth = (WrappedComponent) => {
       });
       const theme = useTheme();
       const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
-      // console.log(authMeeting, localStorage.getItem('mjwt'));
       useEffect(() => {
         setLoading(true);
         if (query.meetingid) {
@@ -118,23 +117,17 @@ const withMeetingAuth = (WrappedComponent) => {
 
       useEffect(() => {
         setRequirePass(false);
-        // console.log(authMeeting.jwt);
       }, [authMeeting.jwt]);
 
       useEffect(() => {
        
         if(!!meetData.endAt?.['_seconds'] && meetData.endAt?.['_seconds'] < (new Date().valueOf() / 1000)) {
-          console.log('====================================================================')
-          console.log(meetData.endAt?.['_seconds'] < (new Date().valueOf() / 1000))
           setError('invalid-meeting')
           router.push('/')
-          console.log('====================================================================')
         }
       }, [meetData])
 
 
-      // console.log(meetData);
-      // console.log(authMeeting);
       if (error === 'invalid-meeting') {
         // router.replace('/');
 

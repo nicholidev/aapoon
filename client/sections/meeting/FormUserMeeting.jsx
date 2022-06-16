@@ -76,7 +76,6 @@ export default function FormUserMeeting(props) {
     },
     validationSchema: RegisterSchema,
     onSubmit: async (values, { setSubmitting, resetForm }) => {
-      console.log('submitting');
       const tz = findTimeZone(values.timeZone);
 
       const nativeDate = values.meetingDateTime;

@@ -76,8 +76,6 @@ export default function FormHelpDesk(props) {
     },
     validationSchema: RegisterSchema,
     onSubmit: async (values, { setErrors, setSubmitting }) => {
-      console.log(values);
-
       try {
         await addHelp({ ...values, id: user?.id || '', name: user?.displayName || '' });
         enqueueSnackbar('Message sent to support center', {
@@ -110,6 +108,7 @@ export default function FormHelpDesk(props) {
   });
 
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, values } = formik;
+
 
   return (
     <div>
@@ -185,7 +184,11 @@ export default function FormHelpDesk(props) {
                   >
                     <Iconify icon="clarity:upload-cloud-line" sx={{ fontSize: 60, color: '#225082' }} />
                     <Typography align="center" sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center' }}>
-                      {values.uploadFile.name}
+                      {
+                        values.uploadFile.name.length > 30 ? 
+                        `${values.uploadFile.name.substring(0, 15)} ... ${values.uploadFile.name.substring(values.uploadFile.name.length - 10, values.uploadFile.name.length)}`:
+                        values.uploadFile.name
+                      }
                     </Typography>
                   </Box>
                 ) : (
