@@ -19,6 +19,7 @@ import {
   Badge,
   DialogTitle,
   Dialog,
+  Button
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // hooks
@@ -56,7 +57,7 @@ function UpdateUserProfile(props) {
     setUrl(null);
     formik.setValues({
       ...formik.values,
-      logo: "",
+      profilePic: "",
       update: 'true'
     })
   }
@@ -82,6 +83,7 @@ function UpdateUserProfile(props) {
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string().required('First name is required'),
     lastName: Yup.string('Enter a valid last name'),
+    update: Yup.string('false'),
     profilePic: Yup.mixed()
 
       .test('fileSize', 'The file is too large', (value) => {
@@ -104,6 +106,7 @@ function UpdateUserProfile(props) {
     initialValues: {
       firstName: user?.displayName?.split(' ')[0],
       lastName: user?.displayName?.split(' ')?.[1],
+      update: 'false',
       profilePic: '',
       picuri:user.profilePic
     },
@@ -187,6 +190,11 @@ function UpdateUserProfile(props) {
                         />
                       </AvatarContainer>
                     </Badge>
+                    <div style={{marginTop: 12}}>
+                      <Button variant="text" onClick={removeAvatarHandler}>
+                        Remove
+                      </Button>
+                    </div>
                     <CropImage
                       open={cropOpen}
                       setOpen={setCropOpen}
