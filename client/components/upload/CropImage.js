@@ -8,7 +8,7 @@ import 'react-image-crop/dist/ReactCrop.css'
 import {Modal, Box, Button} from "@mui/material";
 
 const CropImage = (props) => {
-  const {setOpen, open, file, avatar, setUrl, setFieldValue} = props
+  const {setOpen, open, file, avatar, setUrl, setFieldValue, fieldKey} = props
   const [crop, setCrop] = useState({
     height: 200,
     unit: "px",
@@ -99,7 +99,9 @@ const CropImage = (props) => {
 
   const cropHandler = () => {
     if(blob) {
-      setFieldValue('logo', new File([blob], file.name, {type: file.type}))
+      !!fieldKey ? 
+      setFieldValue(fieldKey, new File([blob], file.name, {type: file.type})):
+      setFieldValue('logo', new File([blob], file.name, {type: file.type}));
     }
     setUrl((croped !== null) ? croped : avatar);
     setOpen(false);
