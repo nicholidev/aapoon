@@ -11,7 +11,7 @@ import 'firebase/compat/storage';
 import { FIREBASE_API } from '../config';
 import { useRouter } from 'next/router';
 import { phoneExists } from '../services/misc-service';
-import { acceptInvitation, getCountry } from './../api/user';
+import { acceptInvitation, closeAccount, getCountry } from './../api/user';
 import { addJWTInterceptor } from '../utils/Interceptor';
 // ----------------------------------------------------------------------
 
@@ -271,7 +271,8 @@ function AuthProvider({ children }) {
 
   const deleteAccount = () => {
     dispatch({ type: 'TOGGLE_LOADING', payload: true });
-    firebase.auth().currentUser.delete().then((res) => {
+    closeAccount({id: firebase.auth().currentUser.uid})
+    .then((res) => {
       console.log(res, 'DELETE ACCOUNT')
       dispatch({
         type: 'UPDATE',
@@ -285,7 +286,20 @@ function AuthProvider({ children }) {
       localStorage.clear();
       dispatch({ type: 'TOGGLE_LOADING', payload: false });
     })
+    // firebase.auth().currentUser.delete().then((res) => {
+    //   console.log(res, 'DELETE ACCOUNT')
+    //   dispatch({
+    //     type: 'UPDATE',
+    //     payload: {
+    //       user: {},
+    //     },
+    //   });
+    //   window.location = '/';
   
+    //   localStorage.removeItem('isAuthenticated');
+    //   localStorage.clear();
+    //   dispatch({ type: 'TOGGLE_LOADING', payload: false });
+    // })
   };
 
   const loginWithFaceBook = () => {
@@ -303,13 +317,10 @@ function AuthProvider({ children }) {
   };
 
   const registerBusiness = (data) => {
-    console.log(data, '======================================================');
-    console.log(data, 'REGISTER BUSINESS');
     return new Promise((resolve, reject) => {
       if (data.logo) {
         const storageRef = firebase.storage().ref();
         const busRef = storageRef.child(`account/${state.user.uid}/business/logo/${data.logo.name}`);
-        console.log(data.logo)
         busRef
           .put(data.logo)
           .then(async (snapshot) => {
@@ -322,7 +333,6 @@ function AuthProvider({ children }) {
                 businessDetails: { ...data, logo: downloadURL },
               })
               .then((response) => {
-                console.log(response, 'REGISTER BUSINESS')
                 dispatch({
                   type: 'UPDATE',
                   payload: { user: { ...state.user, businessDetails: { ...data, logo: downloadURL } } },
@@ -341,7 +351,6 @@ function AuthProvider({ children }) {
             businessDetails: { ...data, logo: data.update === 'true' ? "" : (state.user?.businessDetails?.logo||"") },
           })
           .then((response) => {
-            console.log(response, 'REGISTER BUSINESS');
             resolve('success');
 
             dispatch({
@@ -412,7 +421,6 @@ function AuthProvider({ children }) {
   };
 
   const register = (email, password, firstName, lastName, phoneNumber, allValues) => {
-    console.log(allValues, 'REGISTER')
     return new Promise((resolve, reject) => {
       phoneExists(phoneNumber, email)
         .then((res) => {
@@ -522,7 +530,6 @@ function AuthProvider({ children }) {
                   },
                 })
                 .then((result) => {
-                  console.log(result, 'VERIFY MOBILE CODE');
                   dispatch({ type: 'TOGGLE_LOADING', payload: false });
                   resolve(user);
                 })

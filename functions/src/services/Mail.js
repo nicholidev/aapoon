@@ -20,7 +20,6 @@ const transporter = nodemailer.createTransport({
  * Function to send Mail
  */
 exports.sendEmail = async function (emails, subject, html) {
-  // console.log(transporter)
   try {
     await transporter.sendMail({
       from: "aapoon Meet <support@meetaap.in>",
@@ -28,9 +27,9 @@ exports.sendEmail = async function (emails, subject, html) {
       subject: subject,
       html: html,
     });
-    return false;
+    return true;
   } catch (error) {
     console.error("Error in mailer", error);
-    return error;
+    return false;
   }
 };

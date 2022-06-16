@@ -141,7 +141,6 @@ export default function RegisterForm(props) {
   };
 
   const removeAvatarHandler = () => {
-    console.log('REMOVE AVATAR')
     setAvatar(null)
     setUrl(null);
     formik.setValues({

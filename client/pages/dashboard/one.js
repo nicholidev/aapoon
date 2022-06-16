@@ -152,8 +152,6 @@ function PageOne() {
     }
   }, [user.id]);
 
-  console.log(Math.ceil((user.subscription?.[0]?.current_period_end?.seconds || 0 ) / (1000 * 3600 * 24)));
-
   return (
     <Page title="Dashboard" sx={{pb:2}}>
       <GlobalStyles

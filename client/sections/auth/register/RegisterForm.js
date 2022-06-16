@@ -179,9 +179,6 @@ export default function RegisterForm(query) {
    setFieldValue("countryCode", countryCodes.find(i=>i.code===e.target.value)?.value)
   }
 
-
-  console.log(formik.values)
-
   return (
     <FormikProvider value={formik}>
       <Form autoComplete="off" noValidate onSubmit={handleSubmit}>

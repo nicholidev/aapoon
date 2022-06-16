@@ -51,7 +51,6 @@ export default function FormAssignLicense({ setEmail, setLinkSentModal }) {
     },
     validationSchema: RegisterSchema,
     onSubmit: async (values, { setErrors, setSubmitting }) => {
-      console.log(values)
       try {
         await assignLicense(user.id, { ...values, ownerName: user.displayName });
         enqueueSnackbar('License assigned', {

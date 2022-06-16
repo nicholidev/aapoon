@@ -17,7 +17,6 @@ export default function AuthFirebaseSocials() {
   const handleLoginGoogle = async () => {
     try {
       let data = await loginWithGoogle();
-      console.log(data);
     } catch (error) {
       console.error(error);
     }

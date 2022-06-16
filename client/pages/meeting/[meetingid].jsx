@@ -56,35 +56,27 @@ const Meeting = () => {
   const [meetingState, setMeetingState] = useState({});
 
   const handleClose = () => {
-    // console.log('handleClose');
   };
 
   const handleParticipantLeft = async (participant) => {
-    // console.log('handleParticipantLeft', participant); // { id: "2baa184e" }
     const data = await getParticipants();
   };
 
   const handleParticipantJoined = async (participant) => {
-    // console.log('handleParticipantJoined', participant); // { id: "2baa184e", displayName: "Shanu Verma", formattedDisplayName: "Shanu Verma" }
     const data = await getParticipants();
   };
 
   const handleVideoConferenceJoined = async (participant) => {
-    // console.log('handleVideoConferenceJoined', participant); // { roomName: "bwb-bfqi-vmh", id: "8c35a951", displayName: "Akash Verma", formattedDisplayName: "Akash Verma (me)"}
     const data = await getParticipants();
   };
 
   const handleVideoConferenceLeft = () => {
-    // console.log('handleVideoConferenceLeft');
-    // return props.history.push('/thank-you');
   };
 
   const handleMuteStatus = (audio) => {
-    // console.log('handleMuteStatus', audio); // { muted: true }
   };
 
   const handleVideoStatus = (video) => {
-    // console.log('handleVideoStatus', video); // { muted: true }
   };
 
   const getParticipants = () => {
@@ -153,7 +145,6 @@ const Meeting = () => {
   }, [router.query]);
 
   useEffect(() => {
-    // console.log(meetingState)
     if (window.JitsiMeetExternalAPI) {
       if (meetingState.room) {
         startMeet();

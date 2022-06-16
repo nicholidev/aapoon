@@ -9,7 +9,8 @@ const express = require("express");
 
 const miscRoutes = require("./src/routes/misc/misc-routes");
 const meetingRoutes = require("./src/routes/meeting/meeting-route");
-const recordingRoutes=require("./src/routes/recording/recording-route")
+const recordingRoutes=require("./src/routes/recording/recording-route");
+const accountRoutes=require("./src/routes/account/account-route");
 const { sendWelcomeEmail, updateUser } = require("./src/triggers/auth");
 const { sendInviteEmail } = require("./src/triggers/invites");
 const { sendHelpConfirmEmail, sendSuppotMail } = require("./src/triggers/help");
@@ -32,7 +33,8 @@ app.use(cors);
 app.use(errors.express);
 miscRoutes(app);
 meetingRoutes(app);
-recordingRoutes(app)
+recordingRoutes(app);
+accountRoutes(app);
 exports.app = functions.https.onRequest(app);
 exports.sendWelcomeEmail = sendWelcomeEmail;
 exports.sendInviteeEmail = sendInviteEmail;

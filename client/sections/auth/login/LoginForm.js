@@ -61,10 +61,22 @@ export default function LoginForm() {
           setSubmitting(false);
         }
       } catch (error) {
+       
         if (isMountedRef.current) {
           setSubmitting(false);
           console.log(error.code);
           setErrors({ afterSubmit: ErrorMessages[error.code] });
+
+          if(error.code === 'auth/user-disabled') {
+            enqueueSnackbar('Your account was closed. You can recover it by contacting us in 30 days.', {
+              variant: 'warn',
+              action: (key) => (
+                <IconButtonAnimate size="small" onClick={() => closeSnackbar(key)}>
+                  <Iconify icon={'eva:close-fill'} />
+                </IconButtonAnimate>
+              ),
+            });
+          }
         }
       }
     },
