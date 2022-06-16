@@ -286,20 +286,6 @@ function AuthProvider({ children }) {
       localStorage.clear();
       dispatch({ type: 'TOGGLE_LOADING', payload: false });
     })
-    // firebase.auth().currentUser.delete().then((res) => {
-    //   console.log(res, 'DELETE ACCOUNT')
-    //   dispatch({
-    //     type: 'UPDATE',
-    //     payload: {
-    //       user: {},
-    //     },
-    //   });
-    //   window.location = '/';
-  
-    //   localStorage.removeItem('isAuthenticated');
-    //   localStorage.clear();
-    //   dispatch({ type: 'TOGGLE_LOADING', payload: false });
-    // })
   };
 
   const loginWithFaceBook = () => {
@@ -403,6 +389,7 @@ function AuthProvider({ children }) {
           .doc(state.user.uid)
           .update({
             displayName: data.firstName + ' ' + data.lastName,
+            profilePic: data.update === 'true' ? "" : undefined
           })
           .then((response) => {
             resolve('success');
@@ -411,7 +398,7 @@ function AuthProvider({ children }) {
             });
             dispatch({
               type: 'UPDATE',
-              payload: { user: { ...state.user, displayName: data.firstName + ' ' + data.lastName } },
+              payload: { user: { ...state.user, displayName: data.firstName + ' ' + data.lastName, profilePic: state.user?.profilePic } },
             });
           })
 
