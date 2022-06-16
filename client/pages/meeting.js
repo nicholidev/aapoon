@@ -53,8 +53,6 @@ function Meeting(props) {
     } else {
       window.location = '/';
     }
-   
-
   };
 
   const handleParticipantLeft = async (participant) => {
@@ -167,48 +165,11 @@ function Meeting(props) {
   }, [meetingState]);
 
   return (
-    <Content id="jitsi-iframe" style={{ height: '100%' }}>
-      {/* <div class="item-center">
-               <span>Custom Controls</span>
-             </div>
-             <div class="item-center">
-               <span>&nbsp;&nbsp;</span>
-               <i
-                 onClick={() => executeCommand('toggleAudio')}
-                 className={`fas fa-2x grey-color ${
-                   meetingState.isAudioMuted ? 'fa-microphone-slash' : 'fa-microphone'
-                 }`}
-                 aria-hidden="true"
-                 title="Mute / Unmute"
-               ></i>
-               <i
-                 onClick={() => executeCommand('hangup')}
-                 className="fas fa-phone-slash fa-2x red-color"
-                 aria-hidden="true"
-                 title="Leave"
-               ></i>
-               <i
-                 onClick={() => executeCommand('toggleVideo')}
-                 className={`fas fa-2x grey-color ${meetingState.isVideoMuted ? 'fa-video-slash' : 'fa-video'}`}
-                 aria-hidden="true"
-                 title="Start / Stop camera"
-               ></i>
-               <i
-                 onClick={() => executeCommand('toggleShareScreen')}
-                 className="fas fa-film fa-2x grey-color"
-                 aria-hidden="true"
-                 title="Share your screen"
-               ></i>
-             </div> */}
-    </Content>
+    <Content id="jitsi-iframe" style={{ height: '100%' }}></Content>
   );
 }
 
 // ----------------------------------------------------------------------
 let MeetingPage = withMeetingAuth(Meeting);
-
-// MeetingPage.getLayout = function getLayout(page) {
-//   return <DashboardLayout>{page}</DashboardLayout>;
-// };
 
 export default MeetingPage;

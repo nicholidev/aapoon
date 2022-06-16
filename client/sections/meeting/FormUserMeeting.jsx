@@ -166,7 +166,6 @@ export default function FormUserMeeting(props) {
     addTocalender(event, type, false);
   };
 
-
   const handleMeetingType = (event) => {
     setMeetingType(event.target.value);
     if (event.target.value === 'recurring') {
@@ -420,75 +419,183 @@ export default function FormUserMeeting(props) {
                   <Stack spacing={1} sx={{ marginLeft: { sm: '20px', xs: 0 } }}>
                     <Typography sx={{ fontWeight: 500 }}> Estimated Duration * </Typography>
 
-                      { user?.activeLicenses?.count || user?.assignedToMe?.length ? (
-                        <Select
-                          {...getFieldProps('estimatedDuration')}
-                          error={Boolean(touched.estimatedDuration && errors.estimatedDuration)}
-                          helperText={touched.estimatedDuration && errors.estimatedDuration}
-                        >
-                          <MenuItem key={15} value={'15'}>15 Minutes</MenuItem>
-                          <MenuItem key={30} value={'30'}>30 Minutes</MenuItem>
-                          <MenuItem key={45} value={'45'}>45 Minutes</MenuItem>
-                          <MenuItem key={60} value={'60'}>1 hour</MenuItem>
-                          <MenuItem key={90} value={'90'}>1.5 hours</MenuItem>
-                          <MenuItem key={120} value={'120'}>2 hours</MenuItem>
-                          <MenuItem key={150} value={'150'}>2.5 hours</MenuItem>
-                          <MenuItem key={180} value={'180'}>3 hours</MenuItem>
-                          <MenuItem key={210} value={'210'}>3.5 hours </MenuItem>
-                          <MenuItem key={240} value={'240'}>4 hours</MenuItem>
-                          <MenuItem key={270} value={'270'}>4.5 hours</MenuItem>
-                          <MenuItem key={300} value={'300'}>5 hours</MenuItem>
-                          <MenuItem key={330} value={'330'}>5.5 hours</MenuItem>
-                          <MenuItem key={360} value={'360'}>6 hours</MenuItem>
-                          <MenuItem key={390} value={'390'}>6.5 hours </MenuItem>
-                          <MenuItem key={420} value={'420'}>7 hours</MenuItem>
-                          <MenuItem key={450} value={'450'}>7.5 hours</MenuItem>
-                          <MenuItem key={480} value={'480'}>8 hours</MenuItem>
-                          <MenuItem key={510} value={'510'}>8.5 hours</MenuItem>
-                          <MenuItem key={540} value={'540'}>9 hours</MenuItem>
-                          <MenuItem key={570} value={'570'}>9.5 hours </MenuItem>
-                          <MenuItem key={600} value={'600'}>10 hours</MenuItem>
-                          <MenuItem key={630} value={'630'}>10.5 hours</MenuItem>
-                          <MenuItem key={660} value={'660'}>11 hours</MenuItem>
-                          <MenuItem key={690} value={'690'}>11.5 hours</MenuItem>
-                          <MenuItem key={720} value={'720'}>12 hours</MenuItem>
-                          <MenuItem key={750} value={'750'}>12.5 hours</MenuItem>
-                          <MenuItem key={780} value={'780'}>13 hours</MenuItem>
-                          <MenuItem key={810} value={'810'}>13.5 hours</MenuItem>
-                          <MenuItem key={840} value={'840'}>14 hours</MenuItem>
-                          <MenuItem key={870} value={'870'}>14.5 hours</MenuItem>
-                          <MenuItem key={900} value={'900'}>15 hours</MenuItem>
-                          <MenuItem key={930} value={'930'}>15.5 hours</MenuItem>
-                          <MenuItem key={960} value={'960'}>16 hours</MenuItem>
-                          <MenuItem key={990} value={'990'}>16.5 hours</MenuItem>
-                          <MenuItem key={1020} value={'1020'}>17 hours</MenuItem>
-                          <MenuItem key={1050} value={'1050'}>17.5 hours</MenuItem>
-                          <MenuItem key={1080} value={'1080'}>18 hours</MenuItem>
-                          <MenuItem key={1110} value={'1110'}>18.5 hours</MenuItem>
-                          <MenuItem key={1140} value={'1140'}>19 hours</MenuItem>
-                          <MenuItem key={1170} value={'1170'}>19.5 hours</MenuItem>
-                          <MenuItem key={1200} value={'1200'}>20 hours</MenuItem>
-                          <MenuItem key={1230} value={'1230'}>20.5 hours</MenuItem>
-                          <MenuItem key={1260} value={'1260'}>21 hours</MenuItem>
-                          <MenuItem key={1290} value={'1290'}>21.5 hours</MenuItem>
-                          <MenuItem key={1320} value={'1320'}>22 hours</MenuItem>
-                          <MenuItem key={1350} value={'1350'}>22.5 hours</MenuItem>
-                          <MenuItem key={1380} value={'1380'}>23 hours</MenuItem>
-                          <MenuItem key={1410} value={'1410'}>23.5 hours</MenuItem>
-                          <MenuItem key={1440} value={'1440'}>24 hours</MenuItem>
-                        </Select>
-                      ) : (
-                        <Select
-                          {...getFieldProps('estimatedDuration')}
-                          error={Boolean(touched.estimatedDuration && errors.estimatedDuration)}
-                          helperText={touched.estimatedDuration && errors.estimatedDuration}
-                        >
-                          <MenuItem key={`mt-15`} value={'15'}>15 Minutes</MenuItem>
-                          <MenuItem key={`mt-30`} value={'30'}>30 Minutes</MenuItem>
-                          <MenuItem key={`mt-45`} value={'45'}>45 Minutes</MenuItem>
-                          <MenuItem key={`mt-55`} value={'55'}>55 Minutes</MenuItem>
-                        </Select>
-                      )}
+                    {user?.activeLicenses?.count || user?.assignedToMe?.length ? (
+                      <Select
+                        {...getFieldProps('estimatedDuration')}
+                        error={Boolean(touched.estimatedDuration && errors.estimatedDuration)}
+                        helperText={touched.estimatedDuration && errors.estimatedDuration}
+                      >
+                        <MenuItem key={15} value={'15'}>
+                          15 Minutes
+                        </MenuItem>
+                        <MenuItem key={30} value={'30'}>
+                          30 Minutes
+                        </MenuItem>
+                        <MenuItem key={45} value={'45'}>
+                          45 Minutes
+                        </MenuItem>
+                        <MenuItem key={60} value={'60'}>
+                          1 hour
+                        </MenuItem>
+                        <MenuItem key={90} value={'90'}>
+                          1.5 hours
+                        </MenuItem>
+                        <MenuItem key={120} value={'120'}>
+                          2 hours
+                        </MenuItem>
+                        <MenuItem key={150} value={'150'}>
+                          2.5 hours
+                        </MenuItem>
+                        <MenuItem key={180} value={'180'}>
+                          3 hours
+                        </MenuItem>
+                        <MenuItem key={210} value={'210'}>
+                          3.5 hours{' '}
+                        </MenuItem>
+                        <MenuItem key={240} value={'240'}>
+                          4 hours
+                        </MenuItem>
+                        <MenuItem key={270} value={'270'}>
+                          4.5 hours
+                        </MenuItem>
+                        <MenuItem key={300} value={'300'}>
+                          5 hours
+                        </MenuItem>
+                        <MenuItem key={330} value={'330'}>
+                          5.5 hours
+                        </MenuItem>
+                        <MenuItem key={360} value={'360'}>
+                          6 hours
+                        </MenuItem>
+                        <MenuItem key={390} value={'390'}>
+                          6.5 hours{' '}
+                        </MenuItem>
+                        <MenuItem key={420} value={'420'}>
+                          7 hours
+                        </MenuItem>
+                        <MenuItem key={450} value={'450'}>
+                          7.5 hours
+                        </MenuItem>
+                        <MenuItem key={480} value={'480'}>
+                          8 hours
+                        </MenuItem>
+                        <MenuItem key={510} value={'510'}>
+                          8.5 hours
+                        </MenuItem>
+                        <MenuItem key={540} value={'540'}>
+                          9 hours
+                        </MenuItem>
+                        <MenuItem key={570} value={'570'}>
+                          9.5 hours{' '}
+                        </MenuItem>
+                        <MenuItem key={600} value={'600'}>
+                          10 hours
+                        </MenuItem>
+                        <MenuItem key={630} value={'630'}>
+                          10.5 hours
+                        </MenuItem>
+                        <MenuItem key={660} value={'660'}>
+                          11 hours
+                        </MenuItem>
+                        <MenuItem key={690} value={'690'}>
+                          11.5 hours
+                        </MenuItem>
+                        <MenuItem key={720} value={'720'}>
+                          12 hours
+                        </MenuItem>
+                        <MenuItem key={750} value={'750'}>
+                          12.5 hours
+                        </MenuItem>
+                        <MenuItem key={780} value={'780'}>
+                          13 hours
+                        </MenuItem>
+                        <MenuItem key={810} value={'810'}>
+                          13.5 hours
+                        </MenuItem>
+                        <MenuItem key={840} value={'840'}>
+                          14 hours
+                        </MenuItem>
+                        <MenuItem key={870} value={'870'}>
+                          14.5 hours
+                        </MenuItem>
+                        <MenuItem key={900} value={'900'}>
+                          15 hours
+                        </MenuItem>
+                        <MenuItem key={930} value={'930'}>
+                          15.5 hours
+                        </MenuItem>
+                        <MenuItem key={960} value={'960'}>
+                          16 hours
+                        </MenuItem>
+                        <MenuItem key={990} value={'990'}>
+                          16.5 hours
+                        </MenuItem>
+                        <MenuItem key={1020} value={'1020'}>
+                          17 hours
+                        </MenuItem>
+                        <MenuItem key={1050} value={'1050'}>
+                          17.5 hours
+                        </MenuItem>
+                        <MenuItem key={1080} value={'1080'}>
+                          18 hours
+                        </MenuItem>
+                        <MenuItem key={1110} value={'1110'}>
+                          18.5 hours
+                        </MenuItem>
+                        <MenuItem key={1140} value={'1140'}>
+                          19 hours
+                        </MenuItem>
+                        <MenuItem key={1170} value={'1170'}>
+                          19.5 hours
+                        </MenuItem>
+                        <MenuItem key={1200} value={'1200'}>
+                          20 hours
+                        </MenuItem>
+                        <MenuItem key={1230} value={'1230'}>
+                          20.5 hours
+                        </MenuItem>
+                        <MenuItem key={1260} value={'1260'}>
+                          21 hours
+                        </MenuItem>
+                        <MenuItem key={1290} value={'1290'}>
+                          21.5 hours
+                        </MenuItem>
+                        <MenuItem key={1320} value={'1320'}>
+                          22 hours
+                        </MenuItem>
+                        <MenuItem key={1350} value={'1350'}>
+                          22.5 hours
+                        </MenuItem>
+                        <MenuItem key={1380} value={'1380'}>
+                          23 hours
+                        </MenuItem>
+                        <MenuItem key={1410} value={'1410'}>
+                          23.5 hours
+                        </MenuItem>
+                        <MenuItem key={1440} value={'1440'}>
+                          24 hours
+                        </MenuItem>
+                      </Select>
+                    ) : (
+                      <Select
+                        {...getFieldProps('estimatedDuration')}
+                        error={Boolean(touched.estimatedDuration && errors.estimatedDuration)}
+                        helperText={touched.estimatedDuration && errors.estimatedDuration}
+                      >
+                        <MenuItem key={`mt-15`} value={'15'}>
+                          15 Minutes
+                        </MenuItem>
+                        <MenuItem key={`mt-30`} value={'30'}>
+                          30 Minutes
+                        </MenuItem>
+                        <MenuItem key={`mt-45`} value={'45'}>
+                          45 Minutes
+                        </MenuItem>
+                        <MenuItem key={`mt-55`} value={'55'}>
+                          55 Minutes
+                        </MenuItem>
+                      </Select>
+                    )}
                   </Stack>
                 </Grid>
                 <Grid item xs={12} sm={6}>
@@ -559,7 +666,9 @@ export default function FormUserMeeting(props) {
                       helperText={touched.timeZone && errors.timeZone}
                     >
                       {timeZones.map((item, index) => (
-                        <MenuItem value={item} key={`timezone-${index}`}>{item}</MenuItem>
+                        <MenuItem value={item} key={`timezone-${index}`}>
+                          {item}
+                        </MenuItem>
                       ))}
                     </Select>
                   </Stack>

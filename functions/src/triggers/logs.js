@@ -73,7 +73,7 @@ function customerDeleted(id) {
 exports.customerDeleted = customerDeleted;
 function creatingCheckoutSession(docId) {
   firebase_functions_1.logger.log(
-    "\u2699\uFE0F Creating checkout session for doc [" + docId + "]."
+    "\u2699\uFE0F Creating checkout session for doc [" + docId + "].========================================================"
   );
 }
 exports.creatingCheckoutSession = creatingCheckoutSession;
