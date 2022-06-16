@@ -112,7 +112,6 @@ export default function CustomersData(props) {
 
   const [customerPopoverOpen, setCustomerPopoverOpen] = useState({ open: false, anchorEl: null, popoverId: null });
   const anchorRef = useRef(null);
-  console.log('user', user);
   return (
     <Scrollbar>
       <TableContainer sx={{ minWidth: 1280 }}>

@@ -11,7 +11,6 @@ const phoneInput = (props, ref) => {
   const [countryCode, setCountryCode] = useState('US');
   useEffect(() => {
     getCountry().then((res) => {
-      console.log(res.data);
       setCountryCode(res.data.country_calling_code);
     });
   }, []);

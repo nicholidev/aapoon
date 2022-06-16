@@ -10,7 +10,6 @@ export const inviteUser = async (data) => {
 };
 
 export const getInviteList = async (id) => {
-  console.log('invite id', id);
   return axios.get(`${endpoint}/misc/invite-list?invitedBy=${id}`);
 };
 
@@ -28,3 +27,6 @@ export const acceptInvitation = async (body) => {
 export const getCountry = () => {
   return axios.get(`https://ipapi.co/json/`);
 };
+
+export const closeAccount = (body) => axios
+  .post(`${endpoint}/account/close`, body);

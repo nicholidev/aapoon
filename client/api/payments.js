@@ -54,13 +54,11 @@ export const getCheckoutSession = async (price, taxed=false) => {
         cancel_url: window.location.origin + '/plan/plans-price',
       });
 
-    console.log((await docRef.get()).data())
     // Wait for the CheckoutSession to get attached by the extension
     docRef.onSnapshot((snap) => {
       const { error, url } = snap.data();
 
       if (url) {
-        console.log(url);
         resolve(url);
         // We have a Stripe Checkout URL, let's redirect.
         window.location.assign(url);

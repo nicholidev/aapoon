@@ -48,6 +48,9 @@ export default function Searchbar() {
     setOpen(false);
   };
 
+  const keywordHandler = (event) => {
+  }
+
   return (
     <ClickAwayListener onClickAway={handleClose}>
       <div>
@@ -63,6 +66,7 @@ export default function Searchbar() {
               autoFocus
               fullWidth
               disableUnderline
+              onChange={keywordHandler}
               placeholder="Search…"
               startAdornment={
                 <InputAdornment position="start">

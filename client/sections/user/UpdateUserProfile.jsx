@@ -52,7 +52,6 @@ function UpdateUserProfile(props) {
   };
 
   const removeAvatarHandler = () => {
-    console.log('REMOVE AVATAR')
     setAvatar(null)
     setUrl(null);
     formik.setValues({
@@ -112,7 +111,6 @@ function UpdateUserProfile(props) {
     onSubmit: async (values, { setErrors, setSubmitting, resetForm }) => {
       setSubmitting(true);
       try {
-        console.log(values)
         await updateProfile(values);
         enqueueSnackbar('User details updated', {
           variant: 'success',

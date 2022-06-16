@@ -41,7 +41,6 @@ const AvtarContainer = styled(Card)(({ theme }) => ({
 export default function UserData(props) {
   const [userData, setUserData] = useState([]);
   const { user } = useAuth();
-  console.log('user', user);
 
   return (
     <Scrollbar>

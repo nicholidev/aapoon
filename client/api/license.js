@@ -18,7 +18,6 @@ export const assignLicense = async (userid, data) => {
       .where('email', '==', data.email.toLowerCase())
       .where('isActivated', '==', true)
       .get();
-    console.log(existingDocRef);
     if (existingDocRef.docs.length) {
       return reject('User already have a license');
     }

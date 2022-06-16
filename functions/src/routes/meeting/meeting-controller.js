@@ -112,8 +112,6 @@ let assigned=(await admin.firestore()
       return res.status(403).send();
     }
 
-    console.log(
-    meeting.createdBy.id)
     var token = jwt.sign(
       {
    
@@ -170,7 +168,7 @@ const joinMeetingWithOtp = async (req, res) => {
     ).data();
 
     let verified = false;
-    console.log(otpRecord);
+
     if (otpRecord && otpRecord.otp) {
       verified =
         req.body.otp == otpRecord.otp &&

@@ -41,12 +41,10 @@ const AvtarContainer = styled(Card)(({ theme }) => ({
 export default function InviteData(props) {
   const [inviteData, setInviteData] = useState([]);
   const { user } = useAuth();
-  console.log('user', user);
   useEffect(() => {
     if (user.id)
       getInviteList(user.id)
         .then((res) => {
-          console.log(res.data);
           setInviteData(res.data);
         })
         .catch((err) => {
