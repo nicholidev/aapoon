@@ -31,7 +31,7 @@ const ContentStyle = styled((props) => <Stack spacing={5} {...props} />)(({ them
   zIndex: 10,
   width: '100%',
   margin: 'auto',
-  textAlign: 'center',
+  textAlign: 'left',
   position: 'relative',
   paddingTop: theme.spacing(15),
   paddingBottom: theme.spacing(15),
@@ -85,7 +85,7 @@ export default function HomeHero() {
   return (
     <RootStyle>
       <Grid container>
-        <Grid item md={6} lg={5} xs={12} sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Grid item md={6} lg={5} xs={12} sx={{ display: 'flex', justifyContent: 'flex-start' }}>
           <Container>
             <ContentStyle>
               <m.div variants={varFade().inRight}>

@@ -2,18 +2,9 @@
  Copyright ©. All Rights Reserved. Confidential and proprietary.
  XYZ. Contact address: XYZ@xyz.pa .
  */
-import { useEffect, useRef, useState } from 'react';
-import { sentenceCase } from 'change-case';
 // import { Link as RouterLink } from 'react-router-dom';
 // @mui
-import { useTheme } from '@mui/material/styles';
 import {
-  Table,
-  TableRow,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableContainer,
   Box,
   Typography,
   styled,
@@ -21,12 +12,6 @@ import {
 } from '@mui/material';
 
 // components
-import Label from '../Label';
-import Iconify from '../Iconify';
-import Scrollbar from '../Scrollbar';
-import useAuth from '../../hooks/useAuth';
-import moment from 'moment';
-import { getInviteList } from '../../api/user';
 const _appInvoices = [];
 
 export default function RenewPlanPrompt(props) {
@@ -52,9 +37,9 @@ export default function RenewPlanPrompt(props) {
       </Typography>
       <br />
       <Box display="flex">
-        <Button fullWidth>Ignore</Button>
+        <Button fullWidth onClick={props.ignoreHandler}>Ignore</Button>
         &nbsp;&nbsp;&nbsp;
-        <Button fullWidth variant="contained">
+        <Button fullWidth variant="contained" onClick={props.renewalHandler}>
           Renewal
         </Button>
       </Box>
