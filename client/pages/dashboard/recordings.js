@@ -142,6 +142,14 @@ function RecordingsPage() {
     if (user.id)
       getStats(startOfWeek(new Date()), endOfWeek(new Date()), new Date(), user.id).then((data) => setStats(data));
   }, [user?.activeLicenses?.count]);
+
+
+  useEffect(() => {
+    if(user?.subscription?.length > 0) {
+      setIsPremiumUser(true)
+    }
+  }, [user])
+
   return (
     <Page title="Dashboard" sx={{ pb: 2 }}>
       <GlobalStyles
