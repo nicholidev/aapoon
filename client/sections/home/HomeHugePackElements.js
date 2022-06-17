@@ -180,7 +180,7 @@ export default function HomeHugePackElements() {
                   }}
                 >
                   aapoon meet is a unique product, specially designed to meet the users need of meeting experience. Host
-                  can choose any number of licenses. As an admin, he can give access to anyone of his choice and use its
+                  can choose any number of license. As an admin, he can give access to anyone of his choice and use its
                   privileges. aapoon meet has free, premium and platinum options for the users to choose their choice of
                   group meetings.
                 </Typography>

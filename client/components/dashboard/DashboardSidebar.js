@@ -36,6 +36,7 @@ import StaticDatePicker from '@mui/lab/StaticDatePicker';
 import RenewPlanPrompt from '../../components/plan/RenewPlanPrompt';
 import MenuPopover from '../MenuPopover';
 import InstantMeetingPopup from '../../sections/meeting/InstantMeetingPopup';
+import {openCustomerPortal} from '../../api/payments';
 
 const Sidebar = styled('header')(({ theme }) => ({
   width: '320px',
@@ -62,6 +63,7 @@ export default function DashboardSidebar(props) {
 
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
+  const [show, setShow] = useState(false);
   const handleOpen = () => {
     setOpen(true);
   };
@@ -81,8 +83,29 @@ export default function DashboardSidebar(props) {
 
   const dateChangeHandler = (newValue) => {
     setDateValue(newValue);
+  };
+
+  useEffect(() => {
+    if(user?.subscription?.length > 0) {
+      setShow(true)
+      console.log(((user.subscription?.[0].current_period_end.seconds - (new Date().valueOf() / 1000)) / 24 / 3600))
+      if(((user.subscription?.[0].current_period_end.seconds - (new Date().valueOf() / 1000)) / 24 / 3600) < 5) {
+        setShow(true)
+      }
+    }
+  }, [user?.subscription])
+
+  const ignoreHandler = () => {
+    console.log("ingore")
+    setShow(false)
   }
 
+  const renewalHandler = () => {
+    openCustomerPortal().then((url) => {
+      console.log(url);
+      window.location = url;
+    });
+  }
 
   return (
     <Sidebar>
@@ -154,14 +177,19 @@ export default function DashboardSidebar(props) {
               />
             </LocalizationProvider>
           </Box>
-          <Box position="relative" height="160px">
-            <Box position="absolute" top={-50}>
-              <Divider style={{ marginBottom: '8px' }} />
-              <ListItem>
-                <RenewPlanPrompt />
-              </ListItem>
+          {show && (
+            <Box position="relative" height="160px">
+              <Box position="absolute" top={-50}>
+                <Divider style={{ marginBottom: '8px' }} />
+                <ListItem>
+                  <RenewPlanPrompt 
+                    ignoreHandler={ignoreHandler}
+                    renewalHandler={renewalHandler}
+                  />
+                </ListItem>
+              </Box>
             </Box>
-          </Box>
+          )}
         </List>
       </SideSection>
     </Sidebar>

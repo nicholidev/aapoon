@@ -139,6 +139,8 @@ export default function InviteData(props) {
                 const { id, displayName, email, profilePic, status, avatarUrl, isVerified } = row;
                 const isItemSelected = selected.indexOf(name) !== -1;
 
+                console.log(row.profilePic)
+
                 return (
                   <TableRow key={row.token} sx={{ borderBottom: '1px solid #DBDBDB' }}>
                     <TableCell sx={{ p: '8px' }}>
@@ -147,6 +149,7 @@ export default function InviteData(props) {
                         <AvtarContainer>
                           <Avatar src={row.profilePic} alt={row.displayName} sx={{ width: '40px', height: '40px' }} />
                         </AvtarContainer>
+                        
                         <Typography
                           variant="body2"
                           color="text.primary"
