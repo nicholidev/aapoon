@@ -43,6 +43,7 @@ import DashboardSidebar from '../../components/dashboard/DashboardSidebar';
 import DashboardInfoHeader from '../../components/dashboard/DashboardInfoHeader';
 import RecordingInfoHeader from '../../components/recording/RecordingInfoHeader';
 import Image from '../../components/Image';
+import { Router, useRouter } from 'next/router';
 const Sidebar = styled('header')(({ theme }) => ({
   width: '320px',
   height: '100%',
@@ -131,6 +132,7 @@ const infoIconStyle = {
 };
 
 function RecordingsPage() {
+  const router = useRouter();
   const { themeStretch } = useSettings();
   const [inviteOpen, setInviteOpen] = useState(false);
   const [fetch, setFetch] = useState(false);
@@ -179,7 +181,7 @@ function RecordingsPage() {
                 <Typography align="center" style={{ fontSize: 24, marginTop: 24 }}>
                   Are you interested in recording your meetings?
                 </Typography>
-                <Typography variant={'h4'}>Upgrade to Premium!</Typography>
+                <Button variant="contained" style={{marginTop: 24}} onClick={()=>{router.push('/plan/plans-price')}}>Upgrade to Premium!</Button>
               </Box>
             )}
           </DataSection>
