@@ -187,16 +187,16 @@ export default function FormUserMeeting(props) {
     <div>
       {isSubmitted ? (
         <Stack spacing={1} justifyContent="center" alignItems="center">
-          <Typography variant="h5" sx={{ textTransform: 'capitalize' }}>
+          <Typography variant="h5" sx={{ textTransform: 'capitalize', wordBreak: 'break-word'}}>
             {data.title}
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.secondary" style={{wordBreak: 'break-word'}}>
             {data.description}
           </Typography>
-          {data.password && <Typography variant="body">Meeting Password : {data.password}</Typography>}
+          {data.password && <Typography variant="body" style={{wordBreak: 'break-word'}}>Meeting Password : {data.password}</Typography>}
 
           <br />
-          <Typography variant="body2">
+          <Typography variant="body2" style={{wordBreak: 'break-word'}}>
             {moment(new Date(data.scheduledAt?._seconds * 1000)).format('LLL')}&nbsp;
             <span style={{ fontWeight: 700 }}> To </span>&nbsp;
             {data?.reccurring
@@ -204,7 +204,7 @@ export default function FormUserMeeting(props) {
               : moment(new Date(data.endAt?._seconds * 1000)).format('LLL')}
           </Typography>
           {data?.reccurring && (
-            <Typography variant="caption">
+            <Typography variant="caption" style={{wordBreak: 'break-word'}}>
               Reccuring ( {moment(new Date(data.scheduledAt?._seconds * 1000)).format('LT')} -{' '}
               {moment(new Date(data.endAt?._seconds * 1000)).format('LT')} )
             </Typography>

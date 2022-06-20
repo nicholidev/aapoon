@@ -121,7 +121,7 @@ function MeetingDetailsPopup(props) {
                 {data?.extendedProps?.description}
               </Typography>
               {data?.extendedProps?.password && (
-                <Typography variant="body">Meeting Password : {data?.extendedProps?.password}</Typography>
+                <Typography variant="body" style={{wordBreak: 'break-word'}}>Meeting Password : {data?.extendedProps?.password}</Typography>
               )}
 
               <br />
@@ -146,7 +146,7 @@ function MeetingDetailsPopup(props) {
                   onClick={() => router.push(window.origin + '/meeting?meetingid=' + data?.id)}
                 >
                   <img src="/favicon/favicon-32x32.png" />
-                  &nbsp;&nbsp; Join Aapoon Meeting
+                  &nbsp;&nbsp; Join aapoon meeting
                 </Button>
               </Box>
               <Divider style={{ margin: '16px 0 8px' }} />
