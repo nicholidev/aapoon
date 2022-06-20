@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { useState, useEffect } from 'react';
 import { useSnackbar } from 'notistack';
 import { useFormik, Form, FormikProvider } from 'formik';
-import {useRouter} from "next/router"
+import { useRouter } from 'next/router';
 //dialogues
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -19,7 +19,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import Autocomplete from './Dialogue';
-import {countryCodes} from "./counrtyCode"
+import { countryCodes } from './counrtyCode';
 // @mui
 import {
   TextField,
@@ -31,7 +31,7 @@ import {
   Select,
   MenuItem,
   Box,
-  Divider
+  Divider,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // hooks
@@ -53,11 +53,12 @@ export default function RegisterForm(query) {
   const [open, setOpen] = useState(!(user.email && user.phoneNumber));
   const [countryCode, setCountryCode] = useState('US');
   const isMountedRef = useIsMountedRef();
- 
+
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [showPassword, setShowPassword] = useState(false);
   const rePhoneNumber = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
-  const rePass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/;
+  const rePass =
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?])[A-Za-z\d!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]{8,}$/;
   const reAlpha = /^[a-zA-Z ]+$/;
   const RegisterSchema = Yup.object().shape({
     firstName: Yup.string().matches(reAlpha, 'First name is not valid').required('First name required'),
@@ -65,7 +66,6 @@ export default function RegisterForm(query) {
     email: Yup.string().email('Email must be a valid email address').required('Email is required'),
     password: Yup.string()
       .required('Password is required')
-
       .matches(
         rePass,
         'Minimum eight and maximum 10 characters, at least one uppercase letter, one lowercase letter, one number and one special character'
@@ -75,42 +75,34 @@ export default function RegisterForm(query) {
     businessType: Yup.string(),
     numberOfEmployees: Yup.number(),
     professionType: Yup.string(),
-    other: Yup.string(),
+    other: Yup.string().matches(reAlpha, 'The field is not valid'),
   });
-  const {push}=useRouter();
+  const { push } = useRouter();
   const formik = useFormik({
     initialValues: {
-      firstName:query?.query?.firstName ? query?.query?.firstName: user.firstName,
-      lastName: query?.query?.lastName ? query?.query?.lastName:user.lastName,
+      firstName: query?.query?.firstName ? query?.query?.firstName : user.firstName,
+      lastName: query?.query?.lastName ? query?.query?.lastName : user.lastName,
       email: query?.query?.email ? query?.query?.email : user.email,
       password: user.password,
       phone: user.phoneNumber,
-      countryCode:user.countryCode||countryCodes.find(i=>i.code===countryCode)?.value,
+      countryCode: user.countryCode || countryCodes.find((i) => i.code === countryCode)?.value,
       accountType: user.accountType || 'Business',
-      other: ""
+      other: '',
     },
 
     validationSchema: RegisterSchema,
 
     onSubmit: async (values, { setErrors, setSubmitting }) => {
-     
       setSubmitting(true);
-      
+
       if (values.accountType === 'Business' && values.businessType === 'Other') {
-        values.businessType = values.other
+        values.businessType = values.other;
       } else if (values.accountType === 'Professional' && values.professionType === 'Other') {
-        values.professionType = values.other
+        values.professionType = values.other;
       }
 
       try {
-        await register(
-          values.email,
-          values.password,
-          values.firstName,
-          values.lastName,
-          values.phone,
-          values
-        );
+        await register(values.email, values.password, values.firstName, values.lastName, values.phone, values);
 
         enqueueSnackbar('Registered Successfully', {
           variant: 'success',
@@ -129,10 +121,9 @@ export default function RegisterForm(query) {
           setSubmitting(false);
         }
 
-        if(user.accountType==="Business"){
-          router.push("/dashboard/one");
+        if (user.accountType === 'Business') {
+          router.push('/dashboard/one');
         }
-
       } catch (error) {
         console.log(error);
         setErrors({ afterSubmit: ErrorMessages[error.code] });
@@ -152,32 +143,23 @@ export default function RegisterForm(query) {
     setOpen(false);
   };
 
-  const {
-    errors,
-    touched,
-    handleSubmit,
-    isSubmitting,
-    getFieldProps,
-    setFieldValue,
-    values
-  } = formik;
+  const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, values } = formik;
 
   useEffect(() => {
     if (query?.query?.email) {
       setFieldValue('email', query?.query?.email);
       localStorage.setItem('inviteToken', query?.query?.token);
     }
-    getCountry()
-      .then((res) => {
-        setCountryCode(res.data.country_code);
-        setFieldValue("countryCode",countryCodes.find(i=>i.code===res.data.country_code)?.value)
-      });
+    getCountry().then((res) => {
+      setCountryCode(res.data.country_code);
+      setFieldValue('countryCode', countryCodes.find((i) => i.code === res.data.country_code)?.value);
+    });
   }, [query?.query?.email]);
 
-  const setccd =(e)=>{
-   setCountryCode(e.target.value);
-   setFieldValue("countryCode", countryCodes.find(i=>i.code===e.target.value)?.value)
-  }
+  const setccd = (e) => {
+    setCountryCode(e.target.value);
+    setFieldValue('countryCode', countryCodes.find((i) => i.code === e.target.value)?.value);
+  };
 
   return (
     <FormikProvider value={formik}>
@@ -215,17 +197,29 @@ export default function RegisterForm(query) {
           <TextField
             placeholder="Enter phone number"
             countryCallingCodeEditable={false}
-            countrySelectComponent={(()=>{return null})}
+            countrySelectComponent={() => {
+              return null;
+            }}
             InputProps={{
               inputComponent: NumberFormatCustom,
               startAdornment: (
-                <Autocomplete  value={countryCode} countryCodes={countryCodes} setccd={setccd}   renderInput={(params) => <TextField {...params} label="Movie" />} >
+                <Autocomplete
+                  value={countryCode}
+                  countryCodes={countryCodes}
+                  setccd={setccd}
+                  renderInput={(params) => <TextField {...params} label="Movie" />}
+                >
                   <Box
                     position="start"
                     sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'text.secondary' }}
                   >
-                    {countryCodes.find(i=>i.code===countryCode)?<Flag code={countryCodes.find(i=>i.code===countryCode).code}/>:""}&nbsp;&nbsp;
-                    <i style={{marginRight:4}}>{countryCodes.find(i=>i.code===countryCode)?.value}{' '}</i>
+                    {countryCodes.find((i) => i.code === countryCode) ? (
+                      <Flag code={countryCodes.find((i) => i.code === countryCode).code} />
+                    ) : (
+                      ''
+                    )}
+                    &nbsp;&nbsp;
+                    <i style={{ marginRight: 4 }}>{countryCodes.find((i) => i.code === countryCode)?.value} </i>
                     <Divider
                       orientation="vertical"
                       flexItem
@@ -233,24 +227,34 @@ export default function RegisterForm(query) {
                     />
                   </Box>
                 </Autocomplete>
-              )
+              ),
             }}
-          endorment={(
-            <Autocomplete  value={countryCode} countryCodes={countryCodes} setccd={setccd}   renderInput={(params) => <TextField {...params} label="Movie" />} >
-              <Box
-                position="start"
-                sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'text.secondary' }}
+            endorment={
+              <Autocomplete
+                value={countryCode}
+                countryCodes={countryCodes}
+                setccd={setccd}
+                renderInput={(params) => <TextField {...params} label="Movie" />}
               >
-                {countryCodes.find(i=>i.code===countryCode)?<Flag code={countryCodes.find(i=>i.code===countryCode).code}/>:""}&nbsp;&nbsp;
-                <i style={{marginRight:4}}>{countryCodes.find(i=>i.code===countryCode)?.value}{' '}</i>
-                <Divider
-                  orientation="vertical"
-                  flexItem
-                  sx={{ justifyContent: 'center', alignItems: 'center', mx: 1, borderWidth: '0.2px' }}
-                />
-              </Box>
-            </Autocomplete>
-          )}
+                <Box
+                  position="start"
+                  sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'text.secondary' }}
+                >
+                  {countryCodes.find((i) => i.code === countryCode) ? (
+                    <Flag code={countryCodes.find((i) => i.code === countryCode).code} />
+                  ) : (
+                    ''
+                  )}
+                  &nbsp;&nbsp;
+                  <i style={{ marginRight: 4 }}>{countryCodes.find((i) => i.code === countryCode)?.value} </i>
+                  <Divider
+                    orientation="vertical"
+                    flexItem
+                    sx={{ justifyContent: 'center', alignItems: 'center', mx: 1, borderWidth: '0.2px' }}
+                  />
+                </Box>
+              </Autocomplete>
+            }
             defaultCountry={countryCode}
             inputComponent={NumberFormatCustom}
             {...getFieldProps('phone')}
@@ -270,17 +274,8 @@ export default function RegisterForm(query) {
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
-                  <IconButton
-                    edge="end"
-                    onClick={() => setShowPassword((prev) => !prev)}
-                  >
-                    <Iconify
-                      icon={
-                        showPassword ?
-                          'eva:eye-fill' :
-                          'eva:eye-off-fill'
-                      }
-                    />
+                  <IconButton edge="end" onClick={() => setShowPassword((prev) => !prev)}>
+                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
                   </IconButton>
                 </InputAdornment>
               ),
@@ -302,49 +297,29 @@ export default function RegisterForm(query) {
               align="center"
               sx={{
                 display: 'flex',
-                justifyContent:"space-between",
-                alignItems: 'center'
+                justifyContent: 'space-between',
+                alignItems: 'center',
               }}
             >
-              {"  "}
-              {`Select your ${values.accountType === 'Business' ? 'business' : 'profession'}`}
-              {" "}
-              <IconButtonAnimate onClick={()=>push("/")}>
-                <CancelOutlinedIcon/>
+              {'  '}
+              {`Select your ${values.accountType === 'Business' ? 'business' : 'profession'}`}{' '}
+              <IconButtonAnimate onClick={() => push('/')}>
+                <CancelOutlinedIcon />
               </IconButtonAnimate>
             </DialogTitle>
             <DialogContent
               sx={{
                 mt: 4,
                 padding: 5,
-                pb: 1
+                pb: 1,
               }}
             >
               <DialogContentText id="alert-dialog-description">
-                <Stack
-                  direction="column"
-                  spacing={3}
-                >
-                  <FormControl
-                    component="fieldset"
-                  >
-                    <RadioGroup
-                      row
-                      aria-label="type"
-                      name="row-radio-buttons-group"
-                      {...getFieldProps('accountType')}
-                    >
-                      <FormControlLabel
-                        value="Business"
-                        control={<Radio />}
-                        label="Business"
-                        sx={{ mr: 4 }}
-                      />
-                      <FormControlLabel
-                        value="Professional"
-                        control={<Radio />}
-                        label="Professional"
-                      />
+                <Stack direction="column" spacing={3}>
+                  <FormControl component="fieldset">
+                    <RadioGroup row aria-label="type" name="row-radio-buttons-group" {...getFieldProps('accountType')}>
+                      <FormControlLabel value="Business" control={<Radio />} label="Business" sx={{ mr: 4 }} />
+                      <FormControlLabel value="Professional" control={<Radio />} label="Professional" />
                     </RadioGroup>
                   </FormControl>
 
@@ -354,16 +329,13 @@ export default function RegisterForm(query) {
                       <FormControl
                         sx={{
                           m: 1,
-                          minWidth: 80
+                          minWidth: 80,
                         }}
                       >
-                        <Select
-                          placeholder="Enter"
-                          fullWidth
-                          defaultValue={10}
-                          {...getFieldProps('businessType')}
-                        >
-                          <MenuItem value={10} disabled>Select Business</MenuItem>
+                        <Select placeholder="Enter" fullWidth defaultValue={10} {...getFieldProps('businessType')}>
+                          <MenuItem value={10} disabled>
+                            Select Business
+                          </MenuItem>
                           <MenuItem value={'Automotive '}>Automotive</MenuItem>
                           <MenuItem value={'Business Support & Supplies '}>Business Support & Supplies </MenuItem>
                           <MenuItem value={'Education'}>Education </MenuItem>
@@ -380,13 +352,10 @@ export default function RegisterForm(query) {
                     <>
                       {' '}
                       <FormControl sx={{ m: 1, minWidth: 80 }}>
-                        <Select
-                          placeholder="Enter"
-                          fullWidth
-                          defaultValue={10}
-                          {...getFieldProps('professionType')}
-                        >
-                          <MenuItem value={10} disabled>Select Profession</MenuItem>
+                        <Select placeholder="Enter" fullWidth defaultValue={10} {...getFieldProps('professionType')}>
+                          <MenuItem value={10} disabled>
+                            Select Profession
+                          </MenuItem>
                           <MenuItem value={'Lawyer'}>Lawyer</MenuItem>
                           <MenuItem value={'Accountant'}>Accountant</MenuItem>
                           <MenuItem value={'Technician'}>Technician</MenuItem>
@@ -400,26 +369,23 @@ export default function RegisterForm(query) {
                     </>
                   )}
 
-                  {
-                    ((formik.values.businessType === 'Other' && formik.values.accountType === 'Business') || 
-                      (formik.values.professionType === 'Other' && formik.values.accountType === 'Professional')
-                    ) && (
-                      <FormControl
-                        sx={{
-                          m: 1,
-                          minWidth: 80
-                        }}
-                      >
-                        <TextField
-                          fullWidth
-                          label={formik.values.accountType}
-                          {...getFieldProps('other')}
-                          error={Boolean(touched.firstName && errors.firstName)}
-                          helperText={touched.firstName && errors.firstName}
-                        />
-                      </FormControl>
-                    )
-                  }
+                  {((formik.values.businessType === 'Other' && formik.values.accountType === 'Business') ||
+                    (formik.values.professionType === 'Other' && formik.values.accountType === 'Professional')) && (
+                    <FormControl
+                      sx={{
+                        m: 1,
+                        minWidth: 80,
+                      }}
+                    >
+                      <TextField
+                        fullWidth
+                        label={formik.values.accountType}
+                        {...getFieldProps('other')}
+                        error={Boolean(touched.firstName && errors.firstName)}
+                        helperText={touched.firstName && errors.firstName}
+                      />
+                    </FormControl>
+                  )}
                 </Stack>
               </DialogContentText>
             </DialogContent>
@@ -430,7 +396,7 @@ export default function RegisterForm(query) {
                 onClick={handleClose}
                 variant="contained"
                 disabled={
-                  (values.accountType === 'Business' && (!values.businessType )) ||
+                  (values.accountType === 'Business' && !values.businessType) ||
                   (values.accountType === 'Professional' && !values.professionType)
                 }
               >
@@ -439,13 +405,7 @@ export default function RegisterForm(query) {
             </DialogActions>
           </Dialog>
 
-          <LoadingButton
-            fullWidth
-            size="large"
-            type="submit"
-            variant="contained"
-            loading={isSubmitting}
-          >
+          <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={isSubmitting}>
             Register
           </LoadingButton>
         </Stack>
