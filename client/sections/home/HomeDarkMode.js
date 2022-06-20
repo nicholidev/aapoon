@@ -13,7 +13,7 @@ import { MotionInView, varFade } from '../../components/animate';
 
 const RootStyle = styled('div')(({ theme }) => ({
   padding: theme.spacing(16, 0),
-  backgroundColor: theme.palette.grey[900],
+  backgroundColor: '#001124',
 }));
 
 const ContentStyle = styled('div')(({ theme }) => ({
