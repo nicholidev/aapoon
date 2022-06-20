@@ -30,3 +30,6 @@ export const getCountry = () => {
 
 export const closeAccount = (body) => axios
   .post(`${endpoint}/account/close`, body);
+
+export const getAssigned = (body) => axios
+  .post(`${endpoint}/account/get-assigned`, body);
