@@ -2,11 +2,9 @@
  Copyright ©. All Rights Reserved. Confidential and proprietary.
  XYZ. Contact address: XYZ@xyz.pa .
  */
-import { capitalCase } from 'change-case';
-import RouterLink from 'next/link';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Card, Link, Container, Typography, Tooltip, Paper } from '@mui/material';
+import { Box, Card, Container, Typography, Paper, Button } from '@mui/material';
 // hooks
 import useResponsive from '../../hooks/useResponsive';
 import { useState } from 'react';
@@ -14,13 +12,9 @@ import { useState } from 'react';
 import DashboardHeader from '../../layouts/dashboard/header/index';
 // components
 import Page from '../../components/Page';
-import Logo from '../../components/Logo';
-import Image from '../../components/Image';
 // sections
-import AuthFirebaseSocials from '../../sections/auth/AuthFirebaseSocial';
-import FormUserMeeting from '../../sections/meeting/FormUserMeeting';
-import Divider from '@mui/material/Divider';
 import withAuth from '../../HOC/withAuth';
+import { openCustomerPortal } from '../../api/payments';
 // ----------------------------------------------------------------------
 import GlobalStyles from '@mui/material/GlobalStyles';
 import { IconButtonAnimate } from '../../components/animate';
@@ -76,6 +70,13 @@ function AssignMeeting() {
   const [email, setEmail] = useState('');
   const { user } = useAuth();
   let noLicence = user.activeLicenses.count - user.activeLicenses.assigned - 1 <= 0;
+
+  const assignHandler = () => {
+    openCustomerPortal().then((url) => {
+      window.location = url;
+    });
+  }
+
   return (
     <Page title="Assign license">
       <GlobalStyles
@@ -133,7 +134,7 @@ function AssignMeeting() {
                     </Typography>
                   </Paper>
                 </Box>
-              ) : user.id&&noLicence ? (
+              ) : user.id && noLicence ? (
                 <Box
                   sx={{
                     width: '100%',
@@ -159,10 +160,17 @@ function AssignMeeting() {
                     <Typography variant="h4" align="center" gutterBottom>
                       Insufficient licenses
                     </Typography>
-                    <br />
                     <Typography sx={{ maxWidth: 480, lineHeight: 2, width: '100%' }} gutterBottom align={'left'}>
                       You have {user.activeLicenses.count} licenses , and all are assigned
                     </Typography>
+                    <div style={{display: 'flex', gridGap: '20px', marginTop: 12}}>
+                      <Button variant="text" onClick={() => {router.back()}}>
+                        Cancel
+                      </Button>
+                      <Button variant="contained" onClick={assignHandler}>
+                        Add License
+                      </Button>
+                    </div>
                   </Paper>
                 </Box>
               ) : (
