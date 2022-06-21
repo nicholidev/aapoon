@@ -19,6 +19,11 @@ import {
   Box,
   ButtonBase,
   Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Divider,
 } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
@@ -32,7 +37,7 @@ import Iconify from '../../components/Iconify';
 const { listTimeZones, findTimeZone, getUnixTime } = require('timezone-support');
 import { IconButtonAnimate } from '../../components/animate';
 import { getCountry } from '../../api/user';
-import { scheduleMeeting } from '../../api/meeting';
+import { scheduleMeeting, removeMeeting } from '../../api/meeting';
 import { useRouter } from 'next/router';
 import moment from 'moment';
 import { differenceInDays } from 'date-fns';
@@ -51,6 +56,7 @@ export default function FormUserMeeting(props) {
   const [data, setData] = useState({});
   const [meetingType, setMeetingType] = useState('oneTime');
   const [waitInLobby, setWaitInLobby] = useState(true);
+  const [confirmation, setConfirmation] = useState(false);
 
   const RegisterSchema = Yup.object().shape({
     meetingTopic: Yup.string().min(2, 'Too Short!').required('Meeting topic required'),
@@ -183,155 +189,159 @@ export default function FormUserMeeting(props) {
     formik.setValues({ ...formik.values, lobby: event.target.checked });
   };
 
+  const removeHandler = () => {
+    removeMeeting(data?.publicId)
+    .then(() => {
+      setConfirmation(false);
+      router.reload();
+    })
+  };
+
   return (
     <div>
       {isSubmitted ? (
-        <Stack spacing={1} justifyContent="center" alignItems="center">
-          <Typography variant="h5" sx={{ textTransform: 'capitalize', wordBreak: 'break-word'}}>
-            {data.title}
-          </Typography>
-          <Typography variant="body2" color="text.secondary" style={{wordBreak: 'break-word'}}>
-            {data.description}
-          </Typography>
-          {data.password && <Typography variant="body" style={{wordBreak: 'break-word'}}>Meeting Password : {data.password}</Typography>}
+        <Stack>
+            <Dialog open={confirmation} maxWidth={'xs'}>
+              <DialogTitle id="alert-dialog-title">Are you sure remove this meeting?</DialogTitle>
+              <DialogContent style={{ paddingBottom: '10px' }}>
+              </DialogContent>
+              <DialogActions style={{ paddingTop: '10px' }}>
+                <Button
+                  onClick={() => {
+                    setConfirmation(false);
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button variant="contained" onClick={removeHandler}>
+                  Remove
+                </Button>
+              </DialogActions>
+            </Dialog>
+            <Stack>
+              <div style={{ padding: '40px' }}>
+                <Stack spacing={1} justifyContent="center">
+                  <Typography variant="h5" sx={{ textTransform: 'capitalize' }} style={{overflowWrap: 'break-word'}}>
+                    <Iconify icon="akar-icons:square-fill" color="success.main" />
+                    &nbsp;&nbsp;
+                    {data?.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary" style={{overflowWrap: 'break-word'}}>
+                    {data?.extendedProps?.description}
+                  </Typography>
+                  {data?.extendedProps?.password && (
+                    <Typography variant="body" style={{wordBreak: 'break-word'}}>Meeting Password : {data?.extendedProps?.password}</Typography>
+                  )}
 
-          <br />
-          <Typography variant="body2" style={{wordBreak: 'break-word'}}>
-            {moment(new Date(data.scheduledAt?._seconds * 1000)).format('LLL')}&nbsp;
-            <span style={{ fontWeight: 700 }}> To </span>&nbsp;
-            {data?.reccurring
-              ? moment(new Date(data?.reccuringEndDate?._seconds * 1000)).format('LLL')
-              : moment(new Date(data.endAt?._seconds * 1000)).format('LLL')}
-          </Typography>
-          {data?.reccurring && (
-            <Typography variant="caption" style={{wordBreak: 'break-word'}}>
-              Reccuring ( {moment(new Date(data.scheduledAt?._seconds * 1000)).format('LT')} -{' '}
-              {moment(new Date(data.endAt?._seconds * 1000)).format('LT')} )
-            </Typography>
-          )}
-          {/* <Typography variant="body2">
-            {moment(new Date(data.scheduledAt?._seconds * 1000)).format('LLL') +
-              ' to ' +
-              moment(new Date(data.endAt?._seconds * 1000)).format('LLL')}
-          </Typography> */}
-          <Box
-            component={ButtonBase}
-            onClick={() => copyTocb(window.origin + '/meeting?meetingid=' + data.id)}
-            sx={{
-              border: '1px solid #DDDDDD',
-              borderRadius: 1,
-              padding: 1,
-              pl: 2,
-              pr: 2,
-              backgroundColor: '#F9F9F9',
-              mb: 4,
-            }}
-            display="flex"
-            flexDirection="row"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Typography
-              variant="subtitle2"
-              align="center"
-              sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center' }}
-            >
-              {window.origin + '/meeting?meetingid=' + data.id}
-            </Typography>
-            <Iconify icon="fluent:copy-20-filled" sx={{ fontSize: 24, ml: 2, color: 'text.secondary' }} />
-          </Box>
-          <br />
-          <Button variant="outlined" onClick={() => router.push(window.origin + '/meeting?meetingid=' + data?.id)}>
-            <Typography variant="h6">Join Now</Typography>
-          </Button>
-          <br />
-          <Typography sx={{ fontWeight: 500, display: 'flex' }} variant="body" gutterBottom>
-            Add To Calander
-          </Typography>
+                  <br />
+                  <Box display="flex" alignItems="center">
+                    <Iconify icon="ci:clock" width="20px" height="20px" color="text.secondary" /> &nbsp;&nbsp;
+                    <Typography variant="body2">
+                      {moment(new Date(data?.start)).format('LLL')}&nbsp;<span style={{ fontWeight: 700 }}> To </span>&nbsp;
+                      {data?.extendedProps?.reccurring
+                        ? moment(new Date(data?.extendedProps.reccuringEndDate.seconds * 1000)).format('LLL')
+                        : moment(new Date(data?.end)).format('LLL')}
+                    </Typography>
+                  </Box>
+                  {data?.extendedProps?.reccurring && (
+                    <Typography variant="caption">
+                      Reccuring ( {moment(new Date(data?.start)).format('LT')} - {moment(new Date(data?.end)).format('LT')}{' '}
+                      )
+                    </Typography>
+                  )}
+                  <Box display={'flex'} style={{ marginTop: '16px' }}>
+                    <Button
+                      variant="outlined"
+                      onClick={() => router.push(window.origin + '/meeting?meetingid=' + data?.id)}
+                    >
+                      <img src="/favicon/favicon-32x32.png" />
+                      &nbsp;&nbsp; Join aapoon meeting
+                    </Button>
+                  </Box>
+                  <Divider style={{ margin: '16px 0 8px' }} />
+                  <Box style={{overflowWrap: 'break-word'}}>
+                    <Iconify icon="fluent:text-description-24-filled" width="24px" height="24px" color="text.secondary" />{' '}
+                    &nbsp;&nbsp;
+                    <Typography variant="body2">{data?.extendedProps?.description || 'N/A'}</Typography>
+                  </Box>
+                  <Divider style={{ margin: '16px 0 8px' }} />
+                  <Box display="flex" alignItems={'center'}>
+                    <Iconify icon="akar-icons:link-chain" width="24px" height="24px" color="text.secondary" /> &nbsp;&nbsp;
+                    <Typography variant="body2">{window.origin + '/meeting?meetingid=' + data?.id}</Typography>&nbsp;&nbsp;
+                    <Button
+                      onClick={() => copyTocb(window.origin + '/meeting?meetingid=' + data?.id)}
+                      endIcon={<Iconify icon="lucide:copy" />}
+                    >
+                      Copy
+                    </Button>
+                  </Box>
+                  <Divider style={{ margin: '16px 0 8px' }} />
 
-          <Stack spacing={2} direction={{ xs: 'column', sm: 'row', mt: 2 }} justifyContent="center" alignItems="center">
-            <Box
-              component={ButtonBase}
-              onClick={() => addCalender('apple')}
-              width="160px"
-              sx={{ border: '1px solid #DDDDDD', borderRadius: 1, padding: 2, backgroundColor: '#F9F9F9' }}
-              display="flex"
-              flexDirection="column"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Iconify icon="ant-design:apple-filled" sx={{ fontSize: 40, color: '#000' }} />
-              <Typography
-                variant="subtitle2"
-                align="center"
-                sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center', mt: 1 }}
-              >
-                Apple calendar
-              </Typography>
-            </Box>
-            <Box
-              component={ButtonBase}
-              onClick={() => addCalender('outlookcom')}
-              width="160px"
-              sx={{ border: '1px solid #DDDDDD', borderRadius: 1, padding: 2, backgroundColor: '#F9F9F9' }}
-              display="flex"
-              teamsize
-              flexDirection="column"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Iconify icon="vscode-icons:file-type-outlook" sx={{ fontSize: 40, color: '#225082' }} />
+                  <Typography variant="h6" sx={{ fontWeight: 600, display: 'flex' }} gutterBottom>
+                    Add To Calander
+                  </Typography>
 
-              <Typography
-                variant="subtitle2"
-                align="center"
-                sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center', mt: 1 }}
-              >
-                Outlook Web
-              </Typography>
-            </Box>
-            <Box
-              component={ButtonBase}
-              onClick={() => addCalender('apple')}
-              width="160px"
-              sx={{ border: '1px solid #DDDDDD', borderRadius: 1, padding: 2, backgroundColor: '#F9F9F9' }}
-              display="flex"
-              teamsize
-              flexDirection="column"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Iconify icon="vscode-icons:file-type-outlook" sx={{ fontSize: 40, color: '#225082' }} />
+                  <Stack spacing={2} direction={'column'}>
+                    <Box display={'flex'} alignItems="center" justifyContent="space-between">
+                      <Box display={'flex'} alignItems="center">
+                        <Iconify icon="ant-design:apple-filled" sx={{ fontSize: 24, color: '#000' }} />
+                        &nbsp;&nbsp;
+                        <Typography variant="subtitle2">Apple Calendar</Typography>
+                      </Box>
+                      <Button onClick={() => addCalender('apple')}>
+                        Download&nbsp;&nbsp;
+                        <Iconify icon="heroicons-outline:download" sx={{ fontSize: 24 }} />
+                      </Button>
+                    </Box>
+                    <Box display={'flex'} alignItems="center" justifyContent="space-between">
+                      <Box display={'flex'} alignItems="center">
+                        <Iconify icon="vscode-icons:file-type-outlook" sx={{ fontSize: 24, color: '#225082' }} />
+                        &nbsp;&nbsp;
+                        <Typography variant="subtitle2">Outlook Web</Typography>
+                      </Box>
+                      <Button onClick={() => addCalender('outlookcom')}>
+                        Download&nbsp;&nbsp;
+                        <Iconify icon="heroicons-outline:download" sx={{ fontSize: 24 }} />
+                      </Button>
+                    </Box>{' '}
+                    <Box display={'flex'} alignItems="center" justifyContent="space-between">
+                      <Box display={'flex'} alignItems="center">
+                        <Iconify icon="vscode-icons:file-type-outlook" sx={{ fontSize: 24, color: '#225082' }} />
+                        &nbsp;&nbsp;
+                        <Typography variant="subtitle2">Outlook Client</Typography>
+                      </Box>
+                      <Button onClick={() => addCalender('apple')}>
+                        Download&nbsp;&nbsp;
+                        <Iconify icon="heroicons-outline:download" sx={{ fontSize: 24 }} />
+                      </Button>
+                    </Box>{' '}
+                    <Box display={'flex'} alignItems="center" justifyContent="space-between">
+                      <Box display={'flex'} alignItems="center">
+                        <Iconify icon="flat-color-icons:google" sx={{ fontSize: 24, color: '#225082' }} />
+                        &nbsp;&nbsp;
+                        <Typography variant="subtitle2">Google Calendar</Typography>
+                      </Box>
+                      <Button onClick={() => addCalender('google')}>
+                        Download&nbsp;&nbsp;
+                        <Iconify icon="heroicons-outline:download" sx={{ fontSize: 24 }} />
+                      </Button>
+                    </Box>
+                  </Stack>
 
-              <Typography
-                variant="subtitle2"
-                align="center"
-                sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center', mt: 1 }}
-              >
-                Outlook Client
-              </Typography>
-            </Box>
-            <Box
-              component={ButtonBase}
-              width="160px"
-              sx={{ border: '1px solid #DDDDDD', borderRadius: 1, padding: 2, backgroundColor: '#F9F9F9' }}
-              display="flex"
-              onClick={() => addCalender('google')}
-              flexDirection="column"
-              alignItems="center"
-              justifyContent="center"
-            >
-              <Iconify icon="flat-color-icons:google" sx={{ fontSize: 40, color: '#225082' }} />
-
-              <Typography
-                variant="subtitle2"
-                align="center"
-                sx={{ fontWeight: 500, display: 'flex', justifyContent: 'center', mt: 1 }}
-              >
-                Google calendar
-              </Typography>
-            </Box>
-          </Stack>
+                  <Divider style={{ margin: '16px 0 8px' }} />
+                  <Box display={'flex'} style={{ marginTop: '16px' }}>
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        setConfirmation(true);
+                      }}
+                    >
+                      Remove Meeting
+                    </Button>
+                  </Box>
+                </Stack>
+              </div>
+            </Stack>
         </Stack>
       ) : (
         <FormikProvider value={formik}>
