@@ -208,12 +208,12 @@ const joinMeetingWithOtp = async (req, res) => {
         },
 
         "aud": "jitsi",
-        "iss": "jitsi",
         "sub": "meetaap.io",
         room: req.body.id,
-       
+        iss: "518B837725AC1959C4878BDF15362AFD8B",
+        secret: "8B23A4BA85DE85D2922703F319496934"
       },
-      "518B837725AC1959C4878BDF15362AFD8B"
+      "8B23A4BA85DE85D2922703F319496934"
     );
 
     return res.status(200).send({
