@@ -171,7 +171,6 @@ function PageOne() {
               <DataHead>
                 <div>
                   <Typography variant="h5">License assigned</Typography>
-                  <Typography variant="subtitle2">Expire in {Math.ceil((user.subscription?.[0]?.current_period_end?.seconds || 0 ) / (1000 * 3600 * 24))} days</Typography>
                 </div>
                 <Button
                   variant="outlined"
