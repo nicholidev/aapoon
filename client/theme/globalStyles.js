@@ -66,6 +66,9 @@ export default function GlobalStyles() {
           iframe: {
             marginBottom: '-100px'
           }
+        },
+        '.fc-event': {
+          overflow: 'hidden'
         }
       }}
     />
