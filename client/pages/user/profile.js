@@ -196,7 +196,10 @@ function ProfilePage() {
         <DialogTitle id="alert-dialog-title">{'Are you sure?'}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-description" sx={{ mt: 2 }}>
-            This process is Irreversible , we will not be able to recover you Account
+          We are sorry you decided to close the account. You Account will be in inactive status for 30 days, during which you can come back and cancel the account closure. 
+          <br/>
+          <br/>
+          Your account will be deleted permanently at the end of 30 days.
             <br />
             <br />
             <center>
