@@ -509,30 +509,26 @@ const closeAccount = async (req, res) => {
                                           <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:17px;color:#333;font-size:14px">
                                             <span style="font-size:32px">
                                               <strong>
-                                                <span style="color:#e2582e">Hello&nbsp;</span>
+                                                <span style="color:#e2582e">Hi&nbsp;</span>
                                                 <span style="color:#283890">${user.firstName}!</span>
                                               </strong>
                                             </span>
                                             <br>
                                             <br>
                                             <br>
-                                            <span style="font-size:18px">We are sorry you decided to close the account. <br>
-                                              <br>You Account will be in inactive status for 30 days, during which you can come back and cancel the account closure. <br>
-                                              <br>Your account will be deleted permanently at the end of 30 days. </span>
-                                            <br>
-                                            <br>
-                                            <br>
-                                            <br>
+                                            <span style="font-size:18px">We are sorry that you decided to close the account permanently. Hence, your account will be deactivated temporarily for 30 days, during which you can come back anytime and re-activate your account, or you can also click here to re-activate your account instantly.
+                                            </span>
+                                         
                                           </p>
                                           <center>
                                             <span class="es-button-border" style="border-style:solid;border-color:#2cb543;background:#283890;border-width:0 0 2px 0;display:inline-block;border-radius:8px;width:auto">
-                                              <a href="${req.headers.origin}/recover" class="es-button" target="_blank" style="mso-style-priority:100!important;text-decoration:none;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;color:#fff;font-size:18px;border-style:solid;border-color:#283890;border-width:10px 20px 10px 20px;display:inline-block;background:#283890;border-radius:8px;font-family:arial,'helvetica neue',helvetica,sans-serif;font-weight:400;font-style:normal;line-height:22px;width:auto;text-align:center">Cancel Close</a>
+                                    
                                             </span>
                                           </center>
                                           <br>
                                           <br>
-                                          <span style="font-size:18px">If you do not want to recover your account, Please contact us. <br>
-                                            <br>Regards, <br>
+                                          <span style="font-size:18px">
+                                            Regards, <br>
                                             <br>aapoon Support </span>
                                           <p style="Margin:0;-webkit-text-size-adjust:none;-ms-text-size-adjust:none;mso-line-height-rule:exactly;font-family:arial,'helvetica neue',helvetica,sans-serif;line-height:21px;color:#333;font-size:14px">
                                             <br>
