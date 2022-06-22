@@ -101,7 +101,7 @@ export default class helpers {
           'DTEND:' + this.formatTime(event.endTime),
           'SUMMARY:' + event.title,
           'DESCRIPTION:' +
-            `${event.description}\\n${event.link}$\\n${event.password ? 'Password =' + event.password : ''}`,
+            `${event.description}\\n${event.link}\\n${event.password ? 'Password =' + event.password : ''}`,
           'LOCATION:' + event.location,
           'END:VEVENT',
           event.recur,
