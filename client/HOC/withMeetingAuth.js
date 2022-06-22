@@ -46,10 +46,6 @@ const withMeetingAuth = (WrappedComponent) => {
       const [name, setName] = useState('');
       const [domain,setDomain]=useState("meetaap.in")
       const [authMeeting, setAuthMeeting] = useState({
-
-
-
-        
         isAuth: localStorage.getItem('mid') === query.meetingid,
         id: localStorage.getItem('mid'),
         jwt: localStorage.getItem('mjwt'),
