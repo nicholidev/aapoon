@@ -5,7 +5,7 @@
 import { useRouter } from 'next/router';
 import { addJWTInterceptor, errorHandlerInterceptor } from '../utils/Interceptor';
 import { styled } from '@mui/material/styles';
-import { Typography, Box, Dialog, Divider } from '@mui/material';
+import { Typography, Box, Dialog, Divider, Button } from '@mui/material';
 import RegisterForm from '../sections/auth/meeting/RegisterForm';
 import VerifyCode from '../sections/auth/meeting/verifyCode';
 import PasswordForm from '../sections/auth/meeting/PasswordForm';
@@ -118,15 +118,12 @@ const withMeetingAuth = (WrappedComponent) => {
       useEffect(() => {
        
         if(!!meetData.endAt?.['_seconds'] && meetData.endAt?.['_seconds'] < (new Date().valueOf() / 1000)) {
-          setError('invalid-meeting')
-          router.push('/')
+          setError('expired-meeting')
         }
       }, [meetData])
 
 
       if (error === 'invalid-meeting') {
-        // router.replace('/');
-
         return (
           <div>
             <Dialog
@@ -147,6 +144,49 @@ const withMeetingAuth = (WrappedComponent) => {
                     <Typography variant="h4" align="center" gutterBottom>
                       Invalid meeting
                     </Typography>
+                  </Box>
+                </Box>
+              </ContentStyle>
+            </Dialog>
+          </div>
+        );
+      }
+
+      if (error === 'expired-meeting') {
+        return (
+          <div>
+            <Dialog
+              open={open}
+              maxWidth={'xs'}
+              fullWidth
+              fullScreen={fullScreen}
+              // onClose={() => setOpen(false)}
+              id={'registerPopover'}
+              key={'registerPopover'}
+            >
+              <ContentStyle>
+                <Box sx={{ mb: 5, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <Box sx={{ flexGrow: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <center>
+                      <ErrorOutlineIcon sx={{ fontSize: 80 }} />
+                    </center>
+                    <Typography variant="h4" align="center" gutterBottom>
+                      Expired meeting
+                    </Typography>
+
+                    <div
+                      style={{
+                        textAlign: 'center',
+                        marginTop: 20
+                      }}
+                    >
+                      <Button
+                        variant="contained"
+                        onClick={()=>{router.push('/')}}
+                      >
+                        Go to Home
+                      </Button>
+                    </div>
                   </Box>
                 </Box>
               </ContentStyle>
