@@ -179,6 +179,9 @@ function PlanPricePage() {
     }
   }, [planData, current, currency])
 
+
+  console.log(price)
+
   return (
     <Page title="Plan and pricing">
       <GlobalStyles

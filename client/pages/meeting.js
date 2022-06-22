@@ -2,19 +2,8 @@
  Copyright ©. All Rights Reserved. Confidential and proprietary.
  XYZ. Contact address: XYZ@xyz.pa .
  */
-import Link from 'next/link';
 import {
-  Button,
-  Card,
-  Container,
-  Grid,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   styled,
-  Typography,
 } from '@mui/material';
 // layouts
 

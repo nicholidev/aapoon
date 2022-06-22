@@ -152,7 +152,8 @@ let assigned=(await admin.firestore()
 
     return res.status(200).send({
       data: { ...meeting, password: meeting.password ? true : false },
-      domain: sub || assigned?'meetaap.io':'meetaap.in',
+      // domain: sub || assigned?'meetaap.io':'meetaap.in',
+      domain: 'meetaap.io',
       token,
     });
   } catch (err) {

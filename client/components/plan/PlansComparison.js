@@ -27,7 +27,7 @@ export default function PlansComparison(props) {
     { optionName: 'Host up to 100 participants', freeUsers: false, premiumUsers: true, platinumUser: true },
     { optionName: '2 GB Cloud recording', freeUsers: false, premiumUsers: true, platinumUser: true },
     { optionName: 'Organization branding', freeUsers: false, premiumUsers: false, platinumUser: true },
-    { optionName: 'Background Dias', freeUsers: false, premiumUsers: false, platinumUser: true },
+    { optionName: 'Background options', freeUsers: false, premiumUsers: false, platinumUser: true },
     { optionName: 'Tracking attendance', freeUsers: false, premiumUsers: false, platinumUser: true },
   ]);
 
