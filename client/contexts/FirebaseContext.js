@@ -436,7 +436,7 @@ function AuthProvider({ children }) {
                   payload: {
                     confirmation: confirmationResult,
                     appVerifier,
-                    user: { ...allValues, phoneNumber: allValues.countryCode + phoneNumber, number: phoneNumber},
+                    user: { ...allValues, phoneNumber: phoneNumber, number: phoneNumber},
                   },
                 });
               })
