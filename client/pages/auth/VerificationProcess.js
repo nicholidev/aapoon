@@ -93,7 +93,7 @@ const ResetPassword = () => {
   };
 
   return (
-    <Page title="Reset Password" sx={{ height: 1 }}>
+    <Page title="Verify Phone" sx={{ height: 1 }}>
       <RootStyle>
         <LogoOnlyLayout />
 
