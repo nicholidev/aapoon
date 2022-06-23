@@ -397,7 +397,9 @@ export default function RegisterForm(query) {
                 variant="contained"
                 disabled={
                   (values.accountType === 'Business' && !values.businessType) ||
-                  (values.accountType === 'Professional' && !values.professionType)
+                  (values.accountType === 'Professional' && !values.professionType) ||
+                  (values.accountType === 'Business' && values.businessType === 'Other' && (values.other.length < 3 || (!values.other.match(reAlpha))) ) ||
+                  (values.accountType === 'Professional' && values.professionType === 'Other' && (values.other.length < 3 || (!values.other.match(reAlpha))) )
                 }
               >
                 Next
