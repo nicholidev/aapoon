@@ -181,7 +181,7 @@ function ProfilePage() {
   let activeSub = user.subscription?.find((i) => i.status == 'active');
 
   return (
-    <Page title="Dashboard" sx={{ width: '100vw' }}>
+    <Page title="Profile" sx={{ width: '100vw' }}>
       <GlobalStyles
         styles={{
           body: { backgroundColor: '#F1F1F1' },
