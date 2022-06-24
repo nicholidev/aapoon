@@ -6,7 +6,7 @@ import { capitalCase } from 'change-case';
 import RouterLink from 'next/link';
 // @mui
 import { styled } from '@mui/material/styles';
-import { Box, Card, Stack, Link, Alert, Tooltip, Container, Typography } from '@mui/material';
+import { Box, Card, Stack, Link, Alert, Tooltip, Container, Typography, CardContent, Divider } from '@mui/material';
 // routes
 
 // hooks
@@ -78,45 +78,38 @@ function Login() {
         <HeaderStyle>
           <Logo />
         </HeaderStyle>
-
-        {mdUp && (
-          <SectionStyle>
-            <Typography variant="h3" sx={{ px: 5, mt: 10, mb: 5 }}>
-              Hi, Welcome Back
-            </Typography>
-            <Image
-              alt="login"
-              src="https://minimal-assets-api.vercel.app/assets/illustrations/illustration_login.png"
-            />
-          </SectionStyle>
-        )}
-
         <Container maxWidth="sm">
           <ContentStyle>
-            <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
-              <Box sx={{ flexGrow: 1 }}>
-                <Typography variant="h4" align="center" gutterBottom>
-                  Login
+            <Card>
+              <CardContent>
+                <Stack direction="row" alignItems="center" sx={{ mb: 5 }}>
+                  <Box sx={{ flexGrow: 1 }}>
+                    <Typography variant="h4" align="center" gutterBottom>
+                      Login
+                    </Typography>
+                    <Typography sx={{ color: 'text.secondary' }} align="center">
+                      Enter your details below.
+                    </Typography>
+                  </Box>
+                </Stack>
+
+                {/* {method === 'firebase' && <AuthFirebaseSocials />} */}
+
+                <LoginForm />
+
+                <Divider style={{marginTop: 24}}/>
+
+                <Typography variant="body2" align="center" sx={{ mt: 3 }}>
+                  Don’t have an account?{' '}
+                  <RouterLink
+                    href={router.query.return ? '/auth/Register?return=' + router.query.return : '/auth/Register'}
+                    passHref
+                  >
+                    <Link variant="subtitle2">Get started</Link>
+                  </RouterLink>
                 </Typography>
-                <Typography sx={{ color: 'text.secondary' }} align="center">
-                  Enter your details below.
-                </Typography>
-              </Box>
-            </Stack>
-
-            {/* {method === 'firebase' && <AuthFirebaseSocials />} */}
-
-            <LoginForm />
-
-            <Typography variant="body2" align="center" sx={{ mt: 3 }}>
-              Don’t have an account?{' '}
-              <RouterLink
-                href={router.query.return ? '/auth/Register?return=' + router.query.return : '/auth/Register'}
-                passHref
-              >
-                <Link variant="subtitle2">Get started</Link>
-              </RouterLink>
-            </Typography>
+              </CardContent>
+            </Card>
           </ContentStyle>
         </Container>
       </RootStyle>

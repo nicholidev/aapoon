@@ -728,7 +728,8 @@ exports.sendWelcomeEmail = functions.firestore
     return mail;
   });
 
-exports.updateUser = functions.firestore
+
+  exports.updateUser = functions.firestore
   .document("users/{userid}")
   .onUpdate(async (change, context) => {
     const newValue = change.after.data();
