@@ -682,7 +682,7 @@ exports.sendInviteEmail = functions.firestore
                                                 font-size: 14px;
                                               "
                                             >
-                                              © 2022, aapoon Meet. All Right’s Reserved
+                                              © 2022, aapoon meet. All Right’s Reserved
                                             </p>
                                           </td>
                                         </tr>

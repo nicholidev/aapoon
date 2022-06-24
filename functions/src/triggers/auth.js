@@ -55,7 +55,7 @@ exports.sendWelcomeEmail = functions.firestore
       });
     let mail = await sendEmail(
       newValue.email,
-      "Welcome to aapoon Meet",
+      "Welcome to aapoon meet",
       `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
         <html
           xmlns="http://www.w3.org/1999/xhtml"
@@ -702,7 +702,7 @@ exports.sendWelcomeEmail = functions.firestore
                                                 font-size: 14px;
                                               "
                                             >
-                                              © 2022, aapoon Meet. All Right’s Reserved
+                                              © 2022, aapoon meet. All Right’s Reserved
                                             </p>
                                           </td>
                                         </tr>

@@ -33,7 +33,7 @@ export default class MyDocument extends Document {
 
           <meta name="description" content="aapoon meet" />
           <meta name="keywords" content="react,material,kit,application,dashboard,admin,template" />
-          <meta name="author" content="aapoon Meet" />
+          <meta name="author" content="aapoon meet" />
           <script src={"https://meetaap.io/external_api.js"} />
         </Head>
 
