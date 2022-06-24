@@ -3,15 +3,13 @@
  XYZ. Contact address: XYZ@xyz.pa .
  */
 import { useRouter } from 'next/router';
-import { addJWTInterceptor, errorHandlerInterceptor } from '../utils/Interceptor';
+import { errorHandlerInterceptor } from '../utils/Interceptor';
 import { styled } from '@mui/material/styles';
-import { Typography, Box, Dialog, Divider, Button } from '@mui/material';
-import RegisterForm from '../sections/auth/meeting/RegisterForm';
-import VerifyCode from '../sections/auth/meeting/verifyCode';
+import { Typography, Box, Dialog, Card, Button, CardContent } from '@mui/material';
 import PasswordForm from '../sections/auth/meeting/PasswordForm';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
-import Link from 'next/link';
+import { LoginForm } from '../sections/auth/login';
 import { useEffect, useState } from 'react';
 import { useTheme } from '@mui/material/styles';
 import { getMeetingDetails, joinMeeting } from '../api/meeting';
@@ -196,11 +194,17 @@ const withMeetingAuth = (WrappedComponent) => {
       }
 
       if (!localStorage.getItem('isAuthenticated') && !authMeeting.isAuth && !loading) {
-        // router.replace('/');
+        router.push('/auth/Login?return=/meeting?meetingid=AOsZBWH6U4gX7tvrH5dv');
 
         return (
           <div>
-            <Dialog
+            {router.asPath}
+            {/* <Card>
+              <CardContent>
+                <LoginForm/>
+              </CardContent>
+            </Card> */}
+            {/* <Dialog
               open={open}
               fullWidth
               fullScreen={fullScreen}
@@ -229,7 +233,6 @@ const withMeetingAuth = (WrappedComponent) => {
                     setName={setName}
                   />
                 )}
-                {/* <VerifyCode /> */}
                 <div id="captcha-container"/>
                 <Typography variant="caption" align="center" sx={{ color: 'text.secondary', mt: 3 }}>
                   By clicking on Join meeting, you agree to our &nbsp;
@@ -250,7 +253,7 @@ const withMeetingAuth = (WrappedComponent) => {
                   </Link>
                 </Typography>
               </ContentStyle>
-            </Dialog>
+            </Dialog> */}
           </div>
         );
       }
@@ -290,9 +293,6 @@ const withMeetingAuth = (WrappedComponent) => {
             </Typography>
           </Box>
         );
-
-      // If this is an accessToken we just render the component that was passed with all its props
-      // if (!loading) return <WrappedComponent {...props} />;
     }
 
     // If we are on server, return null

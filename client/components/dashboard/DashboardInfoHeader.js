@@ -2,54 +2,25 @@
  Copyright ©. All Rights Reserved. Confidential and proprietary.
  XYZ. Contact address: XYZ@xyz.pa .
  */
-import Link from 'next/link';
 import {
-  Button,
   Card,
-  Container,
   Grid,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   styled,
-  Box,
   Typography,
-  Divider,
-  TextField,
 } from '@mui/material';
 // layouts
-import DashboardLayout from '../../layouts/dashboard';
 // hooks
 import { useEffect } from 'react';
 import useSettings from '../../hooks/useSettings';
 // components
 import { getStats } from '../../api/meeting';
 import { startOfWeek, endOfWeek } from 'date-fns';
-import Page from '../Page';
-import GlobalStyles from '@mui/material/GlobalStyles';
 // ----------------------------------------------------------------------
-import withAuth from '../../HOC/withAuth';
 import Iconify from '../Iconify';
-import PersonIcon from '@mui/icons-material/Person';
 import { useRouter } from 'next/router';
-import CheckCircleIcon from '@mui/icons-material/CheckCircle';
-import StarIcon from '@mui/icons-material/Star';
 
-import StopCircleIcon from '@mui/icons-material/StopCircle';
-import AppNewInvoice from '../../sections/@dashboard/general/app/AppNewInvoice';
-import InviteData from '../invite/Invite2';
-import LicenceData from '../licence';
-import InviteModal from '../invite/InviteModal';
 import { useState } from 'react';
 import useAuth from '../../hooks/useAuth';
-import BottomNavigation from '../BottomNavigation';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import StaticDatePicker from '@mui/lab/StaticDatePicker';
-import RenewPlanPrompt from '../plan/RenewPlanPrompt';
-import DashboardSidebar from './DashboardSidebar';
 
 const Sidebar = styled('header')(({ theme }) => ({
   width: '320px',
@@ -168,38 +139,6 @@ export default function DashboardInfoHeader() {
   return (
     <>
       {user?.activeLicenses?.count > 1 ? (
-        // <InfoContainer container spacing={3}>
-        //   <Grid xs={12} sm={6} lg={4}>
-        //     <InfoCard>
-        //       <InfoHeading>Total number of Licenses</InfoHeading>
-        //       <InfoNumbers>
-        //         <h3>{user?.activeLicenses?.count || 0}</h3>
-        //       </InfoNumbers>
-        //       <PersonIcon style={infoIconStyle} />
-        //     </InfoCard>
-        //   </Grid>
-        //   <Grid xs={12} sm={6} lg={4}>
-        //     <InfoCard>
-        //       <InfoHeading>Assigned Licenses</InfoHeading>
-        //       <InfoNumbers>
-        //         <h3>{user?.activeLicenses?.assigned || 0}</h3>
-        //       </InfoNumbers>
-        //       <CheckCircleIcon style={infoIconStyle} />
-        //     </InfoCard>
-        //   </Grid>
-        //   <Grid xs={12} sm={6} lg={4}>
-        //     <InfoCard>
-        //       <InfoHeading>Remaining Licenses</InfoHeading>
-        //       <InfoNumbers>
-        //         <h3>
-        //           {' '}
-        //           {user.activeLicenses.count ? user.activeLicenses.count - (user.activeLicenses.assigned + 1) : 0}
-        //         </h3>
-        //       </InfoNumbers>
-        //       <StopCircleIcon style={infoIconStyle} />
-        //     </InfoCard>
-        //   </Grid>
-        // </InfoContainer>
         <InfoContainer container spacing={4}>
           <Grid item xs={12} sm={6} lg={4}>
             <InfoCard sx={{ backgroundColor: '#F5F9FF' }}>
