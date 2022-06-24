@@ -128,24 +128,22 @@ let assigned=(await admin.firestore()
                 : "member",
           },
           features: {
-            livestreaming: "false",
-            "outbound-call": "false",
-            transcription: "false",
-            recording: "false",
+            "livestreaming": (sub || assigned) ? "true": "false",
+            "outbound-call": (sub || assigned) ? "true": "false",
+            "transcription": (sub || assigned) ? "true": "false",
+            "recording": (sub || assigned) ? "true": "false",
           },
           room: {
             regex: false,
           },
         },
 
-        alg: "HS512",
         aud: "aapoon",
-        iss: "518B837725AC1959C4878BDF15362AFD8B",
         sub: "meetaap.io",
         exp:new Date().getTime()+1000000,
         nbf:300,
         room: req.body.id,
-        secret: "8B23A4BA85DE85D2922703F319496934"
+        iss: "518B837725AC1959C4878BDF15362AFD8B",
       },
       "8B23A4BA85DE85D2922703F319496934"
     );
@@ -198,21 +196,20 @@ const joinMeetingWithOtp = async (req, res) => {
             affiliation: "member",
           },
           features: {
-            livestreaming: "false",
+            "livestreaming": "false",
             "outbound-call": "false",
-            transcription: "false",
-            recording: "false",
+            "transcription": "false",
+            "recording": "false",
           },
           room: {
             regex: false,
           },
         },
 
-        "aud": "jitsi",
+        "aud": "aapoon",
         "sub": "meetaap.io",
         room: req.body.id,
         iss: "518B837725AC1959C4878BDF15362AFD8B",
-        secret: "8B23A4BA85DE85D2922703F319496934"
       },
       "8B23A4BA85DE85D2922703F319496934"
     );
