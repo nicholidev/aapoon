@@ -151,6 +151,8 @@ function UpdateUserProfile(props) {
     setFieldValue('lastName', user?.displayName?.split(' ')[1]);
   }, [user]);
 
+
+
   return (
     <div>
       <Dialog open={open} maxWidth={'xs'} fullWidth onClose={() => setOpen(false)}>
@@ -190,6 +192,11 @@ function UpdateUserProfile(props) {
                         />
                       </AvatarContainer>
                     </Badge>
+                    {
+                      errors.profilePic && (
+                        <p style={{fontSize: 12, fontWeight: 500, color: 'red', marginTop: 12, marginBottom: 0}}>{errors.profilePic}</p>
+                      )
+                    }
                     <div style={{marginTop: 12}}>
                       <Button variant="text" onClick={removeAvatarHandler}>
                         Remove
