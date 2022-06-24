@@ -84,7 +84,7 @@ export default function RegisterForm(query) {
       lastName: query?.query?.lastName ? query?.query?.lastName : user.lastName,
       email: query?.query?.email ? query?.query?.email : user.email,
       password: user.password,
-      phone: user.phoneNumber,
+      phone:  user.phoneNumber.replace(user.countryCode, ""),
       countryCode: user.countryCode || countryCodes.find((i) => i.code === countryCode)?.value,
       accountType: user.accountType || 'Business',
       other: '',
