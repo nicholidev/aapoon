@@ -144,6 +144,7 @@ function MeetingDetailsPopup(props) {
                 <Button
                   variant="outlined"
                   onClick={() => router.push(window.origin + '/meeting?meetingid=' + data?.id)}
+                  style={{textTransform: 'inherit'}}
                 >
                   <img src="/favicon/favicon-32x32.png" />
                   &nbsp;&nbsp; Join aapoon meeting
@@ -169,7 +170,7 @@ function MeetingDetailsPopup(props) {
               <Divider style={{ margin: '16px 0 8px' }} />
 
               <Typography variant="h6" sx={{ fontWeight: 600, display: 'flex' }} gutterBottom>
-                Add To Calander
+                Add To Calendar
               </Typography>
 
               <Stack spacing={2} direction={'column'}>
