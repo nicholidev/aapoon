@@ -60,7 +60,6 @@ const SideSection = styled(Card)(({ theme }) => ({
 
 export default function DashboardSidebar(props) {
   const [stats, setStats] = useState({});
-
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [show, setShow] = useState(false);
@@ -82,7 +81,9 @@ export default function DashboardSidebar(props) {
   }, [user.id]);
 
   const dateChangeHandler = (newValue) => {
+    console.log(newValue);
     setDateValue(newValue);
+    props.setCurrent && props.setCurrent(newValue);
   };
 
   useEffect(() => {

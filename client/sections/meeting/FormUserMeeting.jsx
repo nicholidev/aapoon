@@ -278,7 +278,7 @@ export default function FormUserMeeting(props) {
                   <Divider style={{ margin: '16px 0 8px' }} />
 
                   <Typography variant="h6" sx={{ fontWeight: 600, display: 'flex' }} gutterBottom>
-                    Add To Calander
+                    Add To Calendr
                   </Typography>
 
                   <Stack spacing={2} direction={'column'}>

@@ -10,22 +10,16 @@ import timelinePlugin from '@fullcalendar/timeline';
 
 import interactionPlugin from '@fullcalendar/interaction';
 import { getMeetingEvents } from '../../api/meeting';
-import { useSnackbar } from 'notistack';
 import { useState, useRef, useEffect } from 'react';
-// @mui
 import {
   Card,
   Container,
   styled,
 } from '@mui/material';
-// redux
-// routes
-// hooks
+
 import useSettings from '../../hooks/useSettings';
 import useResponsive from '../../hooks/useResponsive';
-// components
 import Page from '../../components/Page';
-// sections
 import { useRouter } from 'next/router';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import { CalendarStyle, CalendarToolbar } from '../../sections/@dashboard/calendar';
@@ -62,15 +56,6 @@ const Content = styled('div')(({ theme }) => ({
   },
 }));
 
-const SideSection = styled(Card)(({ theme }) => ({
-  padding: '16px 0',
-  width: '100%',
-  // maxHeight: "650px",
-  marginTop: theme.spacing(4),
-  display: 'flex',
-  alignItems: 'center',
-}));
-
 const DataSection = styled(Card)(({ theme }) => ({
   [theme.breakpoints.down('md')]: {
     marginLeft: 0,
@@ -89,16 +74,16 @@ const DataHead = styled('div')(({ theme }) => ({
 }));
 
 function CalendarPage() {
-  const { themeStretch } = useSettings();
-  const { enqueueSnackbar } = useSnackbar();
   const isDesktop = useResponsive('up', 'sm');
 
   const calendarRef = useRef(null);
   const [date, setDate] = useState(new Date());
   const [view, setView] = useState(isDesktop ? 'dayGridMonth' : 'listWeek');
   const [events, setEvents] = useState([]);
+  const [current, setCurrent] = useState(new Date());
   const { user } = useAuth();
   const { push } = useRouter();
+  
   useEffect(() => {
     const calendarEl = calendarRef.current;
     if (calendarEl) {
@@ -108,6 +93,7 @@ function CalendarPage() {
       setView(newView);
     }
   }, [isDesktop, user]);
+  
   useEffect(() => {
     if (user.id) {
       getMeetingEvents(startOfMonth(date), endOfMonth(date), user.id).then((data) => {
@@ -168,6 +154,8 @@ function CalendarPage() {
     });
   };
 
+  console.log(current)
+
   return (
     <Page title="Calendar">
       <GlobalStyles
@@ -181,19 +169,10 @@ function CalendarPage() {
         onClose={() => setMeetingOpen({ isOpen: false })}
       />
       <Container maxWidth={'xl'} sx={{ display: 'flex' }}>
-        <DashboardSidebar currentPage="calendar" />
+        <DashboardSidebar currentPage="calendar" setCurrent={setCurrent} current={current}/>
         <Content>
           <DataSection>
             <DataHead />
-            {/* <InviteData fetch={fetch} />
-            <InviteModal
-              open={inviteOpen}
-              handleClose={() => {
-                setInviteOpen(false);
-                setFetch(!fetch);
-              }}
-            /> */}
-            {/* <AppNewInvoice/> */}
             <CalendarStyle>
               <CalendarToolbar
                 date={date}
@@ -227,9 +206,7 @@ function CalendarPage() {
                 allDayMaintainDuration
                 eventResizableFromStart
                 select={handleSelectRange}
-                // eventDrop={handleDropEvent}
                 eventClick={handleSelectEvent}
-                // eventResize={handleResizeEvent}
                 height={isDesktop ? 720 : 'auto'}
                 plugins={[listPlugin, dayGridPlugin, interactionPlugin, timeGridPlugin, timelinePlugin]}
               />

@@ -69,6 +69,9 @@ export default function GlobalStyles() {
         },
         '.fc-event': {
           overflow: 'hidden'
+        },
+        '.fc-list-event-title': {
+          wordBreak: 'break-all'
         }
       }}
     />

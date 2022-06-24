@@ -61,8 +61,6 @@ export default function CalendarToolbar({ date, view, onNextDate, onPrevDate, on
 
   return (
     <RootStyle>
-     
-
       <Container>
         <Box display={"flex"}>
         <Typography variant="h5" sx={{ my: { xs: 1, sm: 0 } }}>
@@ -72,10 +70,6 @@ export default function CalendarToolbar({ date, view, onNextDate, onPrevDate, on
         <IconButton onClick={onPrevDate}>
           <Iconify icon="eva:arrow-ios-back-fill" width={18} height={18} />
         </IconButton>
-        {/* 
-        <Button size="small" color="error" variant="contained" onClick={onToday} sx={{ mx: 0.5 }}>
-          Today
-        </Button> */}
         <IconButton onClick={onNextDate}>
           <Iconify icon="eva:arrow-ios-forward-fill" width={18} height={18} />
         </IconButton>
