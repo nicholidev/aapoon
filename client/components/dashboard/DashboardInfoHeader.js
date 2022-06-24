@@ -295,7 +295,7 @@ export default function DashboardInfoHeader() {
               </InfoHeading>
               <InfoNumbers>
                 <Typography variant="body1" color="secondary" style={{ fontSize: '40px' }}>
-                  {'0'}
+                {(stats.curr ? stats.curr : 0) - (stats.up ? stats.up : 0)}
                 </Typography>
               </InfoNumbers>
             </InfoCard>

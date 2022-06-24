@@ -4,6 +4,7 @@
  */
 import { useEffect, useRef, useState } from 'react';
 import { sentenceCase } from 'change-case';
+import firebase from 'firebase/compat/app';
 // import { Link as RouterLink } from 'react-router-dom';
 // @mui
 import { useTheme } from '@mui/material/styles';
@@ -56,6 +57,7 @@ export default function InviteData(props) {
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const {
     data: userList,
     update,
@@ -113,7 +115,22 @@ export default function InviteData(props) {
 
   const emptyRows = Math.max(0, (1 + page) * rowsPerPage - userList?.length);
 
-  const filteredUsers = userList;
+
+  useEffect(async () => {
+    const arr = []
+    if(!!userList) {
+      for(let i = 0 ; i < userList?.length; i++) {
+        const item = userList[i]
+        const userRef = await firebase.firestore().collection('users').where('email', '==', userList[i].email).get();
+        const avatarUrl = await userRef.docs?.[0]?.data()?.profilePic
+        console.log(avatarUrl, 'AVATAR')
+        item.profilePic = avatarUrl
+        arr.push(item);
+      }
+      setFilteredUsers(arr);
+    }
+  }, [userList])
+
 
   const isNotFound = !userList?.length && Boolean(filterName);
 
@@ -138,8 +155,6 @@ export default function InviteData(props) {
               {filteredUsers?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
                 const { id, displayName, email, profilePic, status, avatarUrl, isVerified } = row;
                 const isItemSelected = selected.indexOf(name) !== -1;
-
-                console.log(row.profilePic)
 
                 return (
                   <TableRow key={row.token} sx={{ borderBottom: '1px solid #DBDBDB' }}>

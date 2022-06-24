@@ -18,6 +18,7 @@ import {
   ListItemIcon,
   TablePagination,
 } from '@mui/material';
+import firebase from 'firebase/compat/app';
 // utils
 // _mock_
 // import { _appInvoices } from '../../../../_mock';
@@ -30,12 +31,15 @@ import { useCollection } from '@nandorojo/swr-firestore';
 import moment from 'moment';
 
 import MenuButton from './IconButton';
+import { ar } from 'date-fns/locale';
 
-const AvtarContainer = styled(Card)(({ theme }) => ({
+const AvatarContainer = styled(Card)(({ theme }) => ({
   width: 44,
   height: 44,
   borderRadius: '44px',
 }));
+
+
 export default function InviteData(props) {
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
@@ -43,6 +47,7 @@ export default function InviteData(props) {
   const [orderBy, setOrderBy] = useState('name');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const { user } = useAuth();
   const {
     data: userList,
@@ -64,7 +69,21 @@ export default function InviteData(props) {
 
   const emptyRows = Math.max(0, (1 + page) * rowsPerPage - userList?.length);
 
-  const filteredUsers = userList;
+  useEffect(async () => {
+    const arr = []
+    if(!!userList) {
+      for(let i = 0 ; i < userList?.length; i++) {
+        const item = userList[i]
+        const userRef = await firebase.firestore().collection('users').where('email', '==', userList[i].email).get();
+        const avatarUrl = await userRef.docs?.[0]?.data()?.profilePic
+        console.log(avatarUrl, 'AVATAR')
+        item.profilePic = avatarUrl
+        arr.push(item);
+      }
+      setFilteredUsers(arr);
+    }
+  }, [userList])
+
 
   const isNotFound = !userList?.length && Boolean(filterName);
 
@@ -91,15 +110,16 @@ export default function InviteData(props) {
             {filteredUsers?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, key) => {
               const { id, displayName, email, profilePic, status, avatarUrl, isVerified } = row;
               const isItemSelected = selected.indexOf(name) !== -1;
+
               return (
                 <TableRow key={`license_${key}`}>
                   <TableCell>
                     {' '}
                     <ListItem>
                       <ListItemIcon>
-                        <AvtarContainer>
+                        <AvatarContainer>
                           <Avatar src={row.profilePic} alt={row.displayName} sx={{ width: '100%', height: '100%' }} />
-                        </AvtarContainer>
+                        </AvatarContainer>
                       </ListItemIcon>
                       <ListItemText>
                         <Typography variant="subtitle1" color="text.primary">
