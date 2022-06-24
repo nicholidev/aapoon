@@ -123,7 +123,6 @@ export default function InviteData(props) {
         const item = userList[i]
         const userRef = await firebase.firestore().collection('users').where('email', '==', userList[i].email).get();
         const avatarUrl = await userRef.docs?.[0]?.data()?.profilePic
-        console.log(avatarUrl, 'AVATAR')
         item.profilePic = avatarUrl
         arr.push(item);
       }

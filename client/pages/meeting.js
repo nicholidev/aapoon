@@ -37,11 +37,7 @@ function Meeting(props) {
   const [meetingState, setMeetingState] = useState({});
 
   const handleClose = () => {
-    if(!!user.id) {
-      router.push('/dashboard/one')
-    } else {
-      window.location = '/';
-    }
+    router.push('/dashboard/one')
   };
 
   const handleParticipantLeft = async (participant) => {

@@ -68,10 +68,10 @@ const ContentStyle = styled('div')(({ theme }) => ({
 // ----------------------------------------------------------------------
 function Login() {
   const { method } = useAuth();
-
   const smUp = useResponsive('up', 'sm');
   const mdUp = useResponsive('up', 'md');
   const router = useRouter();
+
   return (
     <Page title="Login">
       <RootStyle>
