@@ -11,12 +11,21 @@ import 'firebase/compat/firestore';
 
 const endpoint = process.env.NEXT_PUBLIC_FUNCTION_URL;
 
+
+const config = () => {
+  return {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('authToken')}`
+    }
+  }
+}
+
 export const instantMeeting = async (data) => {
-  return axios.post(`${endpoint}/meeting/instant`, data);
+  return axios.post(`${endpoint}/meeting/instant`, data, config());
 };
 
 export const scheduleMeeting = async (data) => {
-  return axios.post(`${endpoint}/meeting/schedule`, data);
+  return axios.post(`${endpoint}/meeting/schedule`, data, config());
 };
 
 export const getMeetingEvents = (start, end, user) => {
