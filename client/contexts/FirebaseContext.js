@@ -85,8 +85,11 @@ function AuthProvider({ children }) {
   const [state, dispatch] = useReducer(reducer, initialState);
   let router = useRouter();
   useEffect(() => {
+    
     dispatch({ type: 'TOGGLE_LOADING', payload: true });
-
+    if (!firebase.auth().currentUser) {
+      localStorage.clear();
+    }
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         user.getIdToken().then((token) => {

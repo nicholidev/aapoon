@@ -3,8 +3,7 @@
  XYZ. Contact address: XYZ@xyz.pa .
  */
 import axios from 'axios';
-
-
+import 'firebase/compat/auth';
 
 export const addJWTInterceptor = async (token) => {
   axios.interceptors.request.use(
