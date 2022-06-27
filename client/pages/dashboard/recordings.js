@@ -44,6 +44,8 @@ import DashboardInfoHeader from '../../components/dashboard/DashboardInfoHeader'
 import RecordingInfoHeader from '../../components/recording/RecordingInfoHeader';
 import Image from '../../components/Image';
 import { Router, useRouter } from 'next/router';
+import firebase from 'firebase/compat/app';
+
 const Sidebar = styled('header')(({ theme }) => ({
   width: '320px',
   height: '100%',
@@ -146,7 +148,21 @@ function RecordingsPage() {
   }, [user?.activeLicenses?.count]);
 
 
-  useEffect(() => {
+  useEffect(async () => {
+    
+    if(user?.email) {
+      const userRef = await firebase
+        .firestore()
+        .collection('licenses')
+        .where('email', '==', user?.email)
+        .where('isAccepted', '==', true)
+        .where('isActivated', '==', true)
+        .get()
+      if(userRef?.docs?.length > 0) {
+        setIsPremiumUser(true)
+      }
+    }
+
     if(user?.subscription?.length > 0) {
       setIsPremiumUser(true)
     }
