@@ -197,6 +197,8 @@ export default function FormUserMeeting(props) {
     })
   };
 
+  console.log(data)
+
   return (
     <div>
       {isSubmitted ? (
@@ -226,33 +228,23 @@ export default function FormUserMeeting(props) {
                     &nbsp;&nbsp;
                     {data?.title}
                   </Typography>
-                  <Typography variant="body2" color="text.secondary" style={{overflowWrap: 'break-word'}}>
-                    {data?.extendedProps?.description}
-                  </Typography>
-                  {data?.extendedProps?.password && (
-                    <Typography variant="body" style={{wordBreak: 'break-word'}}>Meeting Password : {data?.extendedProps?.password}</Typography>
+                  {data?.password && (
+                    <Typography variant="body" style={{wordBreak: 'break-word'}}>Meeting Password : {data?.password}</Typography>
                   )}
 
                   <br />
                   <Box display="flex" alignItems="center">
                     <Iconify icon="ci:clock" width="20px" height="20px" color="text.secondary" /> &nbsp;&nbsp;
                     <Typography variant="body2">
-                      {moment(new Date(data?.start)).format('LLL')}&nbsp;<span style={{ fontWeight: 700 }}> To </span>&nbsp;
-                      {data?.extendedProps?.reccurring
-                        ? moment(new Date(data?.extendedProps.reccuringEndDate.seconds * 1000)).format('LLL')
-                        : moment(new Date(data?.end)).format('LLL')}
+                      {moment(new Date(((data?.endAt?._seconds) - (parseInt(data?.duration)) || (data?.endAt?._seconds) - 900))*1000).format('LLL')}&nbsp;<span style={{ fontWeight: 700 }}> To </span>&nbsp;
+                      {moment(new Date(data?.endAt?._seconds * 1000)).format('LLL')}
                     </Typography>
                   </Box>
-                  {data?.extendedProps?.reccurring && (
-                    <Typography variant="caption">
-                      Reccuring ( {moment(new Date(data?.start)).format('LT')} - {moment(new Date(data?.end)).format('LT')}{' '}
-                      )
-                    </Typography>
-                  )}
                   <Box display={'flex'} style={{ marginTop: '16px' }}>
                     <Button
                       variant="outlined"
                       onClick={() => router.push(window.origin + '/meeting?meetingid=' + data?.id)}
+                      style={{textTransform: 'inherit'}}
                     >
                       <img src="/favicon/favicon-32x32.png" />
                       &nbsp;&nbsp; Join aapoon meeting
@@ -262,7 +254,7 @@ export default function FormUserMeeting(props) {
                   <Box style={{overflowWrap: 'break-word'}}>
                     <Iconify icon="fluent:text-description-24-filled" width="24px" height="24px" color="text.secondary" />{' '}
                     &nbsp;&nbsp;
-                    <Typography variant="body2">{data?.extendedProps?.description || 'N/A'}</Typography>
+                    <Typography variant="body2">{data?.description || 'N/A'}</Typography>
                   </Box>
                   <Divider style={{ margin: '16px 0 8px' }} />
                   <Box display="flex" alignItems={'center'}>

@@ -125,6 +125,7 @@ function MeetingDetailsPopup(props) {
               )}
 
               <br />
+
               <Box display="flex" alignItems="center">
                 <Iconify icon="ci:clock" width="20px" height="20px" color="text.secondary" /> &nbsp;&nbsp;
                 <Typography variant="body2">

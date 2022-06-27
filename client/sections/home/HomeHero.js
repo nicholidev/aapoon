@@ -43,6 +43,27 @@ const ContentStyle = styled((props) => <Stack spacing={5} {...props} />)(({ them
   },
 }));
 
+const Particular1 = styled('div')({
+  width: '1344px',
+  height: '1344px',
+  position: 'absolute',
+  backgroundColor: '#FF27D0',
+  opacity: 0.03,
+  left: -788,
+  top: -753,
+  borderRadius: 1344
+})
+const Particular2 = styled('div')({
+  width: '1344px',
+  height: '1344px',
+  position: 'absolute',
+  backgroundColor: '#FF6610',
+  opacity: 0.03,
+  left: 714,
+  top: -97,
+  borderRadius: 1344
+})
+
 const HeroOverlayStyle = styled(m.img)({
   zIndex: 9,
 
@@ -66,6 +87,8 @@ export default function HomeHero() {
   return (
     <RootStyle>
       <Container sx={{ position: 'relative' }}>
+        <Particular1/>
+        <Particular2/>
         <Grid container>
           <Grid item md={6} lg={5} xs={12} sx={{ display: 'flex', justifyContent: 'flex-start' }}>
             <Container>

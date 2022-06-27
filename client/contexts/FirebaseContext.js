@@ -13,6 +13,7 @@ import { useRouter } from 'next/router';
 import { phoneExists } from '../services/misc-service';
 import { acceptInvitation, closeAccount, getCountry } from './../api/user';
 import { addJWTInterceptor } from '../utils/Interceptor';
+import { token } from 'stylis';
 // ----------------------------------------------------------------------
 
 if (!firebase.apps.length) {
@@ -84,12 +85,9 @@ function AuthProvider({ children }) {
   const [profile, setProfile] = useState(null);
   const [state, dispatch] = useReducer(reducer, initialState);
   let router = useRouter();
-  useEffect(() => {
-    
+  useEffect(async () => {
     dispatch({ type: 'TOGGLE_LOADING', payload: true });
-    if (!firebase.auth().currentUser) {
-      localStorage.clear();
-    }
+
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         user.getIdToken().then((token) => {
