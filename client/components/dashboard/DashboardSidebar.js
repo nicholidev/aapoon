@@ -81,7 +81,6 @@ export default function DashboardSidebar(props) {
   }, [user.id]);
 
   const dateChangeHandler = (newValue) => {
-    console.log(newValue);
     setDateValue(newValue);
     props.setCurrent && props.setCurrent(newValue);
   };

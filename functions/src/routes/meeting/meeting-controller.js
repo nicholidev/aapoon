@@ -114,7 +114,6 @@ let assigned=(await admin.firestore()
 
     var token = jwt.sign(
       {
-   
         context: {
           user: {
             id: req.user.user_id,
@@ -128,19 +127,20 @@ let assigned=(await admin.firestore()
                 : "member",
           },
           features: {
-            "livestreaming": (sub || assigned) ? "true": "false",
-            "outbound-call": (sub || assigned) ? "true": "false",
-            "transcription": (sub || assigned) ? "true": "false",
-            "recording": (sub || assigned) ? "true": "false",
+            "livestreaming": (sub || assigned) ? true: false,
+            "outbound-call": (sub || assigned) ? true: false,
+            "transcription": (sub || assigned) ? true: false,
+            "recording": (sub || assigned) ? true: false,
           },
-          room: {
-            regex: false,
-          },
+          // room: {
+          //   regex: false,
+          // },
+          room: "*"
         },
 
         aud: "aapoon",
         sub: "meetaap.io",
-        exp:new Date().getTime()+1000000,
+        exp: new Date().getTime()+1000000,
         nbf:300,
         room: req.body.id,
         iss: "518B837725AC1959C4878BDF15362AFD8B",
@@ -196,10 +196,10 @@ const joinMeetingWithOtp = async (req, res) => {
             affiliation: "member",
           },
           features: {
-            "livestreaming": "false",
-            "outbound-call": "false",
-            "transcription": "false",
-            "recording": "false",
+            "livestreaming": false,
+            "outbound-call": false,
+            "transcription": false,
+            "recording": false,
           },
           room: {
             regex: false,
