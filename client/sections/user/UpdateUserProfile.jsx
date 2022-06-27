@@ -85,7 +85,6 @@ function UpdateUserProfile(props) {
     lastName: Yup.string('Enter a valid last name'),
     update: Yup.string('false'),
     profilePic: Yup.mixed()
-
       .test('fileSize', 'The file is too large', (value) => {
         return (value && value.size <= 2000000) || !value;
       })

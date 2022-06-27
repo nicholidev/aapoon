@@ -399,7 +399,7 @@ function AuthProvider({ children }) {
             });
             dispatch({
               type: 'UPDATE',
-              payload: { user: { ...state.user, displayName: data.firstName + ' ' + data.lastName, profilePic: state.user?.profilePic } },
+              payload: { user: { ...state.user, displayName: data.firstName + ' ' + data.lastName, profilePic: data.update === 'true'? null :state.user?.profilePic } },
             });
           })
 
