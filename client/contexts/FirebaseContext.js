@@ -90,7 +90,6 @@ function AuthProvider({ children }) {
 
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        console.log(user)
         user.getIdToken().then((token) => {
           localStorage.setItem('authToken', token);
           addJWTInterceptor(token);
