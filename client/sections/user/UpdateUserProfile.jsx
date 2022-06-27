@@ -34,10 +34,12 @@ import ErrorMessages from '../../utils/errorMessage';
 import { useRouter } from 'next/router';
 import FileUploadIcon from '@mui/icons-material/FileUpload';
 import CropImage from '../../components/upload/CropImage';
+import useIsMountedRef from '../../hooks/useIsMountedRef';
 
 
 function UpdateUserProfile(props) {
   const router = useRouter();
+  const isMountedRef = useIsMountedRef();
   const { user, updateProfile } = useAuth();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
@@ -135,7 +137,7 @@ function UpdateUserProfile(props) {
           ),
         });
 
-        if (isMountedRef.current) {
+        if (isMountedRef?.current) {
           setErrors({ afterSubmit: ErrorMessages[error.code] });
           setSubmitting(false);
         }

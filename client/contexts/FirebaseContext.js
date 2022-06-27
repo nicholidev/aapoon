@@ -353,6 +353,7 @@ function AuthProvider({ children }) {
   const updateProfile = (data) => {
     return new Promise((resolve, reject) => {
       if (data.profilePic) {
+        console.log(data.profilePic)
         const storageRef = firebase.storage().ref();
         const busRef = storageRef.child(`account/${state.user.uid}/user/profilePic/${data.profilePic.name}`);
         busRef
@@ -390,7 +391,7 @@ function AuthProvider({ children }) {
           .doc(state.user.uid)
           .update({
             displayName: data.firstName + ' ' + data.lastName,
-            profilePic: data.update === 'true' ? "" : undefined
+            profilePic: data.update === 'true' ? "" : state.user?.profilePic
           })
           .then((response) => {
             resolve('success');
@@ -399,7 +400,7 @@ function AuthProvider({ children }) {
             });
             dispatch({
               type: 'UPDATE',
-              payload: { user: { ...state.user, displayName: data.firstName + ' ' + data.lastName, profilePic: data.update === 'true'? null :state.user?.profilePic } },
+              payload: { user: { ...state.user, displayName: data.firstName + ' ' + data.lastName, profilePic: data.update === 'true'? "" :state.user?.profilePic } },
             });
           })
 
