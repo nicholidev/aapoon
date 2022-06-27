@@ -126,6 +126,7 @@ function CalendarPage() {
       const calendarApi = calendarEl.getApi();
       calendarApi.prev();
       setDate(calendarApi.getDate());
+      setCurrent(calendarApi.getDate());
     }
   };
 
@@ -135,6 +136,7 @@ function CalendarPage() {
       const calendarApi = calendarEl.getApi();
       calendarApi.next();
       setDate(calendarApi.getDate());
+      setCurrent(calendarApi.getDate());
     }
   };
 
@@ -153,6 +155,17 @@ function CalendarPage() {
       data: arg.event,
     });
   };
+
+  useEffect(() => {
+    const calendarEl = calendarRef.current;
+    const calendarApi = calendarEl.getApi();
+    // calendarApi.next();
+    // setDate(calendarApi.getDate());
+    console.log(calendarApi.getDate());
+    calendarApi.gotoDate(current);
+    setDate(current);
+    console.log(current, 'CURRENT');
+  }, [current])
 
   return (
     <Page title="Calendar">
