@@ -132,12 +132,7 @@ let assigned=(await admin.firestore()
             "transcription": (sub || assigned) ? true: false,
             "recording": (sub || assigned) ? true: false,
           },
-          // room: {
-          //   regex: false,
-          // },
-          room: "*"
         },
-
         aud: "aapoon",
         sub: "meetaap.io",
         exp: new Date().getTime()+1000000,

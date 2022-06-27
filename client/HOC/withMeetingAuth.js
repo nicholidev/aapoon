@@ -194,7 +194,7 @@ const withMeetingAuth = (WrappedComponent) => {
       }
 
       if (!localStorage.getItem('isAuthenticated') && !authMeeting.isAuth && !loading) {
-        router.push('/auth/Login?return=/meeting?meetingid=AOsZBWH6U4gX7tvrH5dv');
+        router.push('/auth/Login?return=/meeting?meetingid=' + query.meetingid);
 
         return (
           <div>
