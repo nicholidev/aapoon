@@ -391,7 +391,7 @@ function AuthProvider({ children }) {
           .doc(state.user.uid)
           .update({
             displayName: data.firstName + ' ' + data.lastName,
-            profilePic: data.update === 'true' ? "" : state.user?.profilePic
+            profilePic: data.update === 'true' ? "" : (state.user?.profilePic || "")
           })
           .then((response) => {
             resolve('success');
@@ -400,7 +400,7 @@ function AuthProvider({ children }) {
             });
             dispatch({
               type: 'UPDATE',
-              payload: { user: { ...state.user, displayName: data.firstName + ' ' + data.lastName, profilePic: data.update === 'true'? "" :state.user?.profilePic } },
+              payload: { user: { ...state.user, displayName: data.firstName + ' ' + data.lastName, profilePic: data.update === 'true'? "" :(state.user?.profilePic || "") } },
             });
           })
 

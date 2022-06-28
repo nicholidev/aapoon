@@ -5,19 +5,25 @@
 import { async } from '@firebase/util';
 import axios from 'axios';
 import firebase from 'firebase/compat/app';
-
 import 'firebase/compat/firestore';
-//const endpoint = 'http://localhost:5000/meetaap-55e58/us-central1/app';
 
 const endpoint = process.env.NEXT_PUBLIC_FUNCTION_URL;
 
-
-const config = () => {
-  return {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('authToken')}`
+const config = async () => {
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      user.getIdToken().then((token) => {
+        localStorage.setItem('authToken', token);
+        return {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      });
     }
-  }
+  });
+
+  
 }
 
 export const instantMeeting = async (data) => {
