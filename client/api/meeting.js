@@ -5,27 +5,24 @@
 import { async } from '@firebase/util';
 import axios from 'axios';
 import firebase from 'firebase/compat/app';
-
 import 'firebase/compat/firestore';
-//const endpoint = 'http://localhost:5000/meetaap-55e58/us-central1/app';
 
 const endpoint = process.env.NEXT_PUBLIC_FUNCTION_URL;
 
-
-const config = () => {
+const config = async () => {
   return {
     headers: {
-      Authorization: `Bearer ${localStorage.getItem('authToken')}`
+      Authorization: `Bearer ${token}`
     }
   }
 }
 
 export const instantMeeting = async (data) => {
-  return axios.post(`${endpoint}/meeting/instant`, data, config());
+  return axios.post(`${endpoint}/meeting/instant`, data);
 };
 
 export const scheduleMeeting = async (data) => {
-  return axios.post(`${endpoint}/meeting/schedule`, data, config());
+  return axios.post(`${endpoint}/meeting/schedule`, data);
 };
 
 export const getMeetingEvents = (start, end, user) => {

@@ -87,7 +87,6 @@ function AuthProvider({ children }) {
   let router = useRouter();
   useEffect(async () => {
     dispatch({ type: 'TOGGLE_LOADING', payload: true });
-
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         user.getIdToken().then((token) => {
@@ -154,7 +153,8 @@ function AuthProvider({ children }) {
         localStorage.removeItem('isAuthenticated');
         localStorage.removeItem('authToken');
         if(!state.isAuthenticated)
-        dispatch({ type: 'TOGGLE_LOADING', payload: false });
+        window.location('/')
+          dispatch({ type: 'TOGGLE_LOADING', payload: false });
       }
     });
   }, [dispatch]);
@@ -391,7 +391,7 @@ function AuthProvider({ children }) {
           .doc(state.user.uid)
           .update({
             displayName: data.firstName + ' ' + data.lastName,
-            profilePic: data.update === 'true' ? "" : state.user?.profilePic
+            profilePic: data.update === 'true' ? "" : (state.user?.profilePic || "")
           })
           .then((response) => {
             resolve('success');
@@ -400,7 +400,7 @@ function AuthProvider({ children }) {
             });
             dispatch({
               type: 'UPDATE',
-              payload: { user: { ...state.user, displayName: data.firstName + ' ' + data.lastName, profilePic: data.update === 'true'? "" :state.user?.profilePic } },
+              payload: { user: { ...state.user, displayName: data.firstName + ' ' + data.lastName, profilePic: data.update === 'true'? "" :(state.user?.profilePic || "") } },
             });
           })
 

@@ -46,7 +46,7 @@ function InstantMeetingPopup(props) {
 
       try {
         let meetingData = await instantMeeting({ description: values.meetingDescription });
-
+        
         enqueueSnackbar('New meeting created', {
           variant: 'success',
           action: (key) => (
