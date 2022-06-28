@@ -87,7 +87,6 @@ function AuthProvider({ children }) {
   let router = useRouter();
   useEffect(async () => {
     dispatch({ type: 'TOGGLE_LOADING', payload: true });
-
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         user.getIdToken().then((token) => {
@@ -154,7 +153,8 @@ function AuthProvider({ children }) {
         localStorage.removeItem('isAuthenticated');
         localStorage.removeItem('authToken');
         if(!state.isAuthenticated)
-        dispatch({ type: 'TOGGLE_LOADING', payload: false });
+        window.location('/')
+          dispatch({ type: 'TOGGLE_LOADING', payload: false });
       }
     });
   }, [dispatch]);

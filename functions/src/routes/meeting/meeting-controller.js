@@ -137,6 +137,8 @@ let assigned=(await admin.firestore()
         sub: "meetaap.io",
         exp: new Date().getTime()+1000000,
         nbf:300,
+        "start_time": meeting.createdAt?._seconds,
+        "end_time": meeting.endAt?._seconds,
         room: req.body.id,
         iss: "518B837725AC1959C4878BDF15362AFD8B",
       },
@@ -145,7 +147,6 @@ let assigned=(await admin.firestore()
 
     return res.status(200).send({
       data: { ...meeting, password: meeting.password ? true : false },
-      // domain: sub || assigned?'meetaap.io':'meetaap.in',
       domain: 'meetaap.io',
       token,
     });
@@ -200,7 +201,8 @@ const joinMeetingWithOtp = async (req, res) => {
             regex: false,
           },
         },
-
+        "start_time": meeting.createdAt?._seconds,
+        "end_time": meeting.endAt?._seconds,
         "aud": "aapoon",
         "sub": "meetaap.io",
         room: req.body.id,

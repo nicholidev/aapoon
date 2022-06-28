@@ -180,9 +180,6 @@ function ProfilePage() {
 
   let activeSub = user.subscription?.find((i) => i.status == 'active');
 
-  console.log(user)
-
-
   return (
     <Page title="Profile" sx={{ width: '100vw' }}>
       <GlobalStyles

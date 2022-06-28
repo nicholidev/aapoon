@@ -10,28 +10,19 @@ import 'firebase/compat/firestore';
 const endpoint = process.env.NEXT_PUBLIC_FUNCTION_URL;
 
 const config = async () => {
-  firebase.auth().onAuthStateChanged((user) => {
-    if (user) {
-      user.getIdToken().then((token) => {
-        localStorage.setItem('authToken', token);
-        return {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      });
+  return {
+    headers: {
+      Authorization: `Bearer ${token}`
     }
-  });
-
-  
+  }
 }
 
 export const instantMeeting = async (data) => {
-  return axios.post(`${endpoint}/meeting/instant`, data, config());
+  return axios.post(`${endpoint}/meeting/instant`, data);
 };
 
 export const scheduleMeeting = async (data) => {
-  return axios.post(`${endpoint}/meeting/schedule`, data, config());
+  return axios.post(`${endpoint}/meeting/schedule`, data);
 };
 
 export const getMeetingEvents = (start, end, user) => {

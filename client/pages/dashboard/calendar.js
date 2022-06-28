@@ -159,10 +159,8 @@ function CalendarPage() {
   useEffect(() => {
     const calendarEl = calendarRef.current;
     const calendarApi = calendarEl.getApi();
-    console.log(calendarApi.getDate());
     calendarApi.gotoDate(current);
     setDate(current);
-    console.log(current, 'CURRENT');
   }, [current])
 
   return (
