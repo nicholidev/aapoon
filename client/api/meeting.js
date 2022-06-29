@@ -6,23 +6,42 @@ import { async } from '@firebase/util';
 import axios from 'axios';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
+import { addJWTInterceptor } from '../utils/Interceptor';
 
 const endpoint = process.env.NEXT_PUBLIC_FUNCTION_URL;
 
 const config = async () => {
+  let currentUser = firebase.auth()?.currentUser;
+  console.log(await currentUser?.getIDTokenForcingRefresh(true))
   return {
     headers: {
-      Authorization: `Bearer ${token}`
+      Authorization: `Bearer ${localStorage.getItem('authToken')}`
     }
   }
 }
 
 export const instantMeeting = async (data) => {
-  return axios.post(`${endpoint}/meeting/instant`, data);
+  let currentUser = firebase.auth()?.currentUser;
+  return currentUser?.getIdToken(true)
+  .then((token) => {
+    localStorage.setItem('authToken', token);
+    addJWTInterceptor(token);
+    return axios.post(`${endpoint}/meeting/instant`, data, {
+      Authorization: `Bearer ${token}`
+    });
+  })
 };
 
 export const scheduleMeeting = async (data) => {
-  return axios.post(`${endpoint}/meeting/schedule`, data);
+  let currentUser = firebase.auth()?.currentUser;
+  return currentUser?.getIdToken(true)
+  .then((token) => {
+    localStorage.setItem('authToken', token);
+    addJWTInterceptor(token);
+    return axios.post(`${endpoint}/meeting/schedule`, data, {
+      Authorization: `Bearer ${token}`
+    });
+  })
 };
 
 export const getMeetingEvents = (start, end, user) => {
