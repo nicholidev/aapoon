@@ -121,9 +121,9 @@ export default function RegisterForm(query) {
           setSubmitting(false);
         }
 
-        if (user.accountType === 'Business') {
-          router.push('/dashboard/one');
-        }
+        // if (user.accountType === 'Business') {
+        //   router.push('/dashboard/one');
+        // }
       } catch (error) {
         console.log(error);
         setErrors({ afterSubmit: ErrorMessages[error.code] });
