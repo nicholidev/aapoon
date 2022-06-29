@@ -13,7 +13,8 @@ const withAuth = (WrappedComponent) => {
       const router = useRouter();
 
       if (!localStorage.getItem('isAuthenticated')) {
-        router.replace('/');
+        // @Todo: REMOVE
+        // router.replace('/');
         return null;
       }
 
