@@ -368,6 +368,8 @@ function AuthProvider({ children }) {
               .update({
                 profilePic: downloadURL,
                 displayName: data.firstName + ' ' + data.lastName,
+                firstName: data.firstName,
+                lastName: data.lastName,
               })
               .then((response) => {
                 resolve('success');
@@ -380,7 +382,7 @@ function AuthProvider({ children }) {
             dispatch({
               type: 'UPDATE',
               payload: {
-                user: { ...state.user, displayName: data.firstName + ' ' + data.lastName, profilePic: downloadURL },
+                user: { ...state.user, displayName: data.firstName + ' ' + data.lastName, firstName: data.firstName, lastName: data.lastName, profilePic: downloadURL },
               },
             });
           })
@@ -392,16 +394,20 @@ function AuthProvider({ children }) {
           .doc(state.user.uid)
           .update({
             displayName: data.firstName + ' ' + data.lastName,
+            firstName: data.firstName,
+            lastName: data.lastName,
             profilePic: data.update === 'true' ? "" : (state.user?.profilePic || "")
           })
           .then((response) => {
             resolve('success');
             firebase.auth().currentUser.updateProfile({
               displayName: data.firstName + ' ' + data.lastName,
+              firstName: data.firstName,
+              lastName: data.lastName,
             });
             dispatch({
               type: 'UPDATE',
-              payload: { user: { ...state.user, displayName: data.firstName + ' ' + data.lastName, profilePic: data.update === 'true'? "" :(state.user?.profilePic || "") } },
+              payload: { user: { ...state.user, displayName: data.firstName + ' ' + data.lastName, firstName: data.firstName, lastName: data.lastName, profilePic: data.update === 'true'? "" :(state.user?.profilePic || "") } },
             });
           })
 
@@ -512,7 +518,7 @@ function AuthProvider({ children }) {
                 acceptInvitation({ email: state.user.email, token: localStorage.getItem('inviteToken') });
               const user = usercred.user;
 
-              user.updateProfile({ displayName: state.user.firstName + ' ' + state.user.lastName });
+              user.updateProfile({ displayName: state.user.firstName + ' ' + state.user.lastName, firstName: state.user.firstName, lastName: state.user.lastName });
 
               firebase
                 .firestore()
@@ -522,6 +528,8 @@ function AuthProvider({ children }) {
                   uid: user.uid,
                   email: user.email,
                   displayName: `${state.user.firstName} ${state.user.lastName}`,
+                  firstName: state.user.firstName,
+                  lastName: state.user.lastName,
                   phoneNumber: state.user.phoneNumber,
                   accountType: state.user.accountType,
                   accountDetails: {
@@ -544,10 +552,11 @@ function AuthProvider({ children }) {
                   isAuthenticated: false,
                   user: {
                     ...user,
-
                     uid: user.uid,
                     email: user.email,
                     displayName: `${state.user.firstName} ${state.user.lastName}`,
+                    firstName: state.user.firstName,
+                    lastName: state.user.lastName,
                     phoneNumber: state.user.phoneNumber,
                     accountType: state.user.accountType,
                     accountDetails: {

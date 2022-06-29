@@ -105,8 +105,8 @@ function UpdateUserProfile(props) {
 
   const formik = useFormik({
     initialValues: {
-      firstName: user?.displayName?.split(' ')[0],
-      lastName: user?.displayName?.split(' ')?.[1],
+      firstName: user?.firstName,
+      lastName: user?.lastName,
       update: 'false',
       profilePic: '',
       picuri:user.profilePic
@@ -148,8 +148,10 @@ function UpdateUserProfile(props) {
   const { errors, touched, handleSubmit, isSubmitting, getFieldProps, setFieldValue, values } = formik;
   
   useEffect(() => {
-    setFieldValue('firstName', user?.displayName?.split(' ')[0]);
-    setFieldValue('lastName', user?.displayName?.split(' ')[1]);
+    // setFieldValue('firstName', user?.displayName?.split(' ')[0]);
+    // setFieldValue('lastName', user?.displayName?.split(' ')[1]);
+    setFieldValue('firstName', user?.firstName ? user.firstName : user?.displayName)
+    setFieldValue('lastName', user?.lastName ? user.lastName : user?.displayName)
   }, [user]);
 
 
