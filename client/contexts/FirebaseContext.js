@@ -153,8 +153,9 @@ function AuthProvider({ children }) {
         localStorage.removeItem('isAuthenticated');
         localStorage.removeItem('authToken');
         if(!state.isAuthenticated)
-        window.location('/')
-          dispatch({ type: 'TOGGLE_LOADING', payload: false });
+          {
+            dispatch({ type: 'TOGGLE_LOADING', payload: false });
+          }
       }
     });
   }, [dispatch]);
@@ -411,7 +412,16 @@ function AuthProvider({ children }) {
 
   const register = (email, password, firstName, lastName, phoneNumber, allValues) => {
     return new Promise((resolve, reject) => {
-      phoneExists(phoneNumber, email)
+      firebase.auth().signOut().then(() => {
+        dispatch({
+          type: 'UPDATE',
+          payload: {
+            user: {},
+          },
+        });
+        localStorage.removeItem('isAuthenticated');
+        localStorage.clear();
+        phoneExists(phoneNumber, email)
         .then((res) => {
           return reject({ code: res.data.message });
         })
@@ -425,6 +435,7 @@ function AuthProvider({ children }) {
 
             firebase
               .auth()
+              // .signInWithEmailAndPassword(allValues.email, allValues.password)
               .signInWithPhoneNumber(allValues.countryCode+phoneNumber, appVerifier)
               .then((confirmationResult) => {
                 router.push(
@@ -447,6 +458,7 @@ function AuthProvider({ children }) {
               });
           }
         });
+      });
     });
   };
 
