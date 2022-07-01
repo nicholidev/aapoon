@@ -48,9 +48,13 @@ let Page404 = () => {
 
   useEffect(() => {
     if (!localStorage.getItem(`authToken`) && data?.id)
-      push(
-        `/auth/Register?email=${data.email}&lastName=${data.lastName}&firstName=${data.firstName}&return=${window.location.href}`
-      );
+    {
+      if(!(data?.isAccepted && data?.expiredAt)) {
+        push(
+          `/auth/Register?email=${data.email}&lastName=${data.lastName}&firstName=${data.firstName}&return=${window.location.href}`
+        );
+      }
+    }
   }, [user?.id, data?.id]);
 
   return (

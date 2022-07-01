@@ -455,7 +455,7 @@ function AuthProvider({ children }) {
                   payload: {
                     confirmation: confirmationResult,
                     appVerifier,
-                    user: { ...allValues, phoneNumber: (allValues.countryCode + phoneNumber), number: phoneNumber},
+                    user: { ...allValues, firstName: firstName, lastName: lastName, phoneNumber: (allValues.countryCode + phoneNumber), number: phoneNumber},
                   },
                 });
               })

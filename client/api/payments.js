@@ -48,7 +48,10 @@ export const getCheckoutSession = async (price, taxed=false) => {
       .add({
         line_items: [{ price: price, adjustable_quantity: { enabled: true, maximum: 999 }, quantity: 1 }],
         allow_promotion_codes: true,
-        tax_rates: taxed?['txr_1KUVrASJOhf2FXpTqycP9RXN']:false,
+        // tax_rates: taxed?['txr_1KUVrASJOhf2FXpTqycP9RXN']:false,
+        automatic_tax: {
+          enabled: true,
+        },
         tax_id_collection: true,
         success_url: window.location.origin + '/msg/success',
         cancel_url: window.location.origin + '/plan/plans-price',

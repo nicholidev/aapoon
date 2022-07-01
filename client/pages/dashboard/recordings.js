@@ -141,7 +141,7 @@ function RecordingsPage() {
   const [current, setCurrent] = useState('dashboard');
   const [stats, setStats] = useState({});
   const [isPremiumUser, setIsPremiumUser] = useState(false);
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   useEffect(() => {
     if (user.id)
       getStats(startOfWeek(new Date()), endOfWeek(new Date()), new Date(), user.id).then((data) => setStats(data));
@@ -180,25 +180,34 @@ function RecordingsPage() {
         <Content>
           <RecordingInfoHeader />
           <DataSection>
-            {isPremiumUser ? (
+            {loading ? (
+              <></>
+            ): (
               <>
-                <RecordingData fetch={fetch} />
+                  {
+                    isPremiumUser ? (
+                      <>
+                        <RecordingData fetch={fetch} />
+                      </>
+                    ) : (
+                      <Box
+                        display={'flex'}
+                        flexDirection={'column'}
+                        justifyContent={'center'}
+                        alignItems={'center'}
+                        width={'100%'}
+                        height={'calc(100vh - 160px)'}
+                      >
+                        <Image src={'/images/recording/Frame.svg'} style={{ maxHeight: 400, width: 'auto' }} />
+                        <Typography align="center" style={{ fontSize: 24, marginTop: 24 }}>
+                          Are you interested in recording your meetings?
+                        </Typography>
+                        <Button variant="contained" style={{marginTop: 24}} onClick={()=>{router.push('/plan/plans-price')}}>Upgrade to Premium!</Button>
+                      </Box>
+                    )
+                  }
               </>
-            ) : (
-              <Box
-                display={'flex'}
-                flexDirection={'column'}
-                justifyContent={'center'}
-                alignItems={'center'}
-                width={'100%'}
-                height={'calc(100vh - 160px)'}
-              >
-                <Image src={'/images/recording/Frame.svg'} style={{ maxHeight: 400, width: 'auto' }} />
-                <Typography align="center" style={{ fontSize: 24, marginTop: 24 }}>
-                  Are you interested in recording your meetings?
-                </Typography>
-                <Button variant="contained" style={{marginTop: 24}} onClick={()=>{router.push('/plan/plans-price')}}>Upgrade to Premium!</Button>
-              </Box>
+
             )}
           </DataSection>
         </Content>

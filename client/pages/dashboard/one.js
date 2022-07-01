@@ -2,15 +2,7 @@
  Copyright ©. All Rights Reserved. Confidential and proprietary.
  XYZ. Contact address: XYZ@xyz.pa .
  */
-import {
-  Button,
-  Card,
-  Container,
-  Grid,
-  styled,
-  Box,
-  Typography,
-} from '@mui/material';
+import { Button, Card, Container, Grid, styled, Box, Typography } from '@mui/material';
 // layouts
 import DashboardLayout from '../../layouts/dashboard';
 // hooks
@@ -32,7 +24,7 @@ import { useState } from 'react';
 import useAuth from '../../hooks/useAuth';
 import DashboardSidebar from '../../components/dashboard/DashboardSidebar';
 import DashboardInfoHeader from '../../components/dashboard/DashboardInfoHeader';
-import CreateMeetingButton from "../../components/dashboard/CreateMeetingButton"
+import CreateMeetingButton from '../../components/dashboard/CreateMeetingButton';
 const Sidebar = styled('header')(({ theme }) => ({
   width: '320px',
   height: '100%',
@@ -139,21 +131,16 @@ function PageOne() {
   const [inviteOpen, setInviteOpen] = useState(false);
   const [fetch, setFetch] = useState(false);
   const [stats, setStats] = useState({});
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
   const { push } = useRouter();
   useEffect(() => {
     if (user.id) {
-      getStats(
-        startOfWeek(new Date()),
-        endOfWeek(new Date()),
-        new Date(),
-        user.id
-      ).then((data) => setStats(data));
+      getStats(startOfWeek(new Date()), endOfWeek(new Date()), new Date(), user.id).then((data) => setStats(data));
     }
   }, [user.id]);
 
   return (
-    <Page title="Dashboard" sx={{pb:2}}>
+    <Page title="Dashboard" sx={{ pb: 2 }}>
       <GlobalStyles
         styles={{
           body: { backgroundColor: '#F1F1F1' },
@@ -161,67 +148,71 @@ function PageOne() {
       />
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex' }}>
         <DashboardSidebar currentPage="dashboard" />
-        <Content>
-          <center>
-            <CreateMeetingButton/>
-          </center>
-          <DashboardInfoHeader />
-          {user?.activeLicenses?.count > 1 ? (
-            <DataSection>
-              <DataHead>
-                <div>
-                  <Typography variant="h5">License assigned</Typography>
-                </div>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => push('/dashboard/assign-license')}
-                  startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
-                >
-                  {' '}
-                  Assign license
-                </Button>
-              </DataHead>
-              <Box sx={{ p: {xs:2,md:4},pb:{xs:6,md:1}, pt: 0 ,maxWidth:"90vw"}}>
-                <LicenceData fetch={fetch} />
-              </Box>
-              <InviteModal
-                open={inviteOpen} 
-                handleClose={() => {
-                  setInviteOpen(false);
-                  setFetch(!fetch);
-                }}
-              />
-            </DataSection>
-          ) : (
-            <DataSection>
-              <DataHead>
-                <Typography variant="h5" style={{ display: 'inline' }}>
-                  Recent Invites
-                </Typography>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => setInviteOpen(true)}
-                  startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
-                >
-                  {' '}
-                  Invite User
-                </Button>
-              </DataHead>
-              <Box sx={{ p: {xs:2,md:4},pb:{xs:6,md:1}, pt: 0 ,maxWidth:"90vw"}}>
-                <InviteData fetch={fetch} />
-              </Box>
-              <InviteModal
-                open={inviteOpen}
-                handleClose={() => {
-                  setInviteOpen(false);
-                  setFetch(!fetch);
-                }}
-              />
-            </DataSection>
-          )}
-        </Content>
+        {loading ? (
+          <></>
+        ) : (
+          <Content>
+            <center>
+              <CreateMeetingButton />
+            </center>
+            <DashboardInfoHeader />
+            {user?.activeLicenses?.count > 1 ? (
+              <DataSection>
+                <DataHead>
+                  <div>
+                    <Typography variant="h5">License assigned</Typography>
+                  </div>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => push('/dashboard/assign-license')}
+                    startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
+                  >
+                    {' '}
+                    Assign license
+                  </Button>
+                </DataHead>
+                <Box sx={{ p: { xs: 2, md: 4 }, pb: { xs: 6, md: 1 }, pt: 0, maxWidth: '90vw' }}>
+                  <LicenceData fetch={fetch} />
+                </Box>
+                <InviteModal
+                  open={inviteOpen}
+                  handleClose={() => {
+                    setInviteOpen(false);
+                    setFetch(!fetch);
+                  }}
+                />
+              </DataSection>
+            ) : (
+              <DataSection>
+                <DataHead>
+                  <Typography variant="h5" style={{ display: 'inline' }}>
+                    Recent Invites
+                  </Typography>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => setInviteOpen(true)}
+                    startIcon={<Iconify icon={'eva:person-add-outline'} width={20} height={20} />}
+                  >
+                    {' '}
+                    Invite User
+                  </Button>
+                </DataHead>
+                <Box sx={{ p: { xs: 2, md: 4 }, pb: { xs: 6, md: 1 }, pt: 0, maxWidth: '90vw' }}>
+                  <InviteData fetch={fetch} />
+                </Box>
+                <InviteModal
+                  open={inviteOpen}
+                  handleClose={() => {
+                    setInviteOpen(false);
+                    setFetch(!fetch);
+                  }}
+                />
+              </DataSection>
+            )}
+          </Content>
+        )}
       </Container>
     </Page>
   );

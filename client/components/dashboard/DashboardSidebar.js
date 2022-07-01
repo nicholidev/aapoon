@@ -75,6 +75,7 @@ export default function DashboardSidebar(props) {
   const { user } = useAuth();
   const { push } = useRouter();
   const [dateValue, setDateValue] = useState(new Date());
+  let activeSub = user.subscription?.find((i) => i.status == 'active');
   useEffect(() => {
     if (user.id)
       getStats(startOfWeek(new Date()), endOfWeek(new Date()), new Date(), user.id).then((data) => setStats(data));
@@ -86,12 +87,14 @@ export default function DashboardSidebar(props) {
   };
 
   useEffect(() => {
-    if(user?.subscription?.length > 0) {
+    if(!activeSub) {
       setShow(true)
-      console.log(((user.subscription?.[0].current_period_end.seconds - (new Date().valueOf() / 1000)) / 24 / 3600))
-      if(((user.subscription?.[0].current_period_end.seconds - (new Date().valueOf() / 1000)) / 24 / 3600) < 5) {
-        setShow(true)
-      }
+    } else {
+      setShow(false)
+    }
+    
+    if(((activeSub?.current_period_end.seconds - (new Date().valueOf() / 1000)) / 24 / 3600) < 6) {
+      setShow(true)
     }
   }, [user?.subscription])
 
