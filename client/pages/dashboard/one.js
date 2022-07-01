@@ -149,7 +149,7 @@ function PageOne() {
       <Container maxWidth={themeStretch ? false : 'xl'} sx={{ display: 'flex' }}>
         <DashboardSidebar currentPage="dashboard" />
         {loading ? (
-          <>Loading Data...</>
+          <></>
         ) : (
           <Content>
             <center>
