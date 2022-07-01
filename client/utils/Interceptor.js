@@ -6,10 +6,10 @@ import axios from 'axios';
 import 'firebase/compat/auth';
 
 export const addJWTInterceptor = async (token) => {
-  axios.interceptors.request.use(
+  return axios.interceptors.request.use(
     (config) => {
       config.headers.Authorization = `Bearer ${token}`;
-
+      console.log(config, 'CONFIG');
       return config;
     },
     (error) => {
